@@ -28,6 +28,8 @@ Basic Unary Operators
 
 `cos` - cos of pi*val
 
+`sign` - negative to -1, positive to 1
+
 Basic Binary Operators
 ----------------------
 
@@ -36,6 +38,8 @@ Basic Binary Operators
 `+` - Add two numbers, capping at the extreme values
 
 `wrap` - Add two numbers, wrapping around at the 
+
+`expt` 
 
 N-Ary Operators
 ---------------
