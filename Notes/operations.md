@@ -5,6 +5,9 @@ This document serves as a holding place for our notes on the various
 operations for doing math over images.  The names for the operations
 are primarily conceptual.
 
+All values are in the range -1 to 1.  All functions take values in
+that range and produce values in that range.
+
 Basic Values
 ------------
 
@@ -21,6 +24,10 @@ Basic Unary Operators
 
 `abs` - Absolute value
 
+`sin` - sin of pi*val
+
+`cos` - cos of pi*val
+
 Basic Binary Operators
 ----------------------
 
@@ -35,8 +42,29 @@ N-Ary Operators
 
 `ave` - Average two or more values
 
+Mouse Values
+------------
 
-Advanced Values
----------------
+`mouseX`
 
+`mouseY`
 
+`clickX`
+
+`clickY`
+
+Time Values
+-----------
+
+`year` - the position in the year (-1 for just after midnight, January 1 to
+1 for just before midnight, December 31)
+
+`month` - the position in the month
+
+`week` - the position in the week (-1 for midnight Sat/Sun to 1 for midnight Sat/Sun)
+
+`day` - the position in the day (-1 for just after midnight to 1 for just before midnight)
+
+`hour` - the position in the hour
+
+`minute` - the position in the minute
