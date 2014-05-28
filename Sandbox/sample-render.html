@@ -77,11 +77,36 @@ function doRenderFun()
   renderFun(fun, canvas, left, top, width, height);
 } // doRenderFun
 
+function mouseMove()
+{
+} // mouseMove()
+
+function mouseClick()
+{
+} // mouseClick
+
 </script>
 </head>
 <body>
 <h1>Sample MOI Rendering</h1>
 <canvas id="gui" width="500" height="500"></canvas>
+<script>
+var gui = document.getElementById("gui");
+gui.onmousemove = function(evt) 
+                     { 
+                       var rect = gui.getBoundingClientRect();
+                       setMouse(evt.clientX - rect.left, 
+                                evt.clientY - rect.top);
+                     };
+gui.onmouseclick  = function(evt) 
+                     { 
+                       var rect = gui.getBoundingClientRect();
+                       setClick(evt.clientX - rect.left, 
+                                evt.clientY - rect.top);
+                     };
+gui.onmousedown = gui.onmouseclick;
+</script>
+
 <form>
 <table>
   <tr>

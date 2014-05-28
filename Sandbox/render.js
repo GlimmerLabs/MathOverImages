@@ -44,6 +44,59 @@ function wrap(val)
     return val;
 } // wrap
 
+// +-------------------+-----------------------------------------------
+// | Mouse Information |
+// +-------------------+
+
+/*
+  Note: Rather than having mouse listeners here, we expect the GUI
+  to keep us updated on where the mouse is and where it was last
+  clicked.
+ */
+
+var mouseX = 0;
+var mouseY = 0;
+var clickX = 0;
+var clickY = 0;
+
+function setMouse(x, y)
+{
+  mouseX = x;
+  mouseY = y;
+} // setMouse
+
+function setClick(x, y)
+{
+  clickX = x;
+  clickY = y;
+} // setClick
+
+// +---------+---------------------------------------------------------
+// | Objects |
+// +---------+
+
+/**
+ * Simple representations of time using the range model (everything
+ * is in the range [-1 .. 1]).
+ */
+function Time(sec,min)
+{
+  this.s = sec;
+  this.m = min;
+}  // Time(sec,min)
+
+/**
+ * Information on where the mouse is/was
+ */
+function Mouse(x, y, cx, cy)
+{
+  this.x = x;
+  this.y = y;
+  this.X = cx;
+  this.Y = cy;
+} // Mouse
+
+
 // +-----------------------+-------------------------------------------
 // | Interpreting MOI Code |
 // +-----------------------+
@@ -56,7 +109,7 @@ function wrap(val)
  */
 function MOIbody2fun(body)
 {
-  return eval("(function (x,y,s,m) { return " + body + "})");
+  return eval("(function (x,y,t,m) { return " + body + "})");
 } // MOIbody2fun
 
 // +---------------+---------------------------------------------------
@@ -131,7 +184,11 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
   var d = new Date();
   var sec = d.getMilliseconds() / 500 - 1;
   var min = d.getSeconds()/30 - 1;
-  console.log("sec is " + sec + ", min is " + min);
+  var time = new Time(sec,min);
+  var mouse = new Mouse((mouseX-rleft)*deltaX - 1, 
+                        (mouseY-rtop)*deltaY - 1, 
+                        (clickX-rleft)*deltaX - 1, 
+                        (clickY-rtop)*deltaY - 1);
   var x = -1;
   var y = -1 - deltaY;
   for (var i = 0; i < region.data.length; i+= 4)
@@ -142,7 +199,7 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
           x = -1;
           y += deltaY;
         } // if (i % (4*rwidth)) == 0
-      var component = r2c(cap(fun(x,y,sec,min)));
+      var component = r2c(cap(fun(x,y,time,mouse)));
       region.data[i+0] = component;
       region.data[i+1] = component;
       region.data[i+2] = component;
