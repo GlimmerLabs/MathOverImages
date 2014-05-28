@@ -1,0 +1,70 @@
+<html>
+<head>
+<title>Sample MOI RGB Rendering Using Javascript</title>
+<script src="render.js"></script>
+<script>
+var animation = true;
+
+function stopAnimation()
+{
+  animation=false;
+} // stopAnimation 
+
+function startAnimation()
+{
+  animation = true;
+  frame();
+} // startAnimation
+
+function frame()
+{
+  var rfun = MOIbody2fun(document.getElementById("rfun").value);
+  var gfun = MOIbody2fun(document.getElementById("gfun").value);
+  var bfun = MOIbody2fun(document.getElementById("bfun").value);
+  var canvas = document.getElementById("gui");
+  renderRGB(rfun, gfun, bfun, canvas, 150, 150, 200, 200);
+  if (animation)
+    setTimeout(frame, 50);
+} // frame
+</script>
+</head>
+<body>
+<h1>Sample MOI RGB Rendering</h1>
+<canvas id="gui" width="500" height="500"></canvas>
+<script>
+var gui = document.getElementById("gui");
+gui.onmousemove = function(evt) 
+                     { 
+                       var rect = gui.getBoundingClientRect();
+                       setMouse(evt.clientX - rect.left, 
+                                evt.clientY - rect.top);
+                     };
+gui.onmouseclick  = function(evt) 
+                     { 
+                       var rect = gui.getBoundingClientRect();
+                       setClick(evt.clientX - rect.left, 
+                                evt.clientY - rect.top);
+                     };
+gui.onmousedown = gui.onmouseclick;
+</script>
+
+<form>
+<table>
+  <tr>
+    <td>Red</td>
+    <td><input type="text" name="left" id="rfun" size="100" value="m.x"/></td>
+  </tr>
+  <tr>
+    <td>Green</td>
+    <td><input type="text" name="top" id="gfun" size="100" value="m.y"/></td>
+  </tr>
+  <tr>
+    <td>Blue</td>
+    <td><input type="text" name="top" id="bfun" size="100" value="t.s*MOIsign(x*x+y*y-0.5)"/></td>
+  </tr>
+</table>
+<input type="button" value="Animate" onclick="startAnimation()">
+<input type="button" value="Stop" onclick="stopAnimation()">
+</form>
+</body>
+</html>
