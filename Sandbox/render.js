@@ -172,6 +172,44 @@ function renderX(canvas, rleft, rtop, rwidth, rheight)
 } // renderX
 
 /**
+ * Render three (x,y)->range functions as RGB, given the specified 
+ * bounds. Intended mostly as an experiment to get started.
+ */
+function renderRGB(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight)
+{
+  var deltaX = 2.0/rwidth;
+  var deltaY = 2.0/rheight;
+  var context = canvas.getContext("2d");
+  var region = context.createImageData(rwidth,rheight);
+  var d = new Date();
+  var sec = d.getMilliseconds() / 500 - 1;
+  var min = d.getSeconds()/30 - 1;
+  var time = new Time(sec,min);
+  var mouse = new Mouse((mouseX-rleft)*deltaX - 1, 
+                        (mouseY-rtop)*deltaY - 1, 
+                        (clickX-rleft)*deltaX - 1, 
+                        (clickY-rtop)*deltaY - 1);
+  var x = -1;
+  var y = -1 - deltaY;
+  for (var i = 0; i < region.data.length; i+= 4)
+    {
+      // When we reach the end of the row, move on to the next row
+      if ((i % (4*rwidth)) == 0)
+        { 
+          x = -1;
+          y += deltaY;
+        } // if (i % (4*rwidth)) == 0
+      region.data[i+0] = r2c(cap(rfun(x,y,time,mouse)));
+      region.data[i+1] = r2c(cap(gfun(x,y,time,mouse)));
+      region.data[i+2] = r2c(cap(bfun(x,y,time,mouse)));
+      region.data[i+3] = 255;
+          
+      x += deltaX;
+    } // for
+  context.putImageData(region, rleft, rtop);
+} // renderRGB
+
+/**
  * Render an (x,y)->range function on the canvas, given the specified 
  * bounds. Intended mostly as an experiment to get started.
  */
