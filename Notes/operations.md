@@ -33,18 +33,18 @@ Basic Unary Operators
 Basic Binary Operators
 ----------------------
 
-`*` - Multiply two numbers
-
-`+` - Add two numbers, capping at the extreme values
-
-`wrap` - Add two numbers, wrapping around at the 
-
 `expt` 
 
 N-Ary Operators
 ---------------
 
 `ave` - Average two or more values
+
+`*` - Multiply numbers
+
+`+` - Add numbers, capping at the extreme values
+
+`wrap` - Add two numbers, wrapping around at the edges (-1 and 1)
 
 Mouse Values
 ------------
@@ -56,6 +56,9 @@ Mouse Values
 `clickX`
 
 `clickY`
+
+* Note: We probably need a way to check if the mouse is up or down.
+  Events need more thought.
 
 Time Values
 -----------
@@ -72,3 +75,14 @@ Time Values
 `hour` - the position in the hour
 
 `minute` - the position in the minute
+
+Conditionals
+------------
+
+Should we include a conditional operation, such as `if(test, pos, neg)`
+that gives the value of `pos` if `test` is >= 0 and the value of `neg`
+otherwise?  This can be simulated by something like 
+`(sign(test)-1)*neg + ((sign(test)+1)*pos)`, which could be a fun
+challenge for people to make.  (Probably including it makes sense, but
+also making it a challenge.)
+
