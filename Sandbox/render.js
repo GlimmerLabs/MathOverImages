@@ -182,8 +182,8 @@ function renderRGB(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight)
   var context = canvas.getContext("2d");
   var region = context.createImageData(rwidth,rheight);
   var d = new Date();
-  var sec = d.getMilliseconds() / 500 - 1;
-  var min = d.getSeconds()/30 - 1;
+  var sec = d.getMilliseconds()/500 - 1;
+  var min = (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1;
   var time = new Time(sec,min);
   var mouse = new Mouse((mouseX-rleft)*deltaX - 1, 
                         (mouseY-rtop)*deltaY - 1, 
@@ -220,8 +220,9 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
   var context = canvas.getContext("2d");
   var region = context.createImageData(rwidth,rheight);
   var d = new Date();
-  var sec = d.getMilliseconds() / 500 - 1;
-  var min = d.getSeconds()/30 - 1;
+  var sec = d.getMilliseconds()/500 - 1;
+  var min = (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1;
+  // console.log("sec: " + sec + ", min: " + min);
   var time = new Time(sec,min);
   var mouse = new Mouse((mouseX-rleft)*deltaX - 1, 
                         (mouseY-rtop)*deltaY - 1, 
