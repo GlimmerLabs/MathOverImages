@@ -116,25 +116,72 @@ function MOIbody2fun(body)
 // | MOI Functions |
 // +---------------+
 
-function MOIsign(range)
-{
-  if (range < 0) 
-    return -1;
-  else if (range > 0)
-    return 1;
-  else
-    return range;
-} // MOIsign
+var MOI = new Object();
 
-function MOIshift(a,b)
-{
-  return wrap(a+b);
-} // MOIshift(a,b)
+MOI.abs = Math.abs;
 
-function MOIsquare(a)
-{
-  return a*a;
-} // MOIsquare
+MOI.ave = 
+  function()
+    {
+      return MOI.sum.apply(this, arguments)/arguments.length;
+    };
+   
+MOI.cos =
+  function(a)
+    {
+      return Math.cos(Math.PI * a);
+    };
+
+MOI.product = 
+  function()
+    {
+      var product = 1;
+      for (var i = 0; i < arguments.length; i++)
+        {
+          product *= arguments[i];
+        } // for
+      return product;
+    };
+
+MOI.shift = 
+  function()
+    {
+      return wrap(MOI.sum.apply(this, arguments));
+    };
+
+MOI.sign = 
+  function(range)
+    {
+      if (range < 0) 
+        return -1;
+      else if (range > 0)
+        return 1;
+      else
+        return range;
+    }; 
+
+MOI.square =
+  function(a)
+    {
+      return a*a;
+    };
+
+MOI.sin =
+  function(a)
+    {
+      return Math.sin(Math.PI * a);
+    };
+
+MOI.sum = 
+  function()
+    {
+      var sum = 0;
+      for (var i = 0; i < arguments.length; i++)
+        {
+          sum += arguments[i];
+        } // for
+      return sum;
+    };
 
 // +---------------------+---------------------------------------------
 // | Simulated Renderers |
