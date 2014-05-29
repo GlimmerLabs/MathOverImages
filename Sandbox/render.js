@@ -154,6 +154,15 @@ MOI.sign =
     {
       if (range < 0) 
         return -1;
+      else 
+        return 1;
+    }; 
+
+MOI.signz = 
+  function(range)
+    {
+      if (range < 0) 
+        return -1;
       else if (range > 0)
         return 1;
       else
