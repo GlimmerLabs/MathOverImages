@@ -16,41 +16,21 @@ function startAnimation()
   frame();
 } // startAnimation
 
-function saveImage()
-{
-var canvas1 = document.getElementById("gui");
-var ctx = canvas1.getContext("2d"); 
-var dataURL = canvas1.toDataURL("image/jpeg");
-document.write('<img src="'+img+'"/>');
-//var oImgJPEG = Canvas2Image.saveAsJPEG(oCanvas, true);   
-}
-
-function putImage() {
-var canvas1 = document.getElementById("gui");
-if (canvas1.getContext) {
-var ctx = canvas1.getContext("2d");           // Get the context for the canvas.
-var myImage = canvas1.toDataURL("image/png");    // Get the data as an image.
-}
-var imageElement = document.getElementById("MyPix");  // Get the img object.
-imageElement.src = myImage;                           // Set the src to data from the canvas.
-}
-
 function frame()
 {
-var rfun = MOIbody2fun(document.getElementById("rfun").value);
-var gfun = MOIbody2fun(document.getElementById("gfun").value);
-var bfun = MOIbody2fun(document.getElementById("bfun").value);
-var canvas = document.getElementById("gui");
-renderRGB(rfun, gfun, bfun, canvas, 50, 50, 1000, 1000);
-if (animation)
-setTimeout(frame, 50);
+  var rfun = MOIbody2fun(document.getElementById("rfun").value);
+  var gfun = MOIbody2fun(document.getElementById("gfun").value);
+  var bfun = MOIbody2fun(document.getElementById("bfun").value);
+  var canvas = document.getElementById("gui");
+  renderRGB(rfun, gfun, bfun, canvas, 150, 150, 200, 200);
+  if (animation)
+    setTimeout(frame, 50);
 } // frame
 </script>
 </head>
 <body>
 <h1>Sample MOI RGB Rendering</h1>
 <canvas id="gui" width="500" height="500"></canvas>
-<img id="MyPix" src=""/>
 <script>
 var gui = document.getElementById("gui");
 gui.onmousemove = function(evt) 
@@ -80,13 +60,11 @@ gui.onmousedown = gui.onmouseclick;
   </tr>
   <tr>
     <td>Blue</td>
-    <td><input type="text" name="top" id="bfun" size="100" value="t.s*MOI.sign(x*x+y*y-0.5)"/></td>
+    <td><input type="text" name="top" id="bfun" size="100" value="t.s*MOIsign(x*x+y*y-0.5)"/></td>
   </tr>
 </table>
 <input type="button" value="Animate" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
-<input type="button" value="Save Image" onclick="putImage()">
-<input >
 </form>
 </body>
 </html>
