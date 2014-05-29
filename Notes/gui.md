@@ -19,3 +19,5 @@ Notes on the Graphical User Interface
     * One option: Each of these always has one open 'slot' that you
       can connect to.
 * We'll need to check for cycles when people draw these diagrams.
+* How does someone *change* the function at one point in the 
+  diagram?
