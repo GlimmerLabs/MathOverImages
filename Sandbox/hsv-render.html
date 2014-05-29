@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Sample MOI RGB Rendering Using Javascript</title>
+<title>Sample MOI HSV Rendering Using Javascript</title>
 <script src="render.js"></script>
 <script>
 var animation = true;
@@ -22,7 +22,7 @@ var canvas1 = document.getElementById("gui");
 var ctx = canvas1.getContext("2d"); 
 var dataURL = canvas1.toDataURL("image/jpeg");
 document.write('<img src="'+img+'"/>');
-//var oImgJPEG = Canvas2Image.saveAsJPEG(oCanvas, true);   
+//var oImgJPEG = Can9*vas2Image.saveAsJPEG(oCanvas, true);   
 }
 
 function putImage() {
@@ -37,18 +37,19 @@ imageElement.src = myImage;                           // Set the src to data fro
 
 function frame()
 {
-var rfun = MOIbody2fun(document.getElementById("rfun").value);
-var gfun = MOIbody2fun(document.getElementById("gfun").value);
-var bfun = MOIbody2fun(document.getElementById("bfun").value);
+var hfun = MOIbody2fun(document.getElementById("hfun").value);
+var sfun = MOIbody2fun(document.getElementById("sfun").value);
+var vfun = MOIbody2fun(document.getElementById("vfun").value);
 var canvas = document.getElementById("gui");
-renderRGB(rfun, gfun, bfun, canvas, 50, 50, 1000, 1000);
+renderHSV(hfun, sfun, vfun, canvas, 50, 50, 1000, 1000);
 if (animation)
 setTimeout(frame, 50);
 } // frame
+
 </script>
 </head>
 <body>
-<h1>Sample MOI RGB Rendering</h1>
+<h1>Sample MOI HSV Rendering</h1>
 <canvas id="gui" width="500" height="500"></canvas>
 <img id="MyPix" src=""/>
 <script>
@@ -71,16 +72,16 @@ gui.onmousedown = gui.onmouseclick;
 <form>
 <table>
   <tr>
-    <td>Red</td>
-    <td><input type="text" name="left" id="rfun" size="100" value="m.x"/></td>
+    <td>Hue</td>
+    <td><input type="text" name="left" id="hfun" size="100" value="m.x"/></td>
   </tr>
   <tr>
-    <td>Green</td>
-    <td><input type="text" name="top" id="gfun" size="100" value="m.y"/></td>
+    <td>Saturation</td>
+    <td><input type="text" name="top" id="sfun" size="100" value="m.y"/></td>
   </tr>
   <tr>
-    <td>Blue</td>
-    <td><input type="text" name="top" id="bfun" size="100" value="t.s*MOI.sign(x*x+y*y-0.5)"/></td>
+    <td>Value</td>
+    <td><input type="text" name="top" id="vfun" size="100" value="t.s*MOI.sign(x*x+y*y-0.5)"/></td>
   </tr>
 </table>
 <input type="button" value="Animate" onclick="startAnimation()">
