@@ -55,7 +55,6 @@ footer nav ul {
   margin:0;
   list-style-type: none;
 
-
 }
 
 footer a {
@@ -75,11 +74,13 @@ footer a:hover {
 footer nav li {
   margin: 0 5px 0 5px;
   display: inline-block;
+  border: 1px solid black;
 
 }
 footer nav {
   width: 480px;
   margin: 0 auto;
+  border: 1px solid black;
 }
 
 footer p {
@@ -96,6 +97,7 @@ footer {
   border-width: 1px 0 0 0;
   border-style: solid;
   border-color: #979797;
+  text-align: center;
 
 }
 
