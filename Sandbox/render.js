@@ -247,37 +247,6 @@ MOI.sum =
 // +---------------------+
 
 /**
- * Render the function x on the canvas, given the specified bounds.
- * Intended mostly as an experiment to get started.
- */
-function renderX(canvas, rleft, rtop, rwidth, rheight)
-{
-  var deltaX = 2.0/rwidth;
-  var deltaY = 2.0/rheight;
-  var context = canvas.getContext("2d");
-  var region = context.createImageData(rwidth,rheight);
-  var x = -1;
-  var y = -1 - deltaY;
-  for (var i = 0; i < region.data.length; i+= 4)
-    {
-      // When we reach the end of the row, move on to the next row
-      if ((i % (4*rwidth)) == 0)
-        { 
-          x = -1;
-          y += deltaY;
-        } // if (i % (4*rwidth)) == 0
-      var component = r2c(x);
-      region.data[i+0] = component;
-      region.data[i+1] = component;
-      region.data[i+2] = component;
-      region.data[i+3] = 255;
-      x += deltaX;
-    } // for
-  console.log("left is " + rleft + ", top is " + rtop);
-  context.putImageData(region, rleft, rtop);
-} // renderX
-
-/**
  * Render three (x,y)->range functions as RGB, given the specified 
  * bounds. Intended mostly as an experiment to get started.
  */
@@ -398,16 +367,3 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
   context.putImageData(region, rleft, rtop);
 } // renderFun
 
-/**
- * Render the function y on the canvas, given the specified bounds.
- * Intended mostly as an experiment with renderFun.
- */
-function renderY(canvas, left, top, width, height)
-{
-  renderFun(function(x,y) { return y }, canvas, left, top, width, height);
-} // renderY
-
-function renderMin(canvas, left, top, width, height)
-{
-  renderFun(function(x,y,s,m) { return m }, canvas, left, top, width, height);
-} // renderMin
