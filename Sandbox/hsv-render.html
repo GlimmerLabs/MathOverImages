@@ -50,7 +50,7 @@ setTimeout(frame, 50);
 </head>
 <body>
 <h1>Sample MOI HSV Rendering</h1>
-<canvas id="gui" width="500" height="500"></canvas>
+<canvas id="gui" width="550" height="550"></canvas>
 <img id="MyPix" src=""/>
 <script>
 var gui = document.getElementById("gui");
@@ -68,7 +68,6 @@ gui.onmouseclick  = function(evt)
                      };
 gui.onmousedown = gui.onmouseclick;
 </script>
-
 <form>
 <table>
   <tr>
@@ -84,7 +83,7 @@ gui.onmousedown = gui.onmouseclick;
     <td><input type="text" name="top" id="vfun" size="100" value="t.s*MOI.sign(x*x+y*y-0.5)"/></td>
   </tr>
 </table>
-<input type="button" value="Animate" onclick="startAnimation()">
+<input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
 <input type="button" value="Save Image" onclick="putImage()">
 <input >
