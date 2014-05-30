@@ -21,6 +21,11 @@ header {
   margin: 5px 0 5px 30px;
 }
 
+#headerLogo img{
+  height:100%;
+  width:100%;
+}
+
 header nav {
   height:80px;
   float:right;
@@ -174,7 +179,7 @@ footer a {
 
 footer a:hover {
   text-decoration:none;
-  color: #4A4A4A;
+  color: #666;
 
 
 }
@@ -185,7 +190,7 @@ footer nav li {
 
 }
 footer nav {
-  width: 480px;
+  width: 100%px;
   margin: 0 auto;
 }
 
