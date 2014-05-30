@@ -48,6 +48,17 @@ header nav li {
   display: inline-block;
 
 }
+/* End of Header */
+
+
+#main {
+  margin:100px;
+}
+
+#featuredImage {
+  text-align: center;
+}
+
 
 #create {
   height:80px;
@@ -100,39 +111,51 @@ header nav li {
   clear:both;
   margin:0 auto;
 
+
 }
 
 
 #galleryImages figure {
   display:inline-block;
   margin: 10px;
-
 }
 
 #galleryImages figure img{
   height: 140px;
   width: 140px;
 
-
 }
 
 #galleryImages figcaption{
   text-align:right;
   color: #979797;
+}
+
+#galleryImages h1 {
+  font-size:1.5em;
+  text-align:center;
+
 
 }
 
+#galleryImages a {
+  color: #979797;
+  text-decoration:none;
 
-/* End of Header */
 
-
-#main {
-  margin:100px;
 }
 
-#featuredImage {
-  text-align: center;
+#galleryImages a:hover {
+  color: #666;
 }
+
+#figset {
+
+  margin:0 auto;
+  width: 1010px;
+
+}
+
 
 
 /* Footer */
