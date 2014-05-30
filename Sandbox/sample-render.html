@@ -16,80 +16,41 @@ function startAnimation()
   frame();
 } // startAnimation
 
+function saveImage()
+{
+var canvas1 = document.getElementById("gui");
+var ctx = canvas1.getContext("2d"); 
+var dataURL = canvas1.toDataURL("image/jpeg");
+document.write('<img src="'+img+'"/>');
+//var oImgJPEG = Can9*vas2Image.saveAsJPEG(oCanvas, true);   
+}
+
+function putImage() {
+var canvas1 = document.getElementById("gui");
+if (canvas1.getContext) {
+var ctx = canvas1.getContext("2d");           // Get the context for the canvas.
+var myImage = canvas1.toDataURL("image/png");    // Get the data as an image.
+}
+var imageElement = document.getElementById("MyPix");  // Get the img object.
+imageElement.src = myImage;                           // Set the src to data from the canvas.
+}
+
 function frame()
 {
-  var left = document.getElementById("rleft").value;
-  var top = document.getElementById("rtop").value;
-  var width = document.getElementById("rwidth").value;
-  var height = document.getElementById("rheight").value;
   var funbody = document.getElementById("rfun").value;
   var fun = MOIbody2fun(funbody);
   var canvas = document.getElementById("gui");
-  renderFun(fun, canvas, left, top, width, height);
+  renderFun(fun, canvas, 50, 50, 1000, 1000);
   if (animation)
     setTimeout(frame, 50);
 } // frame
-  
-function showStuff()
-{
-  left = document.getElementById("left").value;
-  alert("Left + 1 is " + (left+1));
-}
-function doRenderX()
-{
-  var left = document.getElementById("rleft").value;
-  var top = document.getElementById("rtop").value;
-  var width = document.getElementById("rwidth").value;
-  var height = document.getElementById("rheight").value;
-  var canvas = document.getElementById("gui");
-  renderX(canvas, left, top, width, height);
-} // doRenderX
-
-function doRenderY()
-{
-  var left = document.getElementById("rleft").value;
-  var top = document.getElementById("rtop").value;
-  var width = document.getElementById("rwidth").value;
-  var height = document.getElementById("rheight").value;
-  var canvas = document.getElementById("gui");
-  renderY(canvas, left, top, width, height);
-} // doRenderY
-
-function doRenderMin()
-{
-  var left = document.getElementById("rleft").value;
-  var top = document.getElementById("rtop").value;
-  var width = document.getElementById("rwidth").value;
-  var height = document.getElementById("rheight").value;
-  var canvas = document.getElementById("gui");
-  renderMin(canvas, left, top, width, height);
-} // doRenderMin
-
-function doRenderFun()
-{
-  var left = document.getElementById("rleft").value;
-  var top = document.getElementById("rtop").value;
-  var width = document.getElementById("rwidth").value;
-  var height = document.getElementById("rheight").value;
-  var funbody = document.getElementById("rfun").value;
-  var fun = MOIbody2fun(funbody);
-  var canvas = document.getElementById("gui");
-  renderFun(fun, canvas, left, top, width, height);
-} // doRenderFun
-
-function mouseMove()
-{
-} // mouseMove()
-
-function mouseClick()
-{
-} // mouseClick
 
 </script>
 </head>
 <body>
 <h1>Sample MOI Rendering</h1>
-<canvas id="gui" width="500" height="500"></canvas>
+<canvas id="gui" width="550" height="550"></canvas>
+<img id="MyPix" src=""/>
 <script>
 var gui = document.getElementById("gui");
 gui.onmousemove = function(evt) 
@@ -106,35 +67,17 @@ gui.onmouseclick  = function(evt)
                      };
 gui.onmousedown = gui.onmouseclick;
 </script>
-
 <form>
 <table>
-  <tr>
-    <td>Left</td>
-    <td><input type="text" name="left" id="rleft" value="10"/></td>
-  </tr>
-  <tr>
-    <td>Top</td>
-    <td><input type="text" name="top" id="rtop" value="10"/></td>
-  </tr>
-  <tr>
-    <td>Width</td>
-    <td><input type="text" name="width" id="rwidth" value="100"/></td>
-  </tr>
-  <tr>
-    <td>Height</td>
-    <td><input type="text" name="height" id="rheight" value="100"/></td>
-  </tr>
   <tr>
     <td>Function</td>
     <td><input type="text" name="fun" id="rfun" size="100" value="x+y"/></td>
   </tr>
 </table>
-<input type="button" value="Render X" onclick="doRenderX()">
-<input type="button" value="Render Y" onclick="doRenderY()">
-<input type="button" value="Render Fun" onclick="doRenderFun()"> <br>
-<input type="button" value="Animate" onclick="startAnimation()">
+<input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
+<input type="button" value="Save Image" onclick="putImage()">
+<input >
 </form>
 </body>
 </html>
