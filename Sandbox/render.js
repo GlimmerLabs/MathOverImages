@@ -168,79 +168,73 @@ function MOIbody2fun(body)
 
 var MOI = new Object();
 
-MOI.abs = Math.abs;
+var abs = function (a)
+{
+    return Math.abs(a);
+};
 
-MOI.ave = 
-  function()
-    {
-      return MOI.sum.apply(this, arguments)/arguments.length;
-    };
+var ave = function(a)
+{
+    return sum.apply(this, arguments)/arguments.length;
+};
    
-MOI.cos =
-  function(a)
-    {
-      return Math.cos(Math.PI * a);
-    };
+var cos = function(a)
+{
+    return Math.cos(Math.PI * a);
+};
 
-MOI.product = 
-  function()
+var product = function()
+{
+    var product = 1;
+    for (var i = 0; i < arguments.length; i++)
     {
-      var product = 1;
-      for (var i = 0; i < arguments.length; i++)
-        {
-          product *= arguments[i];
-        } // for
-      return product;
-    };
+        product *= arguments[i];
+    }
+    return product;
+};
 
-MOI.shift = 
-  function()
-    {
-      return wrap(MOI.sum.apply(this, arguments));
-    };
+var shift = function()
+{
+    return wrap(sum.apply(this, arguments));
+};
 
-MOI.sign = 
-  function(range)
-    {
-      if (range < 0) 
+var sign = function(range)
+{
+    if (range < 0) 
         return -1;
-      else 
+    else 
         return 1;
-    }; 
+}; 
 
-MOI.signz = 
-  function(range)
-    {
-      if (range < 0) 
+var signz = function(range)
+{
+    if (range < 0) 
         return -1;
-      else if (range > 0)
+    else if (range > 0)
         return 1;
-      else
+    else
         return range;
-    }; 
+}; 
 
-MOI.square =
-  function(a)
-    {
-      return a*a;
-    };
+var square = function(a)
+{
+    return a*a;
+};
 
-MOI.sin =
-  function(a)
-    {
-      return Math.sin(Math.PI * a);
-    };
+var sin = function(a)
+{
+    return Math.sin(Math.PI * a);
+};
 
-MOI.sum = 
-  function()
+var sum = function()
+{
+    var sum = 0;
+    for (var i = 0; i < arguments.length; i++)
     {
-      var sum = 0;
-      for (var i = 0; i < arguments.length; i++)
-        {
-          sum += arguments[i];
-        } // for
-      return sum;
-    };
+        sum += arguments[i];
+    } 
+    return sum;
+};
 
 // +---------------------+---------------------------------------------
 // | Simulated Renderers |
