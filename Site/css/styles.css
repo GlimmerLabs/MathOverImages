@@ -6,7 +6,7 @@
 
 /* Header */
 header {
-  margin: -50px -10px;
+  margin: -100px -10px;
   width: 101%;
   height: 80px;
   background-color: #4A4A4A;
@@ -49,13 +49,63 @@ header nav li {
 
 }
 
+#create {
+  height:80px;
+  width: 290px;
+  margin: 80px 20px;
+  float: left;
+  background-color: #979797;
+  font-weight:bold;
+  color: #FFF;
+  text-align:center;
+  text-transform:lowercase;
+}
+#create:hover {
+  background-color: #FFF;
+  color: #979797;
+
+}
+
+#tutorials {
+  height:80px;
+  width: 290px;
+  margin: 80px 20px;
+  float: right;
+  background-color: #3FAAA0;
+  color: #FFF;
+  text-align:center;
+  font-weight:bold;
+
+
+
+}
+
+
+#tutorials:hover {
+  background-color: #FFF;
+  color: #3FAAA0;
+
+}
+
+#tutorials h1, #create h1, #tutorials h1:hover, #create h1:hover{
+
+  font-size: 4em;
+  margin:-5px;
+  padding:0;
+
+
+}
 
 
 /* End of Header */
 
 
 #main {
-  margin:50px;
+  margin:100px;
+}
+
+#featuredImage {
+  text-align: center;
 }
 
 
