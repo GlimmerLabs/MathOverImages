@@ -16,13 +16,16 @@ function startAnimation()
   frame();
 } // startAnimation
 
-function saveImage()
+var saveFile = function(strData)
+{
+document.location.href = strData;
+}
+
+function savePNG()
 {
 var canvas1 = document.getElementById("gui");
-var ctx = canvas1.getContext("2d"); 
-var dataURL = canvas1.toDataURL("image/jpeg");
-document.write('<img src="'+img+'"/>');
-//var oImgJPEG = Can9*vas2Image.saveAsJPEG(oCanvas, true);   
+var strData = canvas1.toDataURL("image/png");
+saveFile(strData.replace("image/png", "image/octet-stream"));
 }
 
 function putImage() {
@@ -40,7 +43,7 @@ function frame()
 var funbody = document.getElementById("rfun").value;
 var fun = MOIbody2fun(funbody);
 var canvas = document.getElementById("gui");
-renderFun(fun, canvas, 50, 50, 1000, 1000);
+renderFun(fun, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
 } // frame
@@ -83,7 +86,7 @@ gui.onmousedown = gui.onmouseclick;
 </table>
 <input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
-<input type="button" value="Save Image" onclick="putImage()">
+<input type="button" value="Save Image" onclick="savePNG()">
 <input >
 </form>
 </body>
