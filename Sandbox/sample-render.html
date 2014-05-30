@@ -37,18 +37,24 @@ imageElement.src = myImage;                           // Set the src to data fro
 
 function frame()
 {
-  var funbody = document.getElementById("rfun").value;
-  var fun = MOIbody2fun(funbody);
-  var canvas = document.getElementById("gui");
-  renderFun(fun, canvas, 50, 50, 1000, 1000);
-  if (animation)
-    setTimeout(frame, 50);
+var funbody = document.getElementById("rfun").value;
+var fun = MOIbody2fun(funbody);
+var canvas = document.getElementById("gui");
+renderFun(fun, canvas, 50, 50, 1000, 1000);
+if (animation)
+setTimeout(frame, 50);
 } // frame
 
 </script>
 </head>
 <body>
 <h1>Sample MOI Rendering</h1>
+<p>
+<a href="file:///home/fordhame17/Glimmer/MathOverImages/Sandbox/rgb-render.html">Sample
+  MOI RGB Rendering</a>
+<a href="file:///home/fordhame17/Glimmer/MathOverImages/Sandbox/hsv-render.html">Sample
+  MOI HSV Rendering</a>
+</p>
 <canvas id="gui" width="550" height="550"></canvas>
 <img id="MyPix" src=""/>
 <script>
@@ -68,6 +74,7 @@ gui.onmouseclick  = function(evt)
 gui.onmousedown = gui.onmouseclick;
 </script>
 <form>
+<h4>Functional Imaging using X & Y</h4>
 <table>
   <tr>
     <td>Function</td>
