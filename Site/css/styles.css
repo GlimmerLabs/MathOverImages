@@ -96,6 +96,32 @@ header nav li {
 
 }
 
+#galleryImages {
+  clear:both;
+  margin:0 auto;
+
+}
+
+
+#galleryImages figure {
+  display:inline-block;
+  margin: 10px;
+
+}
+
+#galleryImages figure img{
+  height: 140px;
+  width: 140px;
+
+
+}
+
+#galleryImages figcaption{
+  text-align:right;
+  color: #979797;
+
+}
+
 
 /* End of Header */
 
