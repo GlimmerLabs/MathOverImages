@@ -32,18 +32,12 @@ function frame(fun)
 {
 var fun = MOIbody2fun(document.getElementById("rfun").value);
 var canvas = document.getElementById("gui");
+var line = ["bw", fun, 0, 0];
+JSON.stringify(line);
 renderFun(fun, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
 } // frame
-
-function store()
-{
-//get current user's file
-//log current function data as new section line
-//var line = ["sample-render", fun, 0, 0];
-//put new line into database for user
-}
 
 </script>
 </head>

@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Sample MOI HSV Rendering Using Javascript</title>
+<title>Sample MOI Re-Rendering from JSON</title>
 <script src="render.js"></script>
 <script>
 var animation = true;
@@ -44,7 +44,7 @@ setTimeout(frame, 50);
 </script>
 </head>
 <body>
-<h1>Sample MOI HSV Rendering</h1>
+<h1>Sample MOI Re-Rendering</h1>
 <p>
 <a href="">Sample
   MOI Rendering</a>
@@ -70,23 +70,7 @@ gui.onmousedown = gui.onmouseclick;
 </script>
 <form>
 <h4>Functional Imaging using X & Y using HSV values</h4>
-<table>
-  <tr>
-    <td>Function for Hue</td>
-    <td><input type="text" name="left" id="hfun" size="100" value="m.x"/></td>
-  </tr>
-  <tr>
-    <td>Function for Saturation</td>
-    <td><input type="text" name="top" id="sfun" size="100" value="m.y"/></td>
-  </tr>
-  <tr>
-    <td>Function for Value</td>
-    <td><input type="text" name="top" id="vfun" size="100" value="t.s*sign(x*x+y*y-0.5)"/></td>
-  </tr>
-</table>
 <input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
 <input type="button" value="Download" onclick="savePNG()">
 </form>
-</body>
-</html>
