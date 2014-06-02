@@ -276,7 +276,7 @@ function renderRGB(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight)
       x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  JSONstore (renderRGB, rfun, gfun, bfun, rleft, rtop, rwidth, rheight);
+  //JSONstore (renderRGB, rfun, gfun, bfun, rleft, rtop, rwidth, rheight);
 } // renderRGB
 
 /**
@@ -320,7 +320,7 @@ function renderHSV(hfun, sfun, vfun, canvas, rleft, rtop, rwidth, rheight)
         x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  JSONstore (renderHSV, hfun, sfun, vfun, rleft, rtop, rwidth, rheight);
+  //JSONstore (renderHSV, hfun, sfun, vfun, rleft, rtop, rwidth, rheight);
 } // renderHSV
 
 /**
@@ -361,13 +361,6 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
       x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  JSONstore (renderFun, fun, 0, 0, rleft, rtop, rwidth, rheight);
+  //JSONstore (renderFun, fun, 0, 0, rleft, rtop, rwidth, rheight);
 } // renderFun
 
-function JSONstore (renderType, fun1, fun2, fun3, left, top, width, height)
-{
-    var d = new Date();
-    var user = [
-        { "id": d , "data" : [renderType, fun1, fun2, fun3, left, top, width, height]}
-    ];
-}

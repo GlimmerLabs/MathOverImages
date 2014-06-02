@@ -28,16 +28,6 @@ var strData = canvas1.toDataURL("image/png");
 saveFile(strData.replace("image/png", "image/octet-stream"));
 }
 
-function putImage() {
-var canvas1 = document.getElementById("gui");
-if (canvas1.getContext) {
-var ctx = canvas1.getContext("2d");           // Get the context for the canvas.
-var myImage = canvas1.toDataURL("image/png");    // Get the data as an image.
-}
-var imageElement = document.getElementById("MyPix");  // Get the img object.
-imageElement.src = myImage;                           // Set the src to data from the canvas.
-}
-
 function frame()
 {
 var hfun = MOIbody2fun(document.getElementById("hfun").value);
@@ -48,6 +38,14 @@ renderHSV(hfun, sfun, vfun, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
 } // frame
+
+function store()
+{
+//get current user's file
+//log current function data as new section line
+//var line = ["hsv-render", hfun, sfun, vfun];
+//put new line into database for user
+}
 
 </script>
 </head>
