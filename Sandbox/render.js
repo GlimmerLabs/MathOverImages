@@ -166,7 +166,7 @@ function MOIbody2fun(body)
 // | MOI Functions |
 // +---------------+
 
-var MOI = new Object();
+//var MOI = new Object();
 
 var abs = function (a)
 {
@@ -276,7 +276,6 @@ function renderRGB(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight)
       x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  //JSONstore (renderRGB, rfun, gfun, bfun, rleft, rtop, rwidth, rheight);
 } // renderRGB
 
 /**
@@ -320,7 +319,6 @@ function renderHSV(hfun, sfun, vfun, canvas, rleft, rtop, rwidth, rheight)
         x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  //JSONstore (renderHSV, hfun, sfun, vfun, rleft, rtop, rwidth, rheight);
 } // renderHSV
 
 /**
@@ -336,7 +334,6 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
   var d = new Date();
   var sec = d.getMilliseconds()/500 - 1;
   var min = (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1;
-  // console.log("sec: " + sec + ", min: " + min);
   var time = new Time(sec,min);
   var mouse = new Mouse((mouseX-rleft)*deltaX - 1, 
                         (mouseY-rtop)*deltaY - 1, 
@@ -361,6 +358,20 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
       x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  //JSONstore (renderFun, fun, 0, 0, rleft, rtop, rwidth, rheight);
 } // renderFun
 
+function JSONtoImage(line_string)
+{
+    var line_array = JSON.parse(line);
+    var type = line_array[0];
+    var fun1 = line_array[1];
+    var fun2 = line_array[2];
+    var fun3 = line_array[3];
+
+    //if (type === "bw")
+        //return functions to be applied to a canvas in black and white
+        //else if (type === "rgb")
+            //return functions to be applied to a canvas in rgb
+            //else if (type === "hsv")
+                //return functions to be applied to a canvas in hsv
+}

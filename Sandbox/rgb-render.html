@@ -34,18 +34,12 @@ var rfun = MOIbody2fun(document.getElementById("rfun").value);
 var gfun = MOIbody2fun(document.getElementById("gfun").value);
 var bfun = MOIbody2fun(document.getElementById("bfun").value);
 var canvas = document.getElementById("gui");
+var line = ["rgb", rfun, gfun, bfun];
+JSON.stringify(line);
 renderRGB(rfun, gfun, bfun, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
 } // frame
-
-function store()
-{
-//get current user's file
-//log current function data as new section line
-//var line = ["rgb-render", rfun, gfun, bfun];
-//put new line into database for user
-}
 
 </script>
 </head>

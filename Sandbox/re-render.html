@@ -1,9 +1,18 @@
 <html>
 <head>
-<title>Sample MOI HSV Rendering Using Javascript</title>
+<title>Sample MOI Re-Rendering from JSON</title>
 <script src="render.js"></script>
 <script>
 var animation = true;
+
+var fun1 = MOIbody2fun("sin(x)");
+var fun2 = MOIbody2fun("y");
+var fun3 = MOIbody2fun("y");
+
+//when taken from file, parse!
+var string = ["hsv", fun1, fun2, fun3];
+//JSON.stringify(string)
+var line_array = JSON.parse(string.toString());
 
 function stopAnimation()
 {
@@ -30,13 +39,14 @@ saveFile(strData.replace("image/png", "image/octet-stream"));
 
 function frame()
 {
-var hfun = MOIbody2fun(document.getElementById("hfun").value);
-var sfun = MOIbody2fun(document.getElementById("sfun").value);
-var vfun = MOIbody2fun(document.getElementById("vfun").value);
 var canvas = document.getElementById("gui");
-var line = ["hsv", hfun, sfun, vfun];
-JSON.stringify(line);
-renderHSV(hfun, sfun, vfun, canvas, 0, 0, 550, 550);
+var type = line_array[0];
+if (type === "bw")
+renderFun(line_array[1], canvas, 0, 0, 550, 550);
+else if (type === "rgb")
+renderRGB(line_array[1], line_array[2], line_array[3], canvas, 0, 0, 550, 550);
+else if (type === "hsv")
+renderHSV(line_array[1], line_array[2], line_array[3], canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
 } // frame
@@ -44,7 +54,7 @@ setTimeout(frame, 50);
 </script>
 </head>
 <body>
-<h1>Sample MOI HSV Rendering</h1>
+<h1>Sample MOI Re-Rendering</h1>
 <p>
 <a href="">Sample
   MOI Rendering</a>
@@ -70,23 +80,7 @@ gui.onmousedown = gui.onmouseclick;
 </script>
 <form>
 <h4>Functional Imaging using X & Y using HSV values</h4>
-<table>
-  <tr>
-    <td>Function for Hue</td>
-    <td><input type="text" name="left" id="hfun" size="100" value="m.x"/></td>
-  </tr>
-  <tr>
-    <td>Function for Saturation</td>
-    <td><input type="text" name="top" id="sfun" size="100" value="m.y"/></td>
-  </tr>
-  <tr>
-    <td>Function for Value</td>
-    <td><input type="text" name="top" id="vfun" size="100" value="t.s*sign(x*x+y*y-0.5)"/></td>
-  </tr>
-</table>
 <input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
 <input type="button" value="Download" onclick="savePNG()">
 </form>
-</body>
-</html>
