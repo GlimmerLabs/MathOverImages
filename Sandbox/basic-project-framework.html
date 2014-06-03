@@ -188,7 +188,7 @@
   var totalLines = 0;
   // line variables
 
- 
+
   workLayer.on('dblclick', function(evt) {
     makingLine = true;
     var shape = evt.target;
@@ -198,10 +198,12 @@
       parent.x() + width / 20 - 3,
       parent.y() + width / 40,
       parent.x() + width / 20,
-      parent.y() + width / 40
+      parent.y() + width / 40,
       ],
       stroke: 'black',
-      strokeWidth: 4
+      strokeWidth: 4,
+      source: parent,
+      outlet: null
     });
     lineLayer.add(line[totalLines]);
     lineLayer.draw();
@@ -213,20 +215,21 @@
       var parent = shape.getParent();
       makingLine = false;
       if(!(parent.x() + width / 20 === line[totalLines].points()[0] + 3
-         && parent.y() + width / 40 === line[totalLines].points()[1])
-         && parent.name().substring(0,3) == 'fun'
-         && stage.getPointerPosition().y > 100) {
-        
+       && parent.y() + width / 40 === line[totalLines].points()[1])
+       && parent.name().substring(0,3) == 'fun'
+       && stage.getPointerPosition().y > 100) {
+
         line[totalLines].points()[2] = parent.x();
-        line[totalLines].points()[3] = parent.y() + width / 40;
-        lineLayer.draw();
-        totalLines++;
-      } else {
-        line[totalLines].destroy();
-        lineLayer.draw();
-      }
+      line[totalLines].points()[3] = parent.y() + width / 40;
+      line[totalLines].outlet = parent;
+      lineLayer.draw();
+      totalLines++;
+    } else {
+      line[totalLines].destroy();
+      lineLayer.draw();
     }
-  });
+  }
+});
 
   stage.addEventListener('contentMousemove', function(){
     if(makingLine) {
@@ -236,7 +239,9 @@
     }
   });
 
-  lineLayer
+  workLayer.on('draw', function(evt) {
+
+  });
 
 
 
