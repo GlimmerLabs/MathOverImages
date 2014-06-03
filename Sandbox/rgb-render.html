@@ -25,7 +25,9 @@ function saveJPEG()
 {
 var canvas1 = document.getElementById("gui");
 var strData = canvas1.toDataURL("image/jpeg");
-saveFile(strData.replace("image/jpeg", "image/octet-stream"));
+//saveFile(strData.replace("image/jpeg", "image/octet-stream"));
+window.win = open (strData);
+setTimeout('win.document.execCommand("SaveAs")', 500);
 }
 
 function frame()
@@ -34,8 +36,9 @@ var rfun = MOIbody2fun(document.getElementById("rfun").value);
 var gfun = MOIbody2fun(document.getElementById("gfun").value);
 var bfun = MOIbody2fun(document.getElementById("bfun").value);
 var canvas = document.getElementById("gui");
-var line = ["rgb", rfun, gfun, bfun];
-JSON.stringify(line);
+var line = ["rgb", document.getElementById("rfun").value, document.getElementById("gfun").value, document.getElementById("bfun").value];
+var line2 = JSON.stringify(line);
+console.log (line2); //eventually send to server instead of print
 renderRGB(rfun, gfun, bfun, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
