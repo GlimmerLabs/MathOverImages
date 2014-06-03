@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      } 
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+    <script defer="defer">
+      
+      var length = 90;
+      var offset = length / 2;
+   
+      var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 600,
+        height: 600
+      });
+      var layer = new Kinetic.Layer();
+      var dragLayer = new Kinetic.Layer();
+      var draggedLayer = new Kinetic.Layer();
+      var lineLayer = new Kinetic.Layer();
+
+      var square = new Kinetic.Rect({
+        x: 10,
+        y: 30,
+        width: 50,
+        height: 50,
+        fillRed: 150,
+        fillGreen: 200,
+        fillBlue: 250,
+        stroke: 'black',
+        strokeWidth: 4,
+        lineJoin:'round',
+        draggable: true
+      });
+      layer.add(square);
+
+      stage.add(lineLayer);
+      stage.add(layer);
+      stage.add(draggedLayer);
+      stage.add(dragLayer);
+      
+ 
+      layer.on('mousedown', function(evt) {
+        var shape = evt.target;
+        shape.moveTo(dragLayer);
+        stage.draw()
+        shape.startDrag();
+        var newSquare = new Kinetic.Rect({
+          x: 10,
+          y: 30,
+          width: 50,
+          height: 50,
+          fillRed: 150,
+          fillGreen: 200,
+          fillBlue: 250,
+          stroke: 'black',
+          strokeWidth: 4,
+          lineJoin:'round',
+          draggable: true
+        });
+        layer.add(newSquare);
+        stage.draw();
+      });
+
+      dragLayer.on('mouseup', function(evt) {
+        var shape = evt.target;
+        shape.moveTo(draggedLayer);
+        stage.draw();
+      });
+      
+      draggedLayer.on('mousedown', function(evt) {
+        var shape = evt.target;
+        shape.moveTo(dragLayer);
+        stage.draw();
+        shape.startDrag();
+      });
+
+/*      var makingLine = false;
+      draggedLayer.on('dblclick', function(evt) {
+        makingLine = true;
+        var shape = evt.target;
+        var line = new Kinetic.Line({
+          points: [
+            shape.x + shape.width,
+            shape.y + shape.height / 2,
+            evt.clientX,
+            evt.clientY
+          ]
+          stroke: 'black',
+          strokeWidth: 4
+        });
+        lineLayer.add(line);
+        while(makingLine) {
+          draggedLayer.on('click', function(evt) {
+            var shape2 = evt.target;
+            makingLine = false;
+            // set line end to left side of object
+      // remove event listener
+          });
+
+          // add event listener to push end locations to the line
+          // include if to ensure makingLine is false
+        }
+        // I want to remove 
+        makingLine = true;
+        lineLayer.draw(0);
+      }
+      
+*/
+
+    </script>
+  </body>
+</html>​
