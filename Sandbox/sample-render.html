@@ -21,11 +21,11 @@ var saveFile = function(strData)
 document.location.href = strData;
 }
 
-function savePNG()
+function saveJPEG()
 {
 var canvas1 = document.getElementById("gui");
-var strData = canvas1.toDataURL("image/png");
-saveFile(strData.replace("image/png", "image/octet-stream"));
+var strData = canvas1.toDataURL("image/jpeg");
+saveFile(strData.replace("image/jpeg", "image/octet-stream"));
 }
 
 function frame(fun)
@@ -76,7 +76,7 @@ gui.onmousedown = gui.onmouseclick;
 </table>
 <input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
-<input type="button" value="Download" onclick="savePNG()">
+<input type="button" value="Download" onclick="saveJPEG()">
 </form>
 </body>
 </html>
