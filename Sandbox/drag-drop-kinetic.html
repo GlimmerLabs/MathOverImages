@@ -18,8 +18,8 @@
    
       var stage = new Kinetic.Stage({
         container: 'container',
-        width: 578,
-        height: 200
+        width: 600,
+        height: 600
       });
 
       var layer = new Kinetic.Layer();
@@ -33,12 +33,15 @@
       var circle = new Kinetic.Circle({
         x: 0,
         y: 0,
+        name: 'circle',
         radius: 35,
         fillRed: 250,
         fillGreen: 100,
         fillBlue: 100,
+        scale: {x:1, y:1},
         stroke: 'black',
         strokeWidth: 4,
+        startScale: 1
         //draggable:true
       });
       circleG.add(circle);
@@ -48,7 +51,7 @@
         y: -25,
         text: '+',
         fontSize: 50,
-        fontFamily: 'Calibri',
+        fontFamily: 'OpenSans',
         fill: 'black',
         align: 'center'
       });
@@ -87,21 +90,43 @@
       stage.add(layer);
       
       //change circle color on mouse events and drag events
+      /*
       circle.on('mouseover dragstart', function(){
         this.fillRed(200);
         layer.draw();
       });
+
       
       circle.on('mouseout dragend', function(){
         this.fillRed(250);
         layer.draw();
       });        
+      */
+
+      circleG.on('mouseover dragstart', function(){
+        this.setAttrs({scale: {x:1.2, y:1.2}});
+        var newCircle = this.getChildren(function(node) {
+          return node.name() === 'circle';
+        });
+        newCircle.fillRed(200);
+        layer.draw();
+      });
+
+      circleG.on('mouseout dragend', function(){
+        this.setAttrs({scale: {x:1, y:1}});
+        var newCircle = this.getChildren(function(node) {
+          return node.name() === 'circle';
+        });
+        newCircle.fillRed(250);
+        layer.draw();
+      });
 
  //change rect color on mouse events and drag events
       
       rect.on('mouseover dragstart', function(){
         this.fillBlue(200);
         this.fillGreen(175);
+        
         layer.draw();
       });
       
