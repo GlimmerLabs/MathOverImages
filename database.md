@@ -52,10 +52,12 @@
 	*targetLink: VARCHAR
 
 *albums
+
 	*userid:unsigned INT
 	*albumId: unsigned INT
 	*publicity: unsigned INT
 	
 *albumContents
+
 	*albumId: unsigned INT
 	*imageId: unsigned INT
