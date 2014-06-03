@@ -5,15 +5,6 @@
 <script>
 var animation = true;
 
-var fun1 = MOIbody2fun("sin(x)");
-var fun2 = MOIbody2fun("y");
-var fun3 = MOIbody2fun("y");
-
-//when taken from file, parse!
-var string = ["hsv", fun1, fun2, fun3];
-//JSON.stringify(string)
-var line_array = JSON.parse(string.toString());
-
 function stopAnimation()
 {
   animation=false;
@@ -21,8 +12,8 @@ function stopAnimation()
 
 function startAnimation()
 {
-  animation = true;
-  frame();
+animation = true;
+frame();
 } // startAnimation
 
 var saveFile = function(strData)
@@ -40,13 +31,20 @@ saveFile(strData.replace("image/png", "image/octet-stream"));
 function frame()
 {
 var canvas = document.getElementById("gui");
+var line = document.getElementById("string").value;
+JSON.stringify(line);
+var line_array = JSON.parse(line);
 var type = line_array[0];
+var fun1 = MOIbody2fun(line_array[1]);
+var fun2 = MOIbody2fun(line_array[2]);
+var fun3 = MOIbody2fun(line_array[3]);
+
 if (type === "bw")
-renderFun(line_array[1], canvas, 0, 0, 550, 550);
+renderFun(fun1, canvas, 0, 0, 550, 550);
 else if (type === "rgb")
-renderRGB(line_array[1], line_array[2], line_array[3], canvas, 0, 0, 550, 550);
+renderRGB(fun1, fun2, fun3, canvas, 0, 0, 550, 550);
 else if (type === "hsv")
-renderHSV(line_array[1], line_array[2], line_array[3], canvas, 0, 0, 550, 550);
+renderHSV(fun1, fun2, fun3, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
 } // frame
@@ -80,6 +78,7 @@ gui.onmousedown = gui.onmouseclick;
 </script>
 <form>
 <h4>Functional Imaging using X & Y using HSV values</h4>
+<input type="text" name="bar" id="string" size="100"><br>
 <input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
 <input type="button" value="Download" onclick="savePNG()">
