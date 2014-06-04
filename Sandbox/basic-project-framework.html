@@ -111,7 +111,8 @@
       y:functGroup.children[0].y() + functGroup.attrs.numOutlets*((width / 20 -10) / 3 )+width/180,
       fill: '#FFC440',
       stroke: 'black',
-      strokeWidth: 1
+      strokeWidth: 1,
+      line: null
     });
    
     return outlet;
@@ -196,11 +197,16 @@
   });
 
   dragLayer.on('mouseup', function(evt) {
-    var shape = evt.target.getParent();
-    if(shape.y() > height / 6) {
-      shape.moveTo(workLayer);
+    var shape = evt.target;
+    var parent = shape.getParent()
+    
+    if(parent.y() > height / 6) {
+      parent.moveTo(workLayer);
     } else {
-      shape.destroy();
+      //var source = parent.attrs.inLines[0].attrs.source;
+      //parent.attrs.inLines[0].destroy();
+      //console.log(source.attrs);
+      parent.destroy();
     }
     stage.draw();
   });
@@ -303,13 +309,13 @@ stage.addEventListener('contentMousemove', function(){
 
 /**
   * line is a line whose outlet or source is moving
-  * direction is the string 'outlet' or 'source'
+  * direction is the string ('outlet' + index) or 'source'
   */
   var updateLine = function(line, direction) {
     if (direction === 'source') {
       line.points()[0] = line.attrs.source.x() + width / 20 - 3;
       line.points()[1] = line.attrs.source.y() + width / 40;
-    } else if (direction === 'outlet') {
+    } else if (direction.substring(0,6) === 'outlet') {
       line.points()[2] = line.attrs.outlet.x() + 3;
       line.points()[3] = line.attrs.outlet.y() + width / 40;
     }
