@@ -1,112 +1,181 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <style>
-      body {
-        margin: 0px;
-        padding: 0px;
-      }
-	  #container {
-		background-color: rgb(241, 248, 255);
-		width: 900px;
-		height: 600px;
-	  }
-    </style>
-  </head>
-  <body>
-    <div id="container"></div>
-    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
-    <script defer="defer">
-	var width = 900;
-	var height = 600;
-      var stage = new Kinetic.Stage({
-        container: 'container',
-        width: width,
-        height: height
-      });
+<head>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+  #container {
+    background-color: rgb(241, 248, 255);
+    width: 900px;
+    height: 600px;
+  }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+  <script defer="defer">
+  var width = 900;
+  var height = 600;
+  var stage = new Kinetic.Stage({
+    container: 'container',
+    width: width,
+    height: height
+  });
 
-      var layer = new Kinetic.Layer();
-	  
-	  var functionGroup = new Kinetic.Group({
-		draggable: true,
+  var layer = new Kinetic.Layer();
+
+  var functionGroup = new Kinetic.Group({
+    draggable: true,
 	    //name: 'fun_' + funName,
 	    x: 50,
 	    y: 50
 	  });
-	
-      var functionBox = new Kinetic.Rect({
-		x: 5,
-		y: 5,
-		width: width / 20 - 10,
-		height: width / 20 - 10,
-                fill: '#37B6CE',
-                stroke: '#37B6CE',
-                strokeWidth: 10,
-		lineJoin: 'round'
-      });
-	  
-	  var functionText = new Kinetic.Text({
-		text: '+',
-		fontFamily: 'Open Sans',
-		fill: 'black',
-		fontSize: 16,
-		x: 0,
-		y: functionBox.height()/2,
-		width: width / 20,
-		align: 'center'
-	  });
-	  
-	  var imageBox = new Kinetic.Rect({
-		x: functionBox.width() + 3,
-		y: functionBox.height() + 3,
-		width: width / 80,
-		height: width / 80,
-		fill: 'white',
-		stroke: 'black',
-		strokeWidth: .5
-	  });
-	  
-	  var bezPoint = width/50;
-	  var outlet = new Kinetic.Shape({
-        sceneFunc: function(context) {
-              context.beginPath();
-              context.moveTo(0, 0);
-              context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
-              context.closePath();
-              context.fillStrokeShape(this);
-            },
-        x:functionBox.x()+3,
-        y:functionBox.y() + 0*(functionBox.height() / 3)+5,
-        fill: 'FFC440',
-        stroke: 'black',
-        strokeWidth: 1
-      });
-	  
-	  var outlet2 = new Kinetic.Shape({
-        sceneFunc: function(context) {
-              context.beginPath();
-              context.moveTo(0, 0);
-              context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
-              context.closePath();
-              context.fillStrokeShape(this);
-            },
-        x:functionBox.x()+3,
-        y:functionBox.y() + 1*(functionBox.height() / 3)+5,
-        fill: 'FFD373',
-        stroke: 'black',
-        strokeWidth: 1
-      });
+
+  var functionBox = new Kinetic.Rect({
+    x: 5,
+    y: 5,
+    width: width / 20 - 10,
+    height: width / 20 - 10,
+    fill: '#37B6CE',
+    stroke: '#37B6CE',
+    strokeWidth: 10,
+    lineJoin: 'round'
+  });
+
+  var functionText = new Kinetic.Text({
+    text: '+',
+    fontFamily: 'Open Sans',
+    fill: 'black',
+    fontSize: 16,
+    x: 0,
+    y: functionBox.height()/2,
+    width: width / 20,
+    align: 'center'
+  });
+
+  var funImageBox = new Kinetic.Rect({
+    x: functionBox.width() + 3,
+    y: functionBox.height() + 3,
+    width: width / 80,
+    height: width / 80,
+    fill: 'white',
+    stroke: 'black',
+    strokeWidth: .5
+  });
+
+  var bezPoint = width/50;
+  var outlet1 = new Kinetic.Shape({
+    sceneFunc: function(context) {
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
+      context.closePath();
+      context.fillStrokeShape(this);
+    },
+    name: 'outlet1',
+    x:functionBox.x()+width/225,
+    y:functionBox.y() + 0*((width / 20 -10) / 3 )+width/180,
+    fill: '#FFC440',
+    stroke: 'black',
+    strokeWidth: 1
+  });
+
+  var outlet2 = new Kinetic.Shape({
+    sceneFunc: function(context) {
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
+      context.closePath();
+      context.fillStrokeShape(this);
+    },
+    name: 'outlet2',
+    x:functionBox.x()+width/225,
+    y:functionBox.y() + 1*((width / 20 -10) / 3 )+width/180,
+    fill: '#FFEEC9',
+    stroke: 'black',
+    strokeWidth: 1
+  });
+
+  var outlet3 = new Kinetic.Shape({
+    sceneFunc: function(context) {
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
+      context.closePath();
+      context.fillStrokeShape(this);
+    },
+    name: 'outlet3',
+    x:functionBox.x()+width/225,
+    y:functionBox.y() + 2*((width / 20 -10) / 3 )+width/180,
+    fill: '#FFEEC9',
+    stroke: 'black',
+    strokeWidth: 1
+  });
+
+  var valGroup = new Kinetic.Group({
+      draggable: true,
+      //name: 'val' + index + valName,
+      x: 100,
+      y: 100,
+      outLines: []
+    });
+    var valBox = new Kinetic.Rect({
+      x: width / 40,
+      y: 0,
+      width: width / 28.3,
+      height: width / 28.3,
+      fill: 'grey',
+      rotation: 45,
+      //name: valName,
+    });
+    var valText = new Kinetic.Text({
+      text: 'x',
+      fontFamily: 'OpenSans',
+      fill: 'black',
+      fontSize: 16,
+      x: 0,
+      y: width / 56,
+      width: width / 20,
+      align: 'center'
+    });
+    valGroup.add(valBox);
+    valGroup.add(valText);
+    layer.add(valGroup)
 
       // add the shape to the layer
-	  functionGroup.add(functionBox);
-	  functionGroup.add(functionText);
-	  functionGroup.add(imageBox);
-	  functionGroup.add(outlet);
-	  functionGroup.add(outlet2);
+      functionGroup.add(functionBox);
+      functionGroup.add(functionText);
+      functionGroup.add(funImageBox);
+      functionGroup.add(outlet1);
+      functionGroup.add(outlet2);
+      functionGroup.add(outlet3);
       layer.add(functionGroup);
 
       // add the layer to the stage
       stage.add(layer);
-    </script>
-  </body>
-</html>
+
+      layer.on('mouseover', function(evt) {
+        var shape = evt.target
+        if (shape.attrs.name.substring(0,6) === 'outlet'){
+          shape.scale({
+            x:1.5,
+            y:1.5});
+          layer.draw();
+        }
+      });
+      layer.on('mouseout', function(evt) {
+        var shape = evt.target
+        if (shape.attrs.name.substring(0,6) === 'outlet'){
+          shape.scale({
+            x:1,
+            y:1});
+          layer.draw();
+        }
+      });
+
+      </script>
+    </body>
+    </html>
