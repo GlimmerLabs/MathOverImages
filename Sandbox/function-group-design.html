@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+	  #container {
+		background-color: rgb(241, 248, 255);
+		width: 900px;
+		height: 600px;
+	  }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+    <script defer="defer">
+	var width = 900;
+	var height = 600;
+      var stage = new Kinetic.Stage({
+        container: 'container',
+        width: width,
+        height: height
+      });
+
+      var layer = new Kinetic.Layer();
+	  
+	  var functionGroup = new Kinetic.Group({
+		draggable: true,
+	    //name: 'fun_' + funName,
+	    x: 50,
+	    y: 50
+	  });
+	
+      var functionBox = new Kinetic.Rect({
+		x: 5,
+		y: 5,
+		width: width / 20 - 10,
+		height: width / 20 - 10,
+                fill: '#37B6CE',
+                stroke: '#37B6CE',
+                strokeWidth: 10,
+		lineJoin: 'round'
+      });
+	  
+	  var functionText = new Kinetic.Text({
+		text: '+',
+		fontFamily: 'Open Sans',
+		fill: 'black',
+		fontSize: 16,
+		x: 0,
+		y: functionBox.height()/2,
+		width: width / 20,
+		align: 'center'
+	  });
+	  
+	  var imageBox = new Kinetic.Rect({
+		x: functionBox.width() + 3,
+		y: functionBox.height() + 3,
+		width: width / 80,
+		height: width / 80,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .5
+	  });
+	  
+	  var bezPoint = width/50;
+	  var outlet = new Kinetic.Shape({
+        sceneFunc: function(context) {
+              context.beginPath();
+              context.moveTo(0, 0);
+              context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
+              context.closePath();
+              context.fillStrokeShape(this);
+            },
+        x:functionBox.x()+3,
+        y:functionBox.y() + 0*(functionBox.height() / 3)+5,
+        fill: 'FFC440',
+        stroke: 'black',
+        strokeWidth: 1
+      });
+	  
+	  var outlet2 = new Kinetic.Shape({
+        sceneFunc: function(context) {
+              context.beginPath();
+              context.moveTo(0, 0);
+              context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
+              context.closePath();
+              context.fillStrokeShape(this);
+            },
+        x:functionBox.x()+3,
+        y:functionBox.y() + 1*(functionBox.height() / 3)+5,
+        fill: 'FFD373',
+        stroke: 'black',
+        strokeWidth: 1
+      });
+
+      // add the shape to the layer
+	  functionGroup.add(functionBox);
+	  functionGroup.add(functionText);
+	  functionGroup.add(imageBox);
+	  functionGroup.add(outlet);
+	  functionGroup.add(outlet2);
+      layer.add(functionGroup);
+
+      // add the layer to the stage
+      stage.add(layer);
+    </script>
+  </body>
+</html>
