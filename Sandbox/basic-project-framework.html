@@ -238,7 +238,7 @@ Ok so heres are our cases now that we know its a valid connection:
 2. function was capped and needs to replace and existing input
 */
           //
-          if(parent.attrs.inputs != null && parent.attrs.inLines.length == parent.attrs.inputs) {
+          if(parent.attrs.inputs != null && parent.attrs.inLines.length >= parent.attrs.inputs) {
             var bool = true;
             var j = 0;
             var outs = parent.attrs.inLines[0].attrs.source.attrs.outLines;
