@@ -7,12 +7,13 @@ users
 	email-visible: BOOLEAN
 	pgp-public: VARCHAR // pretty good privacy
 	username:VARCHAR
-	type:VARCHAR
+	type:VARCHAR	// Includes "unvalidated"
 	signuptime: TIMESTAMP
 	lastLogin: TIMESTAMP
 	id:unsigned INT
 	about: BLOB
 	dob: TIMESTAMP	// Optional, but need to verify age.
+	featuredImage: imageId
 	
 	Deleted
 	  	pgp:VARCHAR // gender pronoun, may want multiple fields
