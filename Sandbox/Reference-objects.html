@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script>
+	var functions = {
+		add: 			{rep: '+', 	 max: 20, min: 2, index: 0},
+		multiply: {rep: '*', 	 max: 20, min: 2, index: 1},
+		negate: 	{rep: '-', 	 max: 1,  min: 1, index: 2},
+		sine: 		{rep: 'sin', max: 1,  min: 1, index: 3},
+		cosine: 	{rep: 'cos', max: 1,  min: 1, index: 4},
+		absolute: {rep: 'abs', max: 1,  min: 1, index: 5},
+		average: 	{rep: 'ave', max: 20, min: 2, index: 6},
+		sign: 		{rep: 'sign',max: 1,  min: 1, index: 7},
+		wrap: 		{rep: 'wrap',max: 1,  min: 1, index: 8},
+		rgb: 			{rep: 'rgb', max: 3,  min: 3, index: 9}
+	}
+
+	var values = {
+		x: 				{rep: 'x', 	 max: 20, min: 2, color: 'gray', 	index: 0},
+		y: 				{rep: 'y', 	 max: 20, min: 2, color: 'gray', 	index: 1},
+		second: 	{rep: 't.s', max: 1,  min: 1, color: 'gold', 	index: 2},
+		minute:		{rep: 't.m', max: 1,  min: 1, color: 'gold', 	index: 3},
+		hour: 		{rep: 't.h', max: 1,  min: 1,	color: 'gold', 	index: 4},
+		day: 			{rep: 't.d', max: 1,  min: 1, color: 'gold', 	index: 5},
+		constant:	{rep: '', 	 max: 20, min: 2, color: 'purple',index: 6},
+	}
+	</script>
+	<style>
+	body {
+		margin: 0px;
+		padding: 0px;
+	} 
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+	</script>
+	<script defer="defer">
+
+	var makeFunctionGroup = function(funName, x, y) {
+		var minOut = functions[funName].min;
+		var newGroup = new Kinetic.Group({
+			name: funName,
+
+			numOutlets: 0,
+			numInputs: 0,
+
+		});
+		var newRect = new Kinetic.Rect({
+
+		});
+		newGroup.add(newRect);
+		var newText = new Kinetic.Text({
+			text: functions[funName].rep;
+		});
+		newGroup.add(newText);
+		var outlets = [];
+		for (var i = 0; i < minOut; i++) {
+			outlets[i] = new Kinetic.Shape({
+
+			});
+			newGroup.add(outlets[i]);
+		}
+		return newGroup;
+	}
+
+	var makeValueGroup = function(valName, x, y) {
+
+		return newGroup;
+	}
+
+	var addOutlet = function(funGroup) {
+
+	}
+
+	</script>
+</body>
+<html>
