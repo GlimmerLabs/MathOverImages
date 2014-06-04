@@ -1,0 +1,6 @@
+Save images as animated GIF to local computer (otherwise, offer PNG)
+
+Find some way to export the function as a string of text and parse it over
+the same image.
+ - save it to the server, and take the input to be able to recreate the
+ automatic animation 
