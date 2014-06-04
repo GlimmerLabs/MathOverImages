@@ -96,7 +96,7 @@
     return functionGroup;
   }
 
-  var makeOutlet = function(funct) {
+  var makeOutlet = function(functGroup) {
     var bezPoint = width/50;
     var outlet = new Kinetic.Shape({
       sceneFunc: function(context) {
@@ -106,15 +106,15 @@
         context.closePath();
         context.fillStrokeShape(this);
       },
-      name: 'outlet' + funct.attrs.numOutlets,
-      x:functionBox.x()+width/225,
-      y:functionBox.y() + funct.attrs.numOutlets*((width / 20 -10) / 3 )+width/180,
+      name: 'outlet' + functGroup.attrs.numOutlets,
+      x:functGroup.children[0].x()+ width/225,
+      y:functGroup.children[0].y() + functGroup.attrs.numOutlets*((width / 20 -10) / 3 )+width/180,
       fill: '#FFC440',
       stroke: 'black',
       strokeWidth: 1
     });
-    funct.add(outlet)
-    funct.attrs.numOutlets++
+   
+    return outlet;
   };
 
   var makeValueUnit = function(valName, xval, yval, index) {
@@ -182,6 +182,8 @@
         shape.y(), 
         tempName.charAt(3), 
         funInputs[tempName.charAt(3)]);
+      var newOutlet = makeOutlet(newGroup);
+      newGroup.add(newOutlet);
     } else if (tempName.substring(0, 3) === 'val') {
       var newGroup = makeValueUnit(tempName.substring(4),
         shape.x(),
