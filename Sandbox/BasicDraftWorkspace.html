@@ -52,9 +52,31 @@
 		height: height
 	});
 
+
+	// LAYERS
 	var layer = new Kinetic.Layer();
 	stage.add(layer);
 
+
+
+	// CONSTRUCTORS
+
+/*
+	Function nodes and Value nodes are groups of objects. Members of groups can
+	be accessed through the array 'group'.children[].
+	Children are stored in the following order:
+	0. Underlying Shape
+	1. Text
+	2+. Outlet nodes (only for functions)
+	TODO: add render boxes in bottom-righthand corner, before Outlets
+	*/
+
+
+/* 
+	makeFunctionGroup takes a string funName, a key in the functions object above,
+	an integer x, and an integer y, and returns the corresponding function node object,
+	with top right corner at the given x,y coordinate.
+	*/
 	var makeFunctionGroup = function(funName, x, y) {
 		var minOutlets = functions[funName].min;
 		var newGroup = new Kinetic.Group({
@@ -64,7 +86,9 @@
 			numOutlets: 0,
 			numInputs: 0,
 			maxInputs: functions[funName].max,
-			lineOut: []
+			lineOut: [],
+			funct: null,
+			index: functions[funName].index
 		});
 
 		var newRect = new Kinetic.Rect({
@@ -97,28 +121,66 @@
 			outlets[i] = makeOutlet(newGroup);
 			newGroup.add(outlets[i]);
 		}
-		console.log(newGroup);
 		return newGroup;
 	};
 
+
+/*
+	makeValueGroup takes a string valName, the name of a key in the values object above,
+	an integer x, and an integer y, and returns the corresponding function node object,
+	centered at (x + width / 40, y + width / 40).
+	*/
 	var makeValueGroup = function(valName, x, y) {
-		// STUB
+		var newGroup = new Kinetic.Group({
+			name: valName,
+			x: x,
+			y: y,
+			lineOut: [],
+			index: values[valName].index
+		});
+		var newRect = new Kinetic.Rect({
+			x: width / 40,
+			y: 0,
+			width: width / 28.3,
+			height: width / 28.3,
+			fill: values[valName].color,
+			rotation: 45,
+			name: valName
+		});
+		newGroup.add(newRect);
+		var newText = new Kinetic.Text({
+			text: valName,
+			fontFamily: 'OpenSans',
+			fill: 'black',
+			fontSize: 16,
+			x: 0,
+			y: width / 56,
+			width: width / 20,
+			align: 'center'
+		});
+		newGroup.add(newText);
 		return newGroup;
 	};
 
+/*
+	makeOutlet takes a function node object, functGroup, and returns an outlet node object 
+	to be added to that group, and increments numOutlets for that group.
+	It DOES NOT add the outlet to the group.
+	*/
 	var makeOutlet = function(functGroup) {
 		var bezPoint = width / 50;
 		var outlet = new Kinetic.Shape({
 			sceneFunc: function(context) {
 				context.beginPath();
 				context.moveTo(0, 0);
-				context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
+				context.bezierCurveTo(-bezPoint, -bezPoint, -bezPoint, bezPoint, 0, 0);
 				context.closePath();
 				context.fillStrokeShape(this);
 			},
 			name: 'outlet' + functGroup.attrs.numOutlets,
 			x:functGroup.children[0].x()+ width/225,
-			y:functGroup.children[0].y() + functGroup.attrs.numOutlets*((width/20 - 10) / 3 ) + width/180,
+			y:functGroup.children[0].y() + functGroup.attrs.numOutlets *
+			((width/20 - 10) / 3) + width/180,
 			fill: '#FFC440',
 			stroke: 'black',
 			strokeWidth: 1,
@@ -128,11 +190,36 @@
 		return outlet;
 	};
 
+/*
+	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
+	*/
 	var addOutlet = function(funGroup) {
-		// STUB
+		if(funGroup.attrs.numOutlets < funGroup.)
+		if(funGroup.attrs.numOutlets > 2) {
+			funGroup.children[0].setAttr('height',
+				funGroup.children[0].attrs.height + width / 60 - 3.3);
+			funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + width / 120 - 1.67);
+
+		}
+		var newOutlet = makeOutlet(funGroup);
+		funGroup.add(newOutlet);
+		stage.draw();
 	};
 
 
+
+
+	stage.on('contentDblclick', function() {
+		var newFunct = makeFunctionGroup('add', stage.getPointerPosition().x,
+			stage.getPointerPosition().y);
+		layer.add(newFunct);
+		layer.draw();
+	});
+
+	layer.on('click', function(evt) {
+		var parent = evt.target.getParent();
+		addOutlet(parent);
+	});
 
 	</script>
 </body>
