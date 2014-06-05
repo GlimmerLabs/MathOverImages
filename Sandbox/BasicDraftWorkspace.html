@@ -5,6 +5,7 @@
 	var width = 900;
 	var height = 2 * width / 3;
 
+	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 	var functions = {
 		add: 			{rep: '+', 	 max: 20, min: 2, index: 0},
 		multiply: {rep: '*', 	 max: 20, min: 2, index: 1},
@@ -18,6 +19,7 @@
 		rgb: 			{rep: 'rgb', max: 3,  min: 3, index: 9}
 	}
 
+	var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 	var values = {
 		x: 				{rep: 'x', 	 max: 20, min: 2, color: 'gray', 	index: 0},
 		y: 				{rep: 'y', 	 max: 20, min: 2, color: 'gray', 	index: 1},
@@ -34,7 +36,7 @@
 	var functionHalfStrokeWidth = functionStrokeWidth / 2;
 	var functionTotalSideLength = width / 20;
 	var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
-	var functionColor = '#b6d7a8';
+	var functionColor = '#508C37';
 
 	var valueSideLength = width / 28.3;
 	var valueXYColor = 'gray'
@@ -52,7 +54,12 @@
 
 	var lineStrokeWidth = 2;
 
-	var menuHeight = height / 6; 
+	var menuHeight = width / 9; 
+	var menuXSpacing = width * 13/180;
+	var menuYspacing = width * 11/360;
+	var buttonWidth = width / 10;
+	var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + width / 5 - functionTotalSideLength / 2;
+	var menuValuesXStart = width / 5 + buttonWidth / 2;
 
 	</script>
 
@@ -85,15 +92,16 @@
 	var borderLayer = new Kinetic.Layer();
   var lineLayer = new Kinetic.Layer();
   var menuLayer = new Kinetic.Layer();
+  var menuButtonLayer = new Kinetic.Layer();
   var workLayer = new Kinetic.Layer();
   var dragLayer = new Kinetic.Layer();
 
   stage.add(lineLayer);
   stage.add(menuLayer);
+  stage.add(menuButtonLayer);
   stage.add(workLayer);
   stage.add(borderLayer);
   stage.add(dragLayer);
-	stage.add(layer);
 
 
 
@@ -191,8 +199,8 @@
 			rotation: 45,
 			name: valName
 		});
-
 		newGroup.add(newRect);
+
 		var newText = new Kinetic.Text({
 			text: valName,
 			fontFamily: 'OpenSans',
@@ -285,23 +293,104 @@
 //SETUP STAGE
 
 /* create and add menu border */
-var menuBorder = new Kinetic.Line({
-    points: [0, menuHeight,
-    width, menuHeight],
-    stroke: 'black',
-    strokeWidth: 4
-  });
-  borderLayer.add(menuBorder);
-  borderLayer.draw();	
+var borderLine = new Kinetic.Line({
+	points: [0, menuHeight, width, menuHeight],
+	stroke: 'black',
+	strokeWidth: 2
+});
 
+borderLayer.add(borderLine);
+borderLayer.draw();
+
+/* create and add sliding menu buttons */
+var valuesButton = new Kinetic.Group({
+	x: width / 5
+});
+menuButtonLayer.add(valuesButton);
+
+var valuesButtonBox = new Kinetic.Rect({
+	x:0,
+	y:0,
+	width: buttonWidth,
+	height: menuHeight,
+	fill: 'lavender',
+	stroke: 'black',
+	strokeWidth: 2
+});
+valuesButton.add(valuesButtonBox);
+
+var valuesButtonRect = new Kinetic.Rect({
+	x: buttonWidth / 2,
+	y: menuHeight / 4,
+	width: valueSideLength,
+	height: valueSideLength,
+	fill: 'purple',
+	rotation: 45,
+});
+valuesButton.add(valuesButtonRect);
+
+var valuesButtonText = new Kinetic.Text({
+	text: 'add a value',
+	x: 0,
+	y: menuHeight / 2 + menuHeight / 4,
+	width: buttonWidth,
+	height: menuHeight / 4,
+	fill: 'black',
+	align: 'center'
+});
+valuesButton.add(valuesButtonText);
+
+var functionsButton = new Kinetic.Group({
+	x: width / 5 + buttonWidth
+});
+menuButtonLayer.add(functionsButton);
+
+var functionsButtonBox = new Kinetic.Rect({
+	x:0,
+	y:0,
+	width: buttonWidth,
+	height: menuHeight,
+	fill: '#D7EBCF',
+	stroke: 'black',
+	strokeWidth: 2
+});
+functionsButton.add(functionsButtonBox);
+
+var functionsButtonRect = new Kinetic.Rect({
+	x: buttonWidth / 2 - functionRectSideLength / 2,
+	y: menuHeight / 4,
+	width: functionRectSideLength,
+	height: functionRectSideLength,
+	fill: functionColor,
+	lineJoin: 'round',
+	stroke: functionColor,
+	strokeWidth: functionStrokeWidth
+});
+functionsButton.add(functionsButtonRect);
+
+var functionsButtonText = new Kinetic.Text({
+	text: 'add a function',
+	x: 0,
+	y: menuHeight / 2 + menuHeight / 4,
+	width: buttonWidth,
+	height: menuHeight / 4,
+	fill: 'black',
+	align: 'center'
+});
+functionsButton.add(functionsButtonText);
+
+menuButtonLayer.draw();
+var menuFunctions = [];
 /* add functions to menu */
-for (var i = 0; i < functions.length; i++) {
-	makeFunctionGroup()
+for (var i = 0; i < funNames.length; i++) {
+	menuFunctions[i] = makeFunctionGroup(funNames[i], menuFunctsXStart, menuYspacing);
+	menuLayer.add(menuFunctions[i]);
 }
 
+stage.draw();
 
 
 
-	</script>
+</script>
 </body>
 <html>
