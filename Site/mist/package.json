@@ -1,0 +1,16 @@
+{
+    "name":"mist",
+    "description":"Functional Imaging with an Online Interface",
+    "main":"server.js",
+    "dependencies": {
+	"express" : "~4.2.0",
+	"passport": "~0.1.17",
+	"passport-local":"~1.0.0",
+	"passport-facebook":"~1.0.3",
+	"passport-twitter":"~1.0.2",
+	"passport-google-oauth":"~0.1.5",
+	"connect-flash": "~0.1.1",
+	"bcrypt-nodejs": "latest",
+	"mysql":"~2.3.2"
+	}
+}
