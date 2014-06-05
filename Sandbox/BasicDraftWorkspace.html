@@ -57,11 +57,12 @@
 	var menuHeight = width / 9; 
 	var menuCornerWidth = width / 5;
 	var valMenuXSpacing = width / 32;
+	var functMenuXSpacing = width / 68;
 	var menuYspacing = width * 11/360;
 	var buttonWidth = width / 10;
 	var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
+	var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
 	var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
-	var menuEasing = Kinetic.Easings.StrongEaseOut;
 	var menuAnimDuration = 1;
 
 	</script>
@@ -406,6 +407,65 @@ stage.draw();
 var valueExpanded = false;
 var functionExpanded = false;
 
+// Make Tween Functions
+var menuEasing = Kinetic.Easings.StrongEaseOut;
+var makeMenuTween = function(target, xEnd, visibility) {
+	return new Kinetic.Tween({
+		node: target,
+		duration: menuAnimDuration,
+		x: xEnd,
+		visible: visibility,
+		easing: menuEasing
+	});
+};
+
+// Move item functions
+var moveValueNodesIn = function() {
+	for (var i = 0; i < menuValues.length; i++) {
+		var moveValue = makeMenuTween(menuValues[i], menuValuesXStart, false);
+		moveValue.play();
+	}
+};
+
+var expandValueNodes = function() {
+	for (var i = 0; i < menuValues.length; i++) {
+		var moveValue = makeMenuTween(menuValues[i], menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength), true);
+		moveValue.play();
+	}
+};
+
+var moveFunctionNodesIn = function() {
+	for (var i = 0; i < menuFunctions.length; i++) {
+		var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXStart, false);
+		moveFunction.play();
+	}
+};
+
+var moveFunctionNodesRight = function() {
+	for (var i = 0; i < menuFunctions.length; i++) {
+		var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXEnd, false);
+		moveFunction.play();
+	}
+};
+
+var expandFunctionNodes = function() {
+	for (var i = 0; i < menuFunctions.length; i++) {
+		var moveFunction = makeMenuTween(menuFunctions[i], menuCornerWidth + 2 * buttonWidth + functMenuXSpacing + i * (functMenuXSpacing + functionTotalSideLength), true)
+		moveFunction.play();
+	}
+}
+
+var moveFunctionsButtonRight = function() {
+	var moveButton = makeMenuTween(functionsButton, width - buttonWidth, true)
+	moveButton.play();
+};
+
+var moveFunctionsButtonLeft = function() {
+	var moveButton = makeMenuTween(functionsButton, menuCornerWidth + buttonWidth, true)
+	moveButton.play();
+};
+
+
 /*
 1. Neither values or functions are expanded.
 	- move functionsButton right.
@@ -421,98 +481,60 @@ var functionExpanded = false;
 		console.log(valueExpanded);
 		if (!valueExpanded) {
 			if (!functionExpanded) {
-				var moveFunctionsButton = new Kinetic.Tween({
-					node: functionsButton,
-					duration: menuAnimDuration,
-					x: width - buttonWidth,
-					easing: menuEasing
-				});
-				moveFunctionsButton.play();
-				for (var i = 0; i < menuFunctions.length; i++) {
-					var moveFunction = new Kinetic.Tween({
-						node: menuFunctions[i],
-						duration: menuAnimDuration,
-						x: width - buttonWidth + functionRectSideLength / 2,
-						easing: menuEasing
-					});
-					moveFunction.play();
-				}
-				for (var i = 0; i < menuValues.length; i++) {
-					var moveValue = new Kinetic.Tween({
-						node: menuValues[i],
-						duration: menuAnimDuration,
-						x: menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength),
-						visible: true,
-						easing: menuEasing	
-					});
-					moveValue.play();
-				}
+				moveFunctionsButtonRight();
+				moveFunctionNodesRight();
+				expandValueNodes();
+
 				valueExpanded = true;
 			} // if functions are also not expanded
 			else {
-				var moveFunctionsButton = new Kinetic.Tween({
-					node: functionsButton,
-					duration: menuAnimDuration,
-					x: menuCornerWidth + buttonWidth,
-					easing: menuEasing
-				});
-				moveFunctionsButton.play();
-				for (var i = 0; i < menuFunctions.length; i++){
-					var moveFunction = new Kinetic.Tween({
-						node: menuFunctions[i],
-						duration: menuAnimDuration,
-						x: width - buttonWidth + functionRectSideLength / 2,
-						easing: menuEasing,
-						visible: false
-					});
-					moveFunction.play();
-				}
-				for (var i = 0; i < menuValues.length; i++) {
-					var moveValue = new Kinetic.Tween({
-						node: menuValues[i],
-						duration: menuAnimDuration,
-						x: menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength),
-						visible: true,
-						easing: menuEasing	
-					});
-					moveValue.play();
-				}
+				moveFunctionsButtonRight();
+				moveFunctionNodesRight();
+				expandValueNodes();
+				
 				valueExpanded = true;
 			} // else functions were already expanded
 		} // if values are not expanded
 		else {
-			for (var i = 0; i < menuValues.length; i++) {
-					var moveValue = new Kinetic.Tween({
-						node: menuValues[i],
-						duration: menuAnimDuration,
-						x: menuValuesXStart,
-						visible: false,
-						easing: menuEasing	
-					});
-					moveValue.play();
-				}
-				for (var i = 0; i < menuFunctions.length; i++){
-					var moveFunction = new Kinetic.Tween({
-						node: menuFunctions[i],
-						duration: menuAnimDuration,
-						x: menuFunctsXStart,
-						easing: menuEasing,
-						visible: false
-					});
-					moveFunction.play();
-				}
-				var moveFunctionsButton = new Kinetic.Tween({
-					node: functionsButton,
-					duration: menuAnimDuration,
-					x: menuCornerWidth + buttonWidth,
-					easing: menuEasing
-				});
-				moveFunctionsButton.play();
-				valueExpanded = false;
+			moveValueNodesIn();
+			moveFunctionNodesIn();	
+			moveFunctionsButtonLeft();
+
+			valueExpanded = false;
 		} // else values were already expanded
-		});
+	});
+/*
+1. Neither functions or values are expanded.
+	- expand functions
+2. Functions are not expanded, values are expanded.
+	- collapse values
+	- move functionsButton left
+	- expand functions
+3. Functions are expanded, values are not.
+	- collapse functions 
+	*/
+	functionsButton.on('click', function(){
+		if (!functionExpanded) {
+			if (!valueExpanded) {
+				expandFunctionNodes();
 
+				functionExpanded = true;
+			} // functions and values not expanded
+			else {
+				moveValueNodesIn();
+				moveFunctionsButtonLeft();
+				expandFunctionNodes();
 
-	</script>
+				functionExpanded = true;
+			} // functions not expanded, values expanded
+		}
+		else {
+			moveFunctionNodesIn();
+			
+			functionExpanded = false;
+		} // functions are expanded
+	});
+
+</script>
 </body>
 <html>
