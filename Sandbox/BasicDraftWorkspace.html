@@ -30,7 +30,7 @@
 		constant:	{rep: '', 	 max: 20, min: 2, color: 'purple',index: 6},
 	}
 	</script>
-		<script>
+	<script>
 	/*Global variables for size and colors*/
 	var functionStrokeWidth = width / 90;
 	var functionHalfStrokeWidth = functionStrokeWidth / 2;
@@ -38,7 +38,7 @@
 	var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
 	var functionColor = '#508C37';
 
-	var valueSideLength = width / 28.3;
+	var valueSideLength = functionTotalSideLength / 1.414;
 	var valueXYColor = 'gray'
 	var valueTimeColor = 'gold'
 	var valueConstantColor = 'purple'
@@ -55,11 +55,14 @@
 	var lineStrokeWidth = 2;
 
 	var menuHeight = width / 9; 
-	var menuXSpacing = width * 13/180;
+	var menuCornerWidth = width / 5;
+	var valMenuXSpacing = width / 32;
 	var menuYspacing = width * 11/360;
 	var buttonWidth = width / 10;
-	var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + width / 5 - functionTotalSideLength / 2;
-	var menuValuesXStart = width / 5 + buttonWidth / 2;
+	var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
+	var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
+	var menuEasing = Kinetic.Easings.StrongEaseOut;
+	var menuAnimDuration = 1;
 
 	</script>
 
@@ -90,18 +93,18 @@
 
 	// LAYERS
 	var borderLayer = new Kinetic.Layer();
-  var lineLayer = new Kinetic.Layer();
-  var menuLayer = new Kinetic.Layer();
-  var menuButtonLayer = new Kinetic.Layer();
-  var workLayer = new Kinetic.Layer();
-  var dragLayer = new Kinetic.Layer();
+	var lineLayer = new Kinetic.Layer();
+	var menuLayer = new Kinetic.Layer();
+	var menuButtonLayer = new Kinetic.Layer();
+	var workLayer = new Kinetic.Layer();
+	var dragLayer = new Kinetic.Layer();
 
-  stage.add(lineLayer);
-  stage.add(menuLayer);
-  stage.add(menuButtonLayer);
-  stage.add(workLayer);
-  stage.add(borderLayer);
-  stage.add(dragLayer);
+	stage.add(lineLayer);
+	stage.add(menuLayer);
+	stage.add(menuButtonLayer);
+	stage.add(workLayer);
+	stage.add(borderLayer);
+	stage.add(dragLayer);
 
 
 
@@ -132,7 +135,8 @@
 			maxInputs: functions[funName].max,
 			lineOut: [],
 			funct: null,
-			index: functions[funName].index
+			index: functions[funName].index,
+			visible: false
 		});
 
 		var newRect = new Kinetic.Rect({
@@ -187,7 +191,8 @@
 			x: x,
 			y: y,
 			lineOut: [],
-			index: values[valName].index
+			index: values[valName].index,
+			visible: false
 		});
 
 		var newRect = new Kinetic.Rect({
@@ -202,7 +207,7 @@
 		newGroup.add(newRect);
 
 		var newText = new Kinetic.Text({
-			text: valName,
+			text: values[valName].rep,
 			fontFamily: 'OpenSans',
 			fill: 'black',
 			fontSize: 16,
@@ -304,7 +309,7 @@ borderLayer.draw();
 
 /* create and add sliding menu buttons */
 var valuesButton = new Kinetic.Group({
-	x: width / 5
+	x: menuCornerWidth
 });
 menuButtonLayer.add(valuesButton);
 
@@ -341,7 +346,7 @@ var valuesButtonText = new Kinetic.Text({
 valuesButton.add(valuesButtonText);
 
 var functionsButton = new Kinetic.Group({
-	x: width / 5 + buttonWidth
+	x: menuCornerWidth + buttonWidth
 });
 menuButtonLayer.add(functionsButton);
 
@@ -378,19 +383,136 @@ var functionsButtonText = new Kinetic.Text({
 	align: 'center'
 });
 functionsButton.add(functionsButtonText);
-
 menuButtonLayer.draw();
-var menuFunctions = [];
+
 /* add functions to menu */
+var menuFunctions = [];
 for (var i = 0; i < funNames.length; i++) {
 	menuFunctions[i] = makeFunctionGroup(funNames[i], menuFunctsXStart, menuYspacing);
 	menuLayer.add(menuFunctions[i]);
 }
 
+/* add values to menu */
+var menuValues = [];
+for (var i = 0; i < valNames.length; i++) {
+	menuValues[i] = makeValueGroup(valNames[i], menuValuesXStart, menuYspacing);
+	menuLayer.add(menuValues[i]);
+}
+
 stage.draw();
 
+//MENU ANIMATIONS
+
+var valueExpanded = false;
+var functionExpanded = false;
+
+/*
+1. Neither values or functions are expanded.
+	- move functionsButton right.
+	- expand values
+2. Values are not expanded, functions are expanded.
+	- collapse functions to the right and move functionsButon
+	- expand values
+3. Values are expanded, functions are not.
+	- collapse values
+	- move functionsButton left. 
+	*/
+	valuesButton.on('click', function(){
+		console.log(valueExpanded);
+		if (!valueExpanded) {
+			if (!functionExpanded) {
+				var moveFunctionsButton = new Kinetic.Tween({
+					node: functionsButton,
+					duration: menuAnimDuration,
+					x: width - buttonWidth,
+					easing: menuEasing
+				});
+				moveFunctionsButton.play();
+				for (var i = 0; i < menuFunctions.length; i++) {
+					var moveFunction = new Kinetic.Tween({
+						node: menuFunctions[i],
+						duration: menuAnimDuration,
+						x: width - buttonWidth + functionRectSideLength / 2,
+						easing: menuEasing
+					});
+					moveFunction.play();
+				}
+				for (var i = 0; i < menuValues.length; i++) {
+					var moveValue = new Kinetic.Tween({
+						node: menuValues[i],
+						duration: menuAnimDuration,
+						x: menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength),
+						visible: true,
+						easing: menuEasing	
+					});
+					moveValue.play();
+				}
+				valueExpanded = true;
+			} // if functions are also not expanded
+			else {
+				var moveFunctionsButton = new Kinetic.Tween({
+					node: functionsButton,
+					duration: menuAnimDuration,
+					x: menuCornerWidth + buttonWidth,
+					easing: menuEasing
+				});
+				moveFunctionsButton.play();
+				for (var i = 0; i < menuFunctions.length; i++){
+					var moveFunction = new Kinetic.Tween({
+						node: menuFunctions[i],
+						duration: menuAnimDuration,
+						x: width - buttonWidth + functionRectSideLength / 2,
+						easing: menuEasing,
+						visible: false
+					});
+					moveFunction.play();
+				}
+				for (var i = 0; i < menuValues.length; i++) {
+					var moveValue = new Kinetic.Tween({
+						node: menuValues[i],
+						duration: menuAnimDuration,
+						x: menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength),
+						visible: true,
+						easing: menuEasing	
+					});
+					moveValue.play();
+				}
+				valueExpanded = true;
+			} // else functions were already expanded
+		} // if values are not expanded
+		else {
+			for (var i = 0; i < menuValues.length; i++) {
+					var moveValue = new Kinetic.Tween({
+						node: menuValues[i],
+						duration: menuAnimDuration,
+						x: menuValuesXStart,
+						visible: false,
+						easing: menuEasing	
+					});
+					moveValue.play();
+				}
+				for (var i = 0; i < menuFunctions.length; i++){
+					var moveFunction = new Kinetic.Tween({
+						node: menuFunctions[i],
+						duration: menuAnimDuration,
+						x: menuFunctsXStart,
+						easing: menuEasing,
+						visible: false
+					});
+					moveFunction.play();
+				}
+				var moveFunctionsButton = new Kinetic.Tween({
+					node: functionsButton,
+					duration: menuAnimDuration,
+					x: menuCornerWidth + buttonWidth,
+					easing: menuEasing
+				});
+				moveFunctionsButton.play();
+				valueExpanded = false;
+		} // else values were already expanded
+		});
 
 
-</script>
+	</script>
 </body>
 <html>
