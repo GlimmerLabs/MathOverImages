@@ -5,6 +5,7 @@
 	var width = 900;
 	var height = 2 * width / 3;
 
+	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 	var functions = {
 		add: 			{rep: '+', 	 max: 20, min: 2, index: 0},
 		multiply: {rep: '*', 	 max: 20, min: 2, index: 1},
@@ -18,6 +19,7 @@
 		rgb: 			{rep: 'rgb', max: 3,  min: 3, index: 9}
 	}
 
+	var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 	var values = {
 		x: 				{rep: 'x', 	 max: 20, min: 2, color: 'gray', 	index: 0},
 		y: 				{rep: 'y', 	 max: 20, min: 2, color: 'gray', 	index: 1},
@@ -28,6 +30,42 @@
 		constant:	{rep: '', 	 max: 20, min: 2, color: 'purple',index: 6},
 	}
 	</script>
+	<script>
+	/*Global variables for size and colors*/
+	var functionStrokeWidth = width / 90;
+	var functionHalfStrokeWidth = functionStrokeWidth / 2;
+	var functionTotalSideLength = width / 20;
+	var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
+	var functionColor = '#508C37';
+
+	var valueSideLength = functionTotalSideLength / 1.414;
+	var valueXYColor = 'gray'
+	var valueTimeColor = 'gold'
+	var valueConstantColor = 'purple'
+
+	var imageBoxSideLength = width / 80;
+	var imageBoxColor = 'white'
+	var functionImageBoxOffset = width / 300;
+	var valueImageBoxOffset = width / 30;
+
+	var outletXOffset = width / 255;
+	var outletYOffset = functionRectSideLength / 3;
+	var outletColor =  '#FFC440';
+
+	var lineStrokeWidth = 2;
+
+	var menuHeight = width / 9; 
+	var menuCornerWidth = width / 5;
+	var valMenuXSpacing = width / 32;
+	var menuYspacing = width * 11/360;
+	var buttonWidth = width / 10;
+	var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
+	var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
+	var menuEasing = Kinetic.Easings.StrongEaseOut;
+	var menuAnimDuration = 1;
+
+	</script>
+
 	<style>
 	body {
 		margin: 0px;
@@ -54,8 +92,19 @@
 
 
 	// LAYERS
-	var layer = new Kinetic.Layer();
-	stage.add(layer);
+	var borderLayer = new Kinetic.Layer();
+	var lineLayer = new Kinetic.Layer();
+	var menuLayer = new Kinetic.Layer();
+	var menuButtonLayer = new Kinetic.Layer();
+	var workLayer = new Kinetic.Layer();
+	var dragLayer = new Kinetic.Layer();
+
+	stage.add(lineLayer);
+	stage.add(menuLayer);
+	stage.add(menuButtonLayer);
+	stage.add(workLayer);
+	stage.add(borderLayer);
+	stage.add(dragLayer);
 
 
 
@@ -78,29 +127,28 @@
 	with top right corner at the given x,y coordinate.
 	*/
 	var makeFunctionGroup = function(funName, x, y) {
-		var minOutlets = functions[funName].min;
 		var newGroup = new Kinetic.Group({
 			name: funName,
-			x: x - width / 180,
+			x: x - functionHalfStrokeWidth,
 			y: y,
-			numOutlets: 0,
 			numInputs: 0,
 			maxInputs: functions[funName].max,
 			lineOut: [],
 			funct: null,
-			index: functions[funName].index
+			index: functions[funName].index,
+			visible: false
 		});
 
 		var newRect = new Kinetic.Rect({
 			name: funName,
-			x: width / 180,
-			y: width / 180,
-			width: width / 20 - width / 90,
-			height: width / 20 - width / 90,
-			fill: '#b6d7a8',
+			x: functionHalfStrokeWidth,
+			y: functionHalfStrokeWidth,
+			width: functionRectSideLength,
+			height: functionRectSideLength,
+			fill: functionColor,
 			lineJoin: 'round',
-			stroke: '#b6d7a8',
-			strokeWidth: width / 90
+			stroke: functionColor,
+			strokeWidth: functionStrokeWidth
 		});
 		newGroup.add(newRect);
 
@@ -110,28 +158,24 @@
 			fill: 'black',
 			fontSize: 16,
 			x: 0,
-			y: width / 40 - width / 180,
-			width: width / 20,
+			y: functionTotalSideLength/2 - functionHalfStrokeWidth,
+			width: functionTotalSideLength,
 			align: 'center'
 		});
 		newGroup.add(newText);
 
 		var newBox = new Kinetic.Rect({
-			x: functionBox.width() + 3,
-			y: functionBox.height() + 3,
-			width: width / 80,
-			height: width / 80,
-			fill: 'white',
+			x: functionRectSideLength + functionImageBoxOffset,
+			y: functionRectSideLength + functionImageBoxOffset,
+			width: imageBoxSideLength,
+			height: imageBoxSideLength,
+			fill: imageBoxColor,
 			stroke: 'black',
-			strokeWidth: .5
+			strokeWidth: .5,
+			visible: false
 		});
 		newGroup.add(newBox);
 
-		var outlets = [];
-		for (var i = 0; i < minOutlets; i++) {
-			outlets[i] = makeOutlet(newGroup);
-			newGroup.add(outlets[i]);
-		}
 		return newGroup;
 	};
 
@@ -147,37 +191,42 @@
 			x: x,
 			y: y,
 			lineOut: [],
-			index: values[valName].index
+			index: values[valName].index,
+			visible: false
 		});
+
 		var newRect = new Kinetic.Rect({
-			x: width / 40,
+			x: functionRectSideLength/2,
 			y: 0,
-			width: width / 28.3,
-			height: width / 28.3,
+			width: valueSideLength,
+			height: valueSideLength,
 			fill: values[valName].color,
 			rotation: 45,
 			name: valName
 		});
 		newGroup.add(newRect);
+
 		var newText = new Kinetic.Text({
-			text: valName,
+			text: values[valName].rep,
 			fontFamily: 'OpenSans',
 			fill: 'black',
 			fontSize: 16,
 			x: 0,
-			y: width / 56,
-			width: width / 20,
+			y: valueSideLength/2,
+			width: functionRectSideLength,
 			align: 'center'
 		});
 		newGroup.add(newText);
+
 		var newBox = new Kinetic.Rect({
-			x: width / 30,
-			y: width / 30,
-			width: width / 80,
-			height: width / 80,
-			fill: 'white',
+			x: valueImageBoxOffset,
+			y: valueImageBoxOffset,
+			width: imageBoxSideLength,
+			height: imageBoxSideLength,
+			fill: imageBoxColor,
 			stroke: 'black',
-			strokeWidth: .5
+			strokeWidth: .5,
+			visible: false
 		});
 		newGroup.add(newBox);
 		return newGroup;
@@ -185,7 +234,7 @@
 
 /*
 	makeOutlet takes a function node object, functGroup, and returns an outlet node object 
-	to be added to that group, and increments numOutlets for that group.
+	to be added to that group.
 	It DOES NOT add the outlet to the group.
 	*/
 	var makeOutlet = function(functGroup) {
@@ -198,29 +247,27 @@
 				context.closePath();
 				context.fillStrokeShape(this);
 			},
-			name: 'outlet' + functGroup.attrs.numOutlets,
-			x:functGroup.children[0].x()+ width/225,
-			y:functGroup.children[0].y() + functGroup.attrs.numOutlets *
-			((width/20 - 10) / 3) + width/180,
+			name: 'outlet' + functGroup.children.length - 3,
+			x:functGroup.children[0].x()+ outletXOffset,
+			y:functGroup.children[0].y() + functGroup.children.length - 3 * outletYOffset + functionHalfStrokeWidth,
 			fill: '#FFC440',
 			stroke: 'black',
 			strokeWidth: 1,
 			lineIn: null
 		});
-		functGroup.attrs.numOutlets++;
 		return outlet;
 	};
 
 	var makeLine = function(source) {
 		var newLine = new Kinetic.Line({
 			points: [
-			source.x() + width / 20 - 3,
-			source.y() + width / 40,
+			source.x() + functionRectSideLength - 3,
+			source.y() + functionSideLength / 2,
 			source.x() + width / 20,
 			source.y() + width / 40,
 			],
 			stroke: 'black',
-			strokeWidth: 2,
+			strokeWidth: lineStrokeWidth,
 			source: source,
 			outlet: null
 		});
@@ -235,11 +282,11 @@
 	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
 	*/
 	var addOutlet = function(funGroup) {
-		if(funGroup.attrs.numOutlets < funGroup.attrs.maxInputs) {
-			if(funGroup.attrs.numOutlets > 2) {
+		if(funGroup.children.length - 3 < funGroup.attrs.maxInputs) {
+			if(funGroup.children.length - 3 > 2) {
 				funGroup.children[0].setAttr('height',
-					funGroup.children[0].attrs.height + width / 60 - 3.3);
-				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + width / 120 - 1.67);
+					funGroup.children[0].attrs.height + outletYOffset);
+				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
 
 			}
 			var newOutlet = makeOutlet(funGroup);
@@ -248,20 +295,223 @@
 		}
 	};
 
+//SETUP STAGE
 
+/* create and add menu border */
+var borderLine = new Kinetic.Line({
+	points: [0, menuHeight, width, menuHeight],
+	stroke: 'black',
+	strokeWidth: 2
+});
 
+borderLayer.add(borderLine);
+borderLayer.draw();
 
-	stage.on('contentDblclick', function() {
-		var newFunct = makeFunctionGroup('add', stage.getPointerPosition().x,
-			stage.getPointerPosition().y);
-		layer.add(newFunct);
-		layer.draw();
-	});
+/* create and add sliding menu buttons */
+var valuesButton = new Kinetic.Group({
+	x: menuCornerWidth
+});
+menuButtonLayer.add(valuesButton);
 
-	layer.on('click', function(evt) {
-		var parent = evt.target.getParent();
-		addOutlet(parent);
-	});
+var valuesButtonBox = new Kinetic.Rect({
+	x:0,
+	y:0,
+	width: buttonWidth,
+	height: menuHeight,
+	fill: 'lavender',
+	stroke: 'black',
+	strokeWidth: 2
+});
+valuesButton.add(valuesButtonBox);
+
+var valuesButtonRect = new Kinetic.Rect({
+	x: buttonWidth / 2,
+	y: menuHeight / 4,
+	width: valueSideLength,
+	height: valueSideLength,
+	fill: 'purple',
+	rotation: 45,
+});
+valuesButton.add(valuesButtonRect);
+
+var valuesButtonText = new Kinetic.Text({
+	text: 'add a value',
+	x: 0,
+	y: menuHeight / 2 + menuHeight / 4,
+	width: buttonWidth,
+	height: menuHeight / 4,
+	fill: 'black',
+	align: 'center'
+});
+valuesButton.add(valuesButtonText);
+
+var functionsButton = new Kinetic.Group({
+	x: menuCornerWidth + buttonWidth
+});
+menuButtonLayer.add(functionsButton);
+
+var functionsButtonBox = new Kinetic.Rect({
+	x:0,
+	y:0,
+	width: buttonWidth,
+	height: menuHeight,
+	fill: '#D7EBCF',
+	stroke: 'black',
+	strokeWidth: 2
+});
+functionsButton.add(functionsButtonBox);
+
+var functionsButtonRect = new Kinetic.Rect({
+	x: buttonWidth / 2 - functionRectSideLength / 2,
+	y: menuHeight / 4,
+	width: functionRectSideLength,
+	height: functionRectSideLength,
+	fill: functionColor,
+	lineJoin: 'round',
+	stroke: functionColor,
+	strokeWidth: functionStrokeWidth
+});
+functionsButton.add(functionsButtonRect);
+
+var functionsButtonText = new Kinetic.Text({
+	text: 'add a function',
+	x: 0,
+	y: menuHeight / 2 + menuHeight / 4,
+	width: buttonWidth,
+	height: menuHeight / 4,
+	fill: 'black',
+	align: 'center'
+});
+functionsButton.add(functionsButtonText);
+menuButtonLayer.draw();
+
+/* add functions to menu */
+var menuFunctions = [];
+for (var i = 0; i < funNames.length; i++) {
+	menuFunctions[i] = makeFunctionGroup(funNames[i], menuFunctsXStart, menuYspacing);
+	menuLayer.add(menuFunctions[i]);
+}
+
+/* add values to menu */
+var menuValues = [];
+for (var i = 0; i < valNames.length; i++) {
+	menuValues[i] = makeValueGroup(valNames[i], menuValuesXStart, menuYspacing);
+	menuLayer.add(menuValues[i]);
+}
+
+stage.draw();
+
+//MENU ANIMATIONS
+
+var valueExpanded = false;
+var functionExpanded = false;
+
+/*
+1. Neither values or functions are expanded.
+	- move functionsButton right.
+	- expand values
+2. Values are not expanded, functions are expanded.
+	- collapse functions to the right and move functionsButon
+	- expand values
+3. Values are expanded, functions are not.
+	- collapse values
+	- move functionsButton left. 
+	*/
+	valuesButton.on('click', function(){
+		console.log(valueExpanded);
+		if (!valueExpanded) {
+			if (!functionExpanded) {
+				var moveFunctionsButton = new Kinetic.Tween({
+					node: functionsButton,
+					duration: menuAnimDuration,
+					x: width - buttonWidth,
+					easing: menuEasing
+				});
+				moveFunctionsButton.play();
+				for (var i = 0; i < menuFunctions.length; i++) {
+					var moveFunction = new Kinetic.Tween({
+						node: menuFunctions[i],
+						duration: menuAnimDuration,
+						x: width - buttonWidth + functionRectSideLength / 2,
+						easing: menuEasing
+					});
+					moveFunction.play();
+				}
+				for (var i = 0; i < menuValues.length; i++) {
+					var moveValue = new Kinetic.Tween({
+						node: menuValues[i],
+						duration: menuAnimDuration,
+						x: menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength),
+						visible: true,
+						easing: menuEasing	
+					});
+					moveValue.play();
+				}
+				valueExpanded = true;
+			} // if functions are also not expanded
+			else {
+				var moveFunctionsButton = new Kinetic.Tween({
+					node: functionsButton,
+					duration: menuAnimDuration,
+					x: menuCornerWidth + buttonWidth,
+					easing: menuEasing
+				});
+				moveFunctionsButton.play();
+				for (var i = 0; i < menuFunctions.length; i++){
+					var moveFunction = new Kinetic.Tween({
+						node: menuFunctions[i],
+						duration: menuAnimDuration,
+						x: width - buttonWidth + functionRectSideLength / 2,
+						easing: menuEasing,
+						visible: false
+					});
+					moveFunction.play();
+				}
+				for (var i = 0; i < menuValues.length; i++) {
+					var moveValue = new Kinetic.Tween({
+						node: menuValues[i],
+						duration: menuAnimDuration,
+						x: menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength),
+						visible: true,
+						easing: menuEasing	
+					});
+					moveValue.play();
+				}
+				valueExpanded = true;
+			} // else functions were already expanded
+		} // if values are not expanded
+		else {
+			for (var i = 0; i < menuValues.length; i++) {
+					var moveValue = new Kinetic.Tween({
+						node: menuValues[i],
+						duration: menuAnimDuration,
+						x: menuValuesXStart,
+						visible: false,
+						easing: menuEasing	
+					});
+					moveValue.play();
+				}
+				for (var i = 0; i < menuFunctions.length; i++){
+					var moveFunction = new Kinetic.Tween({
+						node: menuFunctions[i],
+						duration: menuAnimDuration,
+						x: menuFunctsXStart,
+						easing: menuEasing,
+						visible: false
+					});
+					moveFunction.play();
+				}
+				var moveFunctionsButton = new Kinetic.Tween({
+					node: functionsButton,
+					duration: menuAnimDuration,
+					x: menuCornerWidth + buttonWidth,
+					easing: menuEasing
+				});
+				moveFunctionsButton.play();
+				valueExpanded = false;
+		} // else values were already expanded
+		});
+
 
 	</script>
 </body>
