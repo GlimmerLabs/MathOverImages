@@ -116,6 +116,17 @@
 		});
 		newGroup.add(newText);
 
+		var newBox = new Kinetic.Rect({
+			x: functionBox.width() + 3,
+			y: functionBox.height() + 3,
+			width: width / 80,
+			height: width / 80,
+			fill: 'white',
+			stroke: 'black',
+			strokeWidth: .5
+		});
+		newGroup.add(newBox);
+
 		var outlets = [];
 		for (var i = 0; i < minOutlets; i++) {
 			outlets[i] = makeOutlet(newGroup);
@@ -159,6 +170,16 @@
 			align: 'center'
 		});
 		newGroup.add(newText);
+		var newBox = new Kinetic.Rect({
+			x: width / 30,
+			y: width / 30,
+			width: width / 80,
+			height: width / 80,
+			fill: 'white',
+			stroke: 'black',
+			strokeWidth: .5
+		});
+		newGroup.add(newBox);
 		return newGroup;
 	};
 
@@ -190,24 +211,25 @@
 		return outlet;
 	};
 
-var makeLine = function(source) {
-	var newLine = new Kinetic.Line({
-      points: [
-      source.x() + width / 20 - 3,
-      source.y() + width / 40,
-      source.x() + width / 20,
-      source.y() + width / 40,
-      ],
-      stroke: 'black',
-      strokeWidth: 2,
-      source: source,
-      outlet: null
-    });
-	source.attrs.lineOut[source.attrs.lineOut.length] = newLine;
-	return newLine;
-}
+	var makeLine = function(source) {
+		var newLine = new Kinetic.Line({
+			points: [
+			source.x() + width / 20 - 3,
+			source.y() + width / 40,
+			source.x() + width / 20,
+			source.y() + width / 40,
+			],
+			stroke: 'black',
+			strokeWidth: 2,
+			source: source,
+			outlet: null
+		});
+		source.attrs.lineOut[source.attrs.lineOut.length] = newLine;
+		return newLine;
+	}
 
 
+//METHODS
 
 /*
 	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
