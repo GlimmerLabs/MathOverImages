@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script>
+	var width = 900;
+	var height = 2 * width / 3;
+
+	var functions = {
+		add: 			{rep: '+', 	 max: 20, min: 2, index: 0},
+		multiply: {rep: '*', 	 max: 20, min: 2, index: 1},
+		negate: 	{rep: '-', 	 max: 1,  min: 1, index: 2},
+		sine: 		{rep: 'sin', max: 1,  min: 1, index: 3},
+		cosine: 	{rep: 'cos', max: 1,  min: 1, index: 4},
+		absolute: {rep: 'abs', max: 1,  min: 1, index: 5},
+		average: 	{rep: 'ave', max: 20, min: 2, index: 6},
+		sign: 		{rep: 'sign',max: 1,  min: 1, index: 7},
+		wrap: 		{rep: 'wrap',max: 1,  min: 1, index: 8},
+		rgb: 			{rep: 'rgb', max: 3,  min: 3, index: 9}
+	}
+
+	var values = {
+		x: 				{rep: 'x', 	 max: 20, min: 2, color: 'gray', 	index: 0},
+		y: 				{rep: 'y', 	 max: 20, min: 2, color: 'gray', 	index: 1},
+		second: 	{rep: 't.s', max: 1,  min: 1, color: 'gold', 	index: 2},
+		minute:		{rep: 't.m', max: 1,  min: 1, color: 'gold', 	index: 3},
+		hour: 		{rep: 't.h', max: 1,  min: 1,	color: 'gold', 	index: 4},
+		day: 			{rep: 't.d', max: 1,  min: 1, color: 'gold', 	index: 5},
+		constant:	{rep: '', 	 max: 20, min: 2, color: 'purple',index: 6},
+	}
+	</script>
+		<script>
+	/*Global variables for size and colors*/
+	var functionStrokeWidth = width / 90;
+	var functionHalfStrokeWidth = functionStrokeWidth / 2;
+	var functionTotalSideLength = width / 20;
+	var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
+	var functionColor = '#b6d7a8';
+
+	var valueSideLength = width / 28.3;
+	var valueXYColor = 'gray'
+	var valueTimeColor = 'gold'
+	var valueConstantColor = 'purple'
+
+	var imageBoxSideLength = width / 80;
+	var imageBoxColor = 'white'
+	var functionImageBoxOffset = width / 300;
+	var valueImageBoxOffset = width / 30;
+
+	var outletXOffset = width / 255;
+	var outletYOffset = functionRectSideLength / 3;
+	var outletColor =  '#FFC440';
+
+	var lineStrokeWidth = 2;
+
+	</script>
+
+	<style>
+	body {
+		margin: 0px;
+		padding: 0px;
+	} 
+	#container {
+		background-color: rgb(241, 248, 255);
+		width: 900px;
+		height: 600px;
+	}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+	</script>
+	<script defer="defer">
+
+	var stage = new Kinetic.Stage({
+		container: 'container',
+		width: width,
+		height: height
+	});
+
+
+	// LAYERS
+	var layer = new Kinetic.Layer();
+	stage.add(layer);
+
+
+
+	// CONSTRUCTORS
+
+/*
+	Function nodes and Value nodes are groups of objects. Members of groups can
+	be accessed through the array 'group'.children[].
+	Children are stored in the following order:
+	0. Underlying Shape
+	1. Text
+	2+. Outlet nodes (only for functions)
+	TODO: add render boxes in bottom-righthand corner, before Outlets
+	*/
+
+
+/* 
+	makeFunctionGroup takes a string funName, a key in the functions object above,
+	an integer x, and an integer y, and returns the corresponding function node object,
+	with top right corner at the given x,y coordinate.
+	*/
+	var makeFunctionGroup = function(funName, x, y) {
+		var newGroup = new Kinetic.Group({
+			name: funName,
+			x: x - functionHalfStrokeWidth,
+			y: y,
+			numOutlets: 0,
+			numInputs: 0,
+			maxInputs: functions[funName].max,
+			lineOut: [],
+			funct: null,
+			index: functions[funName].index
+		});
+
+		var newRect = new Kinetic.Rect({
+			name: funName,
+			x: functionHalfStrokeWidth,
+			y: functionHalfStrokeWidth,
+			width: functionRectSideLength,
+			height: functionRectSideLength,
+			fill: functionColor,
+			lineJoin: 'round',
+			stroke: functionColor,
+			strokeWidth: functionStrokeWidth
+		});
+		newGroup.add(newRect);
+
+		var newText = new Kinetic.Text({
+			text: functions[funName].rep,
+			fontFamily: 'Open Sans',
+			fill: 'black',
+			fontSize: 16,
+			x: 0,
+			y: functionTotalSideLength/2 - functionHalfStrokeWidth,
+			width: functionTotalSideLength,
+			align: 'center'
+		});
+		newGroup.add(newText);
+
+		var newBox = new Kinetic.Rect({
+			x: functionRectSideLength + functionImageBoxOffset,
+			y: functionRectSideLength + functionImageBoxOffset,
+			width: imageBoxSideLength,
+			height: imageBoxSideLength,
+			fill: imageBoxColor,
+			stroke: 'black',
+			strokeWidth: .5,
+			visible: false
+		});
+		newGroup.add(newBox);
+<<<<<<< HEAD
+		
+=======
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
+>>>>>>> FETCH_HEAD
+=======
+>>>>>>> FETCH_HEAD
+=======
+>>>>>>> FETCH_HEAD
+		return newGroup;
+	};
+
+
+/*
+	makeValueGroup takes a string valName, the name of a key in the values object above,
+	an integer x, and an integer y, and returns the corresponding function node object,
+	centered at (x + width / 40, y + width / 40).
+	*/
+	var makeValueGroup = function(valName, x, y) {
+		var newGroup = new Kinetic.Group({
+			name: valName,
+			x: x,
+			y: y,
+			lineOut: [],
+			index: values[valName].index
+		});
+
+		var newRect = new Kinetic.Rect({
+			x: functionRectSideLength/2,
+			y: 0,
+			width: valueSideLength,
+			height: valueSideLength,
+			fill: values[valName].color,
+			rotation: 45,
+			name: valName
+		});
+
+		newGroup.add(newRect);
+		var newText = new Kinetic.Text({
+			text: valName,
+			fontFamily: 'OpenSans',
+			fill: 'black',
+			fontSize: 16,
+			x: 0,
+			y: valueSideLength/2,
+			width: functionRectSideLength,
+			align: 'center'
+		});
+		newGroup.add(newText);
+
+		var newBox = new Kinetic.Rect({
+			x: valueImageBoxOffset,
+			y: valueImageBoxOffset,
+			width: imageBoxSideLength,
+			height: imageBoxSideLength,
+			fill: imageBoxColor,
+			stroke: 'black',
+			strokeWidth: .5,
+			visible: false
+		});
+		newGroup.add(newBox);
+		return newGroup;
+	};
+
+/*
+	makeOutlet takes a function node object, functGroup, and returns an outlet node object 
+	to be added to that group, and increments numOutlets for that group.
+	It DOES NOT add the outlet to the group.
+	*/
+	var makeOutlet = function(functGroup) {
+		var bezPoint = width / 50;
+		var outlet = new Kinetic.Shape({
+			sceneFunc: function(context) {
+				context.beginPath();
+				context.moveTo(0, 0);
+				context.bezierCurveTo(-bezPoint, -bezPoint, -bezPoint, bezPoint, 0, 0);
+				context.closePath();
+				context.fillStrokeShape(this);
+			},
+			name: 'outlet' + functGroup.attrs.numOutlets,
+			x:functGroup.children[0].x()+ outletXOffset,
+			y:functGroup.children[0].y() + functGroup.attrs.numOutlets * outletYOffset + functionHalfStrokeWidth,
+			fill: '#FFC440',
+			stroke: 'black',
+			strokeWidth: 1,
+			lineIn: null
+		});
+		functGroup.attrs.numOutlets++;
+		return outlet;
+	};
+
+	var makeLine = function(source) {
+		var newLine = new Kinetic.Line({
+			points: [
+			source.x() + functionRectSideLength - 3,
+			source.y() + functionSideLength / 2,
+			source.x() + width / 20,
+			source.y() + width / 40,
+			],
+			stroke: 'black',
+			strokeWidth: lineStrokeWidth,
+			source: source,
+			outlet: null
+		});
+		source.attrs.lineOut[source.attrs.lineOut.length] = newLine;
+		return newLine;
+	}
+
+
+//METHODS
+
+/*
+	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
+	*/
+	var addOutlet = function(funGroup) {
+		if(funGroup.attrs.numOutlets < funGroup.attrs.maxInputs) {
+			if(funGroup.attrs.numOutlets > 2) {
+				funGroup.children[0].setAttr('height',
+					funGroup.children[0].attrs.height + outletYOffset);
+				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
+
+			}
+			var newOutlet = makeOutlet(funGroup);
+			funGroup.add(newOutlet);
+			stage.draw();
+		}
+	};
+
+
+
+
+	stage.on('contentDblclick', function() {
+		var newFunct = makeFunctionGroup('add', stage.getPointerPosition().x,
+			stage.getPointerPosition().y);
+		layer.add(newFunct);
+		layer.draw();
+	});
+
+	layer.on('click', function(evt) {
+		var parent = evt.target.getParent();
+		addOutlet(parent);
+	});
+
+	</script>
+</body>
+<html>
