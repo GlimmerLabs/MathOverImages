@@ -18,11 +18,15 @@ var mysql = require('mysql');
 var passport = require('passport');
 var flash = require('connect-flash');
 
-var configDB = require('./config/database.js');
+var auth = require('./config/auth.js');
 
 //==================== configuration ====================
 
-//mysql.connect(configDB.url); // connect to the database
+// Database
+
+var database = require('./config/database.js');
+
+
 
 // require(./config/passport')(passport); // pass passport for configuration
 
@@ -32,7 +36,7 @@ var configDB = require('./config/database.js');
     app.use(cookieParser()); // read cookie information (for auth)
     app.use(bodyParser()); // get info from html forms
 
-    app.use(expressSession({secret: 'secret'})); // session secret
+    app.use(expressSession({secret: auth["session-secret"]})); // session secret
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(flash());
@@ -41,7 +45,7 @@ var configDB = require('./config/database.js');
 
 //==================== routes ====================
 
-require('./app/routes.js')(app,passport);
+require('./app/routes.js')(app,passport,database);
 
 //==================== launch ====================
 
