@@ -1,10 +1,13 @@
 // app/routes.js
-module.exports = function(app,passport) {
+module.exports = function(app,passport,database) {
 
     // HOME PAGE
 
     app.get('/', function(req, res) {
-	res.end("Home");
+	database.addUser("Halley","Freger", "Dawg", "hf@google.com", null, "halley", "1994",function(response){
+	console.log(response)
+	});
+	res.end("done");
     });
 
     // LOGIN PAGE
@@ -19,7 +22,12 @@ module.exports = function(app,passport) {
 	req.logout();
 	res.redirect('/');
     });
-
+    
+    app.get('/saveImage', function(req,res){
+	res.setHeader('Content-type', 'text/plain');
+	res.setHeader('Content-disposition', 'attachment;filename="filename.txt"');
+	res.end('This is my file.\nIs it not cool?');
+    });
 
     
 };
