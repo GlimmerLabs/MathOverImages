@@ -141,9 +141,21 @@
       width: width / 20,
       align: 'center'
     });
+
+    var valImageBox = new Kinetic.Rect({
+      x: width / 30,
+      y: width / 30,
+      width: width / 80,
+      height: width / 80,
+      fill: 'white',
+      stroke: 'black',
+      strokeWidth: .5
+    }); 
+
     valGroup.add(valBox);
     valGroup.add(valText);
-    layer.add(valGroup)
+    valGroup.add(valImageBox);
+    layer.add(valGroup);
 
       // add the shape to the layer
       functionGroup.add(functionBox);
