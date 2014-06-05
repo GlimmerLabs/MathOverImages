@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script>
+	var width = 900;
+	var height = 2 * width / 3;
+
+	var functions = {
+		add: 			{rep: '+', 	 max: 20, min: 2, index: 0},
+		multiply: {rep: '*', 	 max: 20, min: 2, index: 1},
+		negate: 	{rep: '-', 	 max: 1,  min: 1, index: 2},
+		sine: 		{rep: 'sin', max: 1,  min: 1, index: 3},
+		cosine: 	{rep: 'cos', max: 1,  min: 1, index: 4},
+		absolute: {rep: 'abs', max: 1,  min: 1, index: 5},
+		average: 	{rep: 'ave', max: 20, min: 2, index: 6},
+		sign: 		{rep: 'sign',max: 1,  min: 1, index: 7},
+		wrap: 		{rep: 'wrap',max: 1,  min: 1, index: 8},
+		rgb: 			{rep: 'rgb', max: 3,  min: 3, index: 9}
+	}
+
+	var values = {
+		x: 				{rep: 'x', 	 max: 20, min: 2, color: 'gray', 	index: 0},
+		y: 				{rep: 'y', 	 max: 20, min: 2, color: 'gray', 	index: 1},
+		second: 	{rep: 't.s', max: 1,  min: 1, color: 'gold', 	index: 2},
+		minute:		{rep: 't.m', max: 1,  min: 1, color: 'gold', 	index: 3},
+		hour: 		{rep: 't.h', max: 1,  min: 1,	color: 'gold', 	index: 4},
+		day: 			{rep: 't.d', max: 1,  min: 1, color: 'gold', 	index: 5},
+		constant:	{rep: '', 	 max: 20, min: 2, color: 'purple',index: 6},
+	}
+	</script>
+	<style>
+	body {
+		margin: 0px;
+		padding: 0px;
+	} 
+	#container {
+		background-color: rgb(241, 248, 255);
+		width: 900px;
+		height: 600px;
+	}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+	</script>
+	<script defer="defer">
+
+	var stage = new Kinetic.Stage({
+		container: 'container',
+		width: width,
+		height: height
+	});
+
+	var layer = new Kinetic.Layer();
+	stage.add(layer);
+
+	var makeFunctionGroup = function(funName, x, y) {
+		var minOutlets = functions[funName].min;
+		var newGroup = new Kinetic.Group({
+			name: funName,
+			x: x - width / 180,
+			y: y,
+			numOutlets: 0,
+			numInputs: 0,
+			maxInputs: functions[funName].max,
+			lineOut: []
+		});
+
+		var newRect = new Kinetic.Rect({
+			name: funName,
+			x: width / 180,
+			y: width / 180,
+			width: width / 20 - width / 90,
+			height: width / 20 - width / 90,
+			fill: '#b6d7a8',
+			lineJoin: 'round',
+			stroke: '#b6d7a8',
+			strokeWidth: width / 90
+		});
+		newGroup.add(newRect);
+
+		var newText = new Kinetic.Text({
+			text: functions[funName].rep,
+			fontFamily: 'Open Sans',
+			fill: 'black',
+			fontSize: 16,
+			x: 0,
+			y: width / 40 - width / 180,
+			width: width / 20,
+			align: 'center'
+		});
+		newGroup.add(newText);
+
+		var outlets = [];
+		for (var i = 0; i < minOutlets; i++) {
+			outlets[i] = makeOutlet(newGroup);
+			newGroup.add(outlets[i]);
+		}
+		console.log(newGroup);
+		return newGroup;
+	};
+
+	var makeValueGroup = function(valName, x, y) {
+		// STUB
+		return newGroup;
+	};
+
+	var makeOutlet = function(functGroup) {
+		var bezPoint = width / 50;
+		var outlet = new Kinetic.Shape({
+			sceneFunc: function(context) {
+				context.beginPath();
+				context.moveTo(0, 0);
+				context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
+				context.closePath();
+				context.fillStrokeShape(this);
+			},
+			name: 'outlet' + functGroup.attrs.numOutlets,
+			x:functGroup.children[0].x()+ width/225,
+			y:functGroup.children[0].y() + functGroup.attrs.numOutlets*((width/20 - 10) / 3 ) + width/180,
+			fill: '#FFC440',
+			stroke: 'black',
+			strokeWidth: 1,
+			lineIn: null
+		});
+		functGroup.attrs.numOutlets++;
+		return outlet;
+	};
+
+	var addOutlet = function(funGroup) {
+		// STUB
+	};
+
+
+
+	</script>
+</body>
+<html>
