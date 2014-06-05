@@ -52,6 +52,8 @@
 
 	var lineStrokeWidth = 2;
 
+	var menuHeight = height / 6; 
+
 	</script>
 
 	<style>
@@ -80,7 +82,17 @@
 
 
 	// LAYERS
-	var layer = new Kinetic.Layer();
+	var borderLayer = new Kinetic.Layer();
+  var lineLayer = new Kinetic.Layer();
+  var menuLayer = new Kinetic.Layer();
+  var workLayer = new Kinetic.Layer();
+  var dragLayer = new Kinetic.Layer();
+
+  stage.add(lineLayer);
+  stage.add(menuLayer);
+  stage.add(workLayer);
+  stage.add(borderLayer);
+  stage.add(dragLayer);
 	stage.add(layer);
 
 
@@ -108,7 +120,6 @@
 			name: funName,
 			x: x - functionHalfStrokeWidth,
 			y: y,
-			numOutlets: 0,
 			numInputs: 0,
 			maxInputs: functions[funName].max,
 			lineOut: [],
@@ -152,20 +163,7 @@
 			visible: false
 		});
 		newGroup.add(newBox);
-<<<<<<< HEAD
-		
-=======
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
 		return newGroup;
 	};
 
@@ -223,7 +221,7 @@
 
 /*
 	makeOutlet takes a function node object, functGroup, and returns an outlet node object 
-	to be added to that group, and increments numOutlets for that group.
+	to be added to that group.
 	It DOES NOT add the outlet to the group.
 	*/
 	var makeOutlet = function(functGroup) {
@@ -236,15 +234,14 @@
 				context.closePath();
 				context.fillStrokeShape(this);
 			},
-			name: 'outlet' + functGroup.attrs.numOutlets,
+			name: 'outlet' + functGroup.children.length - 3,
 			x:functGroup.children[0].x()+ outletXOffset,
-			y:functGroup.children[0].y() + functGroup.attrs.numOutlets * outletYOffset + functionHalfStrokeWidth,
+			y:functGroup.children[0].y() + functGroup.children.length - 3 * outletYOffset + functionHalfStrokeWidth,
 			fill: '#FFC440',
 			stroke: 'black',
 			strokeWidth: 1,
 			lineIn: null
 		});
-		functGroup.attrs.numOutlets++;
 		return outlet;
 	};
 
@@ -272,8 +269,8 @@
 	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
 	*/
 	var addOutlet = function(funGroup) {
-		if(funGroup.attrs.numOutlets < funGroup.attrs.maxInputs) {
-			if(funGroup.attrs.numOutlets > 2) {
+		if(funGroup.children.length - 3 < funGroup.attrs.maxInputs) {
+			if(funGroup.children.length - 3 > 2) {
 				funGroup.children[0].setAttr('height',
 					funGroup.children[0].attrs.height + outletYOffset);
 				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
@@ -285,20 +282,25 @@
 		}
 	};
 
+//SETUP STAGE
+
+/* create and add menu border */
+var menuBorder = new Kinetic.Line({
+    points: [0, menuHeight,
+    width, menuHeight],
+    stroke: 'black',
+    strokeWidth: 4
+  });
+  borderLayer.add(menuBorder);
+  borderLayer.draw();	
+
+/* add functions to menu */
+for (var i = 0; i < functions.length; i++) {
+	makeFunctionGroup()
+}
 
 
 
-	stage.on('contentDblclick', function() {
-		var newFunct = makeFunctionGroup('add', stage.getPointerPosition().x,
-			stage.getPointerPosition().y);
-		layer.add(newFunct);
-		layer.draw();
-	});
-
-	layer.on('click', function(evt) {
-		var parent = evt.target.getParent();
-		addOutlet(parent);
-	});
 
 	</script>
 </body>
