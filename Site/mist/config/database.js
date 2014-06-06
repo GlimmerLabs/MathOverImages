@@ -1,22 +1,28 @@
 // config/database.js
-var auth = require('./auth.js');
-var mysql = require('mysql');
-var bcrypt = require('bcrypt-nodejs');
 
+var auth = require('./auth.js');  // Include private-strings that should not be on the public repo
+var mysql = require('mysql'); // Include the mysql library
+var bcrypt = require('bcrypt-nodejs'); // Include Blowfish Algorithm for hashing passwords
+
+// Make a connection pool to handle concurrencies esp. that of async calls
 var pool = mysql.createPool({
-    host : auth["mysql-hostname"],
+    host : auth["mysql-hostname"], 
     user : auth["mysql-username"],
     password : auth["mysql-password"],
-    database : auth["mysql-database"],
-    stringifyObjects : true,
-
-
+    database : auth["mysql-database"]
 });
 
-// database.query(query, callback){}
-// callback(rows, error)
-//
-// Returns an array of objects based on the table in the MySQL server.
+/*
+  Procedure: database.query(query, callback(rows, error));
+  Purpose: Make a query on the current database
+  Parameters: query, a SQL formatted string
+              callback(rows, error), a function describing what to do with the result
+  Produces: rows, an array of database rows which may be accessed with dot syntax
+            error, the error produced by the mysql-nodejs library
+  Pre-conditions: None
+  Post-conditions: The MySQL database will be altered as requested
+  Preferences: SANITIZE YOUR INPUT
+*/
 
 module.exports.query = (function (query, callback){
     pool.getConnection(function(err,connection){
@@ -27,14 +33,21 @@ module.exports.query = (function (query, callback){
 	    else{
 		callback(rows,null);
 	    }
-
 	});
 	connection.release();
     });
-});
+}); // database.query(query, callback(rows, error));
 
-// userExists can take a username or email to check to see if account exists
-
+/*
+  Procedure: database.userExists(checkString, callback(exists));
+  Purpose: Checks to see if a username or email is already in the database
+  Parameters: checkstring, a string containing either a username or email address
+              callback(exists), a function describing what to do with the result
+  Produces: exists, a BOOLEAN result
+  Pre-conditions: None
+  Post-conditions: None
+  Preferences: This function will automatically be called when using the addUser() function, so this is designed to be used while the client is typing on the client side
+*/
 module.exports.userExists = (function(checkString, callback){
     module.exports.query("SELECT username FROM users WHERE username = '" + checkString + "';", function (rows, error){
 	if (rows.length === 0){
@@ -44,16 +57,37 @@ module.exports.userExists = (function(checkString, callback){
 		}
 		else callback(true);
 	    });
-
 	}
 	else callback(true);
     });  
-});
+}); // database.userExists(checkString, callback(exists));
 
-
-// Callback(success, error)
+/*
+  Procedure: database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
+  Purpose: Adds a user to the database
+  Parameters: forename, a string
+              surname, a string
+	      password, a plaintext string (this will be crypted before being sent to the server)
+	      email, a string
+	      pgpPublic, a Pretty Good Privacy public key
+	      username, a string
+	      dob, a UNIX timestamp
+	      callback(success, error), a function describing what to do with the result
+  Produces: success, A BOOLEAN value representing if the insertion was successful
+            error, if there was an error, it will be returned here.
+  Pre-conditions: None
+  Post-conditions: The database will be appended with the new user, all data will be sanitized, and the password will be hashed.
+  Preferences: This procedure automatically sanitizes and validates user input, as well as hashes the password. This is the preferred way to interact with the server.
+               However, clientside validation is always a good first-defense. 
+*/
 
 module.exports.addUser =(function (forename, surname, password, email, pgpPublic, username, dob, callback){
+
+//TODO:
+//  Sanitize Input
+//  Validate Input
+
+
     // Check to see if username or email are already in the database
     
     module.exports.userExists(username, function(exists){
@@ -69,7 +103,7 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
 		{
 		    hashPassword(password, function (hashedPassword){
 
-			module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, pgpPublic, username, dob, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email + "','" + pgpPublic + "','" + username + "','" + dob + "','" + Date.now() +"');", function(results, error){
+			module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, pgpPublic, username, dob, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + pgpPublic + "','" + username + "','" + dob + "','" + Date.now() +"');", function(results, error){
 			    console.log(results);
 			    callback(true,error);
 
@@ -77,53 +111,53 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
 		    }); 
 		}
 	    });
-	}
-	
+	}	
     });
-    
+}); // database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
 
+/*
+  Procedure: database.verifyPassword(user, passwordToTest, callback(verified));
+  Purpose: Checks to see if a password is correct
+  Parameters: user, a string that is either the username or the email address
+              passwordToTest, a plaintext version of a password to test
+	      callback(verified), a function describing what to do with the result
+  Produces: verified, A BOOLEAN value representing if the password was correct && the user exists
+  Pre-conditions: None
+  Post-conditions: None
+  Preferences: This procedure automatically sanitizes user input. This will return false if the user does not exist, also. The client should never be told if a user exists.
+*/
+module.exports.verifyPassword = (function (user, passwordToTest, callback){
 
-    
-
-});
-
-
-// database.verifyPassword(username, email, passwordToTest, callback)
-// username xor email may be null
-// Callback(verified-BOOLEAN)
-// Returns true if password was correct and false if user doesn't exist or if password is incorrect
-
-module.exports.verifyPassword = (function (username, email, passwordToTest, callback){
-    var row;
-
-    if (username)
-	this.query("SELECT hashedPassword FROM users WHERE username = '" + username +"'", function(rows, error){
-	    if (!rows){
-		callback(false);
-	    }
-	    else {
-		callback(bcrypt.compareSync(passwordToTest, rows[0].hashedPassword));
-	    }
-
-	});
-    else if (email)
-	this.query("SELECT hashedPassword FROM users WHERE email =" + email, function(rows, error){
-	    if (!rows){
-		callback(false);
-	    }
-	    else {
-		callback(bcrypt.compareSync(passwordToTest, rows[0].hashedPassword));
-	    }
-
-	});
-    else callback(false);
-
-});
-
-
-
-// callback(hashedPassword)
+    module.exports.query("SELECT hashedPassword FROM users WHERE username = '" + user +"'", function(rows, error){
+	if (!rows){ // user is not a username
+	    module.exports.query("SELECT hashedPassword FROM users WHERE email =" + user, function(rows, error){
+		if (!rows){ // user is not an email
+		    callback(false); // user does not exist
+		}
+		else {
+		    // check the database hashed password with the entered password
+		    callback(bcrypt.compareSync(passwordToTest, rows[0].hashedPassword));
+		}
+	    });
+	}
+	else {
+	    // check the database hashed password with the entered password
+	    callback(bcrypt.compareSync(passwordToTest, rows[0].hashedPassword));
+	}
+    });
+}); // database.verifyPassword(user, passwordToTest, callback(verified));
+			
+/*
+  Procedure: hashPassword(passwordtohash, callback(hashedPassword));
+  Purpose: Hashes a password with Blowfish Algorithm
+  Parameters: passwordtohash, a plaintext version of a password to hash
+	      callback(hashedPassword), a function describing what to do with the result
+  Produces: hashedPassword, the hashed password
+  Pre-conditions: None
+  Post-conditions: The password will be hashed with Blowfish Crypt
+  Preferences: This function is not available outside of this document.
+*/
 var hashPassword = (function (passwordtohash, callback) {
     var hashedPass = bcrypt.hashSync(passwordtohash,bcrypt.genSaltSync(8), null);
     callback(hashedPass);
-});
+});// hashPassword(passwordtohash, callback(hashedPassword));
