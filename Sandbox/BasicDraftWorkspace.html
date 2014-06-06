@@ -276,9 +276,17 @@
 		return newLine;
 	}
 
+	var makeMenuTween = function(target, xEnd, visibility) {
+		return new Kinetic.Tween({
+			node: target,
+			duration: menuAnimDuration,
+			x: xEnd,
+			visible: visibility,
+			easing: Kinetic.Easings.StrongEaseOut;
+		});
+	};
 
 //METHODS
-
 /*
 	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
 	*/
@@ -294,6 +302,53 @@
 			funGroup.add(newOutlet);
 			stage.draw();
 		}
+	};
+
+
+	// Create functions to Move Menu Items
+	var moveValueNodesIn = function() {
+		for (var i = 0; i < menuValues.length; i++) {
+			var moveValue = makeMenuTween(menuValues[i], menuValuesXStart, false);
+			moveValue.play();
+		}
+	};
+
+	var expandValueNodes = function() {
+		for (var i = 0; i < menuValues.length; i++) {
+			var moveValue = makeMenuTween(menuValues[i], menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength), true);
+			moveValue.play();
+		}
+	};
+
+	var moveFunctionNodesIn = function() {
+		for (var i = 0; i < menuFunctions.length; i++) {
+			var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXStart, false);
+			moveFunction.play();
+		}
+	};
+
+	var moveFunctionNodesRight = function() {
+		for (var i = 0; i < menuFunctions.length; i++) {
+			var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXEnd, false);
+			moveFunction.play();
+		}
+	};
+
+	var expandFunctionNodes = function() {
+		for (var i = 0; i < menuFunctions.length; i++) {
+			var moveFunction = makeMenuTween(menuFunctions[i], menuCornerWidth + 2 * buttonWidth + functMenuXSpacing + i * (functMenuXSpacing + functionTotalSideLength), true)
+			moveFunction.play();
+		}
+	}
+
+	var moveFunctionsButtonRight = function() {
+		var moveButton = makeMenuTween(functionsButton, width - buttonWidth, true)
+		moveButton.play();
+	};
+
+	var moveFunctionsButtonLeft = function() {
+		var moveButton = makeMenuTween(functionsButton, menuCornerWidth + buttonWidth, true)
+		moveButton.play();
 	};
 
 //SETUP STAGE
@@ -407,63 +462,6 @@ stage.draw();
 var valueExpanded = false;
 var functionExpanded = false;
 
-// Make Tween Functions
-var menuEasing = Kinetic.Easings.StrongEaseOut;
-var makeMenuTween = function(target, xEnd, visibility) {
-	return new Kinetic.Tween({
-		node: target,
-		duration: menuAnimDuration,
-		x: xEnd,
-		visible: visibility,
-		easing: menuEasing
-	});
-};
-
-// Move item functions
-var moveValueNodesIn = function() {
-	for (var i = 0; i < menuValues.length; i++) {
-		var moveValue = makeMenuTween(menuValues[i], menuValuesXStart, false);
-		moveValue.play();
-	}
-};
-
-var expandValueNodes = function() {
-	for (var i = 0; i < menuValues.length; i++) {
-		var moveValue = makeMenuTween(menuValues[i], menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength), true);
-		moveValue.play();
-	}
-};
-
-var moveFunctionNodesIn = function() {
-	for (var i = 0; i < menuFunctions.length; i++) {
-		var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXStart, false);
-		moveFunction.play();
-	}
-};
-
-var moveFunctionNodesRight = function() {
-	for (var i = 0; i < menuFunctions.length; i++) {
-		var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXEnd, false);
-		moveFunction.play();
-	}
-};
-
-var expandFunctionNodes = function() {
-	for (var i = 0; i < menuFunctions.length; i++) {
-		var moveFunction = makeMenuTween(menuFunctions[i], menuCornerWidth + 2 * buttonWidth + functMenuXSpacing + i * (functMenuXSpacing + functionTotalSideLength), true)
-		moveFunction.play();
-	}
-}
-
-var moveFunctionsButtonRight = function() {
-	var moveButton = makeMenuTween(functionsButton, width - buttonWidth, true)
-	moveButton.play();
-};
-
-var moveFunctionsButtonLeft = function() {
-	var moveButton = makeMenuTween(functionsButton, menuCornerWidth + buttonWidth, true)
-	moveButton.play();
-};
 
 
 /*
@@ -536,6 +534,6 @@ var moveFunctionsButtonLeft = function() {
 		} // functions are expanded
 	});
 
-</script>
+	</script>
 </body>
 <html>
