@@ -107,7 +107,39 @@
 	stage.add(borderLayer);
 	stage.add(dragLayer);
 
+  //UTILITY FUNCTIONS
 
+/*
+isFunction determines if target is a functionGroup and returns a boolean value. 
+target is an object.
+  */
+  var isFunction = function(target) {
+  	return (target.getParent().attrs.maxInputs != null);
+  };
+
+/*
+isValue determines if target is a valueGroup and returns a boolean value. 
+target is an object.
+  */
+  var isValue = function(target) {
+  	return (target.getParent().attrs.maxInputs = null);
+  };
+
+/*
+isOutlet determines if target is an outletGroup and returns a boolean value. 
+target is an object.
+  */
+  var isOutlet = function(target) {
+  	return (target.attrs.name.substring(0,6) == 'outlet');
+  };
+
+/*
+isLine determines if target is a line and returns a boolean value. 
+target is an object.
+  */
+  var isLine = function(target) {
+  	return (target.attrs.outlet != null);
+  };
 
 	// CONSTRUCTORS
 
