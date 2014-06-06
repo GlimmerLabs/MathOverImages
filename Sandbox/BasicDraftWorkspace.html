@@ -112,34 +112,34 @@
 /*
 isFunction determines if target is a functionGroup and returns a boolean value. 
 target is an object.
-  */
-  var isFunction = function(target) {
-  	return (target.getParent().attrs.maxInputs != null);
-  };
+*/
+var isFunction = function(target) {
+	return (target.getParent().attrs.maxInputs != null);
+};
 
 /*
 isValue determines if target is a valueGroup and returns a boolean value. 
 target is an object.
-  */
-  var isValue = function(target) {
-  	return (target.getParent().attrs.maxInputs = null);
-  };
+*/
+var isValue = function(target) {
+	return (target.getParent().attrs.maxInputs = null);
+};
 
 /*
 isOutlet determines if target is an outletGroup and returns a boolean value. 
 target is an object.
-  */
-  var isOutlet = function(target) {
-  	return (target.attrs.name.substring(0,6) == 'outlet');
-  };
+*/
+var isOutlet = function(target) {
+	return (target.attrs.name.substring(0,6) == 'outlet');
+};
 
 /*
 isLine determines if target is a line and returns a boolean value. 
 target is an object.
-  */
-  var isLine = function(target) {
-  	return (target.attrs.outlet != null);
-  };
+*/
+var isLine = function(target) {
+	return (target.attrs.outlet != null);
+};
 
 	// CONSTRUCTORS
 
@@ -166,6 +166,7 @@ target is an object.
 			y: y,
 			numInputs: 0,
 			maxInputs: functions[funName].max,
+			minInputs: functions[funName].min,
 			lineOut: [],
 			funct: null,
 			index: functions[funName].index,
@@ -615,12 +616,14 @@ workLayer.on('mousedown', function(evt) {
 
 
 workLayer.on('dblclick', function(evt) {
-	makingLine = true;
-	var group = evt.target.getParent();
-	currLine = makeLine(group);
-	group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
-	lineLayer.add(currLine);
-	lineLayer.draw();
+	if (!makingLine) {
+		makingLine = true;
+		var group = evt.target.getParent();
+		currLine = makeLine(group);
+		group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
+		lineLayer.add(currLine);
+		lineLayer.draw();
+	}
 });
 
 stage.addEventListener('contentMousemove', function(){
@@ -666,13 +669,22 @@ workLayer.on('click', function(evt) {
 			if (shape.attrs.lineIn != null) {
 				//POSSIBLE NEED TO DESTROY LINE ITSELF
 				shape.attrs.lineIn.attrs.source.attrs.lineOut[shape.attrs.lineIn.attrs.sourceIndex].destroy();
+			} else {
+				parent.attrs.numInputs++;
 			}
+
 			shape.attrs.lineIn = currLine;
 			currLine.attrs.outlet = shape;
 			currLine.points()[2] = parent.x();
 			currLine.points()[3] = parent.y() + shape.y();
 			makingLine = false;
 			shape.scale({	x: 1, y: 1 });
+			if (parent.attrs.numInputs >= parent.attrs.minInputs) {
+				parent.children[2].setAttr('visible', true);
+				if (parent.attrs.numInputs < parent.attrs.maxInputs) {
+					addOutlet(parent);
+				}
+			}
 		} else if (shape.getParent() === currLine.attrs.source) {
 			currLine.attrs.source.attrs.lineOut[currLine.attrs.source.attrs.lineOut.length - 1].destroy();
 			currLine.destroy();
