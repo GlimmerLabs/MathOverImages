@@ -478,7 +478,6 @@ var moveFunctionsButtonLeft = function() {
 	- move functionsButton left. 
 	*/
 	valuesButton.on('click', function(){
-		console.log(valueExpanded);
 		if (!valueExpanded) {
 			if (!functionExpanded) {
 				moveFunctionsButtonRight();
@@ -493,6 +492,7 @@ var moveFunctionsButtonLeft = function() {
 				expandValueNodes();
 				
 				valueExpanded = true;
+				functionExpanded = false;
 			} // else functions were already expanded
 		} // if values are not expanded
 		else {
@@ -526,6 +526,7 @@ var moveFunctionsButtonLeft = function() {
 				expandFunctionNodes();
 
 				functionExpanded = true;
+				valueExpanded = false;
 			} // functions not expanded, values expanded
 		}
 		else {
