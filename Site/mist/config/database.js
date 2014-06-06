@@ -50,10 +50,12 @@ module.exports.query = (function (query, callback){
   Preferences: This function will automatically be called when using the addUser() function, so this is designed to be used while the client is typing on the client side
 */
 module.exports.userExists = (function(checkString, callback){
+
+    checkstring = sanitize(checkString);
     module.exports.query("SELECT username FROM users WHERE username = '" + checkString + "';", function (rows, error){
-	if (rows.length === 0){
+	if (!rows[0]){
 	    module.exports.query("SELECT email FROM users WHERE email = '" + checkString + "';", function(rows, error){
-		if (rows.length === 0){
+		if (!rows[0]){
 		    callback(false);
 		}
 		else callback(true);
@@ -84,7 +86,6 @@ module.exports.userExists = (function(checkString, callback){
 
 module.exports.addUser =(function (forename, surname, password, email, pgpPublic, username, dob, callback){
 
-    
     forename = sanitize(forename);
     surname = sanitize(surname);
     password = sanitize(password);
@@ -94,9 +95,8 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
     dob = sanitize(dob);
 
 //TODO:
-
-    
 // validate input
+
     // Check to see if username or email are already in the database
     
     module.exports.userExists(username, function(exists){
@@ -138,10 +138,11 @@ n  Pre-conditions: None
 module.exports.verifyPassword = (function (user, passwordToTest, callback){
     user = sanitize(user);
     passwordToTest = sanitize(passwordToTest);
-    module.exports.query("SELECT hashedPassword FROM users WHERE username = '" + user +"'", function(rows, error){
+    module.exports.query("SELECT hashedPassword FROM users WHERE username = '" + user + "';", function(rows, error){
 	if (!rows){ // user is not a username
-	    module.exports.query("SELECT hashedPassword FROM users WHERE email =" + user, function(rows, error){
+	    module.exports.query("SELECT hashedPassword FROM users WHERE email = '" + user + "';", function(rows, error){
 		if (!rows){ // user is not an email
+		    console.log(rows);
 		    callback(false); // user does not exist
 		}
 		else {
@@ -182,6 +183,6 @@ var hashPassword = (function (passwordtohash, callback) {
   Preferences: This function is not available outside of this document.
 */
 var sanitize = (function (string) {
-    return validate.escape(pool.escape(string));
+    return validate.escape(string);
     
 }); // sanitize(string);
