@@ -3,6 +3,7 @@
 var auth = require('./auth.js');  // Include private-strings that should not be on the public repo
 var mysql = require('mysql'); // Include the mysql library
 var bcrypt = require('bcrypt-nodejs'); // Include Blowfish Algorithm for hashing passwords
+var validate = require('validator'); // Include validation functions
 
 // Make a connection pool to handle concurrencies esp. that of async calls
 var pool = mysql.createPool({
@@ -83,11 +84,19 @@ module.exports.userExists = (function(checkString, callback){
 
 module.exports.addUser =(function (forename, surname, password, email, pgpPublic, username, dob, callback){
 
+    
+    forename = sanitize(forename);
+    surname = sanitize(surname);
+    password = sanitize(password);
+    email = sanitize(email);
+    pgpPublic = sanitize(pgpPublic);
+    username = sanitize(username);
+    dob = sanitize(dob);
+
 //TODO:
-//  Sanitize Input
-//  Validate Input
 
-
+    
+// validate input
     // Check to see if username or email are already in the database
     
     module.exports.userExists(username, function(exists){
@@ -122,12 +131,13 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
               passwordToTest, a plaintext version of a password to test
 	      callback(verified), a function describing what to do with the result
   Produces: verified, A BOOLEAN value representing if the password was correct && the user exists
-  Pre-conditions: None
+n  Pre-conditions: None
   Post-conditions: None
   Preferences: This procedure automatically sanitizes user input. This will return false if the user does not exist, also. The client should never be told if a user exists.
 */
 module.exports.verifyPassword = (function (user, passwordToTest, callback){
-
+    user = sanitize(user);
+    passwordToTest = sanitize(passwordToTest);
     module.exports.query("SELECT hashedPassword FROM users WHERE username = '" + user +"'", function(rows, error){
 	if (!rows){ // user is not a username
 	    module.exports.query("SELECT hashedPassword FROM users WHERE email =" + user, function(rows, error){
@@ -161,3 +171,17 @@ var hashPassword = (function (passwordtohash, callback) {
     var hashedPass = bcrypt.hashSync(passwordtohash,bcrypt.genSaltSync(8), null);
     callback(hashedPass);
 });// hashPassword(passwordtohash, callback(hashedPassword));
+
+/*
+  Procedure: sanitize(string);
+  Purpose: Sanitizes a string for MySQL insertion without risking injection
+  Parameters: string, the string to sanitize
+  Produces: sanitizedString, a string - returned
+  Pre-conditions: None
+  Post-conditions: sanitizedString will be safe to insert into a MySQL 
+  Preferences: This function is not available outside of this document.
+*/
+var sanitize = (function (string) {
+    return validate.escape(pool.escape(string));
+    
+}); // sanitize(string);
