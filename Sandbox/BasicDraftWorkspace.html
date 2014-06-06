@@ -249,8 +249,8 @@
 				context.fillStrokeShape(this);
 			},
 			name: 'outlet' + functGroup.children.length - 3,
-			x:functGroup.children[0].x()+ outletXOffset,
-			y:functGroup.children[0].y() + functGroup.children.length - 3 * outletYOffset + functionHalfStrokeWidth,
+			x:functGroup.children[0].x() + outletXOffset,
+			y:functGroup.children[0].y() + (functGroup.children.length - 3) * outletYOffset + functionHalfStrokeWidth,
 			fill: '#FFC440',
 			stroke: 'black',
 			strokeWidth: 1,
@@ -533,6 +533,39 @@ var functionExpanded = false;
 			functionExpanded = false;
 		} // functions are expanded
 	});
+
+// ADDING TO WORKSPACE
+
+menuLayer.on('mousedown', function(evt) {
+	var group = evt.target.getParent();
+	if (group.attrs.maxInputs != null) {
+		var newGroup = makeFunctionGroup(group.attrs.name, group.attrs.x, group.attrs.y);
+	} else {
+		var newGroup = makeValueGroup(group.attrs.name, group.attrs.x, group.attrs.y);
+	} // if function / else value
+	console.log(newGroup);
+	newGroup.setAttr('visible', true);
+	newGroup.setAttr('draggable', true);
+	dragLayer.add(newGroup);
+	newGroup.startDrag();
+	dragLayer.draw();
+	console.log(newGroup);
+});
+
+dragLayer.on('mouseup', function(evt) {
+	var group = evt.target.getParent();
+	if (group.attrs.y > menuHeight) {
+		group.moveTo(workLayer);
+	} else {
+		group.destroy();
+	}
+	if (group.attrs.maxInputs != null) {
+		for (var i = 0; i < functions[group.attrs.name].min; i++) {
+			addOutlet(group);
+		} // for 		
+	}
+	stage.draw();
+});
 
 	</script>
 </body>
