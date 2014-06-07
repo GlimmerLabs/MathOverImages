@@ -99,40 +99,47 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
   pgpPublic = sanitize(pgpPublic);
   username = sanitize(username);
   dob = sanitize(dob);
-  //TODO:
-  // validate input
 
-  // Check to see if username or email are already in the database
+  if (!validator.isEmail(email)){
+    callback(false, "ERROR: Email is not a valid email address");
+  }
+  else if (validator.isEmail(username)){
+    callback(false, "ERROR: Username may not be an email address.")
+  }
+  else {
 
-  module.exports.userExists(username, function(exists){
-    if (exists){// Username exists
-      callback(false, "ERROR: Username already exists.");
-    }
-    else {
-      module.exports.userExists(email, function(exists){
-        if (exists) // Email address exists
-          callback(false, "ERROR: Email already used.");
+    // Check to see if username or email are already in the database
 
-        else // user does not already exist, proceed with creation
-        {
-          // hash the password
-          hashPassword(password, function (hashedPassword, err){
-            // add user to database
-            if (!err){
-              module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, pgpPublic, username, dob, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + pgpPublic + "','" + username + "','" + dob + "','" + Date.now() +"');", function(results, error){
-                if (results)
-                  callback(true,error);
-                else
-                  callback(false,error);
-              });
-            }
-            else callback(false, err);
+    module.exports.userExists(username, function(exists){
+      if (exists){// Username exists
+        callback(false, "ERROR: Username already exists.");
+      }
+      else {
+        module.exports.userExists(email, function(exists){
+          if (exists) // Email address exists
+            callback(false, "ERROR: Email already used.");
 
-          });
-        }
-      });
-    }
-  });
+          else // user does not already exist, proceed with creation
+          {
+            // hash the password
+            hashPassword(password, function (hashedPassword, err){
+              // add user to database
+              if (!err){
+                module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, pgpPublic, username, dob, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + pgpPublic + "','" + username + "','" + dob + "','" + Date.now() +"');", function(results, error){
+                  if (results)
+                    callback(true,error);
+                  else
+                    callback(false,error);
+                });
+              }
+              else callback(false, err);
+
+            });
+          }
+        });
+      }
+    });
+  }
 }); // database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
 
 /*
@@ -159,8 +166,10 @@ module.exports.verifyPassword = (function (user, passwordToTest, callback){
         else {
           // check the database hashed password with the entered password
           bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(err,res) {
-            console.log(err);
-            callback(res);
+            if (!err)
+              callback(res,null);
+            else
+              callback (null, err);
           });
         }
       });
@@ -168,12 +177,15 @@ module.exports.verifyPassword = (function (user, passwordToTest, callback){
     else {
       // check the database hashed password with the entered password
       bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(err,res) {
-        console.log(err);
-        callback(res);
+        if(!err)
+          callback(res,null);
+        else
+          callback(null, err);
 
       });
     }
   });
+
 }); // database.verifyPassword(user, passwordToTest, callback(verified));
 
 /*
