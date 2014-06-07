@@ -1,44 +1,69 @@
 // app/routes.js
 module.exports = function(app,passport,database) {
-  // HOME PAGE
+  /* ======================  HOME PAGE =======================*/
 
   app.get('/', function(req, res) {
-    database.addUser("Halley","Freger", "abc", "test", null, "halley", "1994",function(response, error){
-	console.log (error ? error : response);
-	
-    });
-    res.end("done");
+    res.sendfile("./views/index.html");
   });
 
-  // LOGIN PAGE
+  /* ================= signup page ===============*/
 
-    app.post('/login', function(req,res){
-	console.log("Username: " + req.body.username,"Password: " + req.body.password);
-	database.verifyPassword(req.body.username, req.body.password, function(loggedIn)
-				{
-				    console.log("loggedInState: " + loggedIn);
-				    if(loggedIn)
-				    {
-					req.session.loggedIn = true;
-					req.session.username = req.body.username;
-					res.setHeader('Content-type', 'text/plain');
-					res.end("Your username is "+req.session.username);
-				    }
-				    else
-				    {
-					res.setHeader('Content-type', 'text/plain');
-					res.end("That is not a valid login");
-				    }
-				});
+  app.post('/signup', function(req,res){
+    database.addUser (req.body.forename, req.body.surname, req.body.password, req.email, null, req.body.username, null, function(success, error) {
+      if (success)
+        res.redirect('/login');
+      else {
+        console.log(error);
+        res.end (error);
+      }
+
     });
-    app.get('/login', function(req, res){
-	res.setHeader('Content-type', 'text/HTML');
-        res.end("<form action = '' method = 'post'><label for='username'>Username/Email: </label><input type='text' name = 'username'/><label for='password'>Password: </label><input type='password' name = 'password'/><label for='crossSession'><input input='checkbox' name='crossSession'><input type='submit' value='Submit'></form>");
+  });
+
+
+  app.get('/signup', function(req,res){
+    res.sendfile('./views/signup.html');
+  });
+
+  /* ================= login page =============================*/
+
+  app.post('/login', function(req,res){
+    database.verifyPassword(req.body.username, req.body.password, function(loggedIn){
+      if(loggedIn)
+      {
+        req.session.loggedIn = true;
+        req.session.username = req.body.username;
+        res.setHeader('Content-type', 'text/plain');
+        res.end("Your username is " + req.session.username);
+      }
+      else
+      {
+        res.redirect('/login');
+      }
     });
-    app.get('/username', function(req, res){
-	res.setHeader('Content-type', 'text/plain');
-	res.end("Your username is "+req.session.username);
-    });
+  });
+
+  app.get('/login', function(req, res){
+    if(req.session.loggedIn)
+      res.redirect('/');
+    else{
+      res.setHeader('Content-type', 'text/HTML');
+      res.sendfile('./views/login.html');
+    }
+  });
+
+  /* ============== user's profile page =================== */
+
+  app.get('/user/:username', function(req, res){
+    res.setHeader('Content-type', 'text/HTML');
+    res.end("You would have found " + req.params.username + "'s profile here.");
+  });
+
+
+
+
+
+
   app.get('/logout', function(req,res){
     req.session.loggedIn = false;
     req.session.username = null;
