@@ -61,7 +61,7 @@ module.exports = function(app,passport,database) {
 
 
 
-
+  /* ============== log out =================== */
 
 
   app.get('/logout', function(req,res){
@@ -70,6 +70,8 @@ module.exports = function(app,passport,database) {
     res.redirect('/');
   });
 
+
+  /* ============== save image script =================== */
   app.get('/saveImage', function(req,res){
     res.setHeader('Content-type', 'text/plain');
     res.setHeader('Content-disposition', 'attachment;filename="filename.txt"');
@@ -79,10 +81,5 @@ module.exports = function(app,passport,database) {
 
 };
 
-function isLoggedIn(req,res,next) {
-  if(req.isAuthenticated())
-    return next();
 
-  res.redirect('/')
 
-}
