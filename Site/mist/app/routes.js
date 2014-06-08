@@ -1,13 +1,11 @@
 // app/routes.js
 module.exports = function(app,passport,database) {
   /* ======================  HOME PAGE =======================*/
-
   app.get('/', function(req, res) {
     res.sendfile("./views/index.html");
   });
 
   /* ================= signup page ===============*/
-
   app.post('/signup', function(req,res){
     database.addUser (req.body.forename, req.body.surname, req.body.password, req.email, null, req.body.username, null, function(success, error) {
       if (success)
@@ -24,6 +22,16 @@ module.exports = function(app,passport,database) {
   app.get('/signup', function(req,res){
     res.sendfile('./views/signup.html');
   });
+
+  /* ================= verify page ===============*/
+  app.get('/verify', function(req,res){
+    // TODO: VERIFY user
+    res.redirect('/login');
+  });
+
+
+
+
 
   /* ================= login page =============================*/
 
@@ -53,7 +61,6 @@ module.exports = function(app,passport,database) {
   });
 
   /* ============== user's profile page =================== */
-
   app.get('/user/:username', function(req, res){
     res.setHeader('Content-type', 'text/HTML');
     res.end("You would have found " + req.params.username + "'s profile here.");
@@ -62,8 +69,6 @@ module.exports = function(app,passport,database) {
 
 
   /* ============== log out =================== */
-
-
   app.get('/logout', function(req,res){
     req.session.loggedIn = false;
     req.session.username = null;
@@ -78,6 +83,21 @@ module.exports = function(app,passport,database) {
     res.end('This is my file.\nIs it not cool?');
   });
 
+  /* ============== css distribution =================== */
+  app.get('/css/:page', function(req,res){
+    res.sendfile('./views/css/' + req.params.page + '.css');
+  });
+
+  /* ============== client-side javascript distribution =================== */
+  app.get('/js/:file', function(req,res){
+    res.sendfile('./views/js/' + req.params.file + '.js');
+  });
+
+
+  /* ============== dynamic content distribution =================== */
+  app.get('/api', function(req,res){
+    res.end("api");
+  });
 
 };
 
