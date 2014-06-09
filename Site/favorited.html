@@ -2,9 +2,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Gallery</title>.
+        <title>Favorited</title>
         <style>
-            @import url("css/home.css");
+          @import url("css/defaultAccount.css");
+          @import url("css/albums.css");
         </style>
     </head>
     <body>
@@ -13,26 +14,28 @@
                 <a href='home.html'><img src='images/logos/header.svg' /></a>
             </div>
             <nav>
-                <ul>
-                    <li><a href='default.html'>create</a></li>
-                    <li><a href='default.html'>challenges</a></li>
-                    <li><a href='gallery.html'>gallery</a></li>
-                    <li><a href='about.html'>about</a></li>
-                    <li><a href='default.html'>login/signup</a></li>
-                </ul>
+              <ul>
+                <li><a href='default.html'>create</a></li>
+                <li><a href='default.html'>challenges</a></li>
+                <li><a href='gallery.html'>gallery</a></li>
+                <li><a href='about.html'>about</a></li>
+                <li><a href='default.html'>login/signup</a></li>
+              </ul>
             </nav>
         </header>
         <div id ='main'>
-          <div id = 'pageTitle'> 
-            <div id='titleTitle'><h1>gallery</h1>
+         <a href='defaultAccount.html'> <div id ='userTitle'> 
+           <div id='titleTitle'>
+              <h1>fregerha17</h1>
             </div>
-          </div>
-           <a href='galleryRecent.html'><div id='tab1Selected'>
-              <h2>top pics</h2>
           </div></a>
-          <a href='galleryRecent.html'><div id='tab2Deselected'>
-              <h2>recent</h2>
+         <a href='albums.html'><div id='tab1Deselected'>
+              <h2>albums</h2>
           </div></a>
+          <div id='timeStamp'>
+            <h2 style="font-size: 36px">favorited</h2>
+          <h3>created: May 2014   modified: May
+              2014</h3></div><!-- Will fix this based on actual timestamp--> 
           <div id='galleryImages'>
             <table style="border-spacing: 100px 30px" id="picTable">
               <tbody>

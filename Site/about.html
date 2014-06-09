@@ -1,86 +1,109 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>About</title>
-        <style>
-            @import url("css/index.css");
-        </style>
-    </head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>About</title>
+    <style>
+      @import url("css/styles.css");
+      @import url("css/about.css");
+    </style>
+  </head>
     <body>
         <header>
             <div id = 'headerLogo'>
-                <a href='#'><img src='images/logos/header.svg' /></a>
+                <a href='home.html'><img src='images/logos/header.svg' /></a>
             </div>
             <nav>
-                <ul>
-                    <li><a href='#'>create</a></li>
-                    <li><a href='#'>challenges</a></li>
-                    <li><a href='gallery.html'>gallery</a></li>
-                    <li><a href='about.html'>about</a></li>
-                    <li><a href='#'>login/signup</a></li>
-                </ul>
-
+              <ul>
+                <li><a href='default.html'>create</a></li>
+                <li><a href='default.html'>challenges</a></li>
+                <li><a href='gallery.html'>gallery</a></li>
+                <li><a href='about.html'>about</a></li>
+                <li><a href='default.html'>login/signup</a></li>
+              </ul>
             </nav>
         </header>
         <div id ='main'>
-          <div id='featuredImage'>
-            <h1> about </h1>                
-          </div>
-          <div id ='homeButtons'>
-            <a href='#'><div id='create'>
-                    <h1>goals</h1>
-                    </div></a>
-                <a href='#'><div id='tutorials'>
-                    <h1>contact</h1>
-                    </div></a>
+          <div id = 'pageTitle'> 
+            <div id='titleTitle'><h1>about</h1>
             </div>
-            <div id='galleryImages'>
-                <div id='figset'>
-                    <a href='#'>
-                        <figure>
-                            <img src ='images/samples/bw0.jpg'/>
-                        </figure>
+          </div>
+          
+          <a href='about.html'><div id='tab1Selected'>
+              <h2>goals</h2>
+          </div></a>
+          <a href='contact.html'><div id='tab2Deselected'>
+              <h2>contact</h2>
+          </div></a>
+          <div id='galleryImages'>
+            <table style="border-spacing: 100px 30px" id="picTable">
+              <tbody>
+                <tr>
+                  <td>
+                    <a href='default.html'>
+                      <figure>
+                        <img src ='images/samples/bw0.jpg'/>
+                        <figcaption>darkchocolate59</figcaption>
+                      </figure>
+                  </a> </td>
+                  <td rowspan="3" id="text">
+                    <p> information about the project and learning
+                      math through iimage making and whatever else we
+                      want to include.  Maybe even links to
+                      sources. Maybe this is also where we include
+                      contact informatino for any questions or
+                      comments</p>
+                    <p> information about the project and learning
+                      math through image making and whatever else we
+                      want to include.  Maybe even links to
+                      sources. Maybe this is also where we include
+                      contact informatino for any questions or
+                      comments</p>
+                    <p> information about the project and learning
+                      math through iimage making and whatever else we
+                      want to include.  Maybe even links to
+                      sources. Maybe this is also where we include
+                      contact informatino for any questions or comments</p>
+                  </td>
+                </tr>
+                <tr><td><a href='default.html'>
+                      <figure>
+                        <img src ='images/samples/bw1.jpg'/>
+                        <figcaption>pinkxglasses</figcaption>
+                      </figure>
                     </a>
-                    <a href='#'>
-                        <figure>
-                            <img src ='images/samples/bw1.jpg'/>
-                        </figure>
-                    </a>
-                    <a href='#'>
-                        <figure>
-                            <img src ='images/samples/bw2.jpg'/>
-                        </figure>
-                    </a>
-                </div>
-<p> information about the project and learning math through image making
-  and whatever else we want to include.  Maybe even links to sources.
-  Maybe this is also where we include contact informatino for any questions
-  or comments</p>
-
-<p> information about the project and learning math through image making
-  and whatever else we want to include.  Maybe even links to sources.
-  Maybe this is also where we include contact informatino for any questions
-  or comments</p>
-
-  <p> information about the project and learning math through image making
-  and whatever else we want to include.  Maybe even links to sources.
-  Maybe this is also where we include contact informatino for any questions
-  or comments</p>         </div>
+                </tr>
+</td>
+<tr>
+  <td>
+    <a href='default.html'>
+      <figure>
+        <img src ='images/samples/bw2.jpg'/>
+        <figcaption>qt314</figcaption>
+      </figure>
+    </a>
+</tr>
+</td>
+</tbody>
+</table>
+</div>
+<nav>
+<div id = 'aboutText'>
+  </div>
 
         </div>
         <footer>
             <p>©2014 Glimmer Labs</p>
             <nav>
                 <ul>
-                    <li><a href='#'>create</a></li>
-                    <li><a href='#'>challenges</a></li>
+                    <li><a href='default.html'>create</a></li>
+                    <li><a href='default.html'>challenges</a></li>
                     <li><a href='gallery.html'>gallery</a></li>
                     <li><a href='about.html'>about</a></li>
-                    <li><a href='#'>login</a></li>
-                    <li><a href='#'>signup</a></li>
-                    <li><a href='#'>license</a></li>
-                    <li><a href='#'>privacy policy</a></li>
+                    <li><a href='contact.html'>contact</a></li>
+                    <li><a href='default.html'>signup</a></li>
+                    <li><a href='default.html'>license</a></li>
+                    <li><a href='default.html'>privacy policy</a></li>
                 </ul>
             </nav>
         </footer>

@@ -1,7 +1,17 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
+#main {
+  margin:100px;
+}
+
 * {
   font-family: 'Open Sans', sans-serif;
+  color: 9B9B9B;
+} /* default text style*/
+
+
+#featuredImage {
+  text-align: center;
 }
 
 /* Header */
@@ -55,7 +65,295 @@ header nav li {
 }
 /* End of Header */
 
+#pageTitle {
+    height:131px;
+    width:436.1px;
+    margin: 0px -130px;
+    float: left;
+    background-color: #3FAAA0;
+}
 
+#titleTitle {
+    font-family: OpenSans-Extrabold;
+    font-size: 25px;
+    color: #FFFFFF;
+    text-align: left;
+    text-indent: 40px;
+    margin: 30px 105px;
+    line-height: 5px;
+    border: 4px solid #FFFFFF;
+
+}
+
+#timeStamp {
+    font-size: 14px;
+    color: #979797;
+width:200px;
+margin: 0px 30px;
+
+}
+
+/* Images in Gallery*/
+
+#galleryImages figure img{
+  height: 140px;
+  width: 140px;
+
+}
+
+#galleryImages figcaption{
+  text-align:right;
+  color: #979797;
+}
+
+#galleryImages {
+  clear:both;
+  margin:0 auto;
+
+
+}
+
+#galleryImages figure {
+  display:inline-block;
+  margin: 10px;
+}
+
+#galleryImages h1 {
+  font-size:1.5em;
+  text-align:center;
+}
+
+#galleryImages a {
+  color: #979797;
+  text-decoration:none;
+}
+
+
+#galleryImages a:hover {
+  color: #666;
+}
+
+/* End of Images in Gallery */
+
+/* Single Image - Large */
+#largeImage figure img{
+height: 400px;
+width: 400px;
+}
+
+#largeImage figcaption{
+  text-align:right;
+  color: #979797;
+}
+
+#largeImage {
+  clear:both;
+  margin:0 auto;
+  float: left;
+
+}
+
+#largeImage figure {
+  display:inline-block;
+  margin: 10px;
+}
+
+#largeImage h1 {
+  font-size:1.5em;
+  text-align:center;
+}
+
+#largeImage a {
+  color: #979797;
+  text-decoration:none
+}
+
+
+#largeImage a:hover {
+  color: #666;
+}
+
+/*end of image - large */
+
+/* Tabs */
+#tab1Selected  {
+
+    width: 181px;
+    margin: 81px 150px;
+    float: left;
+    background-color: #979797;
+    font-family: OpenSans;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 0px;
+}
+
+#tab1Selected:hover {
+  background-color: #FFF;
+  color: #979797;
+}
+
+
+#tab1Deselected  {
+ 
+    width: 181px;
+    margin: 81px 150px;
+    float: left;
+    background-color: #D8D8D8;
+    font-family: OpenSans;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 0px;
+}
+
+#tab1Deselected:hover {
+  background-color: #FFF;
+  color: #D8D8D8;
+}
+
+
+#tab2Selected {
+
+
+    width: 181px;
+    margin: 81px -119px;
+    float: left;
+    background-color: #979797;
+    font-family: OpenSans;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 0px;
+
+}
+
+#tab2Selected:hover{
+background-color: #FFF;
+color: #979797;
+}
+
+
+#tab2Deselected {
+
+
+    width: 181px;
+    margin: 81px -119px;
+    float: left;
+    background-color: #D8D8D8;
+    font-family: OpenSans;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 0px;
+
+}
+
+#tab2Deselected:hover{
+background-color: #FFF;
+color: #D8D8D8;
+}
+
+#tab3Selected {
+    width: 181px;
+    margin: 0px -330px;
+    float: left;
+    background-color: #979797;
+    font-family: OpenSans;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 0px;
+
+}
+
+#tab3Selected:hover{
+background-color: #FFF;
+color: #979797;
+}
+
+
+#tab3Deselected {
+    width: 181px;
+    margin: 0px -330px;
+    float: left;
+    background-color: #D8D8D8;
+    font-family: OpenSans;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 0px;
+
+}
+
+#tab3Deselected:hover{
+background-color: #FFF;
+color: #D8D8D8;
+}
+
+#tab4Selected {
+
+
+    width: 181px;
+    margin: 0px -119px;
+    float: left;
+    background-color: #979797;
+    font-family: OpenSans;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 0px;
+
+}
+
+#tab4Selected:hover{
+background-color: #FFF;
+color: #979797;
+}
+
+
+#tab4Deselected {
+
+
+    width: 181px;
+    margin: 0px -119px;
+    float: left;
+    background-color: #D8D8D8;
+    font-family: OpenSans;
+    font-size: 20px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 0px;
+
+}
+
+#tab4Deselected:hover{
+background-color: #FFF;
+color: #D8D8D8;
+}
+
+/* End of Tabs */
+
+submit {
+
+font-family: OpenSans;
+color: #FFF;
+font-size: 18px;
+background-color:D8D8D8;
+text-align: center;
+}
+
+
+/* Page numbers */
+
+#pageNumbers {
+font-family: OpenSans;
+color: #E1E1E1;
+font-size: 20px;
+text-align: right;
+
+}
 
 /* Footer */
 footer nav ul {
