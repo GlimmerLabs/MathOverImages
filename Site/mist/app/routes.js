@@ -1,8 +1,9 @@
 // app/routes.js
+var framework = require("../functions/framework");
 module.exports = function(app,passport,database) {
   /* ======================  HOME PAGE =======================*/
   app.get('/', function(req, res) {
-    res.sendfile("./views/index.html");
+      res.end(framework.anonymousHeader("Glimmer","index"));
   });
 
   /* ================= signup page ===============*/
@@ -56,7 +57,7 @@ module.exports = function(app,passport,database) {
       res.redirect('/');
     else{
       res.setHeader('Content-type', 'text/HTML');
-      res.sendfile('./views/login.html');
+      res.sendfile('./public/login.html');
     }
   });
 
@@ -77,20 +78,20 @@ module.exports = function(app,passport,database) {
 
 
   /* ============== save image script =================== */
-  app.get('/saveImage', function(req,res){
-    res.setHeader('Content-type', 'text/plain');
-    res.setHeader('Content-disposition', 'attachment;filename="filename.txt"');
-    res.end('This is my file.\nIs it not cool?');
+  app.post('/saveImage/:filename', function(req,res){
+    res.setHeader('Content-type', 'image/jpeg');
+    res.setHeader('Content-disposition', 'attachment;filename="'+ req.params.filename + '.jpg"');
+    res.end(Buffer(req.body.data,'base64'));
   });
 
   /* ============== css distribution =================== */
   app.get('/css/:page', function(req,res){
-    res.sendfile('./views/css/' + req.params.page + '.css');
+    res.sendfile('./public/css/' + req.params.page + '.css');
   });
 
   /* ============== client-side javascript distribution =================== */
   app.get('/js/:file', function(req,res){
-    res.sendfile('./views/js/' + req.params.file + '.js');
+    res.sendfile('./public/js/' + req.params.file + '.js');
   });
 
 
