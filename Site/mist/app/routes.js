@@ -7,7 +7,7 @@ module.exports = function(app,passport,database) {
 
   /* ================= signup page ===============*/
   app.post('/signup', function(req,res){
-    database.addUser (req.body.forename, req.body.surname, req.body.password, req.email, null, req.body.username, null, function(success, error) {
+    database.addUser (req.body.forename, req.body.surname, req.body.password, req.body.email, null, req.body.username, null, function(success, error) {
       if (success)
         res.redirect('/login');
       else {
