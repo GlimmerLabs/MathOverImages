@@ -5,6 +5,8 @@ var mysql = require('mysql'); // Include the mysql library
 var bcrypt = require('bcrypt-nodejs'); // Include Blowfish Algorithm for hashing passwords
 var validate = require('validator'); // Include validation functions
 
+var mail = require('./mail');
+
 // Make a connection pool to handle concurrencies esp. that of async calls
 var pool = mysql.createPool({
   host : auth["mysql-hostname"],
@@ -26,6 +28,7 @@ var pool = mysql.createPool({
       Preferences: This function is not available outside of this document.
     */
 var hashPassword = (function (passwordtohash, callback) {
+    mail.sendMail("mitchell17@grinnell.edu","amitch1994@gmail.com","amitch1994@gmail.com", "Testing", "<b>TESTING</b><br /> wut up");
   bcrypt.hash(passwordtohash, null, null, function(err,hash) {
     callback(hash, err);
   });
