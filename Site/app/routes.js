@@ -2,7 +2,7 @@
 module.exports = function(app,passport,database) {
   /* ======================  HOME PAGE =======================*/
   app.get('/', function(req, res) {
-      res.render('../public/views/header.jade',{
+      res.render('../public/views/index.jade',{
 	  title:"Glimmer Labs' MIST",
 	  style:"index"
       });
