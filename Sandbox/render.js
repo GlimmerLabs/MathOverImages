@@ -242,18 +242,35 @@ var sum = function()
 
 /**
  * Render three (x,y)->range functions as RGB, given the specified 
- * bounds. Intended mostly as an experiment to get started.
+ * bounds. Intended mostly as an experiment to get started.  Returns
+ * the time at which the rendering was done (mostly to make it easier
+ * to re-render at a specified time).
  */
 function renderRGB(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight)
+{
+  // Get the time.
+  var d = new Date();
+  var sec = d.getMilliseconds()/500 - 1;
+  var min = (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1;
+  var time = new Time(sec,min);
+  // Use the core function
+  renderRGBcore(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight, time);
+  // Return the time (for use elsewhere)
+  return time;
+} // renderRGB
+
+/**
+ * Render three (x,y)->range functions as RGB, given the specified bounds,
+ * and assuming that the rendering happens at the specified time.
+ */
+function renderRGBcore(rfun, gfun, bfun, canvas, 
+                       rleft, rtop, rwidth, rheight,
+                       time)
 {
   var deltaX = 2.0/rwidth;
   var deltaY = 2.0/rheight;
   var context = canvas.getContext("2d");
   var region = context.createImageData(rwidth,rheight);
-  var d = new Date();
-  var sec = d.getMilliseconds()/500 - 1;
-  var min = (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1;
-  var time = new Time(sec,min);
   var mouse = new Mouse((mouseX-rleft)*deltaX - 1, 
                         (mouseY-rtop)*deltaY - 1, 
                         (clickX-rleft)*deltaX - 1, 
@@ -276,7 +293,7 @@ function renderRGB(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight)
       x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-} // renderRGB
+} // renderRGBatTime
 
 /**
  * Render three (x, y)->range functions as HSV, given the specified 
