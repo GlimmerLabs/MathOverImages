@@ -7,6 +7,7 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
+var jade = require('jade');
 
 
 
@@ -18,17 +19,17 @@ var mysql = require('mysql');
 var passport = require('passport');
 var flash = require('connect-flash');
 
-var auth = require('./config/auth.js');
+var auth = require('./functions/auth.js');
 
 //==================== configuration ====================
 
 // Database
 
-var database = require('./config/database.js');
+var database = require('./functions/database.js');
 
 
 
-// require(./config/passport')(passport); // pass passport for configuration
+// require(./functions/passport')(passport); // pass passport for configuration
 
 app.use(morgan('dev')); //log every request to the console
 app.use(cookieParser()); // read cookie information (for auth)
