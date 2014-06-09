@@ -1,9 +1,11 @@
 // app/routes.js
-var framework = require("../functions/framework");
 module.exports = function(app,passport,database) {
   /* ======================  HOME PAGE =======================*/
   app.get('/', function(req, res) {
-      res.end(framework.anonymousHeader("Glimmer","index"));
+      res.render('../public/views/header.jade',{
+	  title:"Glimmer Labs' MIST",
+	  style:"index"
+      });
   });
 
   /* ================= signup page ===============*/
