@@ -13,6 +13,41 @@ var pool = mysql.createPool({
   database : auth["mysql-database"]
 });
 
+
+/*
+      Procedure: hashPassword(passwordtohash, callback(hashedPassword));
+      Purpose: Hashes a password with Blowfish Algorithm
+      Parameters: passwordtohash, a plaintext version of a password to hash
+      callback(hashedPassword, error), a function describing what to do with the result
+      Produces: hashedPassword, the hashed password
+      error, an error if there is one
+      Pre-conditions: None
+      Post-conditions: The password will be hashed with Blowfish Crypt
+      Preferences: This function is not available outside of this document.
+    */
+var hashPassword = (function (passwordtohash, callback) {
+  bcrypt.hash(passwordtohash, null, null, function(err,hash) {
+    callback(hash, err);
+  });
+});// hashPassword(passwordtohash, callback(hashedPassword));
+
+/*
+      Procedure: sanitize(string);
+      Purpose: Sanitizes a string for MySQL insertion without risking injection
+      Parameters: string, the string to sanitize
+      Produces: sanitizedString, a string - returned
+      Pre-conditions: None
+      Post-conditions: sanitizedString will be safe to insert into a MySQL
+      Preferences: This function is not available outside of this document.
+    */
+var sanitize = (function (string) {
+  return validate.escape(string);
+
+}); // sanitize(string);
+
+
+
+
 /*
   Procedure: database.query(query, callback(rows, error));
   Purpose: Make a query on the current database
@@ -100,10 +135,11 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
   username = sanitize(username);
   dob = sanitize(dob);
 
-  if (!validator.isEmail(email)){
-    callback(false, "ERROR: Email is not a valid email address");
+  if (!validate.isEmail(email)){
+      callback(false, "ERROR: Email is not a valid email address");
+      
   }
-  else if (validator.isEmail(username)){
+  else if (validate.isEmail(username)){
     callback(false, "ERROR: Username may not be an email address.")
   }
   else {
@@ -143,7 +179,7 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
 }); // database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
 
 /*
-  Procedure: database.verifyPassword(user, passwordToTest, callback(verified, error ));
+  Procedure: database.verifyPassword(userid, passwordToTest, callback(verified, error ));
   Purpose: Checks to see if a password is correct
   Parameters: user, a string that is either the username or the email address
   passwordToTest, a plaintext version of a password to test
@@ -153,68 +189,123 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
   Post-conditions: None
   Preferences: This procedure automatically sanitizes user input. This will return false if the user does not exist, also. The client should never be told if a user exists.
 */
-module.exports.verifyPassword = (function (user, passwordToTest, callback){
+module.exports.verifyPassword = (function (userid, passwordToTest, callback){
   // Always sanitize user input
-  user = sanitize(user);
+  user = sanitize(userid);
   passwordToTest = sanitize(passwordToTest);
-  module.exports.query("SELECT hashedPassword FROM users WHERE username = '" + user + "';", function(rows, error){
-    if (!rows[0]){ // user is not a username
-      module.exports.query("SELECT hashedPassword FROM users WHERE email = '" + user + "';", function(rows, error){
-        if (!rows[0]){ // user is not an email
-          callback(false); // user does not exist
-        }
-        else {
-          // check the database hashed password with the entered password
-          bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(err,res) {
-            if (!err)
-              callback(res,null);
+    module.exports.query("SELECT hashedPassword FROM users WHERE userid = '" + userid + "';", function(rows, error){
+        if (!rows[0])
+            callback(false); // user does not exist
+        else 
+          bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(error,result) {
+            if (!error)
+              callback(result,null);
             else
-              callback (null, err);
+              callback (null, error);
           });
-        }
+        
       });
-    }
-    else {
-      // check the database hashed password with the entered password
-      bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(err,res) {
-        if(!err)
-          callback(res,null);
-        else
-          callback(null, err);
-
-      });
-    }
-  });
-
-}); // database.verifyPassword(user, passwordToTest, callback(verified));
+  }); // database.verifyPassword(userid, passwordToTest, callback(verified));
 
 /*
-      Procedure: hashPassword(passwordtohash, callback(hashedPassword));
-      Purpose: Hashes a password with Blowfish Algorithm
-      Parameters: passwordtohash, a plaintext version of a password to hash
-      callback(hashedPassword), a function describing what to do with the result
-      Produces: hashedPassword, the hashed password
-      error, an error if there is one
-      Pre-conditions: None
-      Post-conditions: The password will be hashed with Blowfish Crypt
-      Preferences: This function is not available outside of this document.
-    */
-var hashPassword = (function (passwordtohash, callback) {
-  bcrypt.hash(passwordtohash, null, null, function(err,hash) {
-    callback(hash, err);
-  });
-});// hashPassword(passwordtohash, callback(hashedPassword));
+Procedure: database.changePassword(userid, oldPassword, newPassword, Callback(success, error));
+Purpose: To allow a user to change their password, given they remember their old one.
+Parameters: userid, the userid of the use who wants to change their password
+            oldPassword, the old password of the user
+	    newPassword, what they want to change their password to
+	    callback, a function describing what to do with the response
+Produces: success, a boolean success indicator
+          error, any error occurred along the way
+Pre-conditions: user has logged in, and therefore has access to their userid
+Post-conditions: password will be changed if old one is correct
+Preferences: None
+*/
+module.exports.changePassword = (function (userid, oldPassword, newPassword, callback){
+    oldPassword = sanitize(oldPassword);
+    newPassword = sanitize(newPassword);
+    userid = sanitize(userid);
+    
+    module.exports.query("SELECT hashedPassword WHERE userid= '" + userid + "';", function (response, error){
+	if (error)
+	    callback(false, error);
+	
+	else if (!response[0])
+	    callback(false, "Invalid Credentials");
+	
+	else 
+	    module.exports.verifyUser(userid, oldPassword, function(verified, error){
+		if (error)
+		    callback(false, error);
+		else if (!verified) 
+		    callback(false, "Invalid Credentials");
+		else 
+		  hashPassword(newPassword, function (newHash, error) {
+		      if (error)
+			  callback(false, error);
+		      else 
+			  module.exports.query("UPDATE users SET hashedPassword='" + newHash +"' WHERE userid = '" + userid + "';", function (rows, error){
+			      if (error)
+				  callback(false, error);
+			      else
+				  callback(true, null);
+			  });
+		  });  	
+	    });
+    });
+}); // database.changePassword(user, oldPassword, newPassword, callback(success, error));
 
 /*
-      Procedure: sanitize(string);
-      Purpose: Sanitizes a string for MySQL insertion without risking injection
-      Parameters: string, the string to sanitize
-      Produces: sanitizedString, a string - returned
-      Pre-conditions: None
-      Post-conditions: sanitizedString will be safe to insert into a MySQL
-      Preferences: This function is not available outside of this document.
-    */
-var sanitize = (function (string) {
-  return validate.escape(string);
+Procedure
+Purpose
+Parameters
+Produces
+Pre-conditions
+Post-conditions
+Preferences
+*/
 
-}); // sanitize(string);
+module.exports.logIn = (function (user, password, callback) {
+    user = sanitize(user);
+    password = sanitize(password);
+    
+    module.exports.query("SELECT userid FROM users WHERE email = '" + user + "';", function(rows, error){
+	if (error)
+	    callback(null, error);
+	else if (!rows[0]) // user is not an email in the database
+	    module.exports.query("SELECT userid FROM users WHERE username ='" + user + "';", function(rows, error){
+		if (error)
+		    callback(null,error);
+		else if (!rows[0]) // user is also not a username, and therefore is not in the database
+		    callback(null, "Invalid Credentials");
+		else
+		    module.exports.verifyPassword(rows[0].userid, password, function (success, error){
+			if (error)
+			    callback(null, error);
+			else if (!success)
+			    callback(null, "Invalid Credentials");
+			else
+			    // Insert Login Time
+			    callback(userid, null);
+		    });
+	    });
+	else
+	    module.exports.verifyPassword(rows[0].userid, password, function(success, error) {
+		if (error)
+		    callback(null, error);
+		else if (!success)
+		    callback(null, "Invalid Credentials");
+		else
+		    // Insert Login Time
+		    callback(userid, null);
+		
+	    });
+
+    });
+});
+// TO DO
+// Update user information
+// Split change password into two functions, one for password recovery
+// PGP Public key
+// Formate dob entry
+
+
