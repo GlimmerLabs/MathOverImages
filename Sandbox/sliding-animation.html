@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+  #container {
+    background-color: rgb(241, 248, 255);
+    width: 900px;
+    height: 600px;
+  }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+  </script>
+  <script defer="defer">
+        var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 900,
+        height: 600
+      });
+
+      var buttons = new Kinetic.Layer();
+      var layer = new Kinetic.Layer();
+      var rects = [];
+      var max = 6;
+      var expanded = false;
+
+      var functionButton = new Kinetic.Group({
+        x:50,
+        y:50
+      });
+
+      var buttonBorder = new Kinetic.Rect({
+        x:0,
+        y:0,
+        width: 60,
+        height: 100,
+        fill: 'lightgreen',
+        stroke: 'black',
+        strokeWidth: 1
+      });
+      functionButton.add(buttonBorder);
+
+      var buttonRect = new Kinetic.Rect({
+        x: 15,
+        y: 15,
+        width: 30,
+        height: 30,
+        fill: 'green',
+        stroke: 'black',
+        strokeWidth: 2
+      });
+      functionButton.add(buttonRect);
+
+      var buttonText = new Kinetic.Text({
+        text: 'add a function',
+        x:0,
+        y:60,
+        width: 60,
+        height: 75,
+        align: 'center',
+        fill: 'black'
+      })
+      functionButton.add(buttonText);
+      buttons.add(functionButton);
+      stage.add(buttons);
+
+      console.log(buttons);
+
+      
+      for (i=0; i < max; i++) {
+      var rect = new Kinetic.Rect({
+          x: 75,
+          y: 85,
+          width: 30,
+          height: 30,
+          fill: 'green',
+          stroke: 'black',
+          strokeWidth: 2,
+          opacity: 0
+        });
+      rects[i] = rect;
+        layer.add(rect);
+      };
+      
+      stage.add(layer);
+
+      buttons.on('click', function(evt){
+        if(expanded){
+          var buttonMove = new Kinetic.Tween({
+            node: functionButton,
+            duration: 2,
+            x: 50,
+            easing: Kinetic.Easings.StrongEaseOut
+          });
+          buttonMove.play();
+
+          for (var i = 0; i < max; i++){
+            var tween = new Kinetic.Tween({
+              node: rects[i],
+              duration: 2,
+              x: 100,
+              opacity: 0,
+              easing: Kinetic.Easings.StrongEaseOut
+            });
+            tween.play();
+          }
+          expanded = false;
+        }
+        else {
+          var buttonMove = new Kinetic.Tween({
+            node: functionButton,
+            duration: 2,
+            x: 650,
+            easing: Kinetic.Easings.StrongEaseOut
+          });
+          buttonMove.play();
+
+          for(var i = 0; i < max; i++) {
+            var tween = new Kinetic.Tween({
+              node: rects[i], 
+              duration: 2,
+              x: 600-i*50,
+              opacity: 1,
+              easing: Kinetic.Easings.StrongEaseOut
+            }); 
+            tween.play();
+          }          
+          expanded = true;
+        }
+      });
+
+    </script>
+  </body>
+</html>

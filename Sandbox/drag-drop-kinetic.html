@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      } 
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+    <script defer="defer">
+      
+      var length = 90;
+      var offset = length / 2;
+   
+      var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 600,
+        height: 600
+      });
+
+      var layer = new Kinetic.Layer();
+      var linelayer = new Kinetic.Layer();
+      var circleG = new Kinetic.Group({
+        x: stage.getWidth() / 2,
+        y: stage.getHeight() / 2,
+        draggable:true});
+      
+      
+      var circle = new Kinetic.Circle({
+        x: 0,
+        y: 0,
+        name: 'circle',
+        radius: 35,
+        fillRed: 250,
+        fillGreen: 100,
+        fillBlue: 100,
+        scale: {x:1, y:1},
+        stroke: 'black',
+        strokeWidth: 4,
+        startScale: 1
+        //draggable:true
+      });
+      circleG.add(circle);
+      
+      var addition = new Kinetic.Text({
+        x: -13,
+        y: -25,
+        text: '+',
+        fontSize: 50,
+        fontFamily: 'OpenSans',
+        fill: 'black',
+        align: 'center'
+      });
+      circleG.add(addition);
+      
+    var rect = new Kinetic.Rect({
+        x: (stage.getWidth() / 4) -offset,
+        y: (stage.getHeight() / 2) -offset,
+        width: length,
+      height: length,
+        fillRed: 150,
+        fillGreen: 200,
+        fillBlue: 250,
+        stroke: 'black',
+        strokeWidth: 4,
+        draggable:true
+      });
+      var line = new Kinetic.Line({
+        points: [
+          circleG.x(),
+          circleG.y(),
+          rect.x()+offset,
+          rect.y()+offset],
+        stroke: 'black',
+        strokeWidth: 4
+      });
+
+    
+      // add the shape to the layer
+      layer.add(circleG);
+      layer.add(rect);
+      linelayer.add(line);
+        
+      // add the layer to the stage
+      stage.add(linelayer);
+      stage.add(layer);
+      
+      //change circle color on mouse events and drag events
+      /*
+      circle.on('mouseover dragstart', function(){
+        this.fillRed(200);
+        layer.draw();
+      });
+
+      
+      circle.on('mouseout dragend', function(){
+        this.fillRed(250);
+        layer.draw();
+      });        
+      */
+
+      circleG.on('mouseover dragstart', function(){
+        this.setAttrs({scale: {x:1.2, y:1.2}});
+        var newCircle = this.getChildren(function(node) {
+          return node.name() === 'circle';
+        });
+        newCircle.fillRed(200);
+        layer.draw();
+      });
+
+      circleG.on('mouseout dragend', function(){
+        this.setAttrs({scale: {x:1, y:1}});
+        var newCircle = this.getChildren(function(node) {
+          return node.name() === 'circle';
+        });
+        newCircle.fillRed(250);
+        layer.draw();
+      });
+
+ //change rect color on mouse events and drag events
+      
+      rect.on('mouseover dragstart', function(){
+        this.fillBlue(200);
+        this.fillGreen(175);
+        
+        layer.draw();
+      });
+      
+      rect.on('mouseout dragend', function(){
+        this.fillBlue(250);
+        this.fillGreen(200);
+        layer.draw();
+      });   
+      
+      //attach line to circle and rect        
+      layer.on('draw', function() {
+          line.points()[0] = circleG.x();
+          line.points()[1] = circleG.y();
+          line.points()[2] = rect.x()+offset;
+          line.points()[3] = rect.y()+offset; 
+          line.moveToBottom();
+          linelayer.draw();
+      });
+    </script>
+  </body>
+</html>​

@@ -1,0 +1,861 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script>
+/**
+ * Global variables for scalable content.
+ */
+	var width = 900;
+	var height = 2 * width / 3;
+	var globalFont = 'Arial';
+
+	var functionStrokeWidth = width / 90;
+	var functionHalfStrokeWidth = functionStrokeWidth / 2;
+	var functionTotalSideLength = width / 20;
+	var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
+	var functionColor = '#508C37';
+
+	var valueSideLength = functionTotalSideLength / 1.414;
+	var valueXYColor = 'gray'
+	var valueTimeColor = 'gold'
+	var valueConstantColor = 'purple'
+
+	var imageBoxSideLength = width / 80;
+	var imageBoxColor = 'white'
+	var functionImageBoxOffset = width / 300;
+	var valueImageBoxOffset = width / 30;
+
+	var outletXOffset = width / 255;
+	var outletYOffset = functionRectSideLength / 3;
+	var outletColor =  '#FFC440';
+
+	var lineStrokeWidth = 2;
+
+	var menuHeight = width / 9; 
+	var menuCornerWidth = width / 5;
+	var valMenuXSpacing = width / 32;
+	var functMenuXSpacing = width / 68;
+	var menuYspacing = width * 11/360;
+	var buttonWidth = width / 10;
+	var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
+	var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
+	var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
+	var menuAnimDuration = 1;
+
+	</script>
+
+	<script>
+/**
+	* Arrays of the basic function and value names, and tables of their specific settings
+	*/
+
+	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
+	var functions = {
+		add: 			{rep: '+', 	 max: 20, min: 2},
+		multiply: {rep: '*', 	 max: 20, min: 2},
+		negate: 	{rep: '-', 	 max: 1,  min: 1},
+		sine: 		{rep: 'sin', max: 1,  min: 1},
+		cosine: 	{rep: 'cos', max: 1,  min: 1},
+		absolute: {rep: 'abs', max: 1,  min: 1},
+		average: 	{rep: 'ave', max: 20, min: 2},
+		sign: 		{rep: 'sign',max: 1,  min: 1},
+		wrap: 		{rep: 'wrap',max: 1,  min: 1},
+		rgb: 			{rep: 'rgb', max: 3,  min: 3}
+	}
+	var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
+	var values = {
+		x: 				{rep: 'x', 	 max: 20, min: 2, color: valueXYColor},
+		y: 				{rep: 'y', 	 max: 20, min: 2, color: valueXYColor},
+		second: 	{rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
+		minute:		{rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
+		hour: 		{rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
+		day: 			{rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
+		constant:	{rep: '', 	 max: 20, min: 2, color: valueConstantColor},
+	}
+	</script>
+	
+
+	<style>
+	body {
+		margin: 0px;
+		padding: 0px;
+	} 
+	#container {
+		background-color: rgb(241, 248, 255);
+		width: 900px;
+		height: 600px;
+	}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<script src="http://www.cs.grinnell.edu/~rebelsky/Glimmer/Summer2014/MathOverImages/Sandbox/render.js">
+	</script>
+	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+	</script>
+	<script defer="defer">
+
+	var stage = new Kinetic.Stage({
+		container: 'container',
+		width: width,
+		height: height
+	});
+
+
+/**
+ * Layers of the workspace:
+ * 1. The line layer holds connecting lines between nodes in the work area.
+ * 2. The menu layer holds the buttons that users can click on to drag a new node into
+ *		the work area.
+ * 3. The menuButton layer holds the super buttons that are used to expand the menus.
+ * 4. The work layer holds all active nodes that are either connected or available to
+ * 		be connected.
+ * 5. The border layer stores static elements of the page such as dividing lines.
+ * 6. The drag layer holds nodes while they are being moved about the workspace.
+ */
+
+	var lineLayer = new Kinetic.Layer();
+	var menuLayer = new Kinetic.Layer();
+	var menuButtonLayer = new Kinetic.Layer();
+	var workLayer = new Kinetic.Layer();
+	var borderLayer = new Kinetic.Layer();
+	var dragLayer = new Kinetic.Layer();
+
+/**
+ * Add the layers to the stage. The top layer is the one most recently added, and
+ * objects within a layer follow the same logic.
+ */
+	stage.add(lineLayer);
+	stage.add(menuLayer);
+	stage.add(menuButtonLayer);
+	stage.add(workLayer);
+	stage.add(borderLayer);
+	stage.add(dragLayer);
+
+  //UTILITY FUNCTIONS
+
+/*
+isFunction determines if target is a functionGroup and returns a boolean value. 
+target is an object.
+*/
+var isFunction = function(target) {
+	return (target.attrs.maxInputs != null);
+};
+
+/*
+isValue determines if target is a valueGroup and returns a boolean value. 
+target is an object.
+*/
+var isValue = function(target) {
+	return (target.attrs.maxInputs == null);
+};
+
+/*
+isOutlet determines if target is an outletGroup and returns a boolean value. 
+target is an object.
+*/
+var isOutlet = function(target) {
+	return (target.name() != null && target.attrs.name.substring(0,6) == 'outlet');
+};
+
+/*
+isLine determines if target is a line and returns a boolean value. 
+target is an object.
+*/
+var isLine = function(target) {
+	return (target.attrs.outlet != null);
+};
+
+var isImageBox = function(target) {
+	return (target.name() != null && target.attrs.name == 'imageBox');
+}
+
+	// CONSTRUCTORS
+
+/*
+	Function nodes and Value nodes are groups of objects. Members of groups can
+	be accessed through the array 'group'.children[].
+	Children are stored in the following order:
+	0. Underlying Shape
+	1. Text
+	2. render box
+	3+. Outlet nodes (only for functions)
+	*/
+
+
+/* 
+	makeFunctionGroup takes a string funName, a key in the functions object above,
+	an integer x, and an integer y, and returns the corresponding function node object,
+	with top right corner at the given x, y coordinate.
+	*/
+	var makeFunctionGroup = function(funName, x, y) {
+		/* create group that will contain information on the function and the shapes making up the representation on screen. */
+		var newGroup = new Kinetic.Group({
+			name: funName,
+			x: x - functionHalfStrokeWidth,
+			y: y,
+			numInputs: 0, 
+			maxInputs: functions[funName].max, 
+			minInputs: functions[funName].min, 
+			lineOut: [], 
+			funct: funName, 
+			index: functions[funName].index,
+			visible: false
+		});
+		/* create rectangle shape */
+		var newRect = new Kinetic.Rect({
+			name: funName,
+			x: functionHalfStrokeWidth,
+			y: functionHalfStrokeWidth,
+			width: functionRectSideLength,
+			height: functionRectSideLength,
+			fill: functionColor,
+			lineJoin: 'round',
+			stroke: functionColor,
+			strokeWidth: functionStrokeWidth
+		});
+		newGroup.add(newRect);
+		/* create text to be displayed on top of rectangle */
+		var newText = new Kinetic.Text({
+			text: functions[funName].rep,
+			fontFamily: globalFont,
+			fill: 'black',
+			fontSize: 16,
+			x: 0,
+			y: functionTotalSideLength/2 - functionHalfStrokeWidth,
+			width: functionTotalSideLength,
+			align: 'center'
+		});
+		newGroup.add(newText);
+		/* create small box in the bottom right corner. Originally is not visible.*/
+		var newBox = new Kinetic.Rect({
+			name: 'imageBox',
+			x: functionRectSideLength + functionImageBoxOffset,
+			y: functionRectSideLength + functionImageBoxOffset,
+			width: imageBoxSideLength,
+			height: imageBoxSideLength,
+			fill: imageBoxColor,
+			stroke: 'black',
+			strokeWidth: .5,
+			visible: false,
+			rendered: false
+		});
+		newGroup.add(newBox);
+
+		return newGroup;
+	};
+
+
+/*
+	makeValueGroup takes a string valName, the name of a key in the values object above,
+	an integer x, and an integer y, and returns the corresponding function node object,
+	centered at (x + width / 40, y + width / 40).
+	*/
+	var makeValueGroup = function(valName, x, y) {
+		/* create group that contains information on the value and shapes to be displayed. */
+		var newGroup = new Kinetic.Group({
+			name: valName,
+			x: x,
+			y: y,
+			lineOut: [],
+			index: values[valName].index,
+			visible: false
+		});
+		/* create diamond shape. */
+		var newRect = new Kinetic.Rect({
+			x: functionRectSideLength/2,
+			y: 0,
+			width: valueSideLength,
+			height: valueSideLength,
+			fill: values[valName].color,
+			rotation: 45,
+			name: valName
+		});
+		newGroup.add(newRect);
+		/* create text to be displayed on diamond. */
+		var newText = new Kinetic.Text({
+			text: values[valName].rep,
+			fontFamily: 'OpenSans',
+			fill: 'black',
+			fontSize: 16,
+			x: 0,
+			y: valueSideLength/2,
+			width: functionRectSideLength,
+			align: 'center'
+		});
+		newGroup.add(newText);
+		/* create small box in bottom right corner. Originally not visible. */
+		var newBox = new Kinetic.Rect({
+			name: 'imageBox',
+			x: valueImageBoxOffset,
+			y: valueImageBoxOffset,
+			width: imageBoxSideLength,
+			height: imageBoxSideLength,
+			fill: imageBoxColor,
+			stroke: 'black',
+			strokeWidth: .5,
+			visible: false,
+			rendered: false
+		});
+		newGroup.add(newBox);
+
+		return newGroup;
+	};
+
+/*
+	makeOutlet takes a function node object, functGroup, and returns an outlet node object 
+	to be added to that group.
+	It DOES NOT add the outlet to the group.
+	*/
+	var makeOutlet = function(functGroup) {
+		var bezPoint = width / 50;
+		var outlet = new Kinetic.Shape({
+			sceneFunc: function(context) {
+				context.beginPath();
+				context.moveTo(0, 0);
+				context.bezierCurveTo(-bezPoint, -bezPoint, -bezPoint, bezPoint, 0, 0);
+				context.closePath();
+				context.fillStrokeShape(this);
+			},
+			name: 'outlet' + (functGroup.children.length - 3),
+			x:functGroup.children[0].x() + outletXOffset,
+			y:functGroup.children[0].y() + (functGroup.children.length - 3) * outletYOffset + functionHalfStrokeWidth,
+			fill: '#FFC440',
+			stroke: 'black',
+			strokeWidth: 1,
+			lineIn: null
+		});
+		return outlet;
+	};
+/*
+	makeLine takes either a functionGroup object or valueGroup object as input (source) and creates a line that begins at the left edge of source. 
+	*/
+	var makeLine = function(source) {
+		var newLine = new Kinetic.Line({
+			points: [
+			source.x() + functionRectSideLength - 3,
+			source.y() + functionTotalSideLength / 2,
+			source.x() + functionTotalSideLength,
+			source.y() + functionTotalSideLength / 2,
+			],
+			stroke: 'black',
+			strokeWidth: lineStrokeWidth,
+			source: source,
+			sourceIndex: source.attrs.lineOut.length,
+			outlet: null
+		});
+		return newLine;
+	}
+/*
+	makeMenuTween takes a node (target), an integer (xEnd), and a boolean (visibility). It returns a kinetic tween that will move target to xEnd, without changing y value; and with the visibility to the specified boolean values.*/
+	var makeMenuTween = function(target, xEnd, visibility) {
+		return new Kinetic.Tween({
+			node: target,
+			duration: menuAnimDuration,
+			x: xEnd,
+			visible: visibility,
+			easing: Kinetic.Easings.StrongEaseOut
+		});
+	};
+
+//METHODS
+/*
+	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
+	*/
+	var addOutlet = function(funGroup) {
+		if(funGroup.children.length - 3 < funGroup.attrs.maxInputs) {
+			if(funGroup.children.length - 3 > 2) {
+				funGroup.children[0].setAttr('height',
+					funGroup.children[0].attrs.height + outletYOffset);
+				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
+
+			}
+			var newOutlet = makeOutlet(funGroup);
+			funGroup.add(newOutlet);
+			stage.draw();
+		}
+	};
+	/*
+		checkBoxValidity takes a functionGroup and determines if its render box should be visible or not, and changes whether the box is visible.
+	*/
+	var checkBoxValidity = function(parent) {
+		if (parent.attrs.numInputs >= parent.attrs.minInputs) {
+			parent.children[2].setAttr('visible', true);
+		} else {
+			parent.children[2].setAttr('visible', false);
+		}
+	}
+	/*
+	renderCanvas takes a function or value group and renders a 50 by 50 image starting where the image box is located.  
+	*/
+	var renderCanvas = function(group) {
+		var box = group.children[2];
+		var newLayer = new Kinetic.Layer();
+		stage.add(newLayer);
+		canvas = newLayer.canvas._canvas;
+		renderFun(MOIbody2fun("x+y"), canvas, group.x() + box.x(), group.y() + box.y(), 50, 50);
+	};
+
+	// Create functions to Move Menu Items
+	/* move the valueGroups in the menu to their original location. */
+	var moveValueNodesIn = function() {
+		for (var i = 0; i < menuValues.length; i++) {
+			var moveValue = makeMenuTween(menuValues[i], menuValuesXStart, false);
+			moveValue.play();
+		}
+	};
+	/* move the valueGroups to their expanded location. */
+	var expandValueNodes = function() {
+		for (var i = 0; i < menuValues.length; i++) {
+			var moveValue = makeMenuTween(menuValues[i], menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength), true);
+			moveValue.play();
+		}
+	};
+	/* move the functionGroups to their original position. */
+	var moveFunctionNodesIn = function() {
+		for (var i = 0; i < menuFunctions.length; i++) {
+			var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXStart, false);
+			moveFunction.play();
+		}
+	};
+	/* move the functionGroups to the right of the screen. (For when values are expanded).*/
+	var moveFunctionNodesRight = function() {
+		for (var i = 0; i < menuFunctions.length; i++) {
+			var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXEnd, false);
+			moveFunction.play();
+		}
+	};
+	/* move the functionGroups to their expanded position. */
+	var expandFunctionNodes = function() {
+		for (var i = 0; i < menuFunctions.length; i++) {
+			var moveFunction = makeMenuTween(menuFunctions[i], menuCornerWidth + 2 * buttonWidth + functMenuXSpacing + i * (functMenuXSpacing + functionTotalSideLength), true)
+			moveFunction.play();
+		}
+	}
+	/* move the functionsButton to the right of the screen (for when values are expanded). */
+	var moveFunctionsButtonRight = function() {
+		var moveButton = makeMenuTween(functionsButton, width - buttonWidth, true)
+		moveButton.play();
+	};
+	/* move the functionsButon to it's original position. */
+	var moveFunctionsButtonLeft = function() {
+		var moveButton = makeMenuTween(functionsButton, menuCornerWidth + buttonWidth, true)
+		moveButton.play();
+	};
+
+//SETUP STAGE
+
+/* create and add menu border */
+var borderLine = new Kinetic.Line({
+	points: [0, menuHeight, width, menuHeight],
+	stroke: 'black',
+	strokeWidth: 2
+});
+
+borderLayer.add(borderLine);
+borderLayer.draw();
+
+/* create and add menu buttons */
+var valuesButton = new Kinetic.Group({
+	x: menuCornerWidth
+});
+menuButtonLayer.add(valuesButton);
+
+var valuesButtonBox = new Kinetic.Rect({
+	x:0,
+	y:0,
+	width: buttonWidth,
+	height: menuHeight,
+	fill: 'lavender',
+	stroke: 'black',
+	strokeWidth: 2
+});
+valuesButton.add(valuesButtonBox);
+
+var valuesButtonRect = new Kinetic.Rect({
+	x: buttonWidth / 2,
+	y: menuHeight / 4,
+	width: valueSideLength,
+	height: valueSideLength,
+	fill: 'purple',
+	rotation: 45,
+});
+valuesButton.add(valuesButtonRect);
+
+var valuesButtonText = new Kinetic.Text({
+	text: 'add a value',
+	x: 0,
+	y: menuHeight / 2 + menuHeight / 4,
+	width: buttonWidth,
+	height: menuHeight / 4,
+	fill: 'black',
+	align: 'center'
+});
+valuesButton.add(valuesButtonText);
+
+var functionsButton = new Kinetic.Group({
+	x: menuCornerWidth + buttonWidth
+});
+menuButtonLayer.add(functionsButton);
+
+var functionsButtonBox = new Kinetic.Rect({
+	x:0,
+	y:0,
+	width: buttonWidth,
+	height: menuHeight,
+	fill: '#D7EBCF',
+	stroke: 'black',
+	strokeWidth: 2
+});
+functionsButton.add(functionsButtonBox);
+
+var functionsButtonRect = new Kinetic.Rect({
+	x: buttonWidth / 2 - functionRectSideLength / 2,
+	y: menuHeight / 4,
+	width: functionRectSideLength,
+	height: functionRectSideLength,
+	fill: functionColor,
+	lineJoin: 'round',
+	stroke: functionColor,
+	strokeWidth: functionStrokeWidth
+});
+functionsButton.add(functionsButtonRect);
+
+var functionsButtonText = new Kinetic.Text({
+	text: 'add a function',
+	x: 0,
+	y: menuHeight / 2 + menuHeight / 4,
+	width: buttonWidth,
+	height: menuHeight / 4,
+	fill: 'black',
+	align: 'center'
+});
+functionsButton.add(functionsButtonText);
+menuButtonLayer.draw();
+
+/* add functions to menu */
+var menuFunctions = [];
+for (var i = 0; i < funNames.length; i++) {
+	menuFunctions[i] = makeFunctionGroup(funNames[i], menuFunctsXStart, menuYspacing);
+	menuLayer.add(menuFunctions[i]);
+}
+
+/* add values to menu */
+var menuValues = [];
+for (var i = 0; i < valNames.length; i++) {
+	menuValues[i] = makeValueGroup(valNames[i], menuValuesXStart, menuYspacing);
+	menuLayer.add(menuValues[i]);
+}
+
+stage.draw();
+
+//MENU ANIMATIONS
+
+var valueExpanded = false;
+var functionExpanded = false;
+
+/*
+On click of value menu button:
+1. Neither values or functions are expanded.
+	- move functionsButton right.
+	- expand values
+2. Values are not expanded, functions are expanded.
+	- collapse functions to the right and move functionsButon
+	- expand values
+3. Values are expanded, functions are not.
+	- collapse values
+	- move functionsButton left. 
+	*/
+	valuesButton.on('click', function(){
+		if (!valueExpanded) {
+			if (!functionExpanded) {
+				moveFunctionsButtonRight();
+				moveFunctionNodesRight();
+				expandValueNodes();
+
+				valueExpanded = true;
+			} // if functions are also not expanded
+			else {
+				moveFunctionsButtonRight();
+				moveFunctionNodesRight();
+				expandValueNodes();
+				
+				valueExpanded = true;
+				functionExpanded = false;
+			} // else functions were already expanded
+		} // if values are not expanded
+		else {
+			moveValueNodesIn();
+			moveFunctionNodesIn();	
+			moveFunctionsButtonLeft();
+
+			valueExpanded = false;
+		} // else values were already expanded
+	});
+/*
+On click of function menu button:
+1. Neither functions or values are expanded.
+	- expand functions
+2. Functions are not expanded, values are expanded.
+	- collapse values
+	- move functionsButton left
+	- expand functions
+3. Functions are expanded, values are not.
+	- collapse functions 
+	*/
+	functionsButton.on('click', function(){
+		if (!functionExpanded) {
+			if (!valueExpanded) {
+				expandFunctionNodes();
+
+				functionExpanded = true;
+			} // functions and values not expanded
+			else {
+				moveValueNodesIn();
+				moveFunctionsButtonLeft();
+				expandFunctionNodes();
+
+				functionExpanded = true;
+				valueExpanded = false;
+			} // functions not expanded, values expanded
+		}
+		else {
+			moveFunctionNodesIn();
+			
+			functionExpanded = false;
+		} // functions are expanded
+	});
+
+// ADDING TO WORKSPACE
+
+/* variables to globally reference the most recently used object/line */
+var currShape;
+var currLine;
+var makingLine = false;
+
+/*
+	On mousedown of a menu object (value or function prototype), you create a copy of that object and begin to draw it.
+*/
+menuLayer.on('mousedown', function(evt) {
+	if (!makingLine) {
+		var group = evt.target.getParent();
+		if (isFunction(group)) {
+			var newGroup = makeFunctionGroup(group.attrs.name, group.attrs.x, group.attrs.y);
+		} else {
+			var newGroup = makeValueGroup(group.attrs.name, group.attrs.x, group.attrs.y);
+	} // if function / else value
+	newGroup.setAttr('visible', true);
+	dragLayer.add(newGroup);
+	newGroup.startDrag();
+	dragLayer.draw();
+}
+});
+
+/*
+	when an object being dragged is released:
+	1. check that it isnt in the menu area
+	--if it is a new object, add the appropriate number of outlets to it
+	2. if its in the menu area destroy it and all lines attached to it
+*/
+dragLayer.on('mouseup', function(evt) {
+	var group = evt.target.getParent();
+	if (group.attrs.y > menuHeight) {
+		group.moveTo(workLayer);
+		if (isFunction(group) && group.children.length < 4) {
+			for (var i = 0; i < functions[group.attrs.name].min; i++) {
+				addOutlet(group);
+			} // for 
+		} // if	
+		if (group.children[2].attrs.expanded) {
+			renderCanvas(group);
+			} // if 
+		} else {
+		var targetLine;
+		for(var i = 0; i < group.children.length - 3; i++) {
+			targetLine = group.children[i+3].attrs.lineIn;
+			if(targetLine != null) {
+				targetLine.attrs.outlet = null;
+				targetLine.attrs.source.attrs.lineOut[targetLine.attrs.sourceIndex].destroy();
+			}
+		}
+		var outletParent;
+		for(var i = 0; i < group.attrs.lineOut.length; i++) {
+			targetLine = group.attrs.lineOut[i];
+			if (targetLine.attrs.outlet != null) {
+				outletParent = targetLine.attrs.outlet.getParent();
+				outletParent.attrs.numInputs--;
+				targetLine.attrs.outlet.attrs.lineIn = null;
+				checkBoxValidity(outletParent);
+			}
+			targetLine.destroy();
+		}
+		lineLayer.draw();
+
+
+		group.destroy();
+	}
+	dragLayer.draw();
+	workLayer.draw();
+
+});
+
+/*
+	When you click down on an object in the workLayer and arent in the process of making
+	a line, move that object to the dragLayer and allow it to be dragged.
+*/
+workLayer.on('mousedown', function(evt) {
+	if (!makingLine) {
+		var group = evt.target.getParent();
+		group.moveTo(dragLayer);
+		currShape = group;
+		group.startDrag();
+		stage.draw();
+	}
+});
+
+/*
+	when you double click on an object in the workLayer and you arent already drawing a
+	line, you should begin drawing a line starting from that object.
+*/
+workLayer.on('dblclick', function(evt) {
+	if (!makingLine) {
+		makingLine = true;
+		var group = evt.target.getParent();
+		currLine = makeLine(group);
+		group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
+		lineLayer.add(currLine);
+		lineLayer.draw();
+	}
+});
+
+/*
+	while you are drawing a line, make it move with the cursor.
+*/
+stage.addEventListener('contentMousemove', function(){
+	if(makingLine) {
+		currLine.points()[2] = stage.getPointerPosition().x;
+		currLine.points()[3] = stage.getPointerPosition().y;
+		lineLayer.draw();
+	}
+});
+
+/*
+	while making a line, make outlets grow when they are moused over to signify that they
+	are valid connections
+*/
+workLayer.on('mouseover', function(evt) {
+	if (makingLine) {
+		var shape = evt.target;
+		if (isOutlet(shape)) {
+			shape.scale({
+				x: 1.5,
+				y: 1.5
+			});
+			workLayer.draw();
+		} // if outlet
+	} // if makingLine
+});
+
+/*
+	when the cursor is moved out of an outlet while drawing a line, return it to its
+	original size
+*/
+workLayer.on('mouseout', function(evt) {
+	if (makingLine) {
+		var shape = evt.target;
+		if (isOutlet(shape)) {
+			shape.scale({
+				x: 1,
+				y: 1
+			});
+			workLayer.draw();
+		} // if outlet
+	} // if makingLine
+});
+
+/*
+	When making a line, form a connection on click if the click was on an outlet.
+	Behind the scenes:
+	1. if the object clicked was the source of the line, destroy the line.
+	2. If the outlet already had a connection, make that connection null and destroy it
+	--otherwise, this is connected to a new outlet so increment numInputs for the group
+	3. set connections within the line and its outlet, so line has a reference to the 
+	outlet, and the outlet has a reference to the line
+	--make the line stick to the outlet
+	--set makingLine = false
+	--shrink the outlet back to its original size
+	--check if we have enough outlets to show the render box
+	4. if we have all visible outlets filled but the function can take more inputs, add
+	an outlet.
+	5. otherwise keep drawing the line.
+
+
+*/
+workLayer.on('click', function(evt) {
+	var shape = evt.target;
+	var parent = shape.getParent();
+	if (makingLine) {
+		if (shape.getParent() === currLine.attrs.source) {
+			currLine.attrs.source.attrs.lineOut[currLine.attrs.source.attrs.lineOut.length - 1].destroy();
+			currLine.destroy();
+			if (isOutlet(shape)) {
+				shape.scale({	x: 1, y: 1 });
+			}
+			makingLine = false;
+		} else if (isOutlet(shape)) {
+			//check if outlet already has an input
+			if (shape.attrs.lineIn != null) {
+				//POSSIBLE NEED TO DESTROY LINE ITSELF
+				shape.attrs.lineIn.attrs.source.attrs.lineOut[shape.attrs.lineIn.attrs.sourceIndex].attrs.outlet = null;
+				shape.attrs.lineIn.attrs.source.attrs.lineOut[shape.attrs.lineIn.attrs.sourceIndex].destroy();
+			} else {
+				parent.attrs.numInputs++;
+			}
+
+			shape.attrs.lineIn = currLine;
+			currLine.points()[2] = parent.x();
+			currLine.points()[3] = parent.y() + shape.y();
+			currLine.attrs.outlet = shape;
+			makingLine = false;
+			shape.scale({	x: 1, y: 1 });
+			checkBoxValidity(parent);
+			if (parent.attrs.numInputs == parent.children.length - 3 &&
+				parent.attrs.numInputs < parent.attrs.maxInputs) {
+				addOutlet(parent);
+			}
+		} // if clicked on self, else clicked on a valid outlet
+		stage.draw();
+	} // if makingLine
+	else if (isImageBox(shape)) {
+		renderCanvas(parent);
+		shape.attrs.expanded = true;
+		console.log(shape);
+	} // if imageBox
+});
+
+/*
+	While an object is being dragged, move all lines connected to it with it.
+*/
+dragLayer.on('draw', function() {
+	if(currShape != null) {
+		var targetLine;
+		for(var i = 0; i < currShape.children.length - 3; i++) {
+			targetLine = currShape.children[i+3].attrs.lineIn;
+			if(targetLine != null) {
+				targetLine.points()[2] = currShape.x();
+				targetLine.points()[3] = currShape.y() + currShape.children[i+3].y();
+			}
+		}
+		for(var i = 0; i < currShape.attrs.lineOut.length; i++) {
+			targetLine = currShape.attrs.lineOut[i];
+			targetLine.points()[0] = currShape.x() + functionRectSideLength - 3;
+			targetLine.points()[1] = currShape.y() + functionTotalSideLength / 2;
+		}
+		lineLayer.draw();
+	}
+});
+
+
+</script>
+</body>
+<html>

@@ -1,0 +1,346 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script>
+  var width = 900;
+  var height = 2 * width / 3;
+  var functions = ['+', '*', 'sin'];
+  var funInputs = [null, null, 1];
+  var values = ['x', 'y', 't.s'];      
+  var colors = ['gray', 'gray', 'gold'];
+  </script>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+  #container {
+    background-color: rgb(241, 248, 255);
+    width: 900px;
+    height: 600px;
+  }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+  </script>
+  <script defer="defer">
+  var functions = ['+', '*', 'sin'];
+  var values = ['x', 'y', 't.s'];
+
+  // setup of canvas
+  var stage = new Kinetic.Stage({
+    container: 'container',
+    width: width,
+    height: height
+  });
+
+  var borderLayer = new Kinetic.Layer();
+  var lineLayer = new Kinetic.Layer();
+  var menuLayer = new Kinetic.Layer();
+  var workLayer = new Kinetic.Layer();
+  var dragLayer = new Kinetic.Layer();
+
+  stage.add(lineLayer);
+  stage.add(menuLayer);
+  stage.add(workLayer);
+  stage.add(borderLayer);
+  stage.add(dragLayer);
+
+
+  var border1 = new Kinetic.Line({
+    points: [0, (height / 6),
+    width, (height / 6)],
+    stroke: 'black',
+    strokeWidth: 4
+  });
+  borderLayer.add(border1);
+  borderLayer.draw();
+
+  var makeFunctionUnit = function(funName, xval, yval, index, inputs) {
+    var functionGroup = new Kinetic.Group({
+      //draggable: true,
+      name: 'fun' + index + funName,
+      x: xval - 5,
+      y: yval,
+      inputs: inputs,
+      numOutlets: 0,
+      inLines: [],
+      outLines: []
+    });
+    var functionBox = new Kinetic.Rect({
+      x: 5,
+      y: 5,
+      width: width / 20 - 10,
+      height: width / 20 - 10,
+      fill: '#b6d7a8',
+      lineJoin: 'round',
+      stroke: '#b6d7a8',
+      strokeWidth: 10,
+      name: funName
+    });
+    var funText = new Kinetic.Text({
+      text: funName,
+      fontFamily: 'Open Sans',
+      fill: 'black',
+      fontSize: 16,
+      x: 0,
+      y: functionBox.height()/2,
+      width: width / 20,
+      align: 'center'
+    });
+    functionGroup.add(functionBox);
+    functionGroup.add(funText);
+
+    return functionGroup;
+  }
+
+  var makeOutlet = function(functGroup) {
+    var bezPoint = width/50;
+    var outlet = new Kinetic.Shape({
+      sceneFunc: function(context) {
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.bezierCurveTo(-bezPoint, -bezPoint , -bezPoint, bezPoint, 0, 0);
+        context.closePath();
+        context.fillStrokeShape(this);
+      },
+      name: 'outlet' + functGroup.attrs.numOutlets,
+      x:functGroup.children[0].x()+ width/225,
+      y:functGroup.children[0].y() + functGroup.attrs.numOutlets*((width / 20 -10) / 3 )+width/180,
+      fill: '#FFC440',
+      stroke: 'black',
+      strokeWidth: 1,
+      line: null
+    });
+   
+    return outlet;
+  };
+
+  var makeValueUnit = function(valName, xval, yval, index) {
+    var valGroup = new Kinetic.Group({
+      //draggable: true,
+      name: 'val' + index + valName,
+      x: xval,
+      y: yval,
+      outLines: []
+    });
+    var valBox = new Kinetic.Rect({
+      x: width / 40,
+      y: 0,
+      width: width / 28.3,
+      height: width / 28.3,
+      fill: colors[index],
+      rotation: 45,
+      name: valName
+    });
+    var valText = new Kinetic.Text({
+      text: valName,
+      fontFamily: 'OpenSans',
+      fill: 'black',
+      fontSize: 16,
+      x: 0,
+      y: width / 56,
+      width: width / 20,
+      align: 'center'
+    });
+    valGroup.add(valBox);
+    valGroup.add(valText);
+
+    return valGroup;
+  }
+
+  var i;
+  for(i = 0; i < 3; i++) {
+
+    var newBox = makeFunctionUnit(functions[i],
+      i * width * 13/180 + (width / 45),
+      width * 11/360, i, funInputs[i]);
+    menuLayer.add(newBox);
+  }
+  for(i = 3; i < 6; i++) {
+    var newVal = makeValueUnit(values[i - 3],
+      i * width * 13/180 + (width / 45),
+      width * 11/360,
+      i - 3);
+    menuLayer.add(newVal);
+  }
+  menuLayer.draw();
+  // end of setup, draw stage
+  stage.draw();
+
+
+
+  // functionBox interactions
+
+  menuLayer.on('mousedown', function(evt) {
+    var shape = evt.target.getParent();
+    var tempName = shape.name();
+    if (tempName.substring(0,3) === 'fun') {
+      var newGroup = makeFunctionUnit(tempName.substring(4), 
+        shape.x() + 5, 
+        shape.y(), 
+        tempName.charAt(3), 
+        funInputs[tempName.charAt(3)]);
+      var newOutlet = makeOutlet(newGroup);
+      newGroup.add(newOutlet);
+    } else if (tempName.substring(0, 3) === 'val') {
+      var newGroup = makeValueUnit(tempName.substring(4),
+        shape.x(),
+        shape.y(),
+        tempName.charAt(3));
+    }
+    dragLayer.add(newGroup);
+    newGroup.startDrag();
+    stage.draw();
+  });
+
+  dragLayer.on('mouseup', function(evt) {
+    var shape = evt.target;
+    var parent = shape.getParent()
+    
+    if(parent.y() > height / 6) {
+      parent.moveTo(workLayer);
+    } else {
+      //var source = parent.attrs.inLines[0].attrs.source;
+      //parent.attrs.inLines[0].destroy();
+      //console.log(source.attrs);
+      parent.destroy();
+    }
+    stage.draw();
+  });
+
+  var currShape;
+  workLayer.on('mousedown', function(evt) {
+    var shape = evt.target.getParent();
+    shape.moveTo(dragLayer);
+    shape.startDrag();
+    dragLayer.draw();
+    workLayer.draw();
+    currShape = shape;
+  });
+
+  // line variables
+  var makingLine = false;
+  var line = [];
+  var currLine;
+  var totalLines = 0;
+  // line variables
+
+
+  workLayer.on('dblclick', function(evt) {
+    makingLine = true;
+    var shape = evt.target;
+    var parent = shape.getParent();
+    line[totalLines] = new Kinetic.Line({
+      points: [
+      parent.x() + width / 20 - 3,
+      parent.y() + width / 40,
+      parent.x() + width / 20,
+      parent.y() + width / 40,
+      ],
+      stroke: 'black',
+      strokeWidth: 2,
+      source: parent,
+      outlet: null
+    });
+    parent.attrs.outLines[parent.attrs.outLines.length] = line[totalLines];
+    lineLayer.add(line[totalLines]);
+    lineLayer.draw();
+  });
+
+  workLayer.on('click', function(evt) {
+    if(makingLine) {
+      var shape = evt.target;
+      var parent = shape.getParent();
+      makingLine = false;
+      if(!(parent.x() + width / 20 === line[totalLines].points()[0] + 3
+       && parent.y() + width / 40 === line[totalLines].points()[1])
+       && parent.name().substring(0,3) == 'fun'
+       && stage.getPointerPosition().y > 100) {
+        /*
+Ok so heres are our cases now that we know its a valid connection:
+1. function can take this connection and:
+ a) now the function has enough inputs to have an output
+  i) its now capped --any more inputs would overwrite an existing input
+  ii) its an n-ary function and can have more inputs
+ b) the function still needs more inputs to have an output
+ c) it was an n-ary function and adding this input just changed the existing output
+2. function was capped and needs to replace and existing input
+*/
+          //
+          if(parent.attrs.inputs != null && parent.attrs.inLines.length >= parent.attrs.inputs) {
+            var bool = true;
+            var j = 0;
+            var outs = parent.attrs.inLines[0].attrs.source.attrs.outLines;
+            while(bool && j < outs.length) {
+              if (outs[j] == parent.attrs.inLines[0]) {
+                outs[j].destroy();
+                bool = false;
+              } else {
+                j++;
+              }
+            } // find & destroy the reference to the old line in its source
+            parent.attrs.inLines[0].destroy();
+            parent.attrs.inLines[0] = line[totalLines];
+          }
+          line[totalLines].attrs.outlet = parent;
+          parent.attrs.inLines[parent.attrs.inLines.length] = line[totalLines];
+          updateLine(line[totalLines], 'outlet');
+          lineLayer.draw();
+          totalLines++;
+
+
+        } else {
+          line[totalLines].destroy();
+          lineLayer.draw();
+        }
+      }
+    });
+
+stage.addEventListener('contentMousemove', function(){
+  if(makingLine) {
+    line[totalLines].points()[2] = stage.getPointerPosition().x;
+    line[totalLines].points()[3] = stage.getPointerPosition().y;
+    lineLayer.draw();
+  }
+});
+
+/**
+  * line is a line whose outlet or source is moving
+  * direction is the string ('outlet' + index) or 'source'
+  */
+  var updateLine = function(line, direction) {
+    if (direction === 'source') {
+      line.points()[0] = line.attrs.source.x() + width / 20 - 3;
+      line.points()[1] = line.attrs.source.y() + width / 40;
+    } else if (direction.substring(0,6) === 'outlet') {
+      line.points()[2] = line.attrs.outlet.x() + 3;
+      line.points()[3] = line.attrs.outlet.y() + width / 40;
+    }
+  }
+
+
+
+  dragLayer.on('draw', function() {
+    if(currShape != null) {
+      var shape = currShape;
+      if (shape.attrs.inLines != null) {
+        for (var j = 0; j < shape.attrs.inLines.length; j++) {
+          updateLine(shape.attrs.inLines[j], 'outlet');
+        }
+      }
+      for (var j = 0; j < shape.attrs.outLines.length; j++) {
+        updateLine(shape.attrs.outLines[j], 'source');
+      }
+      lineLayer.draw();
+    }
+  });
+
+
+
+
+  </script> 
+</body>
+</html>

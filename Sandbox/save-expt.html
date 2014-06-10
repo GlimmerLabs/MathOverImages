@@ -1,0 +1,196 @@
+<html>
+<head>
+<title>Sample Save</title>
+<script src="render.js"></script>
+<script>
+/**
+ * Are we animating our image?
+ */
+var animation = true;
+
+/**
+ * When was the last time we drew a frame?  (Used primarily when we
+ * need to re-render a particular frame.)
+ */
+var lastTime;
+
+function stopAnimation()
+{
+  animation=false;
+} // stopAnimation 
+
+function startAnimation()
+{
+  animation = true;
+  frame();
+} // startAnimation
+
+/**
+ * Get the image data for a canvas in jpeg form.
+ */
+function canvas2jpg(canvasName)
+{
+  var canvas = document.getElementById(canvasName);
+  var encoded = canvas.toDataURL("image/jpeg");
+  encoded = encoded.substring(encoded.indexOf(",")+1);
+  return encoded;
+} // canvas2jpg
+
+/**
+ * Get the image data for a canvas in arbitrary form.  Right now, this
+ * leaves the type in.
+ */
+function canvas2data(canvasName, type)
+{
+  var canvas = document.getElementById(canvasName);
+  var encoded = canvas.toDataURL(type);
+  return encoded;
+} // canvas2data
+
+/**
+ * Get the image data into our form.
+ */
+function getData(canvasName) 
+{
+  var imageData = document.getElementById("imagedata");
+  var type = document.getElementById("imagetype").value;
+  imageData.value = canvas2data(canvasName,type);
+} // getData
+
+/**
+ * Save the image.
+ */
+function saveImage() 
+{
+  // Find out where to save the file (and, possibly, the file type);
+  var filename = prompt("What do you want to call the image?");
+  var suffix = filename.substring(filename.lastIndexOf(".") + 1);
+  var type = "image/jpeg";
+  console.log("Suffix is " + suffix);
+  if (suffix == filename) {
+    suffix = ".jpg";
+    filename = filename + ".jpg";
+  }
+  if ((suffix == "jpg") || (suffix == ".jpg")) {
+  }
+  else if ((suffix == "png") || (suffix == ".png")) {
+    type = "image/png";
+  }
+  else {
+    alert("Unknown file type: " + suffix + ".  Currently support only jpg and png.");
+    return;
+  }
+  var data = canvas2data("gui");
+  document.getElementById("imagetype").value = type;
+  document.getElementById("imagefile").value = filename;
+  document.getElementById("imagedata").value = 
+     data.substring(data.indexOf(",")+1);
+  document.getElementById("imagesave").submit();
+} // saveImage
+
+function saveJPEG()
+{
+  var canvas1 = document.getElementById("gui");
+  var strData = canvas1.toDataURL("image/jpeg");
+  //saveFile(strData.replace("image/jpeg", "image/octet-stream"));
+  window.win = open (strData);
+  setTimeout('win.document.execCommand("SaveAs")', 500);
+}
+
+function frame()
+{
+  var rfun = MOIbody2fun(document.getElementById("rfun").value);
+  var gfun = MOIbody2fun(document.getElementById("gfun").value);
+  var bfun = MOIbody2fun(document.getElementById("bfun").value);
+  var canvas = document.getElementById("gui");
+  saveTime = renderRGB(rfun, gfun, bfun, canvas, 
+                       0, 0, canvas.width, canvas.height);
+  if (animation)
+    setTimeout(frame, 50);
+} // frame
+
+</script>
+</head>
+<body>
+<h1>Sample Save</h1>
+
+<h2>Saving Text Files</h2>
+
+<form method="post" action="save.php">
+<input type="hidden" name="type" value="text/html"/>
+<table>
+  <tr>
+    <td>File name:</td>
+    <td><input type="text" name="filename"/></td>
+  </tr>
+  <tr>
+    <td>Contents:</td>
+    <td><textarea name="data" cols="60" rows="6"></textarea></td>
+  </tr>
+  <tr>
+    <td colspan=2><input type="submit"/></td>
+  </tr>
+</table>
+</form>
+
+<h2>Saving Images</h2>
+
+<canvas id="gui" width="200" height="200"></canvas>
+<script>
+var gui = document.getElementById("gui");
+gui.onmousemove = function(evt) 
+                     { 
+                       var rect = gui.getBoundingClientRect();
+                       setMouse(evt.clientX - rect.left, 
+                                evt.clientY - rect.top);
+                     };
+gui.onmouseclick  = function(evt) 
+                     { 
+                       var rect = gui.getBoundingClientRect();
+                       setClick(evt.clientX - rect.left, 
+                                evt.clientY - rect.top);
+                     };
+gui.onmousedown = gui.onmouseclick;
+</script>
+<h4>Functional Imaging using X & Y in COLOR</h4>
+<table>
+  <tr>
+    <td>Function for Red</td>
+    <td><input type="text" name="left" id="rfun" size="100" value="x"/></td>
+  </tr>
+  <tr>
+    <td>Function for Green</td>
+    <td><input type="text" name="top" id="gfun" size="100" value="y"/></td>
+  </tr>
+  <tr>
+    <td>Function for Blue</td>
+    <td><input type="text" name="top" id="bfun" size="100" value="t.s*sign((x-t.m)*x+y*y-0.5)"/></td>
+  </tr>
+</table>
+<input type="button" value="Go!" onclick="startAnimation()">
+<input type="button" value="Stop" onclick="stopAnimation()">
+<input type="button" value="Get Data" onclick="getData('gui','image/jpg')">
+<input type="button" value="Save Image" onclick="saveImage()">
+
+<form id="imagesave" method="post" action="save.php">
+<input type="hidden" name="decode" value="true"/>
+<table>
+  <tr>
+    <td>File type:</td>
+    <td><input type="text" id="imagetype" name="type" value="image/jpg"/></td>
+  </tr>
+  <tr>
+    <td>File name:</td>
+    <td><input type="text" id="imagefile" name="filename"/></td>
+  </tr>
+  <tr>
+    <td>Contents:</td>
+    <td><textarea id="imagedata" name="data" cols="60" rows="6" ></textarea></td>
+  </tr>
+  <tr>
+    <td colspan=2><input type="submit"/></td>
+  </tr>
+</table>
+
+</body>
+</html>

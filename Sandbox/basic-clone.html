@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  } 
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+  <script defer="defer">
+
+  var length = 90;
+  var offset = length / 2;
+
+  var stage = new Kinetic.Stage({
+    container: 'container',
+    width: 600,
+    height: 600
+  });
+  var layer = new Kinetic.Layer();
+  var dragLayer = new Kinetic.Layer();
+  var draggedLayer = new Kinetic.Layer();
+  var lineLayer = new Kinetic.Layer();
+
+  var square = new Kinetic.Rect({
+    x: 10,
+    y: 30,
+    width: 50,
+    height: 50,
+    fillRed: 150,
+    fillGreen: 200,
+    fillBlue: 250,
+    stroke: 'black',
+    strokeWidth: 4,
+    lineJoin:'round',
+    draggable: true
+  });
+  layer.add(square);
+
+  stage.add(lineLayer);
+  stage.add(layer);
+  stage.add(draggedLayer);
+  stage.add(dragLayer);
+
+
+  layer.on('mousedown', function(evt) {
+    var shape = evt.target;
+    shape.moveTo(dragLayer);
+    stage.draw()
+    shape.startDrag();
+    var newSquare = new Kinetic.Rect({
+      x: 10,
+      y: 30,
+      width: 50,
+      height: 50,
+      fillRed: 150,
+      fillGreen: 200,
+      fillBlue: 250,
+      stroke: 'black',
+      strokeWidth: 4,
+      lineJoin:'round',
+      draggable: true
+    });
+    layer.add(newSquare);
+    stage.draw();
+  });
+
+  dragLayer.on('mouseup', function(evt) {
+    var shape = evt.target;
+    shape.moveTo(draggedLayer);
+    stage.draw();
+  });
+
+  draggedLayer.on('mousedown', function(evt) {
+    var shape = evt.target;
+    shape.moveTo(dragLayer);
+    stage.draw();
+    shape.startDrag();
+  });
+
+  var makingLine = false;
+  var line = [];
+  var totalLines = 0;
+  draggedLayer.on('dblclick', function(evt) {
+    console.log("What is going onn :(:(:(");
+      makingLine = true;
+      var shape = evt.target;
+      line[totalLines] = new Kinetic.Line({
+        points: [
+        shape.x() + shape.width(),
+        shape.y() + shape.height() / 2,
+        shape.x() + shape.width(),
+        shape.y() + shape.height() / 2
+        ],
+        stroke: 'black',
+        strokeWidth: 4
+      });
+      lineLayer.add(line[totalLines]);
+      lineLayer.draw();
+    });
+
+  draggedLayer.on('click', function(evt) {
+    if(makingLine) {
+      var shape = evt.target;
+      makingLine = false;
+      if(!(shape.x() + shape.width() === line[totalLines].points()[0]
+        && shape.y() + shape.height()/2 === line[totalLines].points()[1])) {
+        line[totalLines].points()[2] = shape.x();
+        line[totalLines].points()[3] = shape.y() + shape.width() / 2;
+        lineLayer.draw();
+        totalLines++;
+      }
+    }
+  });
+
+  stage.addEventListener('contentMousemove', function(){
+    if(makingLine) {
+      line[totalLines].points()[2] = stage.getPointerPosition().x;
+      line[totalLines].points()[3] = stage.getPointerPosition().y;
+      lineLayer.draw();
+    }
+  });
+
+
+
+
+
+  </script>
+</body>
+</html>​

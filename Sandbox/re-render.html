@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Sample MOI HSV Rendering Using Javascript</title>
+<title>Sample MOI Re-Rendering from JSON</title>
 <script src="render.js"></script>
 <script>
 var animation = true;
@@ -12,8 +12,8 @@ function stopAnimation()
 
 function startAnimation()
 {
-  animation = true;
-  frame();
+animation = true;
+frame();
 } // startAnimation
 
 var saveFile = function(strData)
@@ -21,25 +21,30 @@ var saveFile = function(strData)
 document.location.href = strData;
 }
 
-function saveJPEG()
+function savePNG()
 {
 var canvas1 = document.getElementById("gui");
-var strData = canvas1.toDataURL("image/jpeg");
-//saveFile(strData.replace("image/jpeg", "image/octet-stream"));
-window.win = open (strData);
-setTimeout('win.document.execCommand("SaveAs")', 500);
+var strData = canvas1.toDataURL("image/png");
+saveFile(strData.replace("image/png", "image/octet-stream"));
 }
 
 function frame()
 {
-var hfun = MOIbody2fun(document.getElementById("hfun").value);
-var sfun = MOIbody2fun(document.getElementById("sfun").value);
-var vfun = MOIbody2fun(document.getElementById("vfun").value);
 var canvas = document.getElementById("gui");
-var line = ["hsv", document.getElementById("hfun").value, document.getElementById("sfun").value, document.getElementById("vfun").value];
-var line2 = JSON.stringify(line);
-console.log (line2); //eventually send to server instead of print
-renderHSV(hfun, sfun, vfun, canvas, 0, 0, 550, 550);
+var line = document.getElementById("string").value;
+JSON.stringify(line);
+var line_array = JSON.parse(line);
+var type = line_array[0];
+var fun1 = MOIbody2fun(line_array[1]);
+var fun2 = MOIbody2fun(line_array[2]);
+var fun3 = MOIbody2fun(line_array[3]);
+
+if (type === "bw")
+renderFun(fun1, canvas, 0, 0, 550, 550);
+else if (type === "rgb")
+renderRGB(fun1, fun2, fun3, canvas, 0, 0, 550, 550);
+else if (type === "hsv")
+renderHSV(fun1, fun2, fun3, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
 } // frame
@@ -47,7 +52,7 @@ setTimeout(frame, 50);
 </script>
 </head>
 <body>
-<h1>Sample MOI HSV Rendering</h1>
+<h1>Sample MOI Re-Rendering</h1>
 <p>
 <a href="">Sample
   MOI Rendering</a>
@@ -73,23 +78,8 @@ gui.onmousedown = gui.onmouseclick;
 </script>
 <form>
 <h4>Functional Imaging using X & Y using HSV values</h4>
-<table>
-  <tr>
-    <td>Function for Hue</td>
-    <td><input type="text" name="left" id="hfun" size="100" value="m.x"/></td>
-  </tr>
-  <tr>
-    <td>Function for Saturation</td>
-    <td><input type="text" name="top" id="sfun" size="100" value="m.y"/></td>
-  </tr>
-  <tr>
-    <td>Function for Value</td>
-    <td><input type="text" name="top" id="vfun" size="100" value="t.s*sign(x*x+y*y-0.5)"/></td>
-  </tr>
-</table>
+<input type="text" name="bar" id="string" size="100"><br>
 <input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
-<input type="button" value="Download" onclick="saveJPEG()">
+<input type="button" value="Download" onclick="savePNG()">
 </form>
-</body>
-</html>
