@@ -52,7 +52,7 @@
 	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 	var functions = {
 		add: 			{rep: '+', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
-		multiply: {rep: '*', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
+		multiply: {rep: '*', 	 max: 20, min: 2, prefix: '', 		separator: '*'},
 		negate: 	{rep: '-', 	 max: 1,  min: 1, prefix: '-', 		separator: null},
 		sine: 		{rep: 'sin', max: 1,  min: 1, prefix: 'sin', 	separator: null},
 		cosine: 	{rep: 'cos', max: 1,  min: 1, prefix: 'cos', 	separator: null},
@@ -170,7 +170,18 @@ var isLine = function(target) {
  * with insufficient inputs.
  */
 var isRenderable = function(group) {
-	return (isValue(group) || group.attrs.numInputs >= group.attrs.minInputs);
+	if (isValue(group)) {
+		return true;
+	} else {
+		var validInputs = 0;
+		for(var i = 3; i < group.children.length; i++) {
+			lineIn = group.children[i].attrs.lineIn;
+			if (lineIn != null && isRenderable(lineIn.attrs.source)) {
+				validInputs++;
+			}
+		}
+		return validInputs >= group.attrs.minInputs;
+	}
 }
 
 	// CONSTRUCTORS
@@ -360,7 +371,8 @@ var isRenderable = function(group) {
 		});
 	};
 
-//METHODS
+// METHODS
+
 /*
 	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
 	*/
@@ -370,11 +382,11 @@ var isRenderable = function(group) {
 				funGroup.children[0].setAttr('height',
 					funGroup.children[0].attrs.height + outletYOffset);
 				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
-
+				funGroup.children[2].setAttr('y', funGroup.children[2].attrs.y + outletYOffset);
 			}
 			var newOutlet = makeOutlet(funGroup);
 			funGroup.add(newOutlet);
-			stage.draw();
+			workLayer.draw();
 		}
 	};
 
@@ -396,22 +408,29 @@ var isRenderable = function(group) {
  * renderFunction that should be used to create an image for output.
  * NOTE: this will always recalculate the entire function
  */
-
 var findRenderFunction = function(group) {
 	if (isRenderable(group)) {
 		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
-		for(var i = 0; i < group.children.length - 3; i++) {
-			group.attrs.renderFunction +=
-				group.children[i+3].lineIn.attrs.source.attrs.renderFunction;
-
-			if(i < group.children.length - 4) {
-				group.attrs.renderFunction += functions[group.attrs.name].separator
-			} // if this isnt the last element
+			for(var i = 3; i < group.children.length; i++) {
+				if(group.children[i].attrs.lineIn != null) {
+					group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
+					group.attrs.renderFunction += functions[group.attrs.name].separator
+				}
 		} // add each element to the equation
-		group.attrs.renderFunction += ')';
+		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
 	} // check if renderable 
-}
+};
 
+/**
+ * updateForward takes a group and makes sure all groups for which it is a source are
+ * accurate. To be used whenever a function's inputs are changed, or when a node is
+ * deleted.
+ */
+var updateForward = function(group) {
+	for (var i = 0; i < lineOut.length; i++) {
+		// STUB
+	}
+};
 
 	// Create functions to Move Menu Items
 	/* move the valueGroups in the menu to their original location. */
@@ -688,11 +707,12 @@ dragLayer.on('mouseup', function(evt) {
 		}
 	} else {
 		var targetLine;
-		for(var i = 0; i < group.children.length - 3; i++) {
-			targetLine = group.children[i+3].attrs.lineIn;
+		for(var i = 3; i < group.children.length; i++) {
+			targetLine = group.children[i].attrs.lineIn;
 			if(targetLine != null) {
 				targetLine.attrs.outlet = null;
-				targetLine.attrs.source.attrs.lineOut[targetLine.attrs.sourceIndex].destroy();
+				targetLine.attrs.source.attrs.lineOut.splice(targetLine.attrs.sourceIndex, 1);
+				targetLine.destroy();
 			}
 		}
 		var outletParent;
@@ -707,12 +727,12 @@ dragLayer.on('mouseup', function(evt) {
 			targetLine.destroy();
 		}
 		lineLayer.draw();
-
-
 		group.destroy();
 	}
-	stage.draw();
-
+	menuLayer.draw();
+	menuButtonLayer.draw();
+	dragLayer.draw();
+	workLayer.draw();
 });
 
 /*
@@ -725,7 +745,8 @@ workLayer.on('mousedown', function(evt) {
 		group.moveTo(dragLayer);
 		currShape = group;
 		group.startDrag();
-		stage.draw();
+		workLayer.draw();
+		dragLayer.draw();
 	}
 });
 
@@ -812,7 +833,7 @@ workLayer.on('click', function(evt) {
 		var shape = evt.target;
 		var parent = shape.getParent();
 		if (shape.getParent() === currLine.attrs.source) {
-			currLine.attrs.source.attrs.lineOut[currLine.attrs.source.attrs.lineOut.length - 1].destroy();
+			currLine.attrs.source.attrs.lineOut.splice([currLine.attrs.source.attrs.lineOut.length - 1], 1);
 			currLine.destroy();
 			if (isOutlet(shape)) {
 				shape.scale({	x: 1, y: 1 });
@@ -822,8 +843,9 @@ workLayer.on('click', function(evt) {
 			//check if outlet already has an input
 			if (shape.attrs.lineIn != null) {
 				//POSSIBLE NEED TO DESTROY LINE ITSELF
-				shape.attrs.lineIn.attrs.source.attrs.lineOut[shape.attrs.lineIn.attrs.sourceIndex].attrs.outlet = null;
-				shape.attrs.lineIn.attrs.source.attrs.lineOut[shape.attrs.lineIn.attrs.sourceIndex].destroy();
+				var source = shape.attrs.lineIn.attrs.source;
+				source.attrs.lineOut[shape.attrs.lineIn.attrs.sourceIndex].destroy();
+				source.attrs.lineOut.splice([shape.attrs.lineIn.attrs.sourceIndex], 1);
 			} else {
 				parent.attrs.numInputs++;
 			}
@@ -834,6 +856,7 @@ workLayer.on('click', function(evt) {
 			currLine.attrs.outlet = shape;
 			makingLine = false;
 			shape.scale({	x: 1, y: 1 });
+			findRenderFunction(parent);
 			checkBoxValidity(parent);
 			if (parent.attrs.numInputs == parent.children.length - 3 &&
 				parent.attrs.numInputs < parent.attrs.maxInputs) {
