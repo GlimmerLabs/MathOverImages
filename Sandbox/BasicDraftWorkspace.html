@@ -184,6 +184,21 @@ var isRenderable = function(group) {
 	}
 }
 
+var isCycle = function(sourceGroup, outletGroup) {
+
+	var lineOut = outletGroup.attrs.lineOut;
+	if (lineOut.length === 0) {
+		return false;
+	}
+	for(var i = 0; i < lineOut.length; i++) {
+		if (sourceGroup == lineOut[i].attrs.outlet.parent) {
+			return true;
+		} else if (isCycle(sourceGroup, lineOut[i].attrs.outlet.parent) ) {
+			return false;
+		}
+	}
+
+}
 	// CONSTRUCTORS
 
 /*
@@ -836,7 +851,7 @@ workLayer.on('click', function(evt) {
 	if (makingLine) {
 		var shape = evt.target;
 		var parent = shape.getParent();
-		if (shape.getParent() === currLine.attrs.source) {
+		if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
 			currLine.attrs.source.attrs.lineOut.splice([currLine.attrs.source.attrs.lineOut.length - 1], 1);
 			currLine.destroy();
 			if (isOutlet(shape)) {
