@@ -164,6 +164,15 @@ var isLine = function(target) {
 	return (target.attrs.outlet != null);
 };
 
+/**
+ * isRenderable takes a node, and returns true if it is a value group or a
+ * function group with sufficient inputs, and false if it is a function group
+ * with insufficient inputs.
+ */
+var isRenderable = function(group) {
+	return (isValue(group) || group.attrs.numInputs >= group.attrs.minInputs);
+}
+
 	// CONSTRUCTORS
 
 /*
@@ -194,7 +203,7 @@ var isLine = function(target) {
 			lineOut: [], 
 			prefix: functions[funName].prefix, 
 			separator: functions[funName].separator,
-			value: null,
+			renderFunction: null,
 			visible: false
 		});
 		/* create rectangle shape */
@@ -251,7 +260,8 @@ var isLine = function(target) {
 			x: x,
 			y: y,
 			lineOut: [],
-			visible: false
+			visible: false,
+			renderFunction: values[valName].rep
 		});
 		/* create diamond shape. */
 		var newRect = new Kinetic.Rect({
@@ -365,16 +375,41 @@ var isLine = function(target) {
 			stage.draw();
 		}
 	};
-	/*
-		checkBoxValidity takes a functionGroup and determines if its render box should be visible or not, and changes whether the box is visible.
-	*/
-	var checkBoxValidity = function(parent) {
-		if (parent.attrs.numInputs >= parent.attrs.minInputs) {
-			parent.children[2].setAttr('visible', true);
+
+
+/**
+ * checkBoxValidity takes a functionGroup and determines if its render box should be
+ * visible or not, and changes whether the box is visible.
+ */
+	var checkBoxValidity = function(group) {
+		if (isRenderable(group)) {
+			group.children[2].setAttr('visible', true);
 		} else {
-			parent.children[2].setAttr('visible', false);
+			group.children[2].setAttr('visible', false);
 		}
 	}
+
+/**
+ * findRenderFunction takes a group and, if the group has sufficient inputs, finds the 
+ * renderFunction that should be used to create an image for output.
+ * NOTE: this will always recalculate the entire function
+ */
+
+var findRenderFunction = function(group) {
+	if (isRenderable(group)) {
+		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
+		for(var i = 0; i < group.children.length - 3; i++) {
+			group.attrs.renderFunction +=
+				group.children[i+3].lineIn.attrs.source.attrs.renderFunction;
+
+			if(i < group.children.length - 4) {
+				group.attrs.renderFunction += functions[group.attrs.name].separator
+			} // if this isnt the last element
+		} // add each element to the equation
+		group.attrs.renderFunction += ')';
+	} // check if renderable 
+}
+
 
 	// Create functions to Move Menu Items
 	/* move the valueGroups in the menu to their original location. */
@@ -644,8 +679,11 @@ dragLayer.on('mouseup', function(evt) {
 		if (isFunction(group) && group.children.length < 4) {
 			for (var i = 0; i < functions[group.attrs.name].min; i++) {
 				addOutlet(group);
-			}
-		} // for 	
+			} // add outlets to a new node
+		} // if new function 
+		else if (isValue(group)) {
+			group.children[2].setAttr('visible', true);
+		}
 	} else {
 		var targetLine;
 		for(var i = 0; i < group.children.length - 3; i++) {
@@ -800,7 +838,8 @@ workLayer.on('click', function(evt) {
 				addOutlet(parent);
 			}
 		} // if clicked on self, else clicked on a valid outlet
-		stage.draw();
+		workLayer.draw();
+		lineLayer.draw();
 	}
 });
 
