@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<style>
+	body {
+		margin: 0px;
+		padding: 0px;
+	} 
+	#container {
+		background-color: rgb(241, 248, 255);
+		width: 900px;
+		height: 600px;
+	}
+	</style>
+	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+	</script>
+	<script src="http://www.cs.grinnell.edu/~rebelsky/Glimmer/Summer2014/MathOverImages/Sandbox/render.js"></script>
+</head>
+<body>
+<div id="container"></div>
+	<script defer="defer">
+	var stage = new Kinetic.Stage({
+		container: 'container',
+		width: 900,
+		height: 600
+	});
+
+	var layer = new Kinetic.Layer();
+	stage.add(layer);
+
+	var canvas = layer.canvas._canvas;
+
+	var context = canvas.getContext('2d');
+
+	context.beginPath();
+	context.moveTo(100, 150);
+	context.lineTo(450, 50);
+	context.stroke();
+
+	//renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
+
+	renderFun(MOIbody2fun("x+y*t.s"), canvas, 50, 50, 100, 100);
+	//stage.draw();
+
+
+
+
+</script>
+</body>	
+</html>
