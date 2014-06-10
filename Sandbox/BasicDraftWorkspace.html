@@ -392,18 +392,6 @@ var isRenderable = function(group) {
 
 
 /**
- * checkBoxValidity takes a functionGroup and determines if its render box should be
- * visible or not, and changes whether the box is visible.
- */
-	var checkBoxValidity = function(group) {
-		if (isRenderable(group)) {
-			group.children[2].setAttr('visible', true);
-		} else {
-			group.children[2].setAttr('visible', false);
-		}
-	}
-
-/**
  * findRenderFunction takes a group and, if the group has sufficient inputs, finds the 
  * renderFunction that should be used to create an image for output.
  * NOTE: this will always recalculate the entire function
@@ -419,12 +407,17 @@ var findRenderFunction = function(group) {
 		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
 };
 
+/**
+ * assertRenderable takes a function group and checks if it is renderable. If true, it finds the renderFunction for the group, makes the imageBox visible and returns true. If false, it makes the imageBox invisible and returns false.
+ */
 var assertRenderable = function(group) {
 	if (isRenderable(group)) {
 		findRenderFunction(group);
 		group.children[2].setAttr('visible', true);
+		return true;
 	} else {
 		group.children[2].setAttr('visible', false);
+		return false;
 	}
 }
 
@@ -714,6 +707,7 @@ dragLayer.on('mouseup', function(evt) {
 			group.children[2].setAttr('visible', true);
 		}
 	} else {
+		// deal with lines coming in to the node being deleted
 		var targetLine;
 		for(var i = 3; i < group.children.length; i++) {
 			targetLine = group.children[i].attrs.lineIn;
@@ -723,6 +717,7 @@ dragLayer.on('mouseup', function(evt) {
 				targetLine.destroy();
 			}
 		}
+		// deal with the lines leading out of the node being deleted
 		var outletParent;
 		for(var i = 0; i < group.attrs.lineOut.length; i++) {
 			targetLine = group.attrs.lineOut[i];
@@ -731,6 +726,7 @@ dragLayer.on('mouseup', function(evt) {
 				outletParent.attrs.numInputs--;
 				targetLine.attrs.outlet.attrs.lineIn = null;
 				assertRenderable(outletParent);
+				updateForward(outletParent);
 			}
 			targetLine.destroy();
 		}
