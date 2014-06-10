@@ -204,7 +204,8 @@ var isRenderable = function(group) {
 			prefix: functions[funName].prefix, 
 			separator: functions[funName].separator,
 			renderFunction: null,
-			visible: false
+			visible: false,
+			renderLayer: null
 		});
 		/* create rectangle shape */
 		var newRect = new Kinetic.Rect({
@@ -261,7 +262,8 @@ var isRenderable = function(group) {
 			y: y,
 			lineOut: [],
 			visible: false,
-			renderFunction: values[valName].rep
+			renderFunction: values[valName].rep,
+			renderLayer: null
 		});
 		/* create diamond shape. */
 		var newRect = new Kinetic.Rect({
