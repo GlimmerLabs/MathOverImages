@@ -51,16 +51,16 @@
 
 	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 	var functions = {
-		add: 			{rep: '+', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
-		multiply: {rep: '*', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
-		negate: 	{rep: '-', 	 max: 1,  min: 1, prefix: '-', 		separator: null},
-		sine: 		{rep: 'sin', max: 1,  min: 1, prefix: 'sin', 	separator: null},
-		cosine: 	{rep: 'cos', max: 1,  min: 1, prefix: 'cos', 	separator: null},
-		absolute: {rep: 'abs', max: 1,  min: 1, prefix: 'abs', 	separator: null},
-		average: 	{rep: 'ave', max: 20, min: 2, prefix: 'ave', 	separator: ','},
-		sign: 		{rep: 'sign',max: 1,  min: 1, prefix: 'sign', separator: null},
-		wrap: 		{rep: 'wrap',max: 1,  min: 1, prefix: 'wrap', separator: null},
-		rgb: 			{rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', 	separator: ','}
+		add: 			{rep: '+', 	 max: 20, min: 2},
+		multiply: {rep: '*', 	 max: 20, min: 2},
+		negate: 	{rep: '-', 	 max: 1,  min: 1},
+		sine: 		{rep: 'sin', max: 1,  min: 1},
+		cosine: 	{rep: 'cos', max: 1,  min: 1},
+		absolute: {rep: 'abs', max: 1,  min: 1},
+		average: 	{rep: 'ave', max: 20, min: 2},
+		sign: 		{rep: 'sign',max: 1,  min: 1},
+		wrap: 		{rep: 'wrap',max: 1,  min: 1},
+		rgb: 			{rep: 'rgb', max: 3,  min: 3}
 	}
 	var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 	var values = {
@@ -89,6 +89,8 @@
 </head>
 <body>
 	<div id="container"></div>
+	<script src="http://www.cs.grinnell.edu/~rebelsky/Glimmer/Summer2014/MathOverImages/Sandbox/render.js">
+	</script>
 	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
 	</script>
 	<script defer="defer">
@@ -164,13 +166,8 @@ var isLine = function(target) {
 	return (target.attrs.outlet != null);
 };
 
-/**
- * isRenderable takes a node, and returns true if it is a value group or a
- * function group with sufficient inputs, and false if it is a function group
- * with insufficient inputs.
- */
-var isRenderable = function(group) {
-	return (isValue(group) || group.attrs.numInputs >= group.attrs.minInputs);
+var isImageBox = function(target) {
+	return (target.name() != null && target.attrs.name == 'imageBox');
 }
 
 	// CONSTRUCTORS
@@ -201,9 +198,8 @@ var isRenderable = function(group) {
 			maxInputs: functions[funName].max, 
 			minInputs: functions[funName].min, 
 			lineOut: [], 
-			prefix: functions[funName].prefix, 
-			separator: functions[funName].separator,
-			renderFunction: null,
+			funct: funName, 
+			index: functions[funName].index,
 			visible: false
 		});
 		/* create rectangle shape */
@@ -233,6 +229,7 @@ var isRenderable = function(group) {
 		newGroup.add(newText);
 		/* create small box in the bottom right corner. Originally is not visible.*/
 		var newBox = new Kinetic.Rect({
+			name: 'imageBox',
 			x: functionRectSideLength + functionImageBoxOffset,
 			y: functionRectSideLength + functionImageBoxOffset,
 			width: imageBoxSideLength,
@@ -240,7 +237,8 @@ var isRenderable = function(group) {
 			fill: imageBoxColor,
 			stroke: 'black',
 			strokeWidth: .5,
-			visible: false
+			visible: false,
+			rendered: false
 		});
 		newGroup.add(newBox);
 
@@ -260,8 +258,8 @@ var isRenderable = function(group) {
 			x: x,
 			y: y,
 			lineOut: [],
-			visible: false,
-			renderFunction: values[valName].rep
+			index: values[valName].index,
+			visible: false
 		});
 		/* create diamond shape. */
 		var newRect = new Kinetic.Rect({
@@ -288,6 +286,7 @@ var isRenderable = function(group) {
 		newGroup.add(newText);
 		/* create small box in bottom right corner. Originally not visible. */
 		var newBox = new Kinetic.Rect({
+			name: 'imageBox',
 			x: valueImageBoxOffset,
 			y: valueImageBoxOffset,
 			width: imageBoxSideLength,
@@ -295,7 +294,8 @@ var isRenderable = function(group) {
 			fill: imageBoxColor,
 			stroke: 'black',
 			strokeWidth: .5,
-			visible: false
+			visible: false,
+			rendered: false
 		});
 		newGroup.add(newBox);
 
@@ -375,41 +375,26 @@ var isRenderable = function(group) {
 			stage.draw();
 		}
 	};
-
-
-/**
- * checkBoxValidity takes a functionGroup and determines if its render box should be
- * visible or not, and changes whether the box is visible.
- */
-	var checkBoxValidity = function(group) {
-		if (isRenderable(group)) {
-			group.children[2].setAttr('visible', true);
+	/*
+		checkBoxValidity takes a functionGroup and determines if its render box should be visible or not, and changes whether the box is visible.
+	*/
+	var checkBoxValidity = function(parent) {
+		if (parent.attrs.numInputs >= parent.attrs.minInputs) {
+			parent.children[2].setAttr('visible', true);
 		} else {
-			group.children[2].setAttr('visible', false);
+			parent.children[2].setAttr('visible', false);
 		}
 	}
-
-/**
- * findRenderFunction takes a group and, if the group has sufficient inputs, finds the 
- * renderFunction that should be used to create an image for output.
- * NOTE: this will always recalculate the entire function
- */
-
-var findRenderFunction = function(group) {
-	if (isRenderable(group)) {
-		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
-		for(var i = 0; i < group.children.length - 3; i++) {
-			group.attrs.renderFunction +=
-				group.children[i+3].lineIn.attrs.source.attrs.renderFunction;
-
-			if(i < group.children.length - 4) {
-				group.attrs.renderFunction += functions[group.attrs.name].separator
-			} // if this isnt the last element
-		} // add each element to the equation
-		group.attrs.renderFunction += ')';
-	} // check if renderable 
-}
-
+	/*
+	renderCanvas takes a function or value group and renders a 50 by 50 image starting where the image box is located.  
+	*/
+	var renderCanvas = function(group) {
+		var box = group.children[2];
+		var newLayer = new Kinetic.Layer();
+		stage.add(newLayer);
+		canvas = newLayer.canvas._canvas;
+		renderFun(MOIbody2fun("x+y"), canvas, group.x() + box.x(), group.y() + box.y(), 50, 50);
+	};
 
 	// Create functions to Move Menu Items
 	/* move the valueGroups in the menu to their original location. */
@@ -679,12 +664,12 @@ dragLayer.on('mouseup', function(evt) {
 		if (isFunction(group) && group.children.length < 4) {
 			for (var i = 0; i < functions[group.attrs.name].min; i++) {
 				addOutlet(group);
-			} // add outlets to a new node
-		} // if new function 
-		else if (isValue(group)) {
-			group.children[2].setAttr('visible', true);
-		}
-	} else {
+			} // for 
+		} // if	
+		if (group.children[2].attrs.expanded) {
+			renderCanvas(group);
+			} // if 
+		} else {
 		var targetLine;
 		for(var i = 0; i < group.children.length - 3; i++) {
 			targetLine = group.children[i+3].attrs.lineIn;
@@ -709,7 +694,8 @@ dragLayer.on('mouseup', function(evt) {
 
 		group.destroy();
 	}
-	stage.draw();
+	dragLayer.draw();
+	workLayer.draw();
 
 });
 
@@ -806,9 +792,9 @@ workLayer.on('mouseout', function(evt) {
 
 */
 workLayer.on('click', function(evt) {
+	var shape = evt.target;
+	var parent = shape.getParent();
 	if (makingLine) {
-		var shape = evt.target;
-		var parent = shape.getParent();
 		if (shape.getParent() === currLine.attrs.source) {
 			currLine.attrs.source.attrs.lineOut[currLine.attrs.source.attrs.lineOut.length - 1].destroy();
 			currLine.destroy();
@@ -838,9 +824,13 @@ workLayer.on('click', function(evt) {
 				addOutlet(parent);
 			}
 		} // if clicked on self, else clicked on a valid outlet
-		workLayer.draw();
-		lineLayer.draw();
-	}
+		stage.draw();
+	} // if makingLine
+	else if (isImageBox(shape)) {
+		renderCanvas(parent);
+		shape.attrs.expanded = true;
+		console.log(shape);
+	} // if imageBox
 });
 
 /*
