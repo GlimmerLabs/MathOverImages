@@ -3,8 +3,8 @@ module.exports = function(app,passport,database) {
     /* ======================  HOME PAGE =======================*/
     app.get('/', function(req, res) {
 	res.render('../public/views/index.jade',{
-	    title:"Glimmer Labs' MIST",
-	    style:"index"
+	    loggedIn: req.session.loggedIn,
+	    user: req.session.username,  
 	});
     });
 

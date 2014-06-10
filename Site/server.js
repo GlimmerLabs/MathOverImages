@@ -8,7 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var jade = require('jade');
-
+var compress = require('compression');
 
 
 var https = require('https');
@@ -30,7 +30,7 @@ var database = require('./functions/database.js');
 
 
 // require(./functions/passport')(passport); // pass passport for configuration
-
+app.use(compress());
 app.use(morgan('dev')); //log every request to the console
 app.use(cookieParser()); // read cookie information (for auth)
 app.use(bodyParser()); // get info from html forms
