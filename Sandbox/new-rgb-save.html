@@ -1,0 +1,255 @@
+<html>
+<head>
+<title>Rendering RGB Images</title>
+<script src="render.js"></script>
+<script>
+// +-------+-----------------------------------------------------------
+// | Notes |
+// +-------+
+
+/*
+   Animation
+   ---------
+
+   The animation system is fairly simple.  We keep a global variable,
+   `animation`, to indicate whether or not we are currently animating
+   the image.  The `frame` function draws one frame and, if we are
+   animating, schedules another call to itself in the near future.
+
+   Saving
+   ------
+
+   Saving is a complicated mess, but I think it's an okay complicated
+   mess.  It turns out that you can generate a link (a href) to a
+   generated 'blob'.  And you can use JavaScript to click that link
+   (at least in some browsers).
+
+   To build the blob, we need to convert the image data (typically
+   ASCII) into raw data.  Information for doing so was taken from
+   <http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript>
+
+   To make a link with the blob, we sipmly do an appropriate series
+   of manipulations which I derived from
+   <http://html5-demos.appspot.com/static/a.download.html>
+
+   I click on the link using the click function.  I need to figure out
+   which browsers support that function.
+ */
+
+// +-----------+-------------------------------------------------------
+// | Animation |
+// +-----------+
+
+/**
+ * Are we animating our image?
+ */
+var animation = true;
+
+/**
+ * When was the last time we drew a frame?  (Used primarily when we
+ * need to re-render a particular frame.)
+ */
+var lastTime;
+
+/**
+ * Stop the animation from running.
+ */
+function stopAnimation()
+{
+  animation=false;
+} // stopAnimation 
+
+/**
+ * Start the animation running.
+ */
+function startAnimation()
+{
+  animation = true;
+  frame();
+} // startAnimation
+
+/**
+ * Create one frame in the animation.
+ */
+function frame()
+{
+  var rfun = MOIbody2fun(document.getElementById("rfun").value);
+  var gfun = MOIbody2fun(document.getElementById("gfun").value);
+  var bfun = MOIbody2fun(document.getElementById("bfun").value);
+  var canvas = document.getElementById("gui");
+  lastTime = renderRGB(rfun, gfun, bfun, canvas, 
+                       0, 0, canvas.width, canvas.height);
+  if (animation)
+    setTimeout(frame, 50);
+} // frame
+
+// +--------+----------------------------------------------------------
+// | Saving |
+// +--------+
+
+/**
+ * Prompt the user for a dimension.
+ */
+function getDimension(dim, def)
+{
+  if (!def) def="100";
+  var msg = "Please enter the " + dim + ".";
+  var val = prompt(msg, def);
+  while (true)
+    {
+      if (isNaN(val))
+        val = prompt(val + " is not a number.  " + msg, def);
+      else if (val <= 0)
+        val = prompt("The " + dim + " must be positive.  "  + msg, def);
+      else
+        return val;
+    } // while
+} // getDimension
+
+/**
+ * Get all of the information (I hope).
+ */
+function assembleSaveInfo()
+{
+  // Find out where to save the file (and, possibly, the file type);
+  var filename = prompt("What do you want to call the image?", "mist.jpg");
+  var suffix = filename.substring(filename.lastIndexOf(".") + 1);
+  var type = "image/jpeg";
+  if (suffix == filename) {
+    suffix = ".jpg";
+    filename = filename + ".jpg";
+  }
+  if ((suffix == "jpg") || (suffix == ".jpeg")) {
+  }
+  else if ((suffix == "png") || (suffix == ".png")) {
+    type = "image/png";
+  }
+  else {
+    alert("Unknown file type: " + suffix + ".  Currently support only jpg and png.");
+    return;
+  }
+
+  // Get the width and the height of the image?
+  var width = getDimension("width");
+  if (!width)
+    return;
+  var height = getDimension("height");
+  if (!height)
+    return;
+
+  // Set up the canvas that we will be using for saving the image
+  var canvas = document.getElementById("rendering");
+  if (canvas == null) {
+    canvas = document.createElement("canvas");
+    canvas.setAttribute("id","rendering");
+    document.body.appendChild(canvas);
+    canvas.style.display = "none";
+    console.log("created canvas " + canvas);
+  } // if the canvas does not exist
+  canvas.width = width;
+  canvas.height = height;
+
+  // Extract the functions for red, green, and blue
+  var rfun = MOIbody2fun(document.getElementById("rfun").value);
+  var gfun = MOIbody2fun(document.getElementById("gfun").value);
+  var bfun = MOIbody2fun(document.getElementById("bfun").value);
+
+  // Do the actual rendering
+  renderRGBcore(rfun, gfun, bfun, canvas,
+                0, 0, width, height,
+                lastTime);
+
+  // And return the key parts
+  return [canvas,type,filename];
+} // assembleSaveInfo
+
+// The base64 to array code is based on
+//   http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+function b64toArray(data)
+{
+  var chars = atob(data);
+  var bytes = new Array(chars.length);
+  for (var i = 0; i < chars.length; i++)
+    bytes[i] = chars.charCodeAt(i);
+  return new Uint8Array(bytes);
+} // b64toArray
+
+// Based on http://html5-demos.appspot.com/static/a.download.html
+function saveImage()
+{
+  // Assemble the info.  (It's a separate function so that I can try
+  // various mechanisms for saving.)
+  var info = assembleSaveInfo();
+  var canvas = info[0];
+  var imagetype  = info[1];
+  var filename = info[2];
+
+  // Get the link
+  var link = document.getElementById("downloader");
+
+  // Set up where we donload
+  link.download = filename;
+  // Build a blob from the image data
+  var data = canvas.toDataURL(imagetype);
+  data = data.substring(data.indexOf(",")+1);
+  var blob = new Blob([b64toArray(data)], {type:imagetype});
+  // Build a link to the blob
+  link.href = window.URL.createObjectURL(blob);
+
+  // I think this just makes it easier to drag the link to the desktop,
+  // but I could be wrong.  (Since we're not showing the link, it's
+  // probably irrelevant.  But we might show the link later.)
+  link.dataset.downloadurl = [imagetype, link.download, link.href].join(':');
+
+  // Click the link to trigger the save.
+  link.click();
+} // saveImage
+</script>
+</head>
+
+<body>
+<h1>Rendering RGB to Screen and File</h1>
+
+<canvas id="gui" width="200" height="200"></canvas>
+<script>
+var gui = document.getElementById("gui");
+gui.onmousemove = function(evt) 
+                     { 
+                       var rect = gui.getBoundingClientRect();
+                       setMouse(evt.clientX - rect.left, 
+                                evt.clientY - rect.top);
+                     };
+gui.onmouseclick  = function(evt) 
+                     { 
+                       var rect = gui.getBoundingClientRect();
+                       setClick(evt.clientX - rect.left, 
+                                evt.clientY - rect.top);
+                     };
+gui.onmousedown = gui.onmouseclick;
+</script>
+<h4>Functional Imaging using X & Y in COLOR</h4>
+<table>
+  <tr>
+    <td>Function for Red</td>
+    <td><input type="text" name="left" id="rfun" size="100" value="shift(x,t.m)"/></td>
+  </tr>
+  <tr>
+    <td>Function for Green</td>
+    <td><input type="text" name="top" id="gfun" size="100" value="y"/></td>
+  </tr>
+  <tr>
+    <td>Function for Blue</td>
+    <td><input type="text" name="top" id="bfun" size="100" value="t.m*sign((x-t.m)*x+y*y-0.5)"/></td>
+  </tr>
+</table>
+<script language="javascript">
+frame();
+</script>
+
+<input type="button" value="Go!" onclick="startAnimation()">
+<input type="button" value="Stop" onclick="stopAnimation()">
+<input type="button" value="Save Image" onclick="saveImage()">
+<a id="downloader"></a>
+
+</body>
+</html>
