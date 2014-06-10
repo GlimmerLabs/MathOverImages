@@ -51,16 +51,16 @@
 
 	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 	var functions = {
-		add: 			{rep: '+', 	 max: 20, min: 2},
-		multiply: {rep: '*', 	 max: 20, min: 2},
-		negate: 	{rep: '-', 	 max: 1,  min: 1},
-		sine: 		{rep: 'sin', max: 1,  min: 1},
-		cosine: 	{rep: 'cos', max: 1,  min: 1},
-		absolute: {rep: 'abs', max: 1,  min: 1},
-		average: 	{rep: 'ave', max: 20, min: 2},
-		sign: 		{rep: 'sign',max: 1,  min: 1},
-		wrap: 		{rep: 'wrap',max: 1,  min: 1},
-		rgb: 			{rep: 'rgb', max: 3,  min: 3}
+		add: 			{rep: '+', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
+		multiply: {rep: '*', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
+		negate: 	{rep: '-', 	 max: 1,  min: 1, prefix: '-', 		separator: null},
+		sine: 		{rep: 'sin', max: 1,  min: 1, prefix: 'sin', 	separator: null},
+		cosine: 	{rep: 'cos', max: 1,  min: 1, prefix: 'cos', 	separator: null},
+		absolute: {rep: 'abs', max: 1,  min: 1, prefix: 'abs', 	separator: null},
+		average: 	{rep: 'ave', max: 20, min: 2, prefix: 'ave', 	separator: ','},
+		sign: 		{rep: 'sign',max: 1,  min: 1, prefix: 'sign', separator: null},
+		wrap: 		{rep: 'wrap',max: 1,  min: 1, prefix: 'wrap', separator: null},
+		rgb: 			{rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', 	separator: ','}
 	}
 	var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 	var values = {
@@ -192,8 +192,9 @@ var isLine = function(target) {
 			maxInputs: functions[funName].max, 
 			minInputs: functions[funName].min, 
 			lineOut: [], 
-			funct: funName, 
-			index: functions[funName].index,
+			prefix: functions[funName].prefix, 
+			separator: functions[funName].separator,
+			value: null,
 			visible: false
 		});
 		/* create rectangle shape */
@@ -250,7 +251,6 @@ var isLine = function(target) {
 			x: x,
 			y: y,
 			lineOut: [],
-			index: values[valName].index,
 			visible: false
 		});
 		/* create diamond shape. */
