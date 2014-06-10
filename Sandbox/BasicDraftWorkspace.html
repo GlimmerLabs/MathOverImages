@@ -2,36 +2,11 @@
 <html>
 <head>
 	<script>
+/**
+ * Global variables for scalable content.
+ */
 	var width = 900;
 	var height = 2 * width / 3;
-
-	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
-	var functions = {
-		add: 			{rep: '+', 	 max: 20, min: 2, index: 0},
-		multiply: {rep: '*', 	 max: 20, min: 2, index: 1},
-		negate: 	{rep: '-', 	 max: 1,  min: 1, index: 2},
-		sine: 		{rep: 'sin', max: 1,  min: 1, index: 3},
-		cosine: 	{rep: 'cos', max: 1,  min: 1, index: 4},
-		absolute: {rep: 'abs', max: 1,  min: 1, index: 5},
-		average: 	{rep: 'ave', max: 20, min: 2, index: 6},
-		sign: 		{rep: 'sign',max: 1,  min: 1, index: 7},
-		wrap: 		{rep: 'wrap',max: 1,  min: 1, index: 8},
-		rgb: 			{rep: 'rgb', max: 3,  min: 3, index: 9}
-	}
-
-	var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
-	var values = {
-		x: 				{rep: 'x', 	 max: 20, min: 2, color: 'gray', 	index: 0},
-		y: 				{rep: 'y', 	 max: 20, min: 2, color: 'gray', 	index: 1},
-		second: 	{rep: 't.s', max: 1,  min: 1, color: 'gold', 	index: 2},
-		minute:		{rep: 't.m', max: 1,  min: 1, color: 'gold', 	index: 3},
-		hour: 		{rep: 't.h', max: 1,  min: 1,	color: 'gold', 	index: 4},
-		day: 			{rep: 't.d', max: 1,  min: 1, color: 'gold', 	index: 5},
-		constant:	{rep: '', 	 max: 20, min: 2, color: 'purple',index: 6},
-	}
-	</script>
-	<script>
-	/*Global variables for size and colors*/
 	var globalFont = 'Arial';
 
 	var functionStrokeWidth = width / 90;
@@ -69,6 +44,37 @@
 
 	</script>
 
+	<script>
+/**
+	* Arrays of the basic function and value names, and tables of their specific settings
+	*/
+
+	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
+	var functions = {
+		add: 			{rep: '+', 	 max: 20, min: 2},
+		multiply: {rep: '*', 	 max: 20, min: 2},
+		negate: 	{rep: '-', 	 max: 1,  min: 1},
+		sine: 		{rep: 'sin', max: 1,  min: 1},
+		cosine: 	{rep: 'cos', max: 1,  min: 1},
+		absolute: {rep: 'abs', max: 1,  min: 1},
+		average: 	{rep: 'ave', max: 20, min: 2},
+		sign: 		{rep: 'sign',max: 1,  min: 1},
+		wrap: 		{rep: 'wrap',max: 1,  min: 1},
+		rgb: 			{rep: 'rgb', max: 3,  min: 3}
+	}
+	var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
+	var values = {
+		x: 				{rep: 'x', 	 max: 20, min: 2, color: valueXYColor},
+		y: 				{rep: 'y', 	 max: 20, min: 2, color: valueXYColor},
+		second: 	{rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
+		minute:		{rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
+		hour: 		{rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
+		day: 			{rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
+		constant:	{rep: '', 	 max: 20, min: 2, color: valueConstantColor},
+	}
+	</script>
+	
+
 	<style>
 	body {
 		margin: 0px;
@@ -94,15 +100,29 @@
 	});
 
 
-	// LAYERS
-	var borderLayer = new Kinetic.Layer();
+/**
+ * Layers of the workspace:
+ * 1. The line layer holds connecting lines between nodes in the work area.
+ * 2. The menu layer holds the buttons that users can click on to drag a new node into
+ *		the work area.
+ * 3. The menuButton layer holds the super buttons that are used to expand the menus.
+ * 4. The work layer holds all active nodes that are either connected or available to
+ * 		be connected.
+ * 5. The border layer stores static elements of the page such as dividing lines.
+ * 6. The drag layer holds nodes while they are being moved about the workspace.
+ */
+
 	var lineLayer = new Kinetic.Layer();
 	var menuLayer = new Kinetic.Layer();
 	var menuButtonLayer = new Kinetic.Layer();
 	var workLayer = new Kinetic.Layer();
+	var borderLayer = new Kinetic.Layer();
 	var dragLayer = new Kinetic.Layer();
 
-	/* add layers to stage */
+/**
+ * Add the layers to the stage. The top layer is the one most recently added, and
+ * objects within a layer follow the same logic.
+ */
 	stage.add(lineLayer);
 	stage.add(menuLayer);
 	stage.add(menuButtonLayer);
@@ -631,6 +651,7 @@ dragLayer.on('mouseup', function(evt) {
 		for(var i = 0; i < group.children.length - 3; i++) {
 			targetLine = group.children[i+3].attrs.lineIn;
 			if(targetLine != null) {
+				targetLine.attrs.outlet = null;
 				targetLine.attrs.source.attrs.lineOut[targetLine.attrs.sourceIndex].destroy();
 			}
 		}
