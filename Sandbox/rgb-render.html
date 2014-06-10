@@ -21,21 +21,13 @@ var saveFile = function(strData)
 document.location.href = strData;
 }
 
-function savePNG()
+function saveJPEG()
 {
 var canvas1 = document.getElementById("gui");
-var strData = canvas1.toDataURL("image/png");
-saveFile(strData.replace("image/png", "image/octet-stream"));
-}
-
-function putImage() {
-var canvas1 = document.getElementById("gui");
-if (canvas1.getContext) {
-var ctx = canvas1.getContext("2d");           // Get the context for the canvas.
-var myImage = canvas1.toDataURL("image/png");    // Get the data as an image.
-}
-var imageElement = document.getElementById("MyPix");  // Get the img object.
-imageElement.src = myImage;                           // Set the src to data from the canvas.
+var strData = canvas1.toDataURL("image/jpeg");
+//saveFile(strData.replace("image/jpeg", "image/octet-stream"));
+window.win = open (strData);
+setTimeout('win.document.execCommand("SaveAs")', 500);
 }
 
 function frame()
@@ -44,6 +36,9 @@ var rfun = MOIbody2fun(document.getElementById("rfun").value);
 var gfun = MOIbody2fun(document.getElementById("gfun").value);
 var bfun = MOIbody2fun(document.getElementById("bfun").value);
 var canvas = document.getElementById("gui");
+var line = ["rgb", document.getElementById("rfun").value, document.getElementById("gfun").value, document.getElementById("bfun").value];
+var line2 = JSON.stringify(line);
+console.log (line2); //eventually send to server instead of print
 renderRGB(rfun, gfun, bfun, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
@@ -94,7 +89,7 @@ gui.onmousedown = gui.onmouseclick;
 </table>
 <input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
-<input type="button" value="Download" onclick="savePNG()">
+<input type="button" value="Download" onclick="saveJPEG()">
 </form>
 </body>
 </html>

@@ -166,7 +166,7 @@ function MOIbody2fun(body)
 // | MOI Functions |
 // +---------------+
 
-var MOI = new Object();
+//var MOI = new Object();
 
 var abs = function (a)
 {
@@ -242,18 +242,35 @@ var sum = function()
 
 /**
  * Render three (x,y)->range functions as RGB, given the specified 
- * bounds. Intended mostly as an experiment to get started.
+ * bounds. Intended mostly as an experiment to get started.  Returns
+ * the time at which the rendering was done (mostly to make it easier
+ * to re-render at a specified time).
  */
 function renderRGB(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight)
+{
+  // Get the time.
+  var d = new Date();
+  var sec = d.getMilliseconds()/500 - 1;
+  var min = (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1;
+  var time = new Time(sec,min);
+  // Use the core function
+  renderRGBcore(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight, time);
+  // Return the time (for use elsewhere)
+  return time;
+} // renderRGB
+
+/**
+ * Render three (x,y)->range functions as RGB, given the specified bounds,
+ * and assuming that the rendering happens at the specified time.
+ */
+function renderRGBcore(rfun, gfun, bfun, canvas, 
+                       rleft, rtop, rwidth, rheight,
+                       time)
 {
   var deltaX = 2.0/rwidth;
   var deltaY = 2.0/rheight;
   var context = canvas.getContext("2d");
   var region = context.createImageData(rwidth,rheight);
-  var d = new Date();
-  var sec = d.getMilliseconds()/500 - 1;
-  var min = (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1;
-  var time = new Time(sec,min);
   var mouse = new Mouse((mouseX-rleft)*deltaX - 1, 
                         (mouseY-rtop)*deltaY - 1, 
                         (clickX-rleft)*deltaX - 1, 
@@ -276,8 +293,7 @@ function renderRGB(rfun, gfun, bfun, canvas, rleft, rtop, rwidth, rheight)
       x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  JSONstore (renderRGB, rfun, gfun, bfun, rleft, rtop, rwidth, rheight);
-} // renderRGB
+} // renderRGBatTime
 
 /**
  * Render three (x, y)->range functions as HSV, given the specified 
@@ -320,7 +336,6 @@ function renderHSV(hfun, sfun, vfun, canvas, rleft, rtop, rwidth, rheight)
         x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  JSONstore (renderHSV, hfun, sfun, vfun, rleft, rtop, rwidth, rheight);
 } // renderHSV
 
 /**
@@ -336,7 +351,6 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
   var d = new Date();
   var sec = d.getMilliseconds()/500 - 1;
   var min = (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1;
-  // console.log("sec: " + sec + ", min: " + min);
   var time = new Time(sec,min);
   var mouse = new Mouse((mouseX-rleft)*deltaX - 1, 
                         (mouseY-rtop)*deltaY - 1, 
@@ -361,13 +375,20 @@ function renderFun(fun, canvas, rleft, rtop, rwidth, rheight)
       x += deltaX;
     } // for
   context.putImageData(region, rleft, rtop);
-  JSONstore (renderFun, fun, 0, 0, rleft, rtop, rwidth, rheight);
 } // renderFun
 
-function JSONstore (renderType, fun1, fun2, fun3, left, top, width, height)
+function JSONtoImage(line_string)
 {
-    var d = new Date();
-    var user = [
-        { "id": d , "data" : [renderType, fun1, fun2, fun3, left, top, width, height]}
-    ];
+    var line_array = JSON.parse(line);
+    var type = line_array[0];
+    var fun1 = line_array[1];
+    var fun2 = line_array[2];
+    var fun3 = line_array[3];
+
+    //if (type === "bw")
+        //return functions to be applied to a canvas in black and white
+        //else if (type === "rgb")
+            //return functions to be applied to a canvas in rgb
+            //else if (type === "hsv")
+                //return functions to be applied to a canvas in hsv
 }

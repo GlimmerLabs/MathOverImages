@@ -1,14 +1,5 @@
 @import url("styles.css");
 
-#main {
-  margin:100px;
-}
-
-#featuredImage {
-  text-align: center;
-}
-
-
 #create {
   height:80px;
   width: 290px;
@@ -35,9 +26,6 @@
   color: #FFF;
   text-align:center;
   font-weight:bold;
-
-
-
 }
 
 
@@ -63,21 +51,9 @@
 
 }
 
-
 #galleryImages figure {
   display:inline-block;
   margin: 10px;
-}
-
-#galleryImages figure img{
-  height: 140px;
-  width: 140px;
-
-}
-
-#galleryImages figcaption{
-  text-align:right;
-  color: #979797;
 }
 
 #galleryImages h1 {
@@ -94,13 +70,16 @@
 
 }
 
-#galleryImages a:hover {
-  color: #666;
-}
-
 #figset {
 
   margin:0 auto;
   width: 1010px;
 
 }
+
+
+/*
+#aboutText {
+font-family: OpenSans;
+color: #9B9B9B;
+}*/

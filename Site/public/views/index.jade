@@ -1,0 +1,50 @@
+doctype html
+
+html(lang='en')
+	head
+		title MIST
+		meta(http-equiv='content-type', content='text/html; charset=utf-8')
+		link(rel='stylesheet', href='/css/index')
+		link(rel='stylesheet', href='/css/styles')
+
+	body
+		include ./partials/header
+		div(id='main')
+			div(id='featuredImage')
+				img(src='/logos/featured.svg')
+			div(id='homeButtons')
+				a(href='#')
+					div(id='create')
+						h1 create
+				a(href='#')
+					div(id='tutorials')
+						h1 tutorials
+			div(id='galleryImages')
+				div(id='figset')
+					a(href='#')
+						figure
+							img(src='samples/bw0.jpg' alt='An example black and white image by user darkchocolate59')
+							figcaption darkchocolate59
+					a(href='#')
+						figure
+							img(src='samples/bw1.jpg' alt='An example black and white image by user pinkxglasses')
+							figcaption pinkxglasses
+					a(href='#')
+						figure
+							img(src='samples/bw2.jpg' alt='An example black and white image by user qt314')
+							figcaption qt314
+					a(href='#')
+						figure
+							img(src='samples/color0.jpg' alt='An example color image by user cutiexoxo13')
+							figcaption cutiexoxo13
+					a(href='#')
+						figure
+							img(src='samples/color1.jpg' alt='An example color image by user cutechick23')
+							figcaption cutechick23
+					a(href='#')
+						figure
+							img(src='samples/color2.jpg' alt='An example color image by user dinoboykidney')
+							figcaption dinoboykidney
+				h1: a(href='#') See more in gallery
+
+		include ./partials/footer
