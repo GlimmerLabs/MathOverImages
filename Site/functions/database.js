@@ -305,7 +305,54 @@ module.exports.logIn = (function (user, password, callback) {
 
     });
 });
+
+/*
+P
+P
+P
+P
+P
+P
+P
+
+callback(userObject, error
+*/
+
+module.exports.getUser = (function (userid, callback){
+    module.exports.query("SELECT * FROM users WHERE userid='" + userid + "';", function(rows, error){
+	if (error)
+	    callback(null, error);
+	else if (!rows[0])
+	    callback(null, "ERROR: User does not exist.");
+	else
+	    callback(rows[0], null);	
+    });
+});
+
+/*
+P
+P
+P
+P
+P
+P
+P 
+
+callback(userid, error)
+*/
+module.exports.getIDforUsername = (function (username, callback) {
+    module.exports.query("SELECT userid FROM users WHERE username= '" + username + "';", function(rows, error){
+	if (error)
+	    callback(null, error);
+	else if (!rows[0])
+	    callback(null, "ERROR: User does not exist.");
+	else
+	    callback(rows[0].userid, null);
+    });
+});
+
 // TO DO
+// Get User Info
 // Update user information
 // Split change password into two functions, one for password recovery
 // PGP Public key

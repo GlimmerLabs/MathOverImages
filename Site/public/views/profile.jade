@@ -1,0 +1,36 @@
+extends ./partials/framework
+block title
+	title= viewing.username + " on MIST"
+
+block extraMetas
+block extraLinks
+
+block stylesheets
+	link(rel='stylesheet', href='/css/defaultAccount')
+	link(rel='stylesheet', href='/css/styles')
+
+block content
+	div(id='main')
+		div(id = 'userTitle')
+			div(id='titleTitle'): h1= viewing.username
+		a(href='/challenges')
+			div(id='tab1Deselected'): h2 challenges
+		a(href='/badges')
+			div(id='tab2Deselected'): h2 badges
+		a(href='/albums')
+			div(id='tab3Deselected'): h2 albums
+		a(href='/functions')
+			div(id='tab4Deselected'): h2 functions
+		div(id='timeStamp')
+			p= "member since " + viewing.signupTime
+		div(id='largeImage')
+			figure
+				a(href='#'): img(src='/samples/bw0.jpg')
+				figcaption Untitled by Zoe
+
+		div(id='bio')
+			p= viewing.about
+		form(action='#' method='POST')
+			textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
+			input(type='submit' id='submit' name='submit')
+		

@@ -3,8 +3,8 @@ module.exports = function(app,passport,database) {
     /* ======================  HOME PAGE =======================*/
     app.get('/', function(req, res) {
 	res.render('../public/views/index.jade',{
-	    loggedIn: req.session.loggedIn,
-	    user: req.session.username,  
+	    loggedIn: true,
+	    user: "Alexthemitchell"
 	});
     });
 
@@ -65,8 +65,18 @@ module.exports = function(app,passport,database) {
 
     /* ============== user's profile page =================== */
     app.get('/user/:username', function(req, res){
-	res.setHeader('Content-type', 'text/HTML');
-	res.end("You would have found " + req.params.username + "'s profile here.");
+	database.getIDforUsername(req.params.username, function(userid, error){
+	    if (error)
+		res.end (error);
+	    else 
+		database.getUser(userid, function(userObject, error){
+		    res.render('../public/views/profile.jade',{
+			loggedIn: req.session.loggedIn,
+			user: "Alexthemitchell", 
+			viewing: userObject
+			});
+		});
+	});
     });
 
 
