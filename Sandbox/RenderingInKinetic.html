@@ -200,7 +200,8 @@ var isImageBox = function(target) {
 			lineOut: [], 
 			funct: funName, 
 			index: functions[funName].index,
-			visible: false
+			visible: false,
+			renderLayer: null
 		});
 		/* create rectangle shape */
 		var newRect = new Kinetic.Rect({
@@ -259,7 +260,8 @@ var isImageBox = function(target) {
 			y: y,
 			lineOut: [],
 			index: values[valName].index,
-			visible: false
+			visible: false,
+			renderLayer: null
 		});
 		/* create diamond shape. */
 		var newRect = new Kinetic.Rect({
@@ -372,7 +374,7 @@ var isImageBox = function(target) {
 			}
 			var newOutlet = makeOutlet(funGroup);
 			funGroup.add(newOutlet);
-			stage.draw();
+			workLayer.draw();
 		}
 	};
 	/*
@@ -389,10 +391,18 @@ var isImageBox = function(target) {
 	renderCanvas takes a function or value group and renders a 50 by 50 image starting where the image box is located.  
 	*/
 	var renderCanvas = function(group) {
+		var currLayer = group.attrs.renderLayer; 
+		if (currLayer == null){
+			currLayer = new Kinetic.Layer();
+			group.setAttr('renderLayer', currLayer);
+			stage.add(currLayer);
+		} // if 
+		group.children[2].setAttrs({
+			width: 50,
+			height: 50
+		});
 		var box = group.children[2];
-		var newLayer = new Kinetic.Layer();
-		stage.add(newLayer);
-		canvas = newLayer.canvas._canvas;
+		canvas = currLayer.canvas._canvas;
 		renderFun(MOIbody2fun("x+y"), canvas, group.x() + box.x(), group.y() + box.y(), 50, 50);
 	};
 
@@ -691,9 +701,10 @@ dragLayer.on('mouseup', function(evt) {
 		}
 		lineLayer.draw();
 
-
 		group.destroy();
 	}
+	menuButtonLayer.draw();
+	menuLayer.draw();
 	dragLayer.draw();
 	workLayer.draw();
 
@@ -704,12 +715,16 @@ dragLayer.on('mouseup', function(evt) {
 	a line, move that object to the dragLayer and allow it to be dragged.
 */
 workLayer.on('mousedown', function(evt) {
-	if (!makingLine) {
+	if (!makingLine && !isImageBox(evt.target)) {
 		var group = evt.target.getParent();
 		group.moveTo(dragLayer);
 		currShape = group;
 		group.startDrag();
-		stage.draw();
+		workLayer.draw();
+		dragLayer.draw();
+		if (group.attrs.renderLayer != null) {
+			group.attrs.renderLayer.draw();
+		}
 	}
 });
 
@@ -824,14 +839,27 @@ workLayer.on('click', function(evt) {
 				addOutlet(parent);
 			}
 		} // if clicked on self, else clicked on a valid outlet
-		stage.draw();
+		workLayer.draw();
+		lineLayer.draw();
 	} // if makingLine
 	else if (isImageBox(shape)) {
-		renderCanvas(parent);
-		shape.attrs.expanded = true;
-		console.log(shape);
-	} // if imageBox
+		if (!shape.attrs.expanded) {
+			renderCanvas(parent);
+			shape.attrs.expanded = true;
+		} else {
+			console.log(shape);
+			shape.attrs.expanded = false;
+			parent.attrs.renderLayer.destroy();
+			parent.attrs.renderLayer = null;
+			parent.children[2].setAttrs({
+				width: imageBoxSideLength,
+				height: imageBoxSideLength
+			});	
+		}	
+		workLayer.draw();
+	}
 });
+
 
 /*
 	While an object is being dragged, move all lines connected to it with it.
