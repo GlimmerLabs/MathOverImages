@@ -43,6 +43,11 @@
 	var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
 	var menuAnimDuration = 1;
 
+	var toolboxWidth = width / 18; // 50
+	var toolboxHeight = width / 5; // 180
+	var toolboxShift = toolboxWidth / 5; // 10
+	var toolboxButtonSize = toolboxHeight / 6; // 30
+
 	</script>
 
 	<script>
@@ -175,6 +180,46 @@ target is an object.
 */
 var isImageBox = function(target) {
 	return (target.name() != null && target.attrs.name == 'imageBox');
+}
+
+/*
+isDrawTool determines if target is the drawing tool on the pallette and returns a boolean value. 
+target is an object.
+*/
+var isDrawTool = function(target) {
+	return (target.name() != null && target.attrs.name == 'draw');
+}
+
+/*
+isDeleteTool determines if target is the drawing tool on the pallette and returns a boolean value. 
+target is an object.
+*/
+var isDeleteTool = function(target) {
+	return (target.name() != null && target.attrs.name == 'delete');
+}
+
+/*
+isToolControl determines if target is the tool group controller on the pallette and returns a boolean value. 
+target is an object.
+*/
+var isToolControl = function(target) {
+	return (target.name() != null && target.attrs.name == 'toolControl');
+}
+
+/*
+isRedoTool determines if target is the redo tool on the pallette and returns a boolean value. 
+target is an object.
+*/
+var isRedoTool = function(target) {
+	return (target.name() != null && target.attrs.name == 'redo');
+}
+
+/*
+isUndoTool determines if target is the redo tool on the pallette and returns a boolean value. 
+target is an object.
+*/
+var isUndoTool = function(target) {
+	return (target.name() != null && target.attrs.name == 'undo');
 }
 
 /**
@@ -531,6 +576,57 @@ var updateForward = function(group) {
 		var moveButton = makeMenuTween(functionsButton, menuCornerWidth + buttonWidth, true)
 		moveButton.play();
 	};
+	var shadeButton = function(target) {
+		if (target.attrs.working) {
+			target.setAttrs({
+				shadowEnabled: false,
+				working: false
+			});
+		}
+		else {
+			target.setAttrs({
+				shadowEnabled: true,
+				working: true
+			});
+		}
+	};
+
+	var unshadeOthers = function(target) {
+		var group = target.getParent();
+		if (isDrawTool(target)) {
+			for( var i = 1; i < 4; i++)
+				group.children[i].setAttrs({
+					shadowEnabled: false,
+					working: false
+				});
+		} else if (isDeleteTool(target)) {
+			group.children[0].setAttrs({
+				shadowEnabled: false,
+				working: false
+			});
+			for( var i = 2; i < 4; i++)
+				group.children[i].setAttrs({
+					shadowEnabled: false,
+					working: false
+				});
+		} else if (isRedoTool(target)) {
+			for( var i = 0; i < 2; i++)
+				group.children[i].setAttrs({
+					shadowEnabled: false,
+					working: false
+				});
+			group.children[3].setAttrs({
+				shadowEnabled: false,
+				working: false
+			});
+		} else if (isUndoTool(target)) {
+			for( var i = 0; i < 3; i++)
+				group.children[i].setAttrs({
+					shadowEnabled: false,
+					working: false
+				});
+		}
+	};
 
 //SETUP STAGE
 
@@ -636,13 +732,223 @@ for (var i = 0; i < valNames.length; i++) {
 	menuLayer.add(menuValues[i]);
 }
 
-var setupToolbox = function() {
+/* create the toolbox pallette in the workspace */
+//var setupToolbox = function() {
+
+	/*var toolboxWidth = width / 18; // 50
+	var toolboxHeight = width / 5; // 180
+	var toolboxXShift = toolboxWidth / 5; // 10
+	var toolboxButtonSize = toolboxHeight / 6; // 30*/
+
+	// add the entire group
 	var toolboxGroup = new Kinetic.Group({
-		x: 
-	})
-};
+		x: width * .9,
+		y: height * .2,
+		draggable: false,
+	});
+	toolboxLayer.add(toolboxGroup);
+
+	// add the box to contain the entire group
+	var toolboxRect = new Kinetic.Rect({
+	x:0,
+	y:0,
+	width: toolboxWidth,
+	height: toolboxHeight - toolboxShift,
+	fill: 'white',
+	stroke: 'black',
+	strokeWidth: .5,
+	//lineJoin: 'round',
+	shadowColor: 'black',
+	shadowBlur: 0,
+	shadowOffsetX: -1,
+	shadowOffsetY: 1,
+	shadowOpacity: .5
+	});
+	toolboxGroup.add(toolboxRect);
+
+	// add the mini bos above the main box for dragging
+	var toolboxControl = new Kinetic.Rect({
+	x:0,
+	y:-toolboxShift,
+	width: toolboxWidth,
+	height: toolboxShift,
+	name: 'toolControl',
+	fill: 'grey',
+	stroke: 'black',
+	strokeWidth: .5,
+	//lineJoin: 'round',
+	shadowColor: 'black',
+	shadowBlur: 0,
+	shadowOffsetX: -1,
+	shadowOffsetY: 1,
+	shadowOpacity: .5
+	});
+	toolboxGroup.add(toolboxControl);
+
+	// add the draw line tool group
+	var drawLineGroup = new Kinetic.Group({
+		x: toolboxShift,
+		y: toolboxShift,
+		name: 'toolGroup'
+	});
+	toolboxGroup.add(drawLineGroup);
+
+	// add the draw line tool button
+	var drawLineButton = new Kinetic.Rect({
+		x: 0,
+		y: 0,
+		width: toolboxButtonSize,
+		height: toolboxButtonSize,
+		name: 'draw',
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .3,
+		lineJoin: 'round',
+		shadowColor: 'black',
+		shadowOffsetX: -2,
+		shadowOffsetY: 2,
+		shadowOpacity: .5,
+		shadowEnabled: false,
+		working: false
+	});
+	drawLineGroup.add(drawLineButton);
+
+	// add the draw line symbol on the button
+	var drawLineLine = new Kinetic.Line({
+		points: [(toolboxButtonSize * (7/30)), (toolboxButtonSize * (7/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * 24/30)],
+		stroke: 'black',
+		strokeWidth: 2,
+		lineCap: 'round'
+	});
+	drawLineGroup.add(drawLineLine);
+
+	// add the delete tool group
+	var deleteGroup = new Kinetic.Group({
+		x: toolboxShift,
+		y: (toolboxShift * 2) + toolboxButtonSize,
+		name: 'toolGroup'
+	});
+	toolboxGroup.add(deleteGroup);
+
+	// add the delete line tool button
+	var deleteButton = new Kinetic.Rect({
+		x: 0,
+		y: 0,
+		width: toolboxButtonSize,
+		height: toolboxButtonSize,
+		name: 'delete',
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .3,
+		lineJoin: 'round',
+		shadowColor: 'black',
+		shadowOffsetX: -2,
+		shadowOffsetY: 2,
+		shadowOpacity: .5,
+		shadowEnabled: false,
+		working: false
+	});
+	deleteGroup.add(deleteButton);
+
+	// add the delete symbol on the button
+	var drawDeleteSym1 = new Kinetic.Line({
+		points: [(toolboxButtonSize * (7/30)), (toolboxButtonSize * (7/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * 24/30)],
+		stroke: 'black',
+		strokeWidth: 2,
+		lineCap: 'round'
+	});
+	deleteGroup.add(drawDeleteSym1);
+
+	var drawDeleteSym2 = new Kinetic.Line({
+		points: [(toolboxButtonSize * (7/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * 7/30)],
+		stroke: 'black',
+		strokeWidth: 2,
+		lineCap: 'round'
+	});
+	deleteGroup.add(drawDeleteSym2);
+
+	// add the undo tool button
+	var undoButton = new Kinetic.Rect({
+		x: toolboxShift,
+		y: (toolboxShift * 3) + (toolboxButtonSize * 2),
+		width: toolboxButtonSize,
+		height: toolboxButtonSize,
+		name: 'undo',
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .3,
+		lineJoin: 'round',
+		shadowColor: 'black',
+		shadowOffsetX: -2,
+		shadowOffsetY: 2,
+		shadowOpacity: .5,
+		shadowEnabled: false,
+		working: false
+	});
+	toolboxGroup.add(undoButton);
+
+	// add the redo tool button
+	var redoButton = new Kinetic.Rect({
+		x: toolboxShift,
+		y: (toolboxShift * 4) + (toolboxButtonSize * 3),
+		width: toolboxButtonSize,
+		height: toolboxButtonSize,
+		name: 'redo',
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .3,
+		lineJoin: 'round',
+		shadowColor: 'black',
+		shadowOffsetX: -2,
+		shadowOffsetY: 2,
+		shadowOpacity: .5,
+		shadowEnabled: false,
+		working: false
+	});
+	toolboxGroup.add(redoButton);
+
+	toolboxLayer.draw();
+//};
 
 stage.draw();
+
+toolboxGroup.on ('mouseover', function(evt) {
+	var button = evt.target;
+	if (isDrawTool(button) || isDeleteTool(button) || isRedoTool(button) || isUndoTool(button)) {
+		button.setAttrs('shadowEnabled', true);
+	} else if (isToolControl(button)) {
+		toolboxGroup.setAttr('draggable', true);
+	}
+	toolboxLayer.draw();
+});
+
+toolboxGroup.on ('mouseout', function(evt) {
+	var button = evt.target;
+	if (isDrawTool(button) || isDeleteTool(button) || isRedoTool(button) || isUndoTool(button)) {
+		button.setAttrs('shadowEnabled', false);
+	} else if (isToolControl(button)) {
+		toolboxGroup.setAttr('draggable', false);
+	}
+	toolboxLayer.draw();
+});
+
+toolboxGroup.on('click', function(evt) {
+	var button = evt.target;
+	//console.log (button.attrs.working);
+	if (isDrawTool(button)) {
+		shadeButton(button);
+		unshadeOthers(button);
+	} else if (isDeleteTool(button)) {
+
+	} else if (isRedoTool(button)) {
+
+	} else if (isUndoTool(button)) {
+
+	}
+	toolboxLayer.draw();
+});
+
+
 
 //MENU ANIMATIONS
 
