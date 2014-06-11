@@ -874,11 +874,9 @@ workLayer.on('click', function(evt) {
 					height: imageBoxSideLength
 				});	
 			}
-			setTimeout(collapseCanvas(), 1000);
-			console.log(animation);
-			console.log(shape);
+			setTimeout(collapseCanvas, 50);
 		}
-		workLayer.draw();
+		setTimeout(function() {workLayer.draw()}, 50);
 	}
 });
 
