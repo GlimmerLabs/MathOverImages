@@ -115,9 +115,7 @@ module.exports.userExists = (function(checkString, callback){
   surname, a string
   password, a plaintext string (this will be crypted before being sent to the server)
   email, a string
-  pgpPublic, a Pretty Good Privacy public key
   username, a string
-  dob, a UNIX timestamp
   callback(success, error), a function describing what to do with the result
   Produces: success, A BOOLEAN value representing if the insertion was successful
   error, if there was an error, it will be returned here.
@@ -161,7 +159,7 @@ module.exports.addUser =(function (forename, surname, password, email, username,
 			hashPassword(password, function (hashedPassword, err) {
 			    // add user to database
 			    if (!err){
-				module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, username, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + username + "','" + Date.now() +"');", function(results, error){
+				module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, username, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + username + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') +"');", function(results, error){
 				    if (results) {
 					callback(true,error);
 				    }
@@ -282,7 +280,7 @@ module.exports.logIn = (function (user, password, callback) {
 			else if (!success)
 			    callback(null, "Invalid Credentials");
 			else
-			    // Insert Login Time
+			    module.exports.query("UPDATE users SET lastLoginTime='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE userid='" +rows[0].userid +"';", null);
 			    callback(rows[0], null);
 		    });
 	    });
