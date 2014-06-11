@@ -68,6 +68,7 @@ input[type='submit'] {
 input[type='submit']:hover {
     color: #D8D8D8;
     background-color: #FFF;
+    cursor: pointer;
 }
 
 .signupField {

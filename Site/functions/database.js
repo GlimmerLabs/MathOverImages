@@ -47,9 +47,6 @@ var sanitize = (function (string) {
 
 }); // sanitize(string);
 
-
-
-
 /*
   Procedure: database.query(query, callback(rows, error));
   Purpose: Make a query on the current database

@@ -22,7 +22,7 @@ html(lang='en')
 					if loggedIn
 						li: a(href='#') my account
 					else
-						li: a(href='#') login/signup
+						li: a(href='/login') login/signup
 		block content
 
 		footer
@@ -36,7 +36,7 @@ html(lang='en')
 					if loggedIn
 						li: a(href='#') my account
 					else
-						li: a(href='#') login
-						li: a(href='#') signup
+						li: a(href='/login') login
+						li: a(href='/signup') signup
 					li: a(href='#') license
 					li: a(href='#') privacy policy
