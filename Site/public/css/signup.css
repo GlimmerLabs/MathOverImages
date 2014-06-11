@@ -1,0 +1,21 @@
+#pageTitle {
+    background-color:3FAAA0;
+    color: #FFF;
+    margin: 0 -110px;
+}
+
+#pageTitle h1 {
+    border: 7px solid white;
+    display: inline-block;
+    margin: 10px 10px;
+    padding: 5px 80px;
+    font-weight: bolder;
+    font-size: 4em;
+
+}
+
+#flashZone {
+    background-color: #E1E1E1;
+    clear:both;
+
+}

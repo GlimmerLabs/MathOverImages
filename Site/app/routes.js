@@ -23,7 +23,8 @@ module.exports = function(app,passport,database) {
 
 
     app.get('/signup', function(req,res){
-	res.sendfile('./views/signup.html');
+	console.log("signup request");
+	res.render('../public/views/signup.jade');
     });
 
     /* ================= verify page ===============*/
@@ -34,21 +35,20 @@ module.exports = function(app,passport,database) {
 
 
 
-
-
     /* ================= login page =============================*/
 
     app.post('/login', function(req,res){
-	database.verifyPassword(req.body.username, req.body.password, function(loggedIn){
-	    if(loggedIn)
+	database.logIn(req.body.username, req.body.password, function(user, error){
+	    if(!error)
 	    {
 		req.session.loggedIn = true;
-		req.session.username = req.body.username;
+		req.session.user = user;
 		res.setHeader('Content-type', 'text/plain');
-		res.end("Your username is " + req.session.username);
+		res.end("Your username is " + req.session.user.username);
 	    }
 	    else
 	    {
+		console.log(error);
 		res.redirect('/login');
 	    }
 	});
