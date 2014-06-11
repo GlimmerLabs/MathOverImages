@@ -29,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "../../"
+    "url": "../"
   },
   "keywords": [
     "MIST",

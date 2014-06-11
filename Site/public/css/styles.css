@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800);
 
 #main {
   margin:100px;
@@ -66,8 +66,8 @@ header nav li {
 /* End of Header */
 
 #pageTitle {
-    height:131px;
-    width:436.1px;
+    height:140px;
+    width:480px;
     margin: 0px -130px;
     float: left;
     background-color: #3FAAA0;

@@ -28,7 +28,6 @@ var pool = mysql.createPool({
   Preferences: This function is not available outside of this document.
 */
 var hashPassword = (function (passwordtohash, callback) {
-    mail.sendMail("mitchell17@grinnell.edu","amitch1994@gmail.com","amitch1994@gmail.com", "Testing", "<b>TESTING</b><br /> wut up");
     bcrypt.hash(passwordtohash, null, null, function(err,hash) {
 	callback(hash, err);
     });
@@ -109,7 +108,8 @@ module.exports.userExists = (function(checkString, callback){
 }); // database.userExists(checkString, callback(exists));
 
 /*
-  Procedure: database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
+  Procedure:
+    database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
   Purpose: Adds a user to the database
   Parameters: forename, a string
   surname, a string
@@ -127,16 +127,13 @@ module.exports.userExists = (function(checkString, callback){
   However, clientside validation is always a good first-defense.
 */
 
-module.exports.addUser =(function (forename, surname, password, email, pgpPublic, username, dob, callback){
-
+module.exports.addUser =(function (forename, surname, password, email, username, callback) {
     // Always sanitize user input
     forename = sanitize(forename);
     surname = sanitize(surname);
     password = sanitize(password);
     email = sanitize(email);
-    pgpPublic = sanitize(pgpPublic);
     username = sanitize(username);
-    dob = sanitize(dob);
 
     if (!validate.isEmail(email)){
 	callback(false, "ERROR: Email is not a valid email address");
@@ -161,12 +158,13 @@ module.exports.addUser =(function (forename, surname, password, email, pgpPublic
 		    else // user does not already exist, proceed with creation
 		    {
 			// hash the password
-			hashPassword(password, function (hashedPassword, err){
+			hashPassword(password, function (hashedPassword, err) {
 			    // add user to database
 			    if (!err){
-				module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, pgpPublic, username, dob, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + pgpPublic + "','" + username + "','" + dob + "','" + Date.now() +"');", function(results, error){
-				    if (results)
+				module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, username, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + username + "','" + Date.now() +"');", function(results, error){
+				    if (results) {
 					callback(true,error);
+				    }
 				    else
 					callback(false,error);
 				});
