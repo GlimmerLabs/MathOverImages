@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<style>
+	body {
+		margin: 0px;
+		padding: 0px;
+	} 
+	#container {
+		background-color: rgb(241, 248, 255);
+		width: 900px;
+		height: 600px;
+	}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<script src="http://www.cs.grinnell.edu/~rebelsky/Glimmer/Summer2014/MathOverImages/Sandbox/render.js">
+	</script>
+	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+	</script>
+	<script defer="defer">
+
+	var stage = new Kinetic.Stage({
+		container: 'container',
+		width: 900,
+		height: 600
+	});
+
+	var layer = new Kinetic.Layer();
+	stage.add(layer);
+
+	var makeLineGroup = new Kinetic.Group({
+		x: 50,
+		y: 50,
+		draggable: true
+	});
+	layer.add(makeLineGroup);
+
+	var makeLineRect = new Kinetic.Rect({
+		x: 0,
+		y: 0,
+		width: 35,
+		height: 35,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .3,
+		lineJoin: 'round',
+		shadowColor: 'black',
+		//shadowBlur: 10,
+		shadowOffsetX: -2,
+		shadowOffsetY: 2,
+		shadowOpacity: 1,
+		shadowEnabled: false,
+		drawing: false
+	});
+	makeLineGroup.add(makeLineRect);
+
+	var makeLineLine = new Kinetic.Line({
+		points: [7, 7, 28, 28],
+		stroke: 'black',
+		strokeWidth: 2,
+		lineCap: 'round'
+	});
+	makeLineGroup.add(makeLineLine);
+
+	stage.draw();
+
+	makeLineGroup.on('click', function() {
+		if (makeLineGroup.children[0].attrs.drawing) {
+			makeLineGroup.children[0].setAttrs({
+				drawing: false,
+				shadowEnabled: false
+			});
+		} else {
+			makeLineGroup.children[0].setAttrs({
+				drawing: true,
+				shadowEnabled: true
+			});
+		}
+		layer.draw();
+	});
+
+	makeLineGroup.on('mouseover', function() {
+		makeLineGroup.children[0].setAttr('shadowEnabled', true);
+		layer.draw();
+	});
+
+	makeLineGroup.on('mouseout', function() {
+		if (!makeLineGroup.children[0].attrs.drawing) {
+		makeLineGroup.children[0].setAttr('shadowEnabled', false);
+		}
+		layer.draw();
+	});
+
+	</script>
+</body>
+</html>
