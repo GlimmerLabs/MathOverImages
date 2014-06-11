@@ -3,8 +3,8 @@ module.exports = function(app,passport,database) {
     /* ======================  HOME PAGE =======================*/
     app.get('/', function(req, res) {
 	res.render('../public/views/index.jade',{
-	    loggedIn: true,
-	    user: "Alexthemitchell"
+	    loggedIn: req.session.loggedIn,
+	    user: req.session.user
 	});
     });
 
@@ -58,8 +58,7 @@ module.exports = function(app,passport,database) {
 	if(req.session.loggedIn)
 	    res.redirect('/');
 	else{
-	    res.setHeader('Content-type', 'text/HTML');
-	    res.sendfile('./public/login.html');
+	    res.render("../public/views/login.jade");
 	}
     });
 
