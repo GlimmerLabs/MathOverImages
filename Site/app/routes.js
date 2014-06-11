@@ -43,8 +43,7 @@ module.exports = function(app,passport,database) {
 	    {
 		req.session.loggedIn = true;
 		req.session.user = user;
-		res.setHeader('Content-type', 'text/plain');
-		res.end("Your username is " + req.session.user.username);
+		res.redirect('back');
 	    }
 	    else
 	    {

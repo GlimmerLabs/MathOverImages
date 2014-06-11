@@ -272,16 +272,19 @@ module.exports.logIn = (function (user, password, callback) {
 		if (error)
 		    callback(null,error);
 		else if (!rows[0]) // user is also not a username, and therefore is not in the database
-		    callback(null, "Invalid Credentials");
+		    callback(null, "user Invalid Credentials");
 		else
 		    module.exports.verifyPassword(rows[0].userid, password, function (success, error){
 			if (error)
 			    callback(null, error);
 			else if (!success)
-			    callback(null, "Invalid Credentials");
-			else
-			    module.exports.query("UPDATE users SET lastLoginTime='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE userid='" +rows[0].userid +"';", null);
+			    callback(null, "password Invalid Credentials");
+			else{
+			    module.exports.query("UPDATE users SET lastLoginTime='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE userid='" +rows[0].userid +"';", function(response,error){
+				console.log(rows[0].username + " has logged in.");
+			    });
 			    callback(rows[0], null);
+			}
 		    });
 	    });
 	else
@@ -290,9 +293,12 @@ module.exports.logIn = (function (user, password, callback) {
 		    callback(null, error);
 		else if (!success)
 		    callback(null, "Invalid Credentials");
-		else
-		    // Insert Login Time
+		else{
+		    module.exports.query("UPDATE users SET lastLoginTime='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE userid='" +rows[0].userid +"';", function(response,error){
+			console.log(rows[0].username + " has logged in.");
+		    });
 		    callback(rows[0], null);
+		}
 	    });
 
     });
