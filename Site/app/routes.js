@@ -10,20 +10,20 @@ module.exports = function(app,passport,database) {
 
     /* ================= signup page ===============*/
     app.post('/signup', function(req,res){
-	database.addUser (req.body.forename, req.body.surname, req.body.password, req.body.email, null, req.body.username, null, function(success, error) {
-	    if (success)
-		res.redirect('/login');
-	    else {
-		console.log(error);
-		res.end (error);
-	    }
+	if(req.body.password === req.body.repassword)
+	    database.addUser (req.body.forename, req.body.surname, req.body.password, req.body.email, req.body.username, function(success, error) {
+		if (success)
+		    res.redirect('/login');
+		else {
+		    console.log(error);
+		    res.end (error);
+		}
 
-	});
+	    });
+	else
+	    res.end ("passwords don't match");
     });
-
-
     app.get('/signup', function(req,res){
-	console.log("signup request");
 	res.render('../public/views/signup.jade');
     });
 

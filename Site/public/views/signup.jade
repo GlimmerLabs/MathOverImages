@@ -12,33 +12,36 @@ block content
 		div(id='pageTitle')
 			h1 sign up
 		div(id='flashZone')
-			h1 Welcome to MIST! Get started by creating an account.
+			h1 Welcome to MIST! Let's get started by creating an account.
 		form(method='POST')
 			table
 				tr
 					td first name:
-					td: input(type='text' name='forename' required='required' placeholder='first name')
+					td: input(type='text' name='forename' required='required' placeholder='first name' class='signupField')
 					td(id='firstnamevalid')
+						span
 				tr
 					td last name:
-					td: input(type='text' name='surname' required='required' placeholder='last name')
+					td: input(type='text' name='surname' required='required' placeholder='last name' class='signupField')
 					td(id='lastnamevalid')
 				tr
 					td email address:
-					td: input(type='email' name='email' required='required' placeholder='email address')
+					td: input(type='email' name='email' required='required' placeholder='email address' class='signupField')
 					td(id='emailvalid')
+						span
 				tr
 					td username:
-					td: input(type='text' name='username' required='required' placeholder='username')
+					td: input(type='text' name='username' required='required' placeholder='username' class='signupField')
 					td(id='usernamevalid')
 				tr
 					td password:
-					td: input(type='password' name='password' required='required' placeholder='password')
+					td: input(type='password' name='password' required='required' placeholder='password' class='signupField')
 					td(id='passwordvalid')
+						span
 				tr
 					td re-enter password:
-					td: input(type='password' name='repassword' required='required' placeholder='re-enter password')
+					td: input(type='password' name='repassword' required='required' placeholder='re-enter password' class='signupField')
 					td(id='emailmatches')
 			input(type='checkbox' value='thirteenplus')
-			=" I am at least 13 years of age"
-			input(type='submit' value='signup')
+			p By checking this box I confirm that I am 13 years of age or older.
+			input(type='submit' value='sign up')
