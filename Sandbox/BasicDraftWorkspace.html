@@ -24,6 +24,7 @@
 	var imageBoxColor = 'white'
 	var functionImageBoxOffset = width / 300;
 	var valueImageBoxOffset = width / 31;
+	var renderSideLength = width / 18;
 
 	var outletXOffset = width / 255;
 	var outletYOffset = functionRectSideLength / 3;
@@ -89,6 +90,8 @@
 </head>
 <body>
 	<div id="container"></div>
+	<script src="http://www.cs.grinnell.edu/~rebelsky/Glimmer/Summer2014/MathOverImages/Sandbox/render.js">
+	</script>
 	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
 	</script>
 	<script defer="defer">
@@ -163,6 +166,14 @@ target is an object.
 var isLine = function(target) {
 	return (target.attrs.outlet != null);
 };
+
+/*
+isImageBox determines if target is an image box and returns a boolean value. 
+target is an object.
+*/
+var isImageBox = function(target) {
+	return (target.name() != null && target.attrs.name == 'imageBox');
+}
 
 /**
  * isRenderable takes a node, and returns true if it is a value group or a
@@ -260,6 +271,7 @@ var isCycle = function(sourceGroup, outletGroup) {
 		newGroup.add(newText);
 		/* create small box in the bottom right corner. Originally is not visible.*/
 		var newBox = new Kinetic.Rect({
+			name: 'imageBox',
 			x: functionRectSideLength + functionImageBoxOffset,
 			y: functionRectSideLength + functionImageBoxOffset,
 			width: imageBoxSideLength,
@@ -267,7 +279,8 @@ var isCycle = function(sourceGroup, outletGroup) {
 			fill: imageBoxColor,
 			stroke: 'black',
 			strokeWidth: .5,
-			visible: false
+			visible: false,
+			expanded: false
 		});
 		newGroup.add(newBox);
 
@@ -316,6 +329,7 @@ var isCycle = function(sourceGroup, outletGroup) {
 		newGroup.add(newText);
 		/* create small box in bottom right corner. Originally not visible. */
 		var newBox = new Kinetic.Rect({
+			name: 'imageBox',
 			x: valueImageBoxOffset,
 			y: valueImageBoxOffset,
 			width: imageBoxSideLength,
@@ -323,7 +337,8 @@ var isCycle = function(sourceGroup, outletGroup) {
 			fill: imageBoxColor,
 			stroke: 'black',
 			strokeWidth: .5,
-			visible: false
+			visible: false,
+			expanded: false
 		});
 		newGroup.add(newBox);
 
@@ -435,6 +450,25 @@ var assertRenderable = function(group) {
 		return false;
 	}
 }
+
+/*
+	renderCanvas takes a function or value group and renders a 50 by 50 image starting where the image box is located.  
+	*/
+	var renderCanvas = function(group) {
+		var currLayer = group.attrs.renderLayer; 
+		if (currLayer == null){
+			currLayer = new Kinetic.Layer();
+			group.setAttr('renderLayer', currLayer);
+			stage.add(currLayer);
+		} // if 
+		group.children[2].setAttrs({
+			width: renderSideLength,
+			height: renderSideLength
+		});
+		var box = group.children[2];
+		canvas = currLayer.canvas._canvas;
+		renderFun(MOIbody2fun(group.attrs.renderFunction), canvas, group.x() + box.x(), group.y() + box.y(), renderSideLength, renderSideLength);
+	};
 
 /**
  * updateForward takes a group and makes sure all groups for which it is a source are
@@ -680,10 +714,11 @@ On click of function menu button:
 
 // ADDING TO WORKSPACE
 
-/* variables to globally reference the most recently used object/line */
+/* variables to globally reference the most recently used object/line and current state */
 var currShape;
 var currLine;
 var makingLine = false;
+var animation = false;
 
 /*
 	On mousedown of a menu object (value or function prototype), you create a copy of that object and begin to draw it.
@@ -721,7 +756,10 @@ dragLayer.on('mouseup', function(evt) {
 		else if (isValue(group)) {
 			group.children[2].setAttr('visible', true);
 		}
-	} else {
+		if (group.children[2].attrs.expanded) {
+			renderCanvas(group);
+			} // if 
+		} else {
 		// deal with lines coming in to the node being deleted
 		var targetLine;
 		for(var i = 3; i < group.children.length; i++) {
@@ -759,13 +797,16 @@ dragLayer.on('mouseup', function(evt) {
 	a line, move that object to the dragLayer and allow it to be dragged.
 */
 workLayer.on('mousedown', function(evt) {
-	if (!makingLine) {
+	if (!makingLine && !isImageBox(evt.target)) {
 		var group = evt.target.getParent();
 		group.moveTo(dragLayer);
 		currShape = group;
 		group.startDrag();
 		workLayer.draw();
 		dragLayer.draw();
+		if (group.attrs.renderLayer != null) {
+			group.attrs.renderLayer.draw();
+		}
 	}
 });
 
@@ -800,8 +841,8 @@ stage.addEventListener('contentMousemove', function(){
 	are valid connections
 */
 workLayer.on('mouseover', function(evt) {
+	var shape = evt.target;
 	if (makingLine) {
-		var shape = evt.target;
 		if (isOutlet(shape)) {
 			shape.scale({
 				x: 1.5,
@@ -810,6 +851,16 @@ workLayer.on('mouseover', function(evt) {
 			workLayer.draw();
 		} // if outlet
 	} // if makingLine
+	else if (isImageBox(shape) && shape.attrs.expanded) {
+		animation = true;
+		var frame = function() {
+			renderCanvas(shape.getParent());
+			if (animation) {
+				setTimeout(frame, 50);
+			}
+		}
+		frame();
+	} // else if expanded image box
 });
 
 /*
@@ -817,8 +868,8 @@ workLayer.on('mouseover', function(evt) {
 	original size
 */
 workLayer.on('mouseout', function(evt) {
+	var shape = evt.target;
 	if (makingLine) {
-		var shape = evt.target;
 		if (isOutlet(shape)) {
 			shape.scale({
 				x: 1,
@@ -827,6 +878,9 @@ workLayer.on('mouseout', function(evt) {
 			workLayer.draw();
 		} // if outlet
 	} // if makingLine
+	else if (isImageBox(shape) && shape.attrs.expanded) {
+		animation = false;
+	} // else if expanded image box
 });
 
 /*
@@ -848,9 +902,9 @@ workLayer.on('mouseout', function(evt) {
 
 */
 workLayer.on('click', function(evt) {
+	var shape = evt.target;
+	var parent = shape.getParent();
 	if (makingLine) {
-		var shape = evt.target;
-		var parent = shape.getParent();
 		if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
 			currLine.attrs.source.attrs.lineOut.splice([currLine.attrs.source.attrs.lineOut.length - 1], 1);
 			currLine.destroy();
@@ -884,6 +938,25 @@ workLayer.on('click', function(evt) {
 		} // if clicked on self, else clicked on a valid outlet
 		workLayer.draw();
 		lineLayer.draw();
+	}
+	else if (isImageBox(shape)) {
+		if (!shape.attrs.expanded) {
+			renderCanvas(parent);
+			shape.attrs.expanded = true;
+		} else {
+			shape.attrs.expanded = false;
+			animation = false;
+			var collapseCanvas = function(){
+				parent.attrs.renderLayer.destroy();
+				parent.attrs.renderLayer = null;
+				parent.children[2].setAttrs({
+					width: imageBoxSideLength,
+					height: imageBoxSideLength
+				});	
+			}
+			setTimeout(collapseCanvas, 50);
+		}
+		setTimeout(function() {workLayer.draw()}, 50);
 	}
 });
 
