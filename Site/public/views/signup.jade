@@ -1,0 +1,44 @@
+extends ./partials/framework
+block title
+	title Signup for MIST
+block extraMetas
+block extraLinks
+
+block stylesheets
+	link(rel='stylesheet', href='/css/styles')
+	link(rel='stylesheet', href='/css/signup')
+block content
+	div(id='main')
+		div(id='pageTitle')
+			h1 sign up
+		div(id='flashZone')
+			h1 Welcome to MIST! Get started by creating an account.
+		form(method='POST')
+			table
+				tr
+					td first name:
+					td: input(type='text' name='forename' required='required' placeholder='first name')
+					td(id='firstnamevalid')
+				tr
+					td last name:
+					td: input(type='text' name='surname' required='required' placeholder='last name')
+					td(id='lastnamevalid')
+				tr
+					td email address:
+					td: input(type='email' name='email' required='required' placeholder='email address')
+					td(id='emailvalid')
+				tr
+					td username:
+					td: input(type='text' name='username' required='required' placeholder='username')
+					td(id='usernamevalid')
+				tr
+					td password:
+					td: input(type='password' name='password' required='required' placeholder='password')
+					td(id='passwordvalid')
+				tr
+					td re-enter password:
+					td: input(type='password' name='repassword' required='required' placeholder='re-enter password')
+					td(id='emailmatches')
+			input(type='checkbox' value='thirteenplus')
+			=" I am at least 13 years of age"
+			input(type='submit' value='signup')
