@@ -934,8 +934,12 @@ workLayer.on('click', function(evt) {
 			if (parent.attrs.numInputs == parent.children.length - 3 &&
 				parent.attrs.numInputs < parent.attrs.maxInputs) {
 				addOutlet(parent);
+			if(parent.children[2].attrs.expanded) {
+				parent.attrs.renderLayer.clear();
+				renderCanvas(parent);
 			}
-			updateForward(parent);
+		}
+		updateForward(parent);
 		} // if clicked on self, else clicked on a valid outlet
 		workLayer.draw();
 		lineLayer.draw();
