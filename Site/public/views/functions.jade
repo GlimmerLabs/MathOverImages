@@ -1,0 +1,39 @@
+extends ./partials/framework
+block title
+	title= " on MIST"
+
+block extraMetas
+block extraLinks
+
+block stylesheets
+	link(rel='stylesheet', href='/css/functions')
+	link(rel='stylesheet', href='/css/styles')
+
+block content
+	div(id='main')
+		div(id = 'userTitle')
+			div(id='titleTitle'): h1 a
+		a(href='/challenges')
+			div(id='tab1Deselected'): h2 challenges
+		a(href='/badges')
+			div(id='tab2Deselected'): h2 badges
+		a(href='/albums')
+			div(id='tab3Deselected'): h2 albums
+		a(href='/functions')
+			div(id='tab4Selected'): h2 functions
+		div(id='timeStamp')
+			p= "member since "
+		div(id='leftSide')
+		div(id='myFunctions'): h1 my functions
+						nav:ul
+							li: form(action='#') cool function
+							li: form(action='#') cool function2
+							li: form(action='#') functionNew
+							li: form(action='#') functionNew2
+		div(id='rightSide')
+		div(id='savedFunctions'): h1 saved functions
+						nav:ul
+							li: form(action='#') function1 by cutiexox
+							li: form(action='#') function2 by funkay_diva
+							li: form(action='#') function3 by cutegrrrl
+							li: form(action='#') function4 by fierysoul5656

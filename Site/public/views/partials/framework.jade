@@ -7,22 +7,38 @@ html(lang='en')
 		block extraMetas
 		block stylesheets
 
+		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
+		script(type='text/javascript' src="/js/main")
 		block extraLinks
 	body
 		header
 			div(id='headerLogo')
-				a(href='#')
+				a(href='/')
 					img(src='/logos/header.svg')
 			nav
 				ul
-					li: a(href='#') create
-					li: a(href='#') challenges
-					li: a(href='#') gallery
-					li: a(href='#') about
-					if loggedIn
-						li: a(href='#') my account
-					else
-						li: a(href='/login') login/signup
+					span(class='main')
+						li: a(href='#') create
+						li |
+						li: a(href='#') challenges
+						li |
+						li: a(href='/gallery') gallery
+						li |
+						li: a(href='/about') about
+						li |
+						if loggedIn
+							li: a(href='/me') my account
+						else
+							li(id='slider') login/signup
+					form(method='POST' action='/login' class='hidden')
+						input(type='text' placeholder='username' name='username')
+						input(type='password' placeholder='password' name='password')
+						li(id='login') login
+						li |
+						li: a(href='/signup') signup
+						li |
+						li(id='cancel') cancel
+
 		block content
 
 		footer

@@ -3,7 +3,7 @@ block title
 	title Signup for MIST
 block extraMetas
 block extraLinks
-
+	script(type='text/javascript' src='js/signup')
 block stylesheets
 	link(rel='stylesheet', href='/css/styles')
 	link(rel='stylesheet', href='/css/signup')
@@ -26,12 +26,12 @@ block content
 					td(id='lastnamevalid')
 				tr
 					td email address:
-					td: input(type='email' name='email' required='required' placeholder='email address' class='signupField')
+					td: input(type='email' name='email' required='required' placeholder='email address' class='signupField' id='email')
 					td(id='emailvalid')
 						span
 				tr
 					td username:
-					td: input(type='text' name='username' required='required' placeholder='username' class='signupField')
+					td: input(type='text' name='username' required='required' placeholder='username' class='signupField' id='username')
 					td(id='usernamevalid')
 				tr
 					td password:
