@@ -629,7 +629,7 @@ var makeMenuTween = function(target, xEnd, visibility) {
 		}
 	};
 	*/
-/* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
+	/* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
 	var disableTool = function(toolGroup) {
 		toolGroup.children[0].setAttr('shadowEnabled', false);
 		var name = toolGroup.name();
@@ -961,7 +961,7 @@ for (var i = 0; i < valNames.length; i++) {
 	});
 	deleteToolGroup.add(deleteToolSym2);
 
-/* Transparent box that covers the button to ensure its function when clicked on */
+	/* Transparent box that covers the button to ensure its function when clicked on */
 	var deleteToolCover = new Kinetic.Rect({
 		x: 0,
 		y: 0,
@@ -999,41 +999,41 @@ for (var i = 0; i < valNames.length; i++) {
 		shadowOpacity: .5,
 		shadowEnabled: false
 	});
-toolboxGroup.add(undoButton);
+	toolboxGroup.add(undoButton);
 
-var redoButton = new Kinetic.Shape({
-	sceneFunc: function(context) {
-		context.beginPath();
-		context.moveTo(0, 0);
-		context.lineTo(35, 30);
-		context.lineTo(35, 12);
-		context.bezierCurveTo(60, 5, 100, 15, 80, 70);
-		context.bezierCurveTo(110, 10, 80, -12, 35, -12);
-		context.lineTo(35, -30);            
-		context.closePath();
-		context.fillStrokeShape(this);
-	},
-	x: toolboxShift + toolboxButtonSize + 3,
-	y: (toolboxShift*5) + (toolboxButtonSize * 4) + 20,
-	name: 'redo',
-	scaleX: -.35,
-	scaleY: .35,
-	fill: '#B3B1B1',
-	stroke: 'black',
-	strokeWidth: 1,
-	lineJoin: 'round',
-	rotation: 40,
-	shadowColor: 'black',
-	shadowOffsetX: -2,
-	shadowOffsetY: 2,
-	shadowOpacity: .5,
-	shadowEnabled: false
-});
-toolboxGroup.add(redoButton);
+	var redoButton = new Kinetic.Shape({
+		sceneFunc: function(context) {
+			context.beginPath();
+			context.moveTo(0, 0);
+			context.lineTo(35, 30);
+			context.lineTo(35, 12);
+			context.bezierCurveTo(60, 5, 100, 15, 80, 70);
+			context.bezierCurveTo(110, 10, 80, -12, 35, -12);
+			context.lineTo(35, -30);            
+			context.closePath();
+			context.fillStrokeShape(this);
+		},
+		x: toolboxShift + toolboxButtonSize + 3,
+		y: (toolboxShift*5) + (toolboxButtonSize * 4) + 20,
+		name: 'redo',
+		scaleX: -.35,
+		scaleY: .35,
+		fill: '#B3B1B1',
+		stroke: 'black',
+		strokeWidth: 1,
+		lineJoin: 'round',
+		rotation: 40,
+		shadowColor: 'black',
+		shadowOffsetX: -2,
+		shadowOffsetY: 2,
+		shadowOpacity: .5,
+		shadowEnabled: false
+	});
+	toolboxGroup.add(redoButton);
 
-toolboxLayer.draw();
+	toolboxLayer.draw();
 
-stage.draw();
+	stage.draw();
 /*
 toolboxGroup.on ('mouseover', function(evt) {
 	var button = evt.target;
@@ -1252,21 +1252,6 @@ var deleteToolOn = false;
 	});
 
 /*
-	when you double click on an object in the workLayer and you arent already drawing a
-	line, you should begin drawing a line starting from that object.
-	*/
-	workLayer.on('dblclick', function(evt) {
-		if (!makingLine) {
-			makingLine = true;
-			var group = evt.target.getParent();
-			currLine = makeLine(group);
-			group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
-			lineLayer.add(currLine);
-			lineLayer.draw();
-		}
-	});
-
-/*
 	while you are drawing a line, make it move with the cursor.
 		*/
 	stage.addEventListener('contentMousemove', function(){
@@ -1325,6 +1310,15 @@ workLayer.on('mouseover', function(evt) {
 });
 
 /*
+There are 3 different modes:
+	1. WorkTool (users can navigate the menu, drag objects onto the board from the menu, drag
+			objects around in the work layer, or render thumbnails)
+	2. LineTool (users can connect different nodes by clicking on one, and connecting to an outlet
+			on another)
+	3. DeleteTool (users can remove unwanted functions, values, or lines from the workLayer)
+
+	The default is workTool. 
+
 	When making a line, form a connection on click if the click was on an outlet.
 	Behind the scenes:
 	1. if the object clicked was the source of the line, destroy the line.
@@ -1340,18 +1334,42 @@ workLayer.on('mouseover', function(evt) {
 	an outlet.
 	5. otherwise keep drawing the line.
 	*/
+
+
 	workLayer.on('click', function(evt) {
 		var shape = evt.target;
 		var parent = shape.getParent();
-		if (makingLine) {
-			if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
-				currLine.attrs.source.attrs.lineOut.splice([currLine.attrs.source.attrs.lineOut.length - 1], 1);
-				currLine.destroy();
-				if (isOutlet(shape)) {
-					shape.scale({	x: 1, y: 1 });
+		if (workToolOn) {
+
+			if (isImageBox(shape)) {
+				if (!shape.attrs.expanded) {
+					renderCanvas(parent);
+					shape.attrs.expanded = true;
+				} else {
+					shape.attrs.expanded = false;
+					animation = false;
+					var collapseCanvas = function(){
+						parent.attrs.renderLayer.destroy();
+						parent.attrs.renderLayer = null;
+						parent.children[2].setAttrs({
+							width: imageBoxSideLength,
+							height: imageBoxSideLength
+						});	
+					}
+					setTimeout(collapseCanvas, 50);
 				}
-				makingLine = false;
-			} else if (isOutlet(shape)) {
+				setTimeout(function() {workLayer.draw()}, 50);
+			}
+		} else if (lineToolOn) {
+			if (makingLine) {
+				if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
+					currLine.attrs.source.attrs.lineOut.splice([currLine.attrs.source.attrs.lineOut.length - 1], 1);
+					currLine.destroy();
+					if (isOutlet(shape)) {
+						shape.scale({	x: 1, y: 1 });
+					}
+					makingLine = false;
+				} else if (isOutlet(shape)) {
 			//check if outlet already has an input
 			if (shape.attrs.lineIn != null) {
 				//POSSIBLE NEED TO DESTROY LINE ITSELF
@@ -1360,8 +1378,7 @@ workLayer.on('mouseover', function(evt) {
 				source.attrs.lineOut.splice([shape.attrs.lineIn.attrs.sourceIndex], 1);
 			} else {
 				parent.attrs.numInputs++;
-			}
-
+			} // check if theres already a line going in to the outlet
 			shape.attrs.lineIn = currLine;
 			currLine.points()[2] = parent.x();
 			currLine.points()[3] = parent.y() + shape.y();
@@ -1375,28 +1392,49 @@ workLayer.on('mouseover', function(evt) {
 		}
 		updateForward(parent);
 		} // if clicked on self, else clicked on a valid outlet
-		workLayer.draw();
-		lineLayer.draw();
+	} else {
+		makingLine = true;
+		var group = evt.target.getParent();
+		currLine = makeLine(group);
+		group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
+		lineLayer.add(currLine);
 	}
-	else if (isImageBox(shape)) {
-		if (!shape.attrs.expanded) {
-			renderCanvas(parent);
-			shape.attrs.expanded = true;
-		} else {
-			shape.attrs.expanded = false;
-			animation = false;
-			var collapseCanvas = function(){
-				parent.attrs.renderLayer.destroy();
-				parent.attrs.renderLayer = null;
-				parent.children[2].setAttrs({
-					width: imageBoxSideLength,
-					height: imageBoxSideLength
-				});	
+} else if (deleteToolOn) {
+	if(isFunction(parent) || isValue(parent)) {
+		// deal with lines coming in to the node being deleted
+		var group = parent;
+		var targetLine;
+		for(var i = 3; i < group.children.length; i++) {
+			targetLine = group.children[i].attrs.lineIn;
+			if(targetLine != null) {
+				targetLine.attrs.outlet = null;
+				targetLine.attrs.source.attrs.lineOut.splice(targetLine.attrs.sourceIndex, 1);
+				targetLine.destroy();
 			}
-			setTimeout(collapseCanvas, 50);
 		}
-		setTimeout(function() {workLayer.draw()}, 50);
-	}
+		// deal with the lines leading out of the node being deleted
+		var outletParent;
+		for(var i = 0; i < group.attrs.lineOut.length; i++) {
+			targetLine = group.attrs.lineOut[i];
+			if (targetLine.attrs.outlet != null) {
+				outletParent = targetLine.attrs.outlet.getParent();
+				outletParent.attrs.numInputs--;
+				targetLine.attrs.outlet.attrs.lineIn = null;
+				assertRenderable(outletParent);
+				updateForward(outletParent);
+			}
+			targetLine.destroy();
+		}
+		group.destroy();
+	} else if (isLine(shape)) {
+		shape.attrs.source.attrs.lineOut.splice(shape.attrs.sourceIndex, 1);
+		shape.attrs.outlet.attrs.lineIn = null;
+		shape.destroy();
+	} 
+}
+
+workLayer.draw();
+lineLayer.draw();
 });
 
 /*
@@ -1422,11 +1460,11 @@ workLayer.on('mouseover', function(evt) {
 	});
 
 	var enableWorkTool = function() {
-			workToolGroup.children[0].setAttr('shadowEnabled', true);
-			workToolOn = true;
-			disableTool(lineToolGroup);
-			disableTool(deleteToolGroup);
-			toolboxLayer.draw();
+		workToolGroup.children[0].setAttr('shadowEnabled', true);
+		workToolOn = true;
+		disableTool(lineToolGroup);
+		disableTool(deleteToolGroup);
+		toolboxLayer.draw();
 	}
 
 	/* Toolbox controls */
@@ -1441,9 +1479,9 @@ workLayer.on('mouseover', function(evt) {
 		if (lineToolOn) {
 			enableWorkTool();
 		} else {
-			workToolGroup.children[0].setAttr('shadowEnabled', true);
-			workToolOn = true;
-			disableTool(lineToolGroup);
+			lineToolGroup.children[0].setAttr('shadowEnabled', true);
+			lineToolOn = true;
+			disableTool(workToolGroup);
 			disableTool(deleteToolGroup);
 			toolboxLayer.draw();
 		}
