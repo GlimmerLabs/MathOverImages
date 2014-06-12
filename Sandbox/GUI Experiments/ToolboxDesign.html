@@ -5,48 +5,48 @@
 /**
  * Global variables for scalable content.
  */
-	var width = 900;
-	var height = 2 * width / 3;
-	var globalFont = 'Arial';
+ var width = 900;
+ var height = 2 * width / 3;
+ var globalFont = 'Arial';
 
-	var functionStrokeWidth = width / 90;
-	var functionHalfStrokeWidth = functionStrokeWidth / 2;
-	var functionTotalSideLength = width / 20;
-	var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
-	var functionColor = '#508C37';
+ var functionStrokeWidth = width / 90;
+ var functionHalfStrokeWidth = functionStrokeWidth / 2;
+ var functionTotalSideLength = width / 20;
+ var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
+ var functionColor = '#508C37';
 
-	var valueSideLength = functionTotalSideLength / 1.414;
-	var valueXYColor = 'gray'
-	var valueTimeColor = 'gold'
-	var valueConstantColor = 'purple'
+ var valueSideLength = functionTotalSideLength / 1.414;
+ var valueXYColor = 'gray'
+ var valueTimeColor = 'gold'
+ var valueConstantColor = 'purple'
 
-	var imageBoxSideLength = width / 80;
-	var imageBoxColor = 'white'
-	var functionImageBoxOffset = width / 300;
-	var valueImageBoxOffset = width / 31;
-	var renderSideLength = width / 18;
+ var imageBoxSideLength = width / 80;
+ var imageBoxColor = 'white'
+ var functionImageBoxOffset = width / 300;
+ var valueImageBoxOffset = width / 31;
+ var renderSideLength = width / 18;
 
-	var outletXOffset = width / 255;
-	var outletYOffset = functionRectSideLength / 3;
-	var outletColor =  '#FFC440';
+ var outletXOffset = width / 255;
+ var outletYOffset = functionRectSideLength / 3;
+ var outletColor =  '#FFC440';
 
-	var lineStrokeWidth = 2;
+ var lineStrokeWidth = 2;
 
-	var menuHeight = width / 9; 
-	var menuCornerWidth = width / 5;
-	var valMenuXSpacing = width / 32;
-	var functMenuXSpacing = width / 68;
-	var menuYspacing = width * 11/360;
-	var buttonWidth = width / 10;
-	var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
-	var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
-	var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
-	var menuAnimDuration = 1;
+ var menuHeight = width / 9; 
+ var menuCornerWidth = width / 5;
+ var valMenuXSpacing = width / 32;
+ var functMenuXSpacing = width / 68;
+ var menuYspacing = width * 11/360;
+ var buttonWidth = width / 10;
+ var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
+ var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
+ var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
+ var menuAnimDuration = 1;
 
 	var toolboxWidth = width / 18; // 50
-	var toolboxHeight = width / 5; // 180
+	var toolboxHeight = width / 4.1; // 180
 	var toolboxShift = toolboxWidth / 5; // 10
-	var toolboxButtonSize = toolboxHeight / 6; // 30
+	var toolboxButtonSize = width / 30; // 30
 
 	</script>
 
@@ -120,25 +120,25 @@
  * 6. The drag layer holds nodes while they are being moved about the workspace.
  */
 
-	var lineLayer = new Kinetic.Layer();
-	var menuLayer = new Kinetic.Layer();
-	var menuButtonLayer = new Kinetic.Layer();
-	var toolboxLayer = new Kinetic.Layer();
-	var workLayer = new Kinetic.Layer();
-	var borderLayer = new Kinetic.Layer();
-	var dragLayer = new Kinetic.Layer();
+ var lineLayer = new Kinetic.Layer();
+ var menuLayer = new Kinetic.Layer();
+ var menuButtonLayer = new Kinetic.Layer();
+ var toolboxLayer = new Kinetic.Layer();
+ var workLayer = new Kinetic.Layer();
+ var borderLayer = new Kinetic.Layer();
+ var dragLayer = new Kinetic.Layer();
 
 /**
  * Add the layers to the stage. The top layer is the one most recently added, and
  * objects within a layer follow the same logic.
  */
-	stage.add(lineLayer);
-	stage.add(menuLayer);
-	stage.add(menuButtonLayer);
-	stage.add(toolboxLayer);
-	stage.add(workLayer);
-	stage.add(borderLayer);
-	stage.add(dragLayer);
+ stage.add(lineLayer);
+ stage.add(menuLayer);
+ stage.add(menuButtonLayer);
+ stage.add(toolboxLayer);
+ stage.add(workLayer);
+ stage.add(borderLayer);
+ stage.add(dragLayer);
 
   //UTILITY FUNCTIONS
 
@@ -227,36 +227,36 @@ var isUndoTool = function(target) {
  * function group with sufficient inputs, and false if it is a function group
  * with insufficient inputs.
  */
-var isRenderable = function(group) {
-	if (isValue(group)) {
-		return true;
-	} else {
-		var validInputs = 0;
-		for(var i = 3; i < group.children.length; i++) {
-			lineIn = group.children[i].attrs.lineIn;
-			if (lineIn != null && isRenderable(lineIn.attrs.source)) {
-				validInputs++;
-			}
-		}
-		return validInputs >= group.attrs.minInputs;
-	}
-}
+ var isRenderable = function(group) {
+ 	if (isValue(group)) {
+ 		return true;
+ 	} else {
+ 		var validInputs = 0;
+ 		for(var i = 3; i < group.children.length; i++) {
+ 			lineIn = group.children[i].attrs.lineIn;
+ 			if (lineIn != null && isRenderable(lineIn.attrs.source)) {
+ 				validInputs++;
+ 			}
+ 		}
+ 		return validInputs >= group.attrs.minInputs;
+ 	}
+ }
 
-var isCycle = function(sourceGroup, outletGroup) {
+ var isCycle = function(sourceGroup, outletGroup) {
 
-	var lineOut = outletGroup.attrs.lineOut;
-	if (lineOut.length === 0) {
-		return false;
-	}
-	for(var i = 0; i < lineOut.length; i++) {
-		if (sourceGroup == lineOut[i].attrs.outlet.parent) {
-			return true;
-		} else if (isCycle(sourceGroup, lineOut[i].attrs.outlet.parent) ) {
-			return true;
-		}
-	}
-	return false;
-}
+ 	var lineOut = outletGroup.attrs.lineOut;
+ 	if (lineOut.length === 0) {
+ 		return false;
+ 	}
+ 	for(var i = 0; i < lineOut.length; i++) {
+ 		if (sourceGroup == lineOut[i].attrs.outlet.parent) {
+ 			return true;
+ 		} else if (isCycle(sourceGroup, lineOut[i].attrs.outlet.parent) ) {
+ 			return true;
+ 		}
+ 	}
+ 	return false;
+ }
 	// CONSTRUCTORS
 
 /*
@@ -437,16 +437,16 @@ var isCycle = function(sourceGroup, outletGroup) {
 		return newLine;
 	}
 /*
-	makeMenuTween takes a node (target), an integer (xEnd), and a boolean (visibility). It returns a kinetic tween that will move target to xEnd, without changing y value; and with the visibility to the specified boolean values.*/
-	var makeMenuTween = function(target, xEnd, visibility) {
-		return new Kinetic.Tween({
-			node: target,
-			duration: menuAnimDuration,
-			x: xEnd,
-			visible: visibility,
-			easing: Kinetic.Easings.StrongEaseOut
-		});
-	};
+makeMenuTween takes a node (target), an integer (xEnd), and a boolean (visibility). It returns a kinetic tween that will move target to xEnd, without changing y value; and with the visibility to the specified boolean values.*/
+var makeMenuTween = function(target, xEnd, visibility) {
+	return new Kinetic.Tween({
+		node: target,
+		duration: menuAnimDuration,
+		x: xEnd,
+		visible: visibility,
+		easing: Kinetic.Easings.StrongEaseOut
+	});
+};
 
 // METHODS
 
@@ -473,13 +473,13 @@ var isCycle = function(sourceGroup, outletGroup) {
  * renderFunction that should be used to create an image for output.
  * NOTE: this will always recalculate the entire function
  */
-var findRenderFunction = function(group) {
-		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
-			for(var i = 3; i < group.children.length; i++) {
-				if(group.children[i].attrs.lineIn != null) {
-					group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
-					group.attrs.renderFunction += functions[group.attrs.name].separator
-				}
+ var findRenderFunction = function(group) {
+ 	group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
+ 		for(var i = 3; i < group.children.length; i++) {
+ 			if(group.children[i].attrs.lineIn != null) {
+ 				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
+ 				group.attrs.renderFunction += functions[group.attrs.name].separator
+ 			}
 		} // add each element to the equation
 		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
 };
@@ -487,16 +487,16 @@ var findRenderFunction = function(group) {
 /**
  * assertRenderable takes a function group and checks if it is renderable. If true, it finds the renderFunction for the group, makes the imageBox visible and returns true. If false, it makes the imageBox invisible and returns false.
  */
-var assertRenderable = function(group) {
-	if (isRenderable(group)) {
-		findRenderFunction(group);
-		group.children[2].setAttr('visible', true);
-		return true;
-	} else {
-		group.children[2].setAttr('visible', false);
-		return false;
-	}
-}
+ var assertRenderable = function(group) {
+ 	if (isRenderable(group)) {
+ 		findRenderFunction(group);
+ 		group.children[2].setAttr('visible', true);
+ 		return true;
+ 	} else {
+ 		group.children[2].setAttr('visible', false);
+ 		return false;
+ 	}
+ }
 
 /*
 	renderCanvas takes a function or value group and renders a 50 by 50 image starting where the image box is located.  
@@ -522,13 +522,13 @@ var assertRenderable = function(group) {
  * accurate. To be used whenever a function's inputs are changed, or when a node is
  * deleted.
  */
-var updateForward = function(group) {
-	for (var i = 0; i < group.attrs.lineOut.length; i++) {
-		var lineOutGroup = group.attrs.lineOut[i].attrs.outlet.parent;
-		assertRenderable(lineOutGroup);
-		updateForward(lineOutGroup);
-	}
-};
+ var updateForward = function(group) {
+ 	for (var i = 0; i < group.attrs.lineOut.length; i++) {
+ 		var lineOutGroup = group.attrs.lineOut[i].attrs.outlet.parent;
+ 		assertRenderable(lineOutGroup);
+ 		updateForward(lineOutGroup);
+ 	}
+ };
 
 	// Create functions to Move Menu Items
 	/* move the valueGroups in the menu to their original location. */
@@ -576,6 +576,7 @@ var updateForward = function(group) {
 		var moveButton = makeMenuTween(functionsButton, menuCornerWidth + buttonWidth, true)
 		moveButton.play();
 	};
+
 	var shadeButton = function(target) {
 		if (target.attrs.working) {
 			target.setAttrs({
@@ -590,7 +591,7 @@ var updateForward = function(group) {
 			});
 		}
 	};
-
+/*
 	var unshadeOthers = function(target) {
 		var group = target.getParent();
 		if (isDrawTool(target)) {
@@ -625,6 +626,21 @@ var updateForward = function(group) {
 					shadowEnabled: false,
 					working: false
 				});
+		}
+	};
+	*/
+/* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
+	var disableTool = function(toolGroup) {
+		toolGroup.children[0].setAttr('shadowEnabled', false);
+		var name = toolGroup.name();
+		if (name == 'workTool') {
+			workToolOn = false;
+		} 
+		else if (name == 'lineTool') {
+			lineToolOn = false;
+		}
+		else {
+			deleteToolOn = false;
 		}
 	};
 
@@ -750,51 +766,50 @@ for (var i = 0; i < valNames.length; i++) {
 
 	// add the box to contain the entire group
 	var toolboxRect = new Kinetic.Rect({
-	x:0,
-	y:0,
-	width: toolboxWidth,
-	height: toolboxHeight - toolboxShift,
-	fill: 'white',
-	stroke: 'black',
-	strokeWidth: .5,
+		x:0,
+		y:0,
+		width: toolboxWidth,
+		height: toolboxHeight - toolboxShift,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .5,
 	//lineJoin: 'round',
 	shadowColor: 'black',
 	shadowBlur: 0,
 	shadowOffsetX: -1,
 	shadowOffsetY: 1,
 	shadowOpacity: .5
-	});
+});
 	toolboxGroup.add(toolboxRect);
 
 	// add the mini bos above the main box for dragging
 	var toolboxControl = new Kinetic.Rect({
-	x:0,
-	y:-toolboxShift,
-	width: toolboxWidth,
-	height: toolboxShift,
-	name: 'toolControl',
-	fill: 'grey',
-	stroke: 'black',
-	strokeWidth: .5,
+		x:0,
+		y:-toolboxShift,
+		width: toolboxWidth,
+		height: toolboxShift,
+		name: 'toolControl',
+		fill: 'grey',
+		stroke: 'black',
+		strokeWidth: .5,
 	//lineJoin: 'round',
 	shadowColor: 'black',
 	shadowBlur: 0,
 	shadowOffsetX: -1,
 	shadowOffsetY: 1,
 	shadowOpacity: .5
-	});
+});
 	toolboxGroup.add(toolboxControl);
 
-	// add the draw line tool group
-	var drawLineGroup = new Kinetic.Group({
+	//add the work tool
+	var workToolGroup = new Kinetic.Group({
 		x: toolboxShift,
 		y: toolboxShift,
-		name: 'toolGroup'
+		name: 'workTool'
 	});
-	toolboxGroup.add(drawLineGroup);
+	toolboxGroup.add(workToolGroup);
 
-	// add the draw line tool button
-	var drawLineButton = new Kinetic.Rect({
+	var workToolButton = new Kinetic.Rect({
 		x: 0,
 		y: 0,
 		width: toolboxButtonSize,
@@ -811,33 +826,102 @@ for (var i = 0; i < valNames.length; i++) {
 		shadowEnabled: false,
 		working: false
 	});
-	drawLineGroup.add(drawLineButton);
+	workToolGroup.add(workToolButton);
+
+	var workToolSymbol = new Kinetic.Shape({
+		sceneFunc: function(context) {
+			context.beginPath();
+			context.moveTo(0, 0);
+			context.lineTo(5, 12);
+			context.lineTo(1, 12);
+			context.lineTo(1, 18);
+			context.lineTo(-1, 18);
+			context.lineTo(-1, 12);
+			context.lineTo(-5, 12);
+			context.closePath();
+			context.fillStrokeShape(this);
+		},
+		x: toolboxButtonSize / 3.3,
+		y: toolboxButtonSize / 4.5,
+		fill: 'black',
+		stroke: 'black',
+		strokeWidth: .5,
+		lineJoin: 'round',
+		rotation: -30,
+	});
+	workToolGroup.add(workToolSymbol);
+
+	/* Transparent box that covers the button to ensure its function when clicked on */
+	var workToolCover = new Kinetic.Rect({
+		x: 0,
+		y: 0,
+		width: toolboxButtonSize,
+		height: toolboxButtonSize
+	});
+	workToolGroup.add(workToolCover);
+
+	// add the draw line tool group
+	var lineToolGroup = new Kinetic.Group({
+		x: toolboxShift,
+		y: (toolboxShift * 2) + toolboxButtonSize,
+		name: 'lineTool'
+	});
+	toolboxGroup.add(lineToolGroup);
+
+	// add the draw line tool button
+	var lineToolButton = new Kinetic.Rect({
+		x: 0,
+		y: 0,
+		width: toolboxButtonSize,
+		height: toolboxButtonSize,
+		name: 'draw',
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .3,
+		lineJoin: 'round',
+		shadowColor: 'black',
+		shadowOffsetX: -2,
+		shadowOffsetY: 2,
+		shadowOpacity: .5,
+		shadowEnabled: false,
+		working: false
+	});
+	lineToolGroup.add(lineToolButton);
 
 	// add the draw line symbol on the button
-	var drawLineLine = new Kinetic.Line({
+	var lineToolLine = new Kinetic.Line({
 		points: [(toolboxButtonSize * (7/30)), (toolboxButtonSize * (7/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * 24/30)],
 		stroke: 'black',
 		strokeWidth: 2,
 		lineCap: 'round'
 	});
-	drawLineGroup.add(drawLineLine);
+	lineToolGroup.add(lineToolLine);
+
+	/* Transparent box that covers the button to ensure its function when clicked on */
+	var lineToolCover = new Kinetic.Rect({
+		x: 0,
+		y: 0,
+		width: toolboxButtonSize,
+		height: toolboxButtonSize
+	});
+	lineToolGroup.add(lineToolCover);
 
 	// add the delete tool group
-	var deleteGroup = new Kinetic.Group({
+	var deleteToolGroup = new Kinetic.Group({
 		x: toolboxShift,
-		y: (toolboxShift * 2) + toolboxButtonSize,
-		name: 'toolGroup'
+		y: (toolboxShift * 3) + (toolboxButtonSize * 2),
+		name: 'deleteTool'
 	});
-	toolboxGroup.add(deleteGroup);
+	toolboxGroup.add(deleteToolGroup);
 
 	// add the delete line tool button
-	var deleteButton = new Kinetic.Rect({
+	var deleteToolButton = new Kinetic.Rect({
 		x: 0,
 		y: 0,
 		width: toolboxButtonSize,
 		height: toolboxButtonSize,
 		name: 'delete',
-		fill: 'white',
+		fill: '#D93F3F',
 		stroke: 'black',
 		strokeWidth: .3,
 		lineJoin: 'round',
@@ -848,70 +932,109 @@ for (var i = 0; i < valNames.length; i++) {
 		shadowEnabled: false,
 		working: false
 	});
-	deleteGroup.add(deleteButton);
+	deleteToolGroup.add(deleteToolButton);
 
 	// add the delete symbol on the button
-	var drawDeleteSym1 = new Kinetic.Line({
-		points: [(toolboxButtonSize * (7/30)), (toolboxButtonSize * (7/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * 24/30)],
+	var deleteToolSym1 = new Kinetic.Rect({
+		x: toolboxButtonSize * (7/30),
+		y: toolboxButtonSize * (7/30),
+		width: 0,
+		height: .8 * toolboxButtonSize,
 		stroke: 'black',
-		strokeWidth: 2,
-		lineCap: 'round'
+		fill: 'black',
+		rotation: -45, 
+		strokeWidth: 3
+		//lineCap: 'round'
 	});
-	deleteGroup.add(drawDeleteSym1);
+	deleteToolGroup.add(deleteToolSym1);
 
-	var drawDeleteSym2 = new Kinetic.Line({
-		points: [(toolboxButtonSize * (7/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * 7/30)],
+	var deleteToolSym2 = new Kinetic.Rect({
+		x: toolboxButtonSize * (24/30),
+		y: toolboxButtonSize * (7/30),
+		width: 0,
+		height: .8 * toolboxButtonSize,
+		strokeWidth: 3,
 		stroke: 'black',
-		strokeWidth: 2,
-		lineCap: 'round'
+		fill: 'black',
+		//scaleX: - 1,
+		rotation: 45
 	});
-	deleteGroup.add(drawDeleteSym2);
+	deleteToolGroup.add(deleteToolSym2);
+
+/* Transparent box that covers the button to ensure its function when clicked on */
+	var deleteToolCover = new Kinetic.Rect({
+		x: 0,
+		y: 0,
+		width: toolboxButtonSize,
+		height: toolboxButtonSize
+	});
+	deleteToolGroup.add(deleteToolCover);
 
 	// add the undo tool button
-	var undoButton = new Kinetic.Rect({
-		x: toolboxShift,
-		y: (toolboxShift * 3) + (toolboxButtonSize * 2),
-		width: toolboxButtonSize,
-		height: toolboxButtonSize,
+	var undoButton = new Kinetic.Shape({
+		sceneFunc: function(context) {
+			context.beginPath();
+			context.moveTo(0, 0);
+			context.lineTo(35, 30);
+			context.lineTo(35, 12);
+			context.bezierCurveTo(60, 5, 100, 15, 80, 70);
+			context.bezierCurveTo(110, 10, 80, -12, 35, -12);
+			context.lineTo(35, -30);            
+			context.closePath();
+			context.fillStrokeShape(this);
+		},
+		x: toolboxShift -3,
+		y: (toolboxShift*5) + (toolboxButtonSize * 3) + 15,
 		name: 'undo',
-		fill: 'white',
+		scaleX: .35,
+		scaleY: .35,
+		fill: '#B3B1B1',
 		stroke: 'black',
-		strokeWidth: .3,
+		strokeWidth: 1,
 		lineJoin: 'round',
+		rotation: -40,
 		shadowColor: 'black',
 		shadowOffsetX: -2,
 		shadowOffsetY: 2,
 		shadowOpacity: .5,
-		shadowEnabled: false,
-		working: false
+		shadowEnabled: false
 	});
-	toolboxGroup.add(undoButton);
+toolboxGroup.add(undoButton);
 
-	// add the redo tool button
-	var redoButton = new Kinetic.Rect({
-		x: toolboxShift,
-		y: (toolboxShift * 4) + (toolboxButtonSize * 3),
-		width: toolboxButtonSize,
-		height: toolboxButtonSize,
-		name: 'redo',
-		fill: 'white',
-		stroke: 'black',
-		strokeWidth: .3,
-		lineJoin: 'round',
-		shadowColor: 'black',
-		shadowOffsetX: -2,
-		shadowOffsetY: 2,
-		shadowOpacity: .5,
-		shadowEnabled: false,
-		working: false
-	});
-	toolboxGroup.add(redoButton);
+var redoButton = new Kinetic.Shape({
+	sceneFunc: function(context) {
+		context.beginPath();
+		context.moveTo(0, 0);
+		context.lineTo(35, 30);
+		context.lineTo(35, 12);
+		context.bezierCurveTo(60, 5, 100, 15, 80, 70);
+		context.bezierCurveTo(110, 10, 80, -12, 35, -12);
+		context.lineTo(35, -30);            
+		context.closePath();
+		context.fillStrokeShape(this);
+	},
+	x: toolboxShift + toolboxButtonSize + 3,
+	y: (toolboxShift*5) + (toolboxButtonSize * 4) + 20,
+	name: 'redo',
+	scaleX: -.35,
+	scaleY: .35,
+	fill: '#B3B1B1',
+	stroke: 'black',
+	strokeWidth: 1,
+	lineJoin: 'round',
+	rotation: 40,
+	shadowColor: 'black',
+	shadowOffsetX: -2,
+	shadowOffsetY: 2,
+	shadowOpacity: .5,
+	shadowEnabled: false
+});
+toolboxGroup.add(redoButton);
 
-	toolboxLayer.draw();
-//};
+toolboxLayer.draw();
 
 stage.draw();
-
+/*
 toolboxGroup.on ('mouseover', function(evt) {
 	var button = evt.target;
 	if (isDrawTool(button) || isDeleteTool(button) || isRedoTool(button) || isUndoTool(button)) {
@@ -947,7 +1070,7 @@ toolboxGroup.on('click', function(evt) {
 	}
 	toolboxLayer.draw();
 });
-
+*/
 
 
 //MENU ANIMATIONS
@@ -1034,17 +1157,20 @@ var currShape;
 var currLine;
 var makingLine = false;
 var animation = false;
+var lineToolOn = false;
+var workToolOn = false;
+var deleteToolOn = false;
 
 /*
 	On mousedown of a menu object (value or function prototype), you create a copy of that object and begin to draw it.
-*/
-menuLayer.on('mousedown', function(evt) {
-	if (!makingLine) {
-		var group = evt.target.getParent();
-		if (isFunction(group)) {
-			var newGroup = makeFunctionGroup(group.attrs.name, group.attrs.x, group.attrs.y);
-		} else {
-			var newGroup = makeValueGroup(group.attrs.name, group.attrs.x, group.attrs.y);
+	*/
+	menuLayer.on('mousedown', function(evt) {
+		if (!makingLine) {
+			var group = evt.target.getParent();
+			if (isFunction(group)) {
+				var newGroup = makeFunctionGroup(group.attrs.name, group.attrs.x, group.attrs.y);
+			} else {
+				var newGroup = makeValueGroup(group.attrs.name, group.attrs.x, group.attrs.y);
 	} // if function / else value
 	newGroup.setAttr('visible', true);
 	dragLayer.add(newGroup);
@@ -1058,14 +1184,14 @@ menuLayer.on('mousedown', function(evt) {
 	1. check that it isnt in the menu area
 	--if it is a new object, add the appropriate number of outlets to it
 	2. if its in the menu area destroy it and all lines attached to it
-*/
-dragLayer.on('mouseup', function(evt) {
-	var group = evt.target.getParent();
-	if (group.attrs.y > menuHeight) {
-		group.moveTo(workLayer);
-		if (isFunction(group) && group.children.length < 4) {
-			for (var i = 0; i < functions[group.attrs.name].min; i++) {
-				addOutlet(group);
+	*/
+	dragLayer.on('mouseup', function(evt) {
+		var group = evt.target.getParent();
+		if (group.attrs.y > menuHeight) {
+			group.moveTo(workLayer);
+			if (isFunction(group) && group.children.length < 4) {
+				for (var i = 0; i < functions[group.attrs.name].min; i++) {
+					addOutlet(group);
 			} // add outlets to a new node
 		} // if new function 
 		else if (isValue(group)) {
@@ -1110,46 +1236,46 @@ dragLayer.on('mouseup', function(evt) {
 /*
 	When you click down on an object in the workLayer and arent in the process of making
 	a line, move that object to the dragLayer and allow it to be dragged.
-*/
-workLayer.on('mousedown', function(evt) {
-	if (!makingLine && !isImageBox(evt.target)) {
-		var group = evt.target.getParent();
-		group.moveTo(dragLayer);
-		currShape = group;
-		group.startDrag();
-		workLayer.draw();
-		dragLayer.draw();
-		if (group.attrs.renderLayer != null) {
-			group.attrs.renderLayer.draw();
+	*/
+	workLayer.on('mousedown', function(evt) {
+		if (!makingLine && !isImageBox(evt.target)) {
+			var group = evt.target.getParent();
+			group.moveTo(dragLayer);
+			currShape = group;
+			group.startDrag();
+			workLayer.draw();
+			dragLayer.draw();
+			if (group.attrs.renderLayer != null) {
+				group.attrs.renderLayer.draw();
+			}
 		}
-	}
-});
+	});
 
 /*
 	when you double click on an object in the workLayer and you arent already drawing a
 	line, you should begin drawing a line starting from that object.
-*/
-workLayer.on('dblclick', function(evt) {
-	if (!makingLine) {
-		makingLine = true;
-		var group = evt.target.getParent();
-		currLine = makeLine(group);
-		group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
-		lineLayer.add(currLine);
-		lineLayer.draw();
-	}
-});
+	*/
+	workLayer.on('dblclick', function(evt) {
+		if (!makingLine) {
+			makingLine = true;
+			var group = evt.target.getParent();
+			currLine = makeLine(group);
+			group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
+			lineLayer.add(currLine);
+			lineLayer.draw();
+		}
+	});
 
 /*
 	while you are drawing a line, make it move with the cursor.
-*/
-stage.addEventListener('contentMousemove', function(){
-	if(makingLine) {
-		currLine.points()[2] = stage.getPointerPosition().x;
-		currLine.points()[3] = stage.getPointerPosition().y;
-		lineLayer.draw();
-	}
-});
+		*/
+	stage.addEventListener('contentMousemove', function(){
+		if(makingLine) {
+			currLine.points()[2] = stage.getPointerPosition().x;
+			currLine.points()[3] = stage.getPointerPosition().y;
+			lineLayer.draw();
+		}
+	});
 
 /*
 	while making a line, make outlets grow when they are moused over to signify that they
@@ -1181,16 +1307,16 @@ workLayer.on('mouseover', function(evt) {
 /*
 	when the cursor is moved out of an outlet while drawing a line, return it to its
 	original size
-*/
-workLayer.on('mouseout', function(evt) {
-	var shape = evt.target;
-	if (makingLine) {
-		if (isOutlet(shape)) {
-			shape.scale({
-				x: 1,
-				y: 1
-			});
-			workLayer.draw();
+	*/
+	workLayer.on('mouseout', function(evt) {
+		var shape = evt.target;
+		if (makingLine) {
+			if (isOutlet(shape)) {
+				shape.scale({
+					x: 1,
+					y: 1
+				});
+				workLayer.draw();
 		} // if outlet
 	} // if makingLine
 	else if (isImageBox(shape) && shape.attrs.expanded) {
@@ -1213,21 +1339,19 @@ workLayer.on('mouseout', function(evt) {
 	4. if we have all visible outlets filled but the function can take more inputs, add
 	an outlet.
 	5. otherwise keep drawing the line.
-
-
-*/
-workLayer.on('click', function(evt) {
-	var shape = evt.target;
-	var parent = shape.getParent();
-	if (makingLine) {
-		if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
-			currLine.attrs.source.attrs.lineOut.splice([currLine.attrs.source.attrs.lineOut.length - 1], 1);
-			currLine.destroy();
-			if (isOutlet(shape)) {
-				shape.scale({	x: 1, y: 1 });
-			}
-			makingLine = false;
-		} else if (isOutlet(shape)) {
+	*/
+	workLayer.on('click', function(evt) {
+		var shape = evt.target;
+		var parent = shape.getParent();
+		if (makingLine) {
+			if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
+				currLine.attrs.source.attrs.lineOut.splice([currLine.attrs.source.attrs.lineOut.length - 1], 1);
+				currLine.destroy();
+				if (isOutlet(shape)) {
+					shape.scale({	x: 1, y: 1 });
+				}
+				makingLine = false;
+			} else if (isOutlet(shape)) {
 			//check if outlet already has an input
 			if (shape.attrs.lineIn != null) {
 				//POSSIBLE NEED TO DESTROY LINE ITSELF
@@ -1248,8 +1372,8 @@ workLayer.on('click', function(evt) {
 			if (parent.attrs.numInputs == parent.children.length - 3 &&
 				parent.attrs.numInputs < parent.attrs.maxInputs) {
 				addOutlet(parent);
-			}
-			updateForward(parent);
+		}
+		updateForward(parent);
 		} // if clicked on self, else clicked on a valid outlet
 		workLayer.draw();
 		lineLayer.draw();
@@ -1277,27 +1401,67 @@ workLayer.on('click', function(evt) {
 
 /*
 	While an object is being dragged, move all lines connected to it with it.
-*/
-dragLayer.on('draw', function() {
-	if(currShape != null) {
-		var targetLine;
-		for(var i = 0; i < currShape.children.length - 3; i++) {
-			targetLine = currShape.children[i+3].attrs.lineIn;
-			if(targetLine != null) {
-				targetLine.points()[2] = currShape.x();
-				targetLine.points()[3] = currShape.y() + currShape.children[i+3].y();
+	*/
+	dragLayer.on('draw', function() {
+		if(currShape != null) {
+			var targetLine;
+			for(var i = 0; i < currShape.children.length - 3; i++) {
+				targetLine = currShape.children[i+3].attrs.lineIn;
+				if(targetLine != null) {
+					targetLine.points()[2] = currShape.x();
+					targetLine.points()[3] = currShape.y() + currShape.children[i+3].y();
+				}
 			}
+			for(var i = 0; i < currShape.attrs.lineOut.length; i++) {
+				targetLine = currShape.attrs.lineOut[i];
+				targetLine.points()[0] = currShape.x() + functionRectSideLength - 3;
+				targetLine.points()[1] = currShape.y() + functionTotalSideLength / 2;
+			}
+			lineLayer.draw();
 		}
-		for(var i = 0; i < currShape.attrs.lineOut.length; i++) {
-			targetLine = currShape.attrs.lineOut[i];
-			targetLine.points()[0] = currShape.x() + functionRectSideLength - 3;
-			targetLine.points()[1] = currShape.y() + functionTotalSideLength / 2;
-		}
-		lineLayer.draw();
+	});
+
+	var enableWorkTool = function() {
+			workToolGroup.children[0].setAttr('shadowEnabled', true);
+			workToolOn = true;
+			disableTool(lineToolGroup);
+			disableTool(deleteToolGroup);
+			toolboxLayer.draw();
 	}
-});
+
+	/* Toolbox controls */
+	workToolGroup.on('click', function(){
+		if (!workToolOn) {
+			enableWorkTool();
+		}		
+	});
 
 
-</script>
+	lineToolGroup.on('click', function() {
+		if (lineToolOn) {
+			enableWorkTool();
+		} else {
+			workToolGroup.children[0].setAttr('shadowEnabled', true);
+			workToolOn = true;
+			disableTool(lineToolGroup);
+			disableTool(deleteToolGroup);
+			toolboxLayer.draw();
+		}
+	});
+
+	deleteToolGroup.on('click', function() {
+		if (deleteToolOn) {
+			enableWorkTool();
+		} else {
+			deleteToolGroup.children[0].setAttr('shadowEnabled', true);
+			deleteToolOn = true;
+			disableTool(workToolGroup);
+			disableTool(lineToolGroup);
+			toolboxLayer.draw();
+		}
+	});
+
+
+	</script>
 </body>
 <html>
