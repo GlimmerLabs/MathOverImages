@@ -469,15 +469,15 @@ module.exports.imageInfo=(function(imageid, callback) {
 
 //albums query shortcode
 
-module.exports.albumInfo=(function(userid, callback) {
+module.exports.albumsInfo=(function(userid, callback) {
     userid=sanitize(userid);
-    module.exports.query("SELECT albums.name, albums.caption, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated desc;" , function (rows, error){
+    module.exports.query("SELECT users.username, albums.name, albums.caption, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated desc;" , function (rows, error){
 	if (error)
 	    callback(null, error);
 	else if (!rows[0])
 	    callback(null, "User does not have any albums");
 	else
-	    callback(rows[0], null);	
+	    callback(rows, null);
     });
 });
 
@@ -494,6 +494,7 @@ module.exports.albumContentsInfo=(function(albumid, callback) {
 	else if (!rows[0])
 	    callback(null, "Album does not exist");
 	else
-	    callback(rows[0], null);	
+	    callback(rows, null);
     });
 });
+
