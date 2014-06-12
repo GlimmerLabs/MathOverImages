@@ -47,34 +47,33 @@
 
 	<script>
 /**
-	* Arrays of the basic function and value names, and tables of their specific settings
-	*/
+ * Arrays of the basic function and value names, and tables of their specific settings
+ */
+ var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
+ var functions = {
+ 	add:      {rep: '+',    max: 20, min: 2, prefix: '',     separator: '+'},
+ 	multiply: {rep: '*',    max: 20, min: 2, prefix: '',     separator: '*'},
+ 	negate:   {rep: '-',    max: 1,  min: 1, prefix: '-',    separator: ' '},
+ 	sine:     {rep: 'sin',  max: 1,  min: 1, prefix: 'sin',  separator: ' '},
+ 	cosine:   {rep: 'cos',  max: 1,  min: 1, prefix: 'cos',  separator: ' '},
+ 	absolute: {rep: 'abs',  max: 1,  min: 1, prefix: 'abs',  separator: ' '},
+ 	average:  {rep: 'ave',  max: 20, min: 2, prefix: 'ave',  separator: ','},
+ 	sign:     {rep: 'sign', max: 1,  min: 1, prefix: 'sign', separator: ' '},
+ 	wrap:     {rep: 'wrap', max: 1,  min: 1, prefix: 'wrap', separator: ' '},
+ 	rgb:      {rep: 'rgb',  max: 3,  min: 3, prefix: 'rgb',  separator: ','}
+ }
+ var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
+ var values = {
+ 	x:        {rep: 'x',   color: valueXYColor},
+ 	y:        {rep: 'y',   color: valueXYColor},
+ 	second:   {rep: 't.s', color: valueTimeColor},
+ 	minute:   {rep: 't.m', color: valueTimeColor},
+ 	hour:     {rep: 't.h', color: valueTimeColor},
+ 	day:      {rep: 't.d', color: valueTimeColor},
+ 	constant: {rep: '',    color: valueConstantColor},
+ }
+ </script>
 
-	var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
-	var functions = {
-		add: 			{rep: '+', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
-		multiply: {rep: '*', 	 max: 20, min: 2, prefix: '', 		separator: '*'},
-		negate: 	{rep: '-', 	 max: 1,  min: 1, prefix: '-', 		separator: ' '},
-		sine: 		{rep: 'sin', max: 1,  min: 1, prefix: 'sin', 	separator: ' '},
-		cosine: 	{rep: 'cos', max: 1,  min: 1, prefix: 'cos', 	separator: ' '},
-		absolute: {rep: 'abs', max: 1,  min: 1, prefix: 'abs', 	separator: ' '},
-		average: 	{rep: 'ave', max: 20, min: 2, prefix: 'ave', 	separator: ','},
-		sign: 		{rep: 'sign',max: 1,  min: 1, prefix: 'sign', separator: ' '},
-		wrap: 		{rep: 'wrap',max: 1,  min: 1, prefix: 'wrap', separator: ' '},
-		rgb: 			{rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', 	separator: ','}
-	}
-	var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
-	var values = {
-		x: 				{rep: 'x', 	 max: 20, min: 2, color: valueXYColor},
-		y: 				{rep: 'y', 	 max: 20, min: 2, color: valueXYColor},
-		second: 	{rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
-		minute:		{rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
-		hour: 		{rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
-		day: 			{rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-		constant:	{rep: '', 	 max: 20, min: 2, color: valueConstantColor},
-	}
-	</script>
-	
 
 	<style>
 	body {
