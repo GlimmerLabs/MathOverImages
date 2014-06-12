@@ -721,6 +721,7 @@ var currLine;
 var makingLine = false;
 var animation = false;
 var dragging = false;
+var replacing = false;
 
 /*
 	On mousedown of a menu object (value or function prototype), you create a copy of that object and begin to draw it.
@@ -744,17 +745,23 @@ menuLayer.on('mousedown', function(evt) {
 
 /*
 	when an object being dragged is released:
-	1. check that it isnt in the menu area
+	1. check if we are replacing an existing node. If we are we want to destroy the 
+	2. check that it isnt in the menu area
 	--if it is a new object, add the appropriate number of outlets to it
-	2. if its in the menu area destroy it and all lines attached to it
-*/
-dragLayer.on('mouseup', function(evt) {
-	var group = evt.target.getParent();
-	if (group.attrs.y > menuHeight) {
-		group.moveTo(workLayer);
-		if (isFunction(group) && group.children.length < 4) {
-			for (var i = 0; i < functions[group.attrs.name].min; i++) {
-				addOutlet(group);
+	3. if its in the menu area destroy it and all lines attached to it
+	*/
+	dragLayer.on('mouseup', function(evt) {
+		var group = evt.target.getParent();
+		if (replacing) {
+
+
+			replacing = false;
+		} else {
+			if (group.attrs.y > menuHeight) {
+				group.moveTo(workLayer);
+				if (isFunction(group) && group.children.length < 4) {
+					for (var i = 0; i < functions[group.attrs.name].min; i++) {
+						addOutlet(group);
 			} // add outlets to a new node
 		} // if new function 
 		else if (isValue(group)) {
@@ -790,11 +797,13 @@ dragLayer.on('mouseup', function(evt) {
 		lineLayer.draw();
 		group.destroy();
 	}
-	menuLayer.draw();
-	menuButtonLayer.draw();
-	dragLayer.draw();
-	workLayer.draw();
-	dragging = false;
+}
+menuLayer.draw();
+menuButtonLayer.draw();
+dragLayer.draw();
+workLayer.draw();
+dragging = false;
+
 });
 
 /*
@@ -991,16 +1000,26 @@ dragLayer.on('draw', function() {
 	}
 });
 
+/**
+ * When dragging a function or value onto the workspace, we want users to be able
+ * to be able to replace an existing node with a node of the same type.
+ */
 workLayer.on('mouseover', function(evt) {
 	if (dragging) {
-		var shape = evt.target;
-		var parent = shape.getParent();
-		if (isValue(currShape) && isValue())
-
-
-
+		var group = evt.target.getParent();
+		if ((isValue(currShape) && isValue(group)) ||
+			(isFunction(currShape) && isFunction(group))) {
+			replacing = true;
+			
+		}
 	}
 });
+
+workLayer.on('mouseout', function() {
+	if (dragging) {
+		replacing = false;
+	}
+}
 </script>
 </body>
 <html>
