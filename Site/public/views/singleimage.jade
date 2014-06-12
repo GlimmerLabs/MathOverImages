@@ -1,0 +1,18 @@
+extends ./partials/framework
+block title
+	title= image.title + " on MIST"
+block extraMetas
+block extraLinks
+
+block stylesheets
+	link(rel='stylesheet' href='/css/singleImage')
+	link(rel='stylesheet' href='/css/styles')
+block content
+	div(id='main')
+		img(src='/samples/bw0.jpg')
+		p= image.title
+		p= image.rating
+		p= image.code
+		p= image.modifiedAt
+		p= image.username
+		

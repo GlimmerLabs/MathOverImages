@@ -33,7 +33,13 @@ module.exports = function(app,passport,database) {
 	res.redirect('/login');
     });
 
-
+    /* function page */
+    app.get('/function', function(req,res){
+	res.render("../public/views/functions.jade",{
+	    loggedIn: req.session.loggedIn,
+	    user: req.session.user
+	});
+    });
 
     /* ================= login page =============================*/
 
@@ -77,7 +83,19 @@ module.exports = function(app,passport,database) {
 	});
     });
 
-
+    /* images page */
+    app.get('/image/:imageid', function(req,res){
+	database.imageInfo(req.params.imageid, function(image, error){
+	    if(error)
+		res.end(error)
+	    else
+		res.render('../public/views/singleimage.jade', {
+		    loggedIn: req.session.loggedIn,
+		    user: req.session.user,
+		    image: image
+		});
+	});
+    });
 
     /* ============== log out =================== */
     app.get('/logout', function(req,res){
