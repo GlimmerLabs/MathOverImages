@@ -72,7 +72,7 @@ header nav li:hover {
 
 #pageTitle {
     height:140px;
-    width:480px;
+    width:600px;
     margin: 0px -130px;
     float: left;
     background-color: #3FAAA0;
@@ -83,7 +83,7 @@ header nav li:hover {
     font-size: 25px;
     color: #FFFFFF;
     text-align: left;
-    text-indent: 40px;
+    text-indent: 30px;
     margin: 30px 105px;
     line-height: 5px;
     border: 4px solid #FFFFFF;

@@ -1,11 +1,45 @@
 $(document).ready(function(){ 
-var checkUser= (function(string){
-    console.log(string);
-});  
+    $('#sign up').change(function(){
+	var validated = true;
+	if($('#input').length===0) || $(("#password").value !== ("#repassword").value) {
+	    validated = false;
+	}
+
+	$('input[type="submit"]').trigger();
+
+    } 
+			 
+
+});
+    var checkUsername= (function(username){
+	var parameters = { funct: "checkAvailability", value: username};
+	$.post('/api', parameters, function(available){
+	    if(available === "true")
+		$("#usernamevalid").html("<p>Yes! Available!</p>");
+	    else
+		$("#usernamevalid").html("<p>Not available.</p>");
+	});
+    });
+    var checkEmail= (function(email){
+	var parameters = { funct: "checkAvailability", value: email};
+	$.post('/api', parameters, function(available){
+	    if(available === "true")
+		$("#emailvalid").html("<p>Good</p>");
+	    else
+		$("#emailvalid").html("<p>It seems like you already have an account here. Log in instead?</p>");
+	});
+    });
+    
+    
     $("#email").blur(function(){
-	checkUser(this.value)
+	checkEmail(this.value)
     });
     $("#username").blur(function(){
-	checkUser(this.value)
+	checkUsername(this.value)
+    });
+    $("#repassword").blur(function(){
+	if ($("#password")[0].value === this.value)
+	    console.log("good");
+
     });
 });
