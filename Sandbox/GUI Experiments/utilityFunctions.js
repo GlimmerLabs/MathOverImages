@@ -278,4 +278,4 @@ var isUndoTool = function(target) {
 		disableTool(lineToolGroup);
 		disableTool(deleteToolGroup);
 		toolboxLayer.draw();
-	}
+	};
