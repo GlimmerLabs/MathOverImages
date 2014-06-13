@@ -1,0 +1,16 @@
+extends ./partials/framework
+block title
+	title MIST Galleries
+block extraMetas
+block extraLinks
+
+block stylesheets
+	link(rel='stylesheet', href='/css/styles')
+
+block content
+	div(id='main')
+		div(id='pageTitle') 
+			div(id='titleTitle')
+				h1 Gallery
+		p
+			= generateNarrative()

@@ -1,4 +1,6 @@
 // app/routes.js
+var gallery = require("../functions/gallery.js");
+
 module.exports = function(app,passport,database) {
     /* ======================  HOME PAGE =======================*/
     app.get('/', function(req, res) {
@@ -102,7 +104,12 @@ module.exports = function(app,passport,database) {
 	});
     });
 
- /* albums page */
+    /* gallery page */
+    app.get('/gallery', function(req,res) {
+      gallery.buildPage(req,res);
+    });
+
+    /* albums page */
     app.get('/albums/:userid', function(req,res){
 	database.albumsInfo(req.params.userid, function(albums, error){
 	    if(error)
