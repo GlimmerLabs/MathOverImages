@@ -5,7 +5,7 @@ border: 2px solid #3FAAA0;
 text-align: center;
 width: 181px;
 font-size: 20px;
-
+margin: 0px 50px;
 }
 
 #albumTitle:hover {
@@ -26,10 +26,16 @@ font-size: 36px;
 img {
 width: 250px;
 height: 250px;
+padding: 20px;
 }
 
 .album {
 float: right;
 margin: 0px auto;
 padding: 20px;
+}
+
+p {
+font-family: 'Open-Sans', sans-serif;
+color: #4A4A4A;
 }
