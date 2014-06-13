@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<textarea rows="10" cols="60" id="pasteModalArea"></textarea>
+
+	<script src="globalVariables.js"></script>	
+	<script src="utilityFunctions.js"></script>
+	<script src="constructors.js"></script>
+	<script src="../render.js"></script>
+	<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+	</script>
+	
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="kinetic.editable.js"></script>
+	
+	<style>
+	body {
+		margin: 0px;
+		padding: 0px;
+	} 
+	#container {
+		background-color: rgb(241, 248, 255);
+		width: 900px;
+		height: 600px;
+	}
+	</style>
+</head>
+<body>
+	<div id="container"></div>	
+	<script defer="defer">
+
+	var stage = new Kinetic.Stage({
+		container: 'container',
+		width: width,
+		height: height
+	});
+	
+	var layer = new Kinetic.Layer();
+	var val = makeValueGroup('constant', 50, 50);
+	val.setAttr('visible', true);
+	layer.add(val);
+	var textBox = new Kinetic.EditableText({
+		x: 100,
+		y: 100,
+		width: 30,
+		height: 30, 
+		focusLayer: layer,
+		stage: stage,
+		drawHitFunc: function(canvas) {
+			var context = canvas.getContext(),
+			width = 30,
+			height = 30;
+
+			if (this.tempText != undefined) {
+				var linesCount = this.tempText.length;
+
+				context.beginPath();
+				context.rect(0, 0, this.maxWidth + 10, linesCount*height);
+				context.closePath();
+				canvas.fillStroke(this);
+			}
+			else {
+				context.beginPath();
+				context.rect(0, 0, width, height);
+				context.closePath();
+				canvas.fillStroke(this);
+			}
+		}
+	});
+	layer.add(textBox);
+	stage.add(layer);
+	stage.draw();
+
+	val.on('dblclick', function(){
+		openText(val);
+		layer.draw();
+	});
+
+
+
+	</script>
+</body>
+</html>
