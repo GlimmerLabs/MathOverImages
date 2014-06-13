@@ -1,5 +1,12 @@
 // app/routes.js
 var gallery = require("../functions/gallery.js");
+var albums = require("../functions/albums.js");
+var albumContents = require("../functions/albumContents.js");
+var functions = require("../functions/functions.js");
+var username = require("../functions/username.js");
+var image = require("../functions/image.js");
+var login = require("../functions/login.js");
+var signup = require("../functions/signup.js");
 
 module.exports = function(app,passport,database) {
     /* ======================  HOME PAGE =======================*/
@@ -21,17 +28,7 @@ module.exports = function(app,passport,database) {
     });
 
     app.post('/signup', function(req,res){
-	if(req.body.password === req.body.repassword)
-	    database.addUser (req.body.forename, req.body.surname, req.body.password, req.body.email, req.body.username, function(success, error) {
-		if (success)
-		    res.redirect('/login');
-		else {
-		    console.log(error);
-		    res.end (error); //Make error landing page
-		}
-	    });
-	else
-	    res.end ("passwords don't match"); // Make error landing page
+	signup.buildPage(req, res, database);
     });
 
     /* ================= verify page ===============*/
@@ -50,19 +47,7 @@ module.exports = function(app,passport,database) {
     });
 
     app.post('/login', function(req,res){
-	database.logIn(req.body.username, req.body.password, function(user, error){
-	    if(!error)
-	    {
-		req.session.loggedIn = true;
-		req.session.user = user;
-		res.redirect('back');
-	    }
-	    else
-	    {
-		console.log(error);
-		res.redirect('/login'); //return error
-	    }
-	});
+	login.buildPage(req, res, database);
     });
 
     /* ============== log out =================== */
@@ -74,87 +59,33 @@ module.exports = function(app,passport,database) {
 
  /* ============== user's profile page =================== */
     app.get('/user/:username', function(req, res){
-	database.getIDforUsername(req.params.username, function(userid, error){
-	    if (error)
-		res.end (error); // Error Landing page
-	    else
-		database.getUser(userid, function(userObject, error){
-		    res.render('../public/views/profile.jade',{
-			loggedIn: req.session.loggedIn,
-			user: req.session.user,
-			viewing: userObject
-			});
-		});
-	});
+	username.buildPage(req, res, database);
     });
 
     /* function page */
     app.get('/user/:username/functions', function(req,res){
-	database.getIDforUsername(req.params.username, function(userid,error){
-	    if (error)
-		res.end(error);
-	    else
-		database.getUser(userid, function(userObject,error){
-		    res.render("../public/views/functions.jade",{
-			loggedIn: req.session.loggedIn,
-			user: req.session.user,
-			viewing: userObject
-		    });
-		});
-	});
+	functions.buildPage(req, res, database);
     });
 
     /* gallery page */
     app.get('/gallery', function(req,res) {
-      gallery.buildPage(req,res);
+      gallery.buildPage(req, res, database);
     });
 
     /* albums page */
     app.get('/albums/:userid', function(req,res){
-	database.albumsInfo(req.params.userid, function(albums, error){
-	    if(error)
-		res.end(error)
-	    else
-		res.render('../public/views/albums.jade', {
-		    loggedIn: req.session.loggedIn,
-		    user: req.session.user,
-		    albums: albums
-		});
-	});
+	albums.buildPage(req, res, database);
     });
 
     /* image page */
     app.get('/image/:imageid', function(req,res){
-	database.imageInfo(req.params.imageid, function(image, error){
-	    if(error)
-		res.end(error)
-	    else
-		res.render('../public/views/singleimage.jade', {
-		    loggedIn: req.session.loggedIn,
-		    user: req.session.user,
-		    image: image
-		});
-	});
+	image.buildPage(req, res, database);
     });
-
 
  /* albumContents page */
     app.get('/albums/:albumid', function(req,res){
-database.albumContentsInfo(req.params.albumid, function(albumContents, error){
-	    if(error)
-		res.end(error)
-	    else
-		res.render('../public/views/albumContents.jade', {
-		    loggedIn: req.session.loggedIn,
-		    user: req.session.user,
-		    albumContents: albumContents
-		});
-	});
+	albumContents.buildPage(req, res, database);
     });
-
-
-
-
 
     /* image distribution */
     app.get('/samples/:image', function(req,res){

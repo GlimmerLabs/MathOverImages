@@ -1,7 +1,6 @@
-
 #albumTitle {
 color: #979797;
-border: 2px solid #3FAAA0; 
+border: 2px solid #3FAAA0;
 text-align: center;
 width: 181px;
 font-size: 20px;
@@ -30,7 +29,7 @@ padding: 20px;
 }
 
 .album {
-float: right;
+float: left;
 margin: 0px auto;
 padding: 20px;
 }
@@ -38,4 +37,7 @@ padding: 20px;
 p {
 font-family: 'Open-Sans', sans-serif;
 color: #4A4A4A;
+width: 300px;
+word-wrap: break-word;
+text-align: center;
 }

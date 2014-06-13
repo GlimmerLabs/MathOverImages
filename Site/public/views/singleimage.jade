@@ -9,10 +9,9 @@ block stylesheets
 	link(rel='stylesheet' href='/css/styles')
 block content
 	div(id='main')
-		img(src='/samples/bw0.jpg')
-		p= image.title
+		img(src='/samples/color1.jpg')
+		#imageTitle= image.title
 		p= image.rating
 		p= image.code
 		p= image.modifiedAt
 		p= image.username
-		

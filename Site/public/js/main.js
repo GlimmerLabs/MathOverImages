@@ -28,5 +28,11 @@ $(document).ready(function(){
     $("#login").click(function(){
 	$(".hidden").submit();
     });
+
+    $(".hidden").on('keyup', function(e) {
+    if (e.which == 13) {
+        $(".hidden").submit();
+    }
+});
     // End Header Functions
 });
