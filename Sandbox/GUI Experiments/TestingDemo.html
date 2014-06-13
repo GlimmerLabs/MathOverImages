@@ -30,17 +30,17 @@
 		height: height
 	});
 
-
 /**
  * Layers of the workspace:
  * 1. The line layer holds connecting lines between nodes in the work area.
  * 2. The menu layer holds the buttons that users can click on to drag a new node into
  *		the work area.
  * 3. The menuButton layer holds the super buttons that are used to expand the menus.
- * 4. The work layer holds all active nodes that are either connected or available to
+ * 4. The toolboxLayer holds the draggable toolbox
+ * 5. The work layer holds all active nodes that are either connected or available to
  * 		be connected.
- * 5. The border layer stores static elements of the page such as dividing lines.
- * 6. The drag layer holds nodes while they are being moved about the workspace.
+ * 6. The border layer stores static elements of the page such as dividing lines.
+ * 7. The drag layer holds nodes while they are being moved about the workspace.
  */
 
  var lineLayer = new Kinetic.Layer();
@@ -63,111 +63,129 @@
  stage.add(borderLayer);
  stage.add(dragLayer);
 
-//SETUP STAGE
+ // TOOLBOX BOOLEANS
+ var lineToolOn = false;
+ var workToolOn = false;
+ var deleteToolOn = false;
 
-/* create and add menu border */
-var borderLine = new Kinetic.Line({
-	points: [0, menuHeight, width, menuHeight],
-	stroke: 'black',
-	strokeWidth: 2
-});
+//MENU BOOLEANS
+var valueExpanded = false;
+var functionExpanded = false;
 
-borderLayer.add(borderLine);
-borderLayer.draw();
+/* variables to globally reference the most recently used object/line and current state */
+var currShape;
+var currLine;
 
-/* create and add menu buttons */
-var valuesButton = new Kinetic.Group({
-	x: menuCornerWidth
-});
-menuButtonLayer.add(valuesButton);
+//OTHER BOOLEANS
+var makingLine = false;
+var animation = false;
 
-var valuesButtonBox = new Kinetic.Rect({
-	x:0,
-	y:0,
-	width: buttonWidth,
-	height: menuHeight,
-	fill: 'lavender',
-	stroke: 'black',
-	strokeWidth: 2
-});
-valuesButton.add(valuesButtonBox);
 
-var valuesButtonRect = new Kinetic.Rect({
-	x: buttonWidth / 2,
-	y: menuHeight / 4,
-	width: valueSideLength,
-	height: valueSideLength,
-	fill: 'purple',
-	rotation: 45,
-});
-valuesButton.add(valuesButtonRect);
+ //SETUP STAGE
 
-var valuesButtonText = new Kinetic.Text({
-	text: 'add a value',
-	x: 0,
-	y: menuHeight / 2 + menuHeight / 4,
-	width: buttonWidth,
-	height: menuHeight / 4,
-	fill: 'black',
-	align: 'center'
-});
-valuesButton.add(valuesButtonText);
+ /* create and add menu border */
+ var borderLine = new Kinetic.Line({
+ 	points: [0, menuHeight, width, menuHeight],
+ 	stroke: 'black',
+ 	strokeWidth: 2
+ });
 
-var functionsButton = new Kinetic.Group({
-	x: menuCornerWidth + buttonWidth
-});
-menuButtonLayer.add(functionsButton);
+ borderLayer.add(borderLine);
+ borderLayer.draw();
 
-var functionsButtonBox = new Kinetic.Rect({
-	x:0,
-	y:0,
-	width: buttonWidth,
-	height: menuHeight,
-	fill: '#D7EBCF',
-	stroke: 'black',
-	strokeWidth: 2
-});
-functionsButton.add(functionsButtonBox);
+ /* create and add menu buttons */
+ var valuesButton = new Kinetic.Group({
+ 	x: menuCornerWidth
+ });
+ menuButtonLayer.add(valuesButton);
 
-var functionsButtonRect = new Kinetic.Rect({
-	x: buttonWidth / 2 - functionRectSideLength / 2,
-	y: menuHeight / 4,
-	width: functionRectSideLength,
-	height: functionRectSideLength,
-	fill: functionColor,
-	lineJoin: 'round',
-	stroke: functionColor,
-	strokeWidth: functionStrokeWidth
-});
-functionsButton.add(functionsButtonRect);
+ var valuesButtonBox = new Kinetic.Rect({
+ 	x:0,
+ 	y:0,
+ 	width: buttonWidth,
+ 	height: menuHeight,
+ 	fill: 'lavender',
+ 	stroke: 'black',
+ 	strokeWidth: 2
+ });
+ valuesButton.add(valuesButtonBox);
 
-var functionsButtonText = new Kinetic.Text({
-	text: 'add a function',
-	x: 0,
-	y: menuHeight / 2 + menuHeight / 4,
-	width: buttonWidth,
-	height: menuHeight / 4,
-	fill: 'black',
-	align: 'center'
-});
-functionsButton.add(functionsButtonText);
-menuButtonLayer.draw();
+ var valuesButtonRect = new Kinetic.Rect({
+ 	x: buttonWidth / 2,
+ 	y: menuHeight / 4,
+ 	width: valueSideLength,
+ 	height: valueSideLength,
+ 	fill: 'purple',
+ 	rotation: 45,
+ });
+ valuesButton.add(valuesButtonRect);
 
-/* add functions to menu */
-var menuFunctions = [];
-for (var i = 0; i < funNames.length; i++) {
-	menuFunctions[i] = makeFunctionGroup(funNames[i], menuFunctsXStart, menuYspacing);
-	menuLayer.add(menuFunctions[i]);
-}
+ var valuesButtonText = new Kinetic.Text({
+ 	text: 'add a value',
+ 	x: 0,
+ 	y: menuHeight / 2 + menuHeight / 4,
+ 	width: buttonWidth,
+ 	height: menuHeight / 4,
+ 	fill: 'black',
+ 	align: 'center'
+ });
+ valuesButton.add(valuesButtonText);
 
-/* add values to menu */
-var menuValues = [];
-for (var i = 0; i < valNames.length; i++) {
-	menuValues[i] = makeValueGroup(valNames[i], menuValuesXStart, menuYspacing);
-	menuLayer.add(menuValues[i]);
-}
+ var functionsButton = new Kinetic.Group({
+ 	x: menuCornerWidth + buttonWidth
+ });
+ menuButtonLayer.add(functionsButton);
 
-/* create the toolbox pallette in the workspace */
+ var functionsButtonBox = new Kinetic.Rect({
+ 	x:0,
+ 	y:0,
+ 	width: buttonWidth,
+ 	height: menuHeight,
+ 	fill: '#D7EBCF',
+ 	stroke: 'black',
+ 	strokeWidth: 2
+ });
+ functionsButton.add(functionsButtonBox);
+
+ var functionsButtonRect = new Kinetic.Rect({
+ 	x: buttonWidth / 2 - functionRectSideLength / 2,
+ 	y: menuHeight / 4,
+ 	width: functionRectSideLength,
+ 	height: functionRectSideLength,
+ 	fill: functionColor,
+ 	lineJoin: 'round',
+ 	stroke: functionColor,
+ 	strokeWidth: functionStrokeWidth
+ });
+ functionsButton.add(functionsButtonRect);
+
+ var functionsButtonText = new Kinetic.Text({
+ 	text: 'add a function',
+ 	x: 0,
+ 	y: menuHeight / 2 + menuHeight / 4,
+ 	width: buttonWidth,
+ 	height: menuHeight / 4,
+ 	fill: 'black',
+ 	align: 'center'
+ });
+ functionsButton.add(functionsButtonText);
+ menuButtonLayer.draw();
+
+ /* add functions to menu */
+ var menuFunctions = [];
+ for (var i = 0; i < funNames.length; i++) {
+ 	menuFunctions[i] = makeFunctionGroup(funNames[i], menuFunctsXStart, menuYspacing);
+ 	menuLayer.add(menuFunctions[i]);
+ }
+
+ /* add values to menu */
+ var menuValues = [];
+ for (var i = 0; i < valNames.length; i++) {
+ 	menuValues[i] = makeValueGroup(valNames[i], menuValuesXStart, menuYspacing);
+ 	menuLayer.add(menuValues[i]);
+ }
+
+ /* create the toolbox pallette in the workspace */
 //var setupToolbox = function() {
 
 	/*var toolboxWidth = width / 18; // 50
@@ -181,13 +199,13 @@ for (var i = 0; i < valNames.length; i++) {
 		y: height * .2,
 		draggable: false,
 		dragBoundFunc: function(pos) {
-            var newY = pos.y < (menuHeight + toolboxShift) ? menuHeight + toolboxShift : pos.y > height - toolboxHeight ? height - toolboxHeight : pos.y;
-            var newX = pos.x < 0 ? 0 : pos.x > (width - toolboxWidth) ? (width - toolboxWidth) : pos.x;
-            return {
-              x: newX,
-              y: newY
-            };
-          }
+			var newY = pos.y < (menuHeight + toolboxShift) ? menuHeight + toolboxShift : pos.y > height - toolboxHeight ? height - toolboxHeight : pos.y;
+			var newX = pos.x < 0 ? 0 : pos.x > (width - toolboxWidth) ? (width - toolboxWidth) : pos.x;
+			return {
+				x: newX,
+				y: newY
+			};
+		}
 	});
 	toolboxLayer.add(toolboxGroup);
 
@@ -457,23 +475,11 @@ for (var i = 0; i < valNames.length; i++) {
 		shadowEnabled: false
 	});
 	toolboxGroup.add(redoButton);
-// TOOLBOX BOOLEANS
-var lineToolOn = false;
-var workToolOn = false;
-var deleteToolOn = false;
-
-
 
 	enableWorkTool();
-
 	stage.draw();
 
-
 //MENU ANIMATIONS
-
-var valueExpanded = false;
-var functionExpanded = false;
-
 /*
 On click of value menu button:
 1. Neither values or functions are expanded.
@@ -494,24 +500,24 @@ On click of value menu button:
 				expandValueNodes();
 
 				valueExpanded = true;
-			} // if functions are also not expanded
-			else {
-				moveFunctionsButtonRight();
-				moveFunctionNodesRight();
-				expandValueNodes();
-				
-				valueExpanded = true;
-				functionExpanded = false;
-			} // else functions were already expanded
-		} // if values are not expanded
+		} // if functions are also not expanded
 		else {
-			moveValueNodesIn();
-			moveFunctionNodesIn();	
-			moveFunctionsButtonLeft();
+			moveFunctionsButtonRight();
+			moveFunctionNodesRight();
+			expandValueNodes();
 
-			valueExpanded = false;
-		} // else values were already expanded
-	});
+			valueExpanded = true;
+			functionExpanded = false;
+			} // else functions were already expanded
+	} // if values are not expanded
+	else {
+		moveValueNodesIn();
+		moveFunctionNodesIn();	
+		moveFunctionsButtonLeft();
+
+		valueExpanded = false;
+	} // else values were already expanded
+});
 /*
 On click of function menu button:
 1. Neither functions or values are expanded.
@@ -529,31 +535,36 @@ On click of function menu button:
 				expandFunctionNodes();
 
 				functionExpanded = true;
-			} // functions and values not expanded
-			else {
-				moveValueNodesIn();
-				moveFunctionsButtonLeft();
-				expandFunctionNodes();
-
-				functionExpanded = true;
-				valueExpanded = false;
-			} // functions not expanded, values expanded
-		}
+		} // functions and values not expanded
 		else {
-			moveFunctionNodesIn();
-			
-			functionExpanded = false;
+			moveValueNodesIn();
+			moveFunctionsButtonLeft();
+			expandFunctionNodes();
+
+			functionExpanded = true;
+			valueExpanded = false;
+		} // functions not expanded, values expanded
+	}
+	else {
+		moveFunctionNodesIn();
+
+		functionExpanded = false;
 		} // functions are expanded
 	});
 
-// ADDING TO WORKSPACE
+/*
+If you click on a menu button when the workTool is not activated, the workTool will become activated. 
+*/
+menuButtonLayer.on('click', function(){
+	if (!workToolOn) {
+		enableWorkTool();
+	}
+});
 
-/* variables to globally reference the most recently used object/line and current state */
-var currShape;
-var currLine;
-var makingLine = false;
-var animation = false;
-
+//MENU LAYER EVENTS
+/*
+- on mousedown
+*/
 /*
 	On mousedown of a menu object (value or function prototype), you create a copy of that object and begin to draw it.
 	*/
@@ -575,15 +586,11 @@ var animation = false;
 }
 });
 
-
+//DRAG LAYER EVENTS
 /*
-If you click on a menu button when the workTool is not activated, the workTool will become activated. 
-	*/
-	menuButtonLayer.on('click', function(){
-		if (!workToolOn) {
-			enableWorkTool();
-		}
-	});
+- on mouseup
+- on draw
+*/
 /*
 	when an object being dragged is released:
 	1. check that it isnt in the menu area
@@ -636,139 +643,37 @@ If you click on a menu button when the workTool is not activated, the workTool w
 	menuButtonLayer.draw();
 	dragLayer.draw();
 	workLayer.draw();
-});
-
-
-
+});	
 /*
-	When you click down on an object in the workLayer and arent in the process of making
-	a line, move that object to the dragLayer and allow it to be dragged.
+	While an object is being dragged, move all lines connected to it with it.
 	*/
-	workLayer.on('mousedown', function(evt) {
-		if (workToolOn) {
-			if (!isImageBox(evt.target)) {
-				var group = evt.target.getParent();
-				group.moveTo(dragLayer);
-				currShape = group;
-				group.startDrag();
-				workLayer.draw();
-				dragLayer.draw();
-				if (group.attrs.renderLayer != null) {
-					group.attrs.renderLayer.draw();
+	dragLayer.on('draw', function() {
+		if(currShape != null) {
+			var targetLine;
+			for(var i = 0; i < currShape.children.length - 3; i++) {
+				targetLine = currShape.children[i+3].attrs.lineIn;
+				if(targetLine != null) {
+					targetLine.points()[2] = currShape.x();
+					targetLine.points()[3] = currShape.y() + currShape.children[i+3].y();
 				}
 			}
-		} else if (lineToolOn) {
-			
-		}
-	});
-
-
-/*
-	while you are drawing a line, make it move with the cursor.
-		*/
-	stage.addEventListener('contentMousemove', function(){
-		if(makingLine) {
-			currLine.points()[2] = stage.getPointerPosition().x;
-			currLine.points()[3] = stage.getPointerPosition().y;
+			for(var i = 0; i < currShape.attrs.lineOut.length; i++) {
+				targetLine = currShape.attrs.lineOut[i];
+				targetLine.points()[0] = currShape.x() + functionRectSideLength - 3;
+				targetLine.points()[1] = currShape.y() + functionTotalSideLength / 2;
+			}
 			lineLayer.draw();
 		}
 	});
 
+// WORK LAYER EVENTS
 /*
-	while making a line, make outlets grow when they are moused over to signify that they
-	are valid connections
+- on click
+- on mousedown
+- on contentMousemove
+- on mouseover
+- on mouseout
 */
-workLayer.on('mouseover', function(evt) {
-	var shape = evt.target;
-	var parent = shape.parent;
-	if (workToolOn) {
-		if (isImageBox(shape) && shape.attrs.expanded) {
-			animation = true;
-			var frame = function() {
-				renderCanvas(shape.getParent());
-				if (animation) {
-					setTimeout(frame, 50);
-				}
-			}
-			frame();
-		} 
-	} else if (lineToolOn) {
-		if (makingLine) {
-			if (isOutlet(shape)) {
-				shape.scale({
-					x: 1.5,
-					y: 1.5
-				});
-				workLayer.draw();
-		} // if outlet
-	} // if makingLine
-} else if (deleteToolOn) {
-	if (isFunction(parent) || isValue(parent)) {
-		parent.children[0].setAttrs({
-			shadowColor: deleteColor,
-			shadowOpacity: 1,
-			shadowEnabled: true
-		});
-	}
-	workLayer.draw();
-}
-	
-	
-});
-
-/*
-	when the cursor is moved out of an outlet while drawing a line, return it to its
-	original size
-	*/
-	workLayer.on('mouseout', function(evt) {
-		var shape = evt.target;
-		var parent = shape.getParent();
-		if (workToolOn) {
-			if (isImageBox(shape) && shape.attrs.expanded) {
-				animation = false;
-			}
-		} else if (lineToolOn) {
-			if (makingLine) {
-				if (isOutlet(shape)) {
-					shape.scale({
-						x: 1,
-						y: 1
-					});
-					workLayer.draw();
-				} //if outlet
-			} //if makingLine
-		} else if (deleteToolOn) {
-			if (isFunction(parent) || isValue(parent)) {
-				parent.children[0].setAttrs({
-					shadowEnabled: false
-				});
-			}
-			workLayer.draw();
-		}
-});
-
-	lineLayer.on('mouseover', function(evt) {
-		if (deleteToolOn) {
-			var shape = evt.target;
-			shape.setAttrs({
-				scale: 3,
-				shadowColor: deleteColor,
-				shadowEnabled: true
-			});
-			lineLayer.draw();
-		}
-	}); 
-
-	lineLayer.on('mouseout', function(evt) {
-		if (deleteToolOn) {
-			var shape = evt.target;
-			shape.setAttrs({
-				scale: 1,
-				shadowEnabled: false
-			});
-			lineLayer.draw();
-		}
-	}); 
 
 /*
 There are 3 different modes:
@@ -795,8 +700,6 @@ There are 3 different modes:
 	an outlet.
 	5. otherwise keep drawing the line.
 	*/
-
-
 	workLayer.on('click', function(evt) {
 		var shape = evt.target;
 		var parent = shape.getParent();
@@ -899,6 +802,117 @@ workLayer.draw();
 lineLayer.draw();
 });
 
+/*
+	When you click down on an object in the workLayer and arent in the process of making
+	a line, move that object to the dragLayer and allow it to be dragged.
+	*/
+	workLayer.on('mousedown', function(evt) {
+		if (workToolOn) {
+			if (!isImageBox(evt.target)) {
+				var group = evt.target.getParent();
+				group.moveTo(dragLayer);
+				currShape = group;
+				group.startDrag();
+				workLayer.draw();
+				dragLayer.draw();
+				if (group.attrs.renderLayer != null) {
+					group.attrs.renderLayer.draw();
+				}
+			}
+		} 
+	});
+
+	/*
+	while you are drawing a line, make it move with the cursor.
+		*/
+	stage.addEventListener('contentMousemove', function(){
+		if(makingLine) {
+			currLine.points()[2] = stage.getPointerPosition().x;
+			currLine.points()[3] = stage.getPointerPosition().y;
+			lineLayer.draw();
+		}
+	});
+
+	/*
+	while making a line, make outlets grow when they are moused over to signify that they
+	are valid connections
+*/
+workLayer.on('mouseover', function(evt) {
+	var shape = evt.target;
+	var parent = shape.parent;
+	if (workToolOn) {
+		if (isImageBox(shape) && shape.attrs.expanded) {
+			animation = true;
+			var frame = function() {
+				renderCanvas(shape.getParent());
+				if (animation) {
+					setTimeout(frame, 50);
+				}
+			}
+			frame();
+		} 
+	} else if (lineToolOn) {
+		if (makingLine) {
+			if (isOutlet(shape)) {
+				shape.scale({
+					x: 1.5,
+					y: 1.5
+				});
+				workLayer.draw();
+		} // if outlet
+	} // if makingLine
+} else if (deleteToolOn) {
+	if (isFunction(parent) || isValue(parent)) {
+		parent.children[0].setAttrs({
+			shadowColor: deleteColor,
+			shadowOpacity: 1,
+			shadowEnabled: true
+		});
+	}
+	workLayer.draw();
+}
+	
+	
+});
+
+/*
+	when the cursor is moved out of an outlet while drawing a line, return it to its
+	original size
+	*/
+	workLayer.on('mouseout', function(evt) {
+		var shape = evt.target;
+		var parent = shape.getParent();
+		if (workToolOn) {
+			if (isImageBox(shape) && shape.attrs.expanded) {
+				animation = false;
+			}
+		} else if (lineToolOn) {
+			if (makingLine) {
+				if (isOutlet(shape)) {
+					shape.scale({
+						x: 1,
+						y: 1
+					});
+					workLayer.draw();
+				} //if outlet
+			} //if makingLine
+		} else if (deleteToolOn) {
+			if (isFunction(parent) || isValue(parent)) {
+				parent.children[0].setAttrs({
+					shadowEnabled: false
+				});
+			}
+			workLayer.draw();
+		}
+});
+
+
+// LINE LAYER EVENTS
+/*
+- on click
+- on mouseover
+- on mouseout
+*/
 lineLayer.on('click', function(evt) {
 	if(deleteToolOn) {
 		var shape = evt.target;
@@ -912,70 +926,111 @@ lineLayer.on('click', function(evt) {
 		workLayer.draw();
 		lineLayer.draw();
 	}
-})
+});
 
-/*
-	While an object is being dragged, move all lines connected to it with it.
-	*/
-	dragLayer.on('draw', function() {
-		if(currShape != null) {
-			var targetLine;
-			for(var i = 0; i < currShape.children.length - 3; i++) {
-				targetLine = currShape.children[i+3].attrs.lineIn;
-				if(targetLine != null) {
-					targetLine.points()[2] = currShape.x();
-					targetLine.points()[3] = currShape.y() + currShape.children[i+3].y();
-				}
-			}
-			for(var i = 0; i < currShape.attrs.lineOut.length; i++) {
-				targetLine = currShape.attrs.lineOut[i];
-				targetLine.points()[0] = currShape.x() + functionRectSideLength - 3;
-				targetLine.points()[1] = currShape.y() + functionTotalSideLength / 2;
-			}
-			lineLayer.draw();
-		}
-	});
+lineLayer.on('mouseover', function(evt) {
+	if (deleteToolOn) {
+		var shape = evt.target;
+		shape.setAttrs({
+			scale: 3,
+			shadowColor: deleteColor,
+			shadowEnabled: true
+		});
+		lineLayer.draw();
+	}
+}); 
 
+lineLayer.on('mouseout', function(evt) {
+	if (deleteToolOn) {
+		var shape = evt.target;
+		shape.setAttrs({
+			scale: 1,
+			shadowEnabled: false
+		});
+		lineLayer.draw();
+	}
+}); 
 
-
-	/* Toolbox controls */
-	workToolGroup.on('click', function(){
-		if (!workToolOn) {
-			enableWorkTool();
-		}
-	});
-
-
-	lineToolGroup.on('click', function() {
-		if (lineToolOn) {
-			enableWorkTool();
-		} else {
-			lineToolGroup.children[0].setAttr('shadowEnabled', true);
-			lineToolOn = true;
-			disableTool(workToolGroup);
-			disableTool(deleteToolGroup);
-			toolboxLayer.draw();
-		}
-	});
-
-	deleteToolGroup.on('click', function() {
-		if (deleteToolOn) {
-			enableWorkTool();
-		} else {
-			deleteToolGroup.children[0].setAttr('shadowEnabled', true);
-			deleteToolOn = true;
-			disableTool(workToolGroup);
-			disableTool(lineToolGroup);
-			toolboxLayer.draw();
-		}
-	});
-
-	toolboxControl.on('mousedown', function() {
-		toolboxGroup.startDrag();
-
-	})
+// TOOLBOX EVENTS
+/* 
+- workToolGroup on click
+- lineToolGroup on click
+- deleteToolGroup on click
+- toolboxControl on click
+*/
+workToolGroup.on('click', function(){
+	if (!workToolOn) {
+		enableWorkTool();
+	}
+});
 
 
-	</script>
+lineToolGroup.on('click', function() {
+	if (lineToolOn) {
+		enableWorkTool();
+	} else {
+		lineToolGroup.children[0].setAttr('shadowEnabled', true);
+		lineToolOn = true;
+		disableTool(workToolGroup);
+		disableTool(deleteToolGroup);
+		toolboxLayer.draw();
+	}
+});
+
+deleteToolGroup.on('click', function() {
+	if (deleteToolOn) {
+		enableWorkTool();
+	} else {
+		deleteToolGroup.children[0].setAttr('shadowEnabled', true);
+		deleteToolOn = true;
+		disableTool(workToolGroup);
+		disableTool(lineToolGroup);
+		toolboxLayer.draw();
+	}
+});
+
+toolboxControl.on('mousedown', function() {
+	toolboxGroup.startDrag();
+});
+
+/**
+ * addLine adds a line between source and sink, connecting to sink via the outletIndex-th outlet
+ * @pre
+ *   sink.children[outletIndex + 3] is an unused outlet
+ */
+ var addLine = function(source, sink, outletIndex) {
+ 	var line = makeLine(source);
+ 	var outlet = sink.children[outletIndex + 3];
+ 	outlet.attrs.lineIn = line;
+ 	assertRenderable(sink);
+ 	if (sink.attrs.numInputs == sink.children.length - 3 &&
+ 		sink.attrs.numInputs < sink.attrs.maxInputs) {
+ 		addOutlet(sink);
+ }
+ updateForward(sink);
+ lineLayer.add(line);
+ workLayer.draw();
+ lineLayer.draw();
+};
+/**
+ * addOp adds a function object to the workLayer at x, y, with the corresponding attributes given 
+ * by the funName key.
+ */
+var addOp = function(funName, x, y) {
+	var op = makeFunctionGroup(funName, x, y);
+	workLayer.add(op);
+	workLayer.draw();
+};
+/**
+ * addVal adds a value object to the workLayer at x, y, with the corresponding attributes given 
+ * by the valName key.
+ */
+var addVal = function(valName, x, y) {
+	var val = makeValueGroup(valName, x, y);
+	workLayer.add(val);
+	workLayer.draw();
+};
+
+</script>
 </body>
 <html>
