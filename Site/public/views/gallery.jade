@@ -9,8 +9,8 @@ block stylesheets
 
 block content
 	div(id='main')
-		div(id='pageTitle') 
-			div(id='titleTitle')
-				h1 Gallery
-		p
-			= generateNarrative()
+		div(id='pageTitle')
+				div(id='titleTitle'): h1 Gallery
+			tr
+				p= generateNarrative()
+				img(src='/samples/color2.jpg')

@@ -1,5 +1,3 @@
-
-
 /* Single Image - Large */
 #largeImage2 figure img{
 height: 400px;
@@ -32,9 +30,15 @@ width: 400px;
   text-decoration:none;
 }
 
+img {
+width: 600px;
+height: 600px;
+margin-left: auto;
+margin-right: auto;
+}
 
 #largeImage2 a:hover {
-  color: #666;
+color: #666;
 }
 
 /*end of image - large */
@@ -75,6 +79,15 @@ font-family: "Open-Sans", sans-serif;
 color: #9B9B9B;
 }
 
+#imageTitle {
+color: #979797;
+border: 2px solid #3FAAA0; 
+text-align: center;
+width: 181px;
+font-size: 20px;
+margin: 0px 50px;
+}
+
 #imageInfo {
 font-family: "Open-Sans", sans-serif;
 color: #4A4A4A;
@@ -97,3 +110,7 @@ float: left;
 color: 3FAAA0;
 }
 
+p {
+font-family: "Open-Sans", sans-serif;
+color: #4A4A4A;
+}

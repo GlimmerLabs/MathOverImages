@@ -1,6 +1,6 @@
 extends ./partials/framework
 block title
-	title= albums.name + " on MIST"
+	title= albums[0].username + "'s albums on MIST"
 block extraMetas
 block extraLinks
 
@@ -24,6 +24,6 @@ block content
 		- for (var i = 0; i < albums.length; i++)
 			div.album
 				#albumTitle= albums[i].name
-				img(src='/samples/bw0.jpg')
+				img(src='/samples/color2.jpg')
 				p= albums[i].dateCreated
 				p= albums[i].caption
