@@ -1,38 +1,71 @@
-@import url("styles.css");
+#main {
+  margin:100px;
+}
 
-#create, #tutorials {
+#featuredImage {
+  text-align: center;
+}
+
+
+#create {
   height:80px;
   width: 290px;
   margin: 80px 20px;
   float: left;
   background-color: #979797;
-  font-weight: 800;
+  font-weight:bold;
   color: #FFF;
   text-align:center;
   text-transform:lowercase;
-  text-decoration: none;
-  font-size: 4em;
-  margin:-5px;
-  padding:0;
 }
-#create:hover, #tutorials:hover {
+#create:hover {
   background-color: #FFF;
   color: #979797;
 
 }
 
 #tutorials {
+  height:80px;
+  width: 290px;
+  margin: 80px 20px;
   float: right;
   background-color: #3FAAA0;
+  color: #FFF;
+  text-align:center;
+  font-weight:bold;
+
+
+
 }
 
 
 #tutorials:hover {
+  background-color: #FFF;
   color: #3FAAA0;
+
+}
+
+#tutorials h1, #create h1, #tutorials h1:hover, #create h1:hover{
+
+  font-size: 4em;
+  margin:-5px;
+  padding:0;
+
+
+}
+
+#galleryImages {
+  clear:both;
+  margin:0 auto;
+
+
 }
 
 
-/* Images in Gallery */
+#galleryImages figure {
+  display:inline-block;
+  margin: 10px;
+}
 
 #galleryImages figure img{
   height: 140px;
@@ -45,64 +78,27 @@
   color: #979797;
 }
 
-#galleryImages {
-  clear:both;
-  margin:0px auto;
-  padding: 50px 0 0 0;
-}
-
-#galleryImages figure {
-  display:inline-block;
-  margin: 10px;
-}
-
 #galleryImages h1 {
   font-size:1.5em;
   text-align:center;
+
+
 }
 
 #galleryImages a {
   color: #979797;
   text-decoration:none;
-}
 
+
+}
 
 #galleryImages a:hover {
   color: #666;
 }
 
-/* End of Images in Gallery */
-#galleryImages {
-  clear:both;
-  margin:0 auto;
-
-}
-
-#galleryImages figure {
-  display:inline-block;
-  margin: 10px;
-}
-
-#galleryImages h1 {
-  font-size:1.5em;
-  text-align:center;
-
-
-}
-
-#galleryImages a {
-  color: #979797;
-  text-decoration:none;
-}
-
-#featuredImage {
-  text-align: center;
-  margin: 50px;
-}
-
 #figset {
 
-  margin: 0 auto;
+  margin:0 auto;
   width: 1010px;
 
 }
