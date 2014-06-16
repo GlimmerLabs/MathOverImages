@@ -3,3 +3,5 @@
 \#*#
 .RHistory
 .DS_Store
+auth.js
+node_modules
