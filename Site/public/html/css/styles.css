@@ -1,0 +1,237 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800);
+
+
+* {
+  font-family: 'Open Sans', sans-serif;
+} /* default text style*/
+
+#main {
+  margin:100px;
+}
+
+/* Header */
+header {
+  margin: -100px -10px;
+  width: 101%;
+  height: 80px;
+  background-color: #4A4A4A;
+  position:fixed;
+  box-shadow: 0 2px 4px 0 #000;
+
+}
+
+#headerLogo{
+  float:left;
+  width: 126px;
+  margin: 5px 0 5px 30px;
+}
+
+#headerLogo img{
+  height:100%;
+  width:100%;
+}
+
+header nav {
+  height:80px;
+  float:right;
+}
+
+header ul {
+  width: 100%;
+  height: 33%;
+  margin:40px 20px 20px 0px;
+
+}
+
+header nav a {
+  text-decoration:none;
+  color:#E1E1E1;
+}
+
+header nav a:hover {
+  color: #9B9B9B;
+}
+
+header nav li {
+  padding:0;
+  margin: 0 5px 0 5px;
+  display: inline-block;
+  color: #E1E1E1
+
+}
+
+header nav li:hover {
+  color: #9B9B9B;
+}
+/* End of Header */
+
+#pageTitle {
+  height:140px;
+  min-width:600px;
+  margin: 0px -110px;
+  float: left;
+  background-color: #EFDC5C;
+}
+
+#pageTitle h1 {
+  border: 7px solid white;
+  margin: 15px;
+  color: #FFF;
+  display: inline-block;
+  font-weight: 800;
+  font-size: 4em;
+  padding: 5px;
+  clear: left;
+}
+
+
+/* Images in Gallery*/
+
+#galleryImages figure img{
+  height: 140px;
+  width: 140px;
+
+}
+
+#galleryImages figcaption{
+  text-align:right;
+  color: #979797;
+}
+
+#galleryImages {
+  clear:both;
+  margin:0 auto;
+
+
+}
+
+#galleryImages figure {
+  display:inline-block;
+  margin: 10px;
+}
+
+#galleryImages h1 {
+  font-size:1.5em;
+  text-align:center;
+}
+
+#galleryImages a {
+  color: #979797;
+  text-decoration:none;
+}
+
+
+#galleryImages a:hover {
+  color: #666;
+}
+
+/* End of Images in Gallery */
+
+/* Single Image - Large */
+#largeImage figure img{
+  height: 400px;
+  width: 400px;
+}
+
+#largeImage figcaption{
+  text-align:right;
+  color: #979797;
+}
+
+#largeImage {
+  clear:both;
+  margin:0 auto;
+  float: left;
+
+}
+
+#largeImage figure {
+  display:inline-block;
+  margin: 10px;
+}
+
+#largeImage h1 {
+  font-size:1.5em;
+  text-align:center;
+}
+
+#largeImage a {
+  color: #979797;
+  text-decoration:none
+}
+
+
+#largeImage a:hover {
+  color: #666;
+}
+
+/*end of image - large */
+
+submit {
+
+  font-family: OpenSans;
+  color: #FFF;
+  font-size: 18px;
+  text-align: center;
+}
+
+
+/* Page numbers */
+
+#pageNumbers {
+  font-family: OpenSans;
+  color: #E1E1E1;
+  font-size: 20px;
+  text-align: right;
+
+}
+
+/* Footer */
+footer nav ul {
+  margin:0;
+  list-style-type: none;
+
+}
+
+footer a {
+  text-decoration:none;
+  color: #9B9B9B;
+
+
+}
+
+footer a:hover {
+  text-decoration:none;
+  color: #666;
+
+
+}
+
+footer nav li {
+  margin: 0 5px 0 5px;
+  display: inline-block;
+
+}
+footer nav {
+  margin: 0 auto;
+}
+
+footer p {
+  margin: 0 auto;
+  width:160px;
+}
+
+
+footer {
+  width: 60%;
+  margin: 0 auto;
+  clear: both;
+  width:90%;
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  border-color: #979797;
+  text-align: center;
+
+}
+
+/* End of Footer */
