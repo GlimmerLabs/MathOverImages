@@ -184,11 +184,12 @@ function saveImage()
   var imagetype  = info[1];
   var filename = info[2];
 
-  // Get the link
+  // Get the link (<a href=...>...</a>)
   var link = document.getElementById("downloader");
 
-  // Set up where we donload
+  // Set up where we download
   link.download = filename;
+
   // Build a blob from the image data
   var data = canvas.toDataURL(imagetype);
   data = data.substring(data.indexOf(",")+1);
