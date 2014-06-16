@@ -1,16 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,800);
 
-#main {
-  margin:100px;
-}
 
 * {
   font-family: 'Open Sans', sans-serif;
 } /* default text style*/
 
-
-#featuredImage {
-  text-align: center;
+#main {
+  margin:100px;
 }
 
 /* Header */
@@ -70,32 +66,24 @@ header nav li:hover {
 /* End of Header */
 
 #pageTitle {
-    height:140px;
-    width:600px;
-    margin: 0px -130px;
-    float: left;
-    background-color: #3FAAA0;
+  height:140px;
+  min-width:600px;
+  margin: 0px -110px;
+  float: left;
+  background-color: #EFDC5C;
 }
 
-#titleTitle {
-    font-family: OpenSans-Extrabold;
-    font-size: 25px;
-    color: #FFFFFF;
-    text-align: left;
-    text-indent: 30px;
-    margin: 30px 105px;
-    line-height: 5px;
-    border: 4px solid #FFFFFF;
-
+#pageTitle h1 {
+  border: 7px solid white;
+  margin: 15px;
+  color: #FFF;
+  display: inline-block;
+  font-weight: 800;
+  font-size: 4em;
+  padding: 5px;
+  clear: left;
 }
 
-#timeStamp {
-    font-size: 14px;
-    color: #979797;
-width:200px;
-margin: 0px 30px;
-
-}
 
 /* Images in Gallery*/
 
@@ -141,8 +129,8 @@ margin: 0px 30px;
 
 /* Single Image - Large */
 #largeImage figure img{
-height: 400px;
-width: 400px;
+  height: 400px;
+  width: 400px;
 }
 
 #largeImage figcaption{
@@ -179,182 +167,22 @@ width: 400px;
 
 /*end of image - large */
 
-/* Tabs */
-#tab1Selected  {
-
-    width: 181px;
-    margin: 81px 150px;
-    float: left;
-    background-color: #979797;
-    font-family: OpenSans;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 0px;
-}
-
-#tab1Selected:hover {
-  background-color: #FFF;
-  color: #979797;
-}
-
-
-#tab1Deselected  {
- 
-    width: 181px;
-    margin: 81px 150px;
-    float: left;
-    background-color: #D8D8D8;
-    font-family: OpenSans;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 0px;
-}
-
-#tab1Deselected:hover {
-  background-color: #FFF;
-  color: #D8D8D8;
-}
-
-
-#tab2Selected {
-
-
-    width: 181px;
-    margin: 81px -119px;
-    float: left;
-    background-color: #979797;
-    font-family: OpenSans;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 0px;
-
-}
-
-#tab2Selected:hover{
-background-color: #FFF;
-color: #979797;
-}
-
-
-#tab2Deselected {
-
-
-    width: 181px;
-    margin: 81px -119px;
-    float: left;
-    background-color: #D8D8D8;
-    font-family: OpenSans;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 0px;
-
-}
-
-#tab2Deselected:hover{
-background-color: #FFF;
-color: #D8D8D8;
-}
-
-#tab3Selected {
-    width: 181px;
-    margin: 0px -330px;
-    float: left;
-    background-color: #979797;
-    font-family: OpenSans;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 0px;
-
-}
-
-#tab3Selected:hover{
-background-color: #FFF;
-color: #979797;
-}
-
-
-#tab3Deselected {
-    width: 181px;
-    margin: 0px -330px;
-    float: left;
-    background-color: #D8D8D8;
-    font-family: OpenSans;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 0px;
-
-}
-
-#tab3Deselected:hover{
-background-color: #FFF;
-color: #D8D8D8;
-}
-
-#tab4Selected {
-
-
-    width: 181px;
-    margin: 0px -119px;
-    float: left;
-    background-color: #979797;
-    font-family: OpenSans;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 0px;
-
-}
-
-#tab4Selected:hover{
-background-color: #FFF;
-color: #979797;
-}
-
-
-#tab4Deselected {
-
-
-    width: 181px;
-    margin: 0px -119px;
-    float: left;
-    background-color: #D8D8D8;
-    font-family: OpenSans;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 0px;
-
-}
-
-#tab4Deselected:hover{
-background-color: #FFF;
-color: #D8D8D8;
-}
-
-/* End of Tabs */
-
 submit {
 
-font-family: OpenSans;
-color: #FFF;
-font-size: 18px;
-text-align: center;
+  font-family: OpenSans;
+  color: #FFF;
+  font-size: 18px;
+  text-align: center;
 }
 
 
 /* Page numbers */
 
 #pageNumbers {
-font-family: OpenSans;
-color: #E1E1E1;
-font-size: 20px;
-text-align: right;
+  font-family: OpenSans;
+  color: #E1E1E1;
+  font-size: 20px;
+  text-align: right;
 
 }
 
