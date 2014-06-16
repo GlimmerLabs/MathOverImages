@@ -85,47 +85,7 @@ header nav li:hover {
 }
 
 
-/* Images in Gallery*/
 
-#galleryImages figure img{
-  height: 140px;
-  width: 140px;
-
-}
-
-#galleryImages figcaption{
-  text-align:right;
-  color: #979797;
-}
-
-#galleryImages {
-  clear:both;
-  margin:0 auto;
-
-
-}
-
-#galleryImages figure {
-  display:inline-block;
-  margin: 10px;
-}
-
-#galleryImages h1 {
-  font-size:1.5em;
-  text-align:center;
-}
-
-#galleryImages a {
-  color: #979797;
-  text-decoration:none;
-}
-
-
-#galleryImages a:hover {
-  color: #666;
-}
-
-/* End of Images in Gallery */
 
 /* Single Image - Large */
 #largeImage figure img{
