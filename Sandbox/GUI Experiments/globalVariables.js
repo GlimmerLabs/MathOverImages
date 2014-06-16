@@ -26,7 +26,7 @@ var outletColor =  '#FFC440';
 var lineStrokeWidth = 2;
 
 var menuHeight = width / 9; 
-var menuCornerWidth = width / 5;
+var menuCornerWidth = width / 6;
 var valMenuXSpacing = width / 32;
 var functMenuXSpacing = width / 68;
 var menuYspacing = width * 11/360;
