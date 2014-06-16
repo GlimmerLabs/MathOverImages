@@ -958,6 +958,12 @@ There are 3 different modes:
   if (render != null) {
     render.destroy();
   }
+  if (currShape == group) {
+    console.log('here');
+    currShape = undefined;
+    funBarText.setAttr('text', '');
+    funBarLayer.draw();
+  }
   group.destroy();
 }
 
@@ -974,7 +980,7 @@ lineLayer.draw();
       if (!isImageBox(evt.target)) {
         var group = evt.target.getParent();
         group.moveTo(dragLayer);
-        if(currShape != undefined) {
+        if (currShape != undefined) {
          currShape.children[0].setAttr('shadowEnabled', false);
        }
        currShape = group
@@ -1088,9 +1094,14 @@ workLayer.on('mouseover', function(evt) {
       } //if makingLine
     } else if (deleteToolOn) {
       if (isFunction(parent) || isValue(parent)) {
-        parent.children[0].setAttrs({
-          shadowEnabled: false
-        });
+        if (parent == currShape){
+          parent.children[0].setAttr('shadowColor', 'darkblue');
+        } 
+        else {
+          parent.children[0].setAttrs({
+            shadowEnabled: false
+          });
+        }
       }
       workLayer.draw();
     }
@@ -1107,11 +1118,25 @@ lineLayer.on('click', function(evt) {
   if(deleteToolOn) {
     var shape = evt.target;
     var outlet = shape.attrs.outlet;
+    var parent = outlet.parent;
     shape.attrs.source.attrs.lineOut.splice(shape.attrs.sourceIndex, 1);
-    shape.attrs.outlet.attrs.lineIn = null;
-    shape.attrs.outlet.parent.attrs.numInputs--;
+    outlet.attrs.lineIn = null;
+    parent.attrs.numInputs--;
     shape.destroy();
-    assertRenderable(outlet.parent);
+    if (parent == currShape) {
+      if (assertRenderable(parent)) {
+        funBarText.setAttr('text', currShape.attrs.renderFunction);
+      }
+      else {
+        currShape.children[0].setAttr('shadowEnabled', false);
+        currShape = undefined;
+        funBarText.setAttr('text', ''); 
+      }
+      funBarLayer.draw();
+    } 
+    else {
+      assertRenderable(parent);
+    }    
     updateForward(outlet.parent);
     workLayer.draw();
     lineLayer.draw();
