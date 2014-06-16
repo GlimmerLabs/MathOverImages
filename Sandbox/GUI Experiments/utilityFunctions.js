@@ -132,6 +132,9 @@ var isUndoTool = function(target) {
 			var newOutlet = makeOutlet(funGroup);
 			funGroup.add(newOutlet);
 			workLayer.draw();
+			if (funGroup.attrs.renderLayer != null){
+				funGroup.attrs.renderLayer.draw();
+			}
 		}
 	};
 
