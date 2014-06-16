@@ -1036,7 +1036,7 @@ lineLayer.draw();
 workLayer.on('mouseover', function(evt) {
   var shape = evt.target;
   var parent = shape.parent;
-  if (workToolOn) {
+  if (workToolOn || lineToolOn) {
     if (isImageBox(shape) && shape.attrs.expanded) {
       animation = true;
       var frame = function() {
@@ -1046,8 +1046,7 @@ workLayer.on('mouseover', function(evt) {
         }
       }
       frame();
-    } 
-  } else if (lineToolOn) {
+    }
     if (makingLine) {
       if (isOutlet(shape)) {
         shape.scale({
@@ -1056,8 +1055,9 @@ workLayer.on('mouseover', function(evt) {
         });
         workLayer.draw();
     } // if outlet
-  } // if makingLine
-} else if (deleteToolOn) {
+  } 
+} 
+else if (deleteToolOn) {
   if (isFunction(parent) || isValue(parent)) {
     parent.children[0].setAttrs({
       shadowColor: deleteColor,
@@ -1067,8 +1067,6 @@ workLayer.on('mouseover', function(evt) {
   }
   workLayer.draw();
 }
-  
-  
 });
 
 /*
@@ -1078,11 +1076,10 @@ workLayer.on('mouseover', function(evt) {
   workLayer.on('mouseout', function(evt) {
     var shape = evt.target;
     var parent = shape.getParent();
-    if (workToolOn) {
+    if (workToolOn || lineToolOn) {
       if (isImageBox(shape) && shape.attrs.expanded) {
         animation = false;
       }
-    } else if (lineToolOn) {
       if (makingLine) {
         if (isOutlet(shape)) {
           shape.scale({
@@ -1092,7 +1089,8 @@ workLayer.on('mouseover', function(evt) {
           workLayer.draw();
         } //if outlet
       } //if makingLine
-    } else if (deleteToolOn) {
+    } 
+    else if (deleteToolOn) {
       if (isFunction(parent) || isValue(parent)) {
         if (parent == currShape){
           parent.children[0].setAttr('shadowColor', 'darkblue');
