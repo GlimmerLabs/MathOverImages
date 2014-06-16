@@ -46,9 +46,10 @@
  var lineLayer = new Kinetic.Layer();
  var menuLayer = new Kinetic.Layer();
  var menuButtonLayer = new Kinetic.Layer();
- var toolboxLayer = new Kinetic.Layer();
  var workLayer = new Kinetic.Layer();
  var borderLayer = new Kinetic.Layer();
+ var funBarLayer = new Kinetic.Layer();
+ var toolboxLayer = new Kinetic.Layer();
  var dragLayer = new Kinetic.Layer();
 
 /**
@@ -58,9 +59,10 @@
  stage.add(lineLayer);
  stage.add(menuLayer);
  stage.add(menuButtonLayer);
- stage.add(toolboxLayer);
  stage.add(workLayer);
  stage.add(borderLayer);
+ stage.add(toolboxLayer);
+ stage.add(funBarLayer);
  stage.add(dragLayer);
 
  // TOOLBOX BOOLEANS
@@ -526,7 +528,110 @@ menuButtonLayer.add(openNewButton);
 menuButtonLayer.add(openButton);
 menuButtonLayer.add(saveButton);
 
+//FUNCTIONBAR
+var funBarWidth = width / 2.5;
+var funBarHeight = height / 10;
+var funBarBackgroundColor = 'lightblue';
+var funBarOffset = funBarWidth / 36;
+var funBarTextOffset = 2 * funBarOffset;
+var funBarDisplayFontSize = 20; 
+var funBarFontSize = 12;
+var funBarSaveFunX = funBarWidth * .76;
+var funBarSaveFunY = 1.5 * funBarOffset;
+var funBarIconSideLength = funBarWidth / 15;
+var funBarIconTextWidth = funBarIconSideLength + (2 * funBarOffset);
+var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
+var funBar = new Kinetic.Group ({
+  x: 0,
+  y: height - funBarHeight,
+});
+funBarLayer.add(funBar);
+var funBarArea = new Kinetic.Rect({
+  x: 0,
+  y: 0,
+  width: funBarWidth,
+  height: funBarHeight,
+  fill: funBarBackgroundColor,
+  stroke: 'black',
+  strokeWidth: 1
+});
+funBar.add(funBarArea);
+
+var funBarTextArea = new Kinetic.Rect({
+  x: funBarOffset,
+  y: funBarOffset,
+  width: funBarWidth / 2,
+  height: funBarHeight - (2 * funBarOffset),
+  fill: 'white',
+  stroke: 'black',
+  strokeWidth: .5 
+});
+funBar.add(funBarTextArea);
+
+var funBarText = new Kinetic.Text({
+  text: 'sin(x+y)',
+  x: funBarTextOffset,
+  y: funBarTextOffset,
+  fill: 'black',
+  fontSize: funBarDisplayFontSize
+});
+funBar.add(funBarText);
+
+var funBarComment = new Kinetic.Text ({
+  text: 'Save as...',
+  x: funBarTextArea.width() + 2 * funBarOffset,
+  y: funBarHeight / 2 - (funBarFontSize / 2),
+  fill: 'black',
+  fontSize: funBarFontSize
+});
+funBar.add(funBarComment);
+
+var funBarSaveFun = new Kinetic.Rect({
+  x: funBarSaveFunX,
+  y: funBarSaveFunY,
+  width: funBarIconSideLength,
+  height: funBarIconSideLength,
+  fill: functionColor,
+  stroke: functionColor,
+  strokeWidth: 10,
+  lineJoin: 'round'
+})
+funBar.add(funBarSaveFun);
+
+var funBarSaveFunText = new Kinetic.Text ({
+  text: 'function',
+  x: funBarSaveFunX - funBarOffset ,
+  y: funBarIconTextY,
+  width: funBarIconTextWidth,
+  align: 'center',
+  fill: 'black',
+  fontSize: 10
+});
+funBar.add(funBarSaveFunText);
+
+var funBarSaveIm = new Kinetic.Rect({
+  x: funBarSaveFunX + funBarSaveFunY + (funBarWidth / 12),
+  y: funBarSaveFunY,
+  width: funBarIconSideLength,
+  height: funBarIconSideLength,
+  fill: 'darkblue',
+  stroke: 'darkblue',
+  strokeWidth: 10,
+  //lineJoin: 'round'
+})
+funBar.add(funBarSaveIm);
+
+var funBarSaveImText = new Kinetic.Text ({
+  text: 'image',
+  x: funBarSaveFunX + (.5 * funBarOffset) + (funBarWidth / 12),
+  y: funBarIconTextY,
+  width: funBarIconTextWidth,
+  align: 'center',
+  fill: 'black',
+  fontSize: 10
+});
+funBar.add(funBarSaveImText);
 
 stage.draw();
 
