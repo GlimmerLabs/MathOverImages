@@ -534,7 +534,7 @@ var funBarHeight = height / 10;
 var funBarBackgroundColor = 'lightblue';
 var funBarOffset = funBarWidth / 36;
 var funBarTextOffset = 2 * funBarOffset;
-var funBarDisplayFontSize = 20; 
+var funBarDisplayFontSize = 22; 
 var funBarFontSize = 12;
 var funBarSaveFunX = funBarWidth * .76;
 var funBarSaveFunY = 1.5 * funBarOffset;
@@ -570,10 +570,13 @@ var funBarTextArea = new Kinetic.Rect({
 funBar.add(funBarTextArea);
 
 var funBarText = new Kinetic.Text({
-  text: 'sin(x+y)',
+  text: '',
   x: funBarTextOffset,
   y: funBarTextOffset,
+  width: (funBarWidth / 2) - funBarTextOffset,
+  height: funBarHeight - (2 * funBarOffset),
   fill: 'black',
+  fontFamily: 'Courier',
   fontSize: funBarDisplayFontSize
 });
 funBar.add(funBarText);
@@ -901,7 +904,10 @@ There are 3 different modes:
       if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
         parent.attrs.numInputs < parent.attrs.maxInputs) {
         addOutlet(parent);
-    }
+        if (parent.children[2].attrs.expanded) {
+          renderCanvas(parent);
+        }
+      }
     updateForward(parent);
     } // if clicked on self, else clicked on a valid outlet
   } else {
@@ -968,16 +974,43 @@ lineLayer.draw();
       if (!isImageBox(evt.target)) {
         var group = evt.target.getParent();
         group.moveTo(dragLayer);
-        currShape = group;
-        group.startDrag();
-        workLayer.draw();
-        dragLayer.draw();
-        if (group.attrs.renderLayer != null) {
-          group.attrs.renderLayer.draw();
-        }
+        if(currShape != undefined) {
+         currShape.children[0].setAttr('shadowEnabled', false);
+       }
+       currShape = group
+       currText = currShape.attrs.renderFunction;
+       if (currText != null) {
+        currShape.children[0].setAttrs({
+          shadowColor: 'darkblue',
+          shadowOpacity: 1,
+          shadowEnabled: true
+        });
+        var currFontSize;
+        if (currText.length <= 12) {
+            currFontSize = funBarDisplayFontSize;
+          } 
+          else if (currText.length >= 26){
+            currFontSize = 10;
+          }
+          else {
+            currFontSize = 264 / currText.length;
+          }
+        funBarText.setAttrs({
+          text: currText,
+          fontSize: currFontSize
+          });
+        funBarLayer.draw();
       }
-    } 
-  });
+      group.startDrag();
+      workLayer.draw();
+      dragLayer.draw();
+
+      if (group.attrs.renderLayer != null) {
+        group.attrs.renderLayer.draw();
+      }
+    }
+  } 
+});
 
   /*
   while you are drawing a line, make it move with the cursor.
