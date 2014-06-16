@@ -208,7 +208,7 @@ var isUndoTool = function(target) {
  var updateForward = function(group) {
  	for (var i = 0; i < group.attrs.lineOut.length; i++) {
  		var lineOutGroup = group.attrs.lineOut[i].attrs.outlet.parent;
-		assertRenderable(lineOutGroup);
+ 		assertRenderable(lineOutGroup);
  		updateForward(lineOutGroup);
  	}
  };
