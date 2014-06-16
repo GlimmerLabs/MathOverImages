@@ -4,9 +4,16 @@
 <script src="mist-functions.js"></script>
 <script src="mist-layout.js"></script>
 <script src="mist-functions-layout.js"></script>
+<script src="mistui-dialogs.js"></script>
+<link rel="stylesheet" type="text/css" href="mistui-dialogs.css"></link>
 </head>
 <body>
 <h1>The MIST Sandbox</h1>
 <p id="output"></p>
+
+<script>
+makeDialog("save-dialog", "<p>Save</p>", {Save:'alert("Save"); hideAllDialogs()'});
+makeDialog("load-dialog", "<p>Load</p>", {Load:'alert("Load")'});
+</script>
 </body>
 </html>
