@@ -2,6 +2,8 @@
 <head>
 <title>Rendering RGB Images</title>
 <script src="render.js"></script>
+<script src="mistui-dialogs.js"></script>
+<link rel="stylesheet" type="text/css" href="mistui-dialogs.css"></link>
 <script>
 // +-------+-----------------------------------------------------------
 // | Notes |
@@ -107,7 +109,7 @@ function getDimension(dim, def)
 } // getDimension
 
 /**
- * Get all of the information (I hope).
+ * Get all of the information (I hope) using dialogs.
  */
 function assembleSaveInfo()
 {
@@ -137,6 +139,17 @@ function assembleSaveInfo()
   if (!height)
     return;
 
+  var canvas = renderImage(width, height)
+
+  // And return the key parts
+  return [canvas,type,filename];
+} // assembleSaveInfo
+
+/**
+ * Render the image for saving.
+ */
+function renderImage(width, height)
+{
   // Set up the canvas that we will be using for saving the image
   var canvas = document.getElementById("rendering");
   if (canvas == null) {
@@ -159,9 +172,9 @@ function assembleSaveInfo()
                 0, 0, width, height,
                 lastTime);
 
-  // And return the key parts
-  return [canvas,type,filename];
-} // assembleSaveInfo
+  // And return the canvas
+  return canvas;
+} // renderImage
 
 // The base64 to array code is based on
 //   http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
@@ -174,16 +187,76 @@ function b64toArray(data)
   return new Uint8Array(bytes);
 } // b64toArray
 
-// Based on http://html5-demos.appspot.com/static/a.download.html
-function saveImage()
+function saveImageOld()
 {
   // Assemble the info.  (It's a separate function so that I can try
   // various mechanisms for saving.)
   var info = assembleSaveInfo();
-  var canvas = info[0];
-  var imagetype  = info[1];
-  var filename = info[2];
+  saveImageData(info[0], info[1], info[2]);
+} // saveImageOld
 
+function saveImage()
+{
+  var DIALOG_ID = "save-dialog";
+
+  // Make sure that we have the dialog
+  if (!document.getElementById(DIALOG_ID)) {
+    var body = 'Filename<br>\n'
+             + '<input type="text" name="filename" id="filename" value="mist.jpg"/><br>\n'
+             + 'Width<br>\n'
+             + '<input type="text" name="width" id="width" value="100"/><br>\n'
+             + 'Height<br>\n'
+             + '<input type="text" name="height" id="height" value="100"/><br>\n';
+    makeDialog(DIALOG_ID, body, {Save: 'doSave()'});
+  } // is we don't have the dialog
+
+  showDialog(DIALOG_ID);
+} // saveImage
+
+/**
+ * Do the work for the dialog.
+ */
+function doSave()
+{
+  var filename = document.getElementById("filename").value;
+  var width = document.getElementById("width").value;
+  var height = document.getElementById("height").value;
+  var type;
+
+  // Get the type of the image
+  var suffix = filename.substring(filename.lastIndexOf(".") + 1);
+  if (suffix == "png") {
+    type = "image/png";
+  }
+  else if ((suffix == "jpg") || (suffix == "jpeg")) {
+    type = "image/jpeg";
+  }
+  else {
+    alert("Invalid suffix: " + suffix);
+    return;
+  }
+
+  // Validate the width and the height
+  if (isNaN(width) || (width < 1)) {
+    alert("Width must be a positive integer.");
+    return;
+  } // if the width is invalid
+  if (isNaN(height) || (height < 1)) {
+    alert("Height must be a positive integer.");
+    return;
+  } // if the height is invalid
+
+  // Do the actual work
+  var canvas = renderImage(width, height);
+  saveImageData(canvas, type, filename);
+
+  // And get rid of the dialog box
+  hideAllDialogs();
+} // doSave()
+
+// Based on http://html5-demos.appspot.com/static/a.download.html
+function saveImageData(canvas, imagetype, filename)
+{
   // Get the link (<a href=...>...</a>)
   var link = document.getElementById("downloader");
 
@@ -204,7 +277,7 @@ function saveImage()
 
   // Click the link to trigger the save.
   link.click();
-} // saveImage
+} // saveImageData
 </script>
 </head>
 
@@ -232,15 +305,15 @@ gui.onmousedown = gui.onmouseclick;
 <table>
   <tr>
     <td>Function for Red</td>
-    <td><input type="text" name="left" id="rfun" size="100" value="shift(x,t.m)"/></td>
+    <td><input type="text" name="red" id="rfun" size="100" value="shift(x,t.m)"/></td>
   </tr>
   <tr>
     <td>Function for Green</td>
-    <td><input type="text" name="top" id="gfun" size="100" value="y"/></td>
+    <td><input type="text" name="green" id="gfun" size="100" value="y"/></td>
   </tr>
   <tr>
     <td>Function for Blue</td>
-    <td><input type="text" name="top" id="bfun" size="100" value="t.m*sign((x-t.m)*x+y*y-0.5)"/></td>
+    <td><input type="text" name="blue" id="bfun" size="100" value="t.m*sign((x-t.m)*x+y*y-0.5)"/></td>
   </tr>
 </table>
 <script language="javascript">
@@ -251,6 +324,7 @@ frame();
 <input type="button" value="Stop" onclick="stopAnimation()">
 <input type="button" value="Save Image" onclick="saveImage()">
 <a id="downloader"></a>
+
 
 </body>
 </html>
