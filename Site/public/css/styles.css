@@ -53,10 +53,15 @@ header nav a:hover {
 }
 
 header nav li {
-  padding:0;
-  margin: 0 5px 0 5px;
+  padding: 0 10px;
+  margin: 0;
   display: inline-block;
   color: #E1E1E1
+
+}
+
+header nav li+li {
+  border-left: 1px solid #9B9B9B;
 
 }
 
