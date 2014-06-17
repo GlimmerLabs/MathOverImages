@@ -386,7 +386,7 @@ MIST.addStandardFunctions = function() {
  */
 MIST.getFun = function(name) {
   if (!MIST.funs) return undefined;
-  return MIST.funs[name]);
+  return MIST.funs[name];
 } // MIST.getFun
 
 // +---------+-------------------------------------------------------
