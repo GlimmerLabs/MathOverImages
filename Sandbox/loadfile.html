@@ -1,0 +1,121 @@
+<html>
+<head>
+<title>Loading Files</title>
+</head>
+<script>
+// +-------+---------------------------------------------------------
+// | Notes |
+// +-------+
+
+/*
+   1. Basic ideas for this page taken from
+      http://www.html5rocks.com/en/tutorials/file/dndfiles/
+
+   2. Whenever the user selects a file, we update a global variable
+      called 'selectedFiles'.  (It appears that it's an array.)
+
+// +---------+-------------------------------------------------------
+// | Globals |
+// +---------+
+
+/**
+ * The list of files.  (I think this is only accessible via an event.)
+ */
+var selectedFiles;
+
+// +----------+------------------------------------------------------
+// | Handlers |
+// +----------+
+
+/**
+ * When someone selects a file, update the files object.
+ */
+function handleFileSelect(evt)
+{
+  selectedFiles = evt.target.files;
+} // handleFileSelect
+
+// +-----------+-----------------------------------------------------
+// | Utilities |
+// +-----------+
+
+/**
+ * Sanitize an HTML string.
+ */
+function sanitize(str)
+{
+  str = str.replace(/&/g, "&amp;");
+  str = str.replace(/</g, "&lt;");
+  str = str.replace(/>/g, "&gt;");
+  return str;
+} // sanitize
+
+/**
+ * Show the data of the first file.
+ */
+function showFileData()
+{
+  // Sanity check
+  if (!selectedFiles) {
+    document.getElementById('fileinfo').innerHTML = "<i>No file selected</i>.";
+    return;
+  } // sanity check
+
+  // Set up the file we're dealing with
+  var f = selectedFiles[0];
+
+  // Create the file reader
+  var reader = new FileReader();
+
+  // Tell it what to do when the data are read.
+  reader.onload = function(evt) {
+    var target = document.getElementById('fileinfo');
+    target.innerHTML = "<strong>" + f.name + "</strong><br><pre>" + sanitize(evt.target.result) + "</pre>";
+  } // onload
+
+  // Read the data
+  reader.readAsText(f);
+} // showFileData
+
+/**
+ * Show the status of all of the files.
+ */
+function showFileStatus()
+{
+  // Sanity check
+  if (!selectedFiles) {
+    document.getElementById('fileinfo').innerHTML = "<i>No file selected</i>.";
+    return;
+  } // sanity check
+
+  // files is a FileList of File objects. List some properties.
+  var output = [];
+  for (var i = 0, f; f = selectedFiles[i]; i++) {
+    output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                f.size, ' bytes, last modified: ',
+                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                '</li>');
+  } // for
+
+  // Add them to the right place in the thingymabobber
+  document.getElementById('fileinfo').innerHTML = '<ul>' + output.join('') + '</ul>';
+} // showFileStatus
+
+</script>
+<body>
+<h1>Loading Files</h1>
+
+<p>An experiment in loading local files.</p>
+
+<input type="file" id="files" name="files[]"/> <br>
+<output id="fileinfo"></output> <br>
+
+<input type="button" value="Info" onclick="showFileStatus()">
+<input type="button" value="Contents" onclick="showFileData()">
+
+<script>
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
+
+</body>
+</html>
