@@ -2,6 +2,7 @@
 var gallery = require("../functions/gallery.js");
 var albums = require("../functions/albums.js");
 var albumContents = require("../functions/albumContents.js");
+var accountSettings =  require ("../functions/accountSettings.js");
 var functions = require("../functions/functions.js");
 var username = require("../functions/username.js");
 var image = require("../functions/image.js");
@@ -93,6 +94,18 @@ module.exports = function(app,passport,database) {
     });
     app.get('/logos/:file', function(req,res){
 	res.sendfile('./public/images/logos/' + req.params.file);
+    });
+
+    app.get('/icons/:file', function(req,res){
+	res.sendfile('./public/images/icons/' + req.params.file);
+    });
+
+    / *accountSettings */
+    app.get('/accountSettings', function(req,res){
+	accountSettings.buildPage(req, res, database);
+    });
+    app.post('/accountSettings', function(req,res){
+	accountSettings.changeInfo(req, res, database);
     });
 
     /* ============== css distribution =================== */

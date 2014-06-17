@@ -25,6 +25,7 @@ var outletColor =  '#FFC440';
 
 var lineStrokeWidth = 2;
 
+//SLIDING MENU
 var menuHeight = width / 9; 
 var menuCornerWidth = width / 6;
 var valMenuXSpacing = width / 32;
@@ -36,12 +37,35 @@ var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
 var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
 var menuAnimDuration = 1;
 
-var toolboxWidth = width / 18; // 50
-var toolboxHeight = width / 4.1; // 180
-var toolboxShift = toolboxWidth / 5; // 10
-var toolboxButtonSize = width / 30; // 30
+//CORNER BUTTONS
+var menuOffset = 10;
+var menuControlHeight = menuHeight / 5;
+var menuControlColor = 'lightblue';
+var menuControlTextColor = 'black';
+var menuTextOffset = menuControlHeight / 5;
 
-var deleteColor = '#A30F0F';
+//TOOLBOX
+var toolboxWidth = width / 18; 
+var toolboxHeight = width / 4.1; 
+var toolboxShift = toolboxWidth / 5; 
+var toolboxButtonSize = width / 30;
+var deleteColor = '#A30F0F'; 
+
+//FUNCTIONBAR
+var funBarWidth = width / 2.5;
+var funBarHeight = height / 10;
+var funBarBackgroundColor = 'lightblue';
+var funBarOffset = funBarWidth / 36;
+var funBarTextOffset = 2 * funBarOffset;
+var funBarDisplayFontSize = 22; 
+var funBarFontSize = 12;
+var funBarSaveFunX = funBarWidth * .76;
+var funBarSaveFunY = 1.5 * funBarOffset;
+var funBarIconSideLength = funBarWidth / 15;
+var funBarIconTextWidth = funBarIconSideLength + (2 * funBarOffset);
+var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
+
+
 
 var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 var functions = {
@@ -66,3 +90,27 @@ var values = {
 	day: 			{rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
 	constant:	{rep: '', 	 max: 20, min: 2, color: valueConstantColor},
 }
+
+// TOOLBOX BOOLEANS
+ var lineToolOn = false;
+ var workToolOn = false;
+ var deleteToolOn = false;
+
+//MENU BOOLEANS
+var valueExpanded = false;
+var functionExpanded = false;
+
+/* variables to globally reference the most recently used object/line and current state */
+var currShape;
+var currLine;
+
+//OTHER BOOLEANS
+var makingLine = false;
+var animation = false;
+
+// CONSTANTS
+
+/** 
+ * The offset in an operation node to the set of offsets.
+ */
+var OUTLET_OFFSET = 3;

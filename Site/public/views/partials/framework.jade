@@ -19,13 +19,9 @@ html(lang='en')
 				ul
 					span(class='main')
 						li: a(href='#') create
-						li |
 						li: a(href='#') challenges
-						li |
 						li: a(href='/gallery') gallery
-						li |
 						li: a(href='/about') about
-						li |
 						if loggedIn
 							li: a(href='/me') my account
 						else
@@ -34,9 +30,7 @@ html(lang='en')
 						input(type='text' placeholder='username' name='username' required ='required')
 						input(type='password' placeholder='password' name='password' require = 'required')
 						li(id='login') login
-						li |
 						li: a(href='/signup') signup
-						li |
 						li(id='cancel') cancel
 
 		block content

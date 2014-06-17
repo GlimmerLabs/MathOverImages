@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<title>Typing Test</title>
+	</head>
+	<body>
+		<div id="container"></div>
+		<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"> </script>
+		<script src = "EditableText.js"></script>
+		<script>
+      	var stage = new Kinetic.Stage({
+        	container: 'container',
+        	width: 500,
+        	height: 200
+      	});
+      	var layer = new Kinetic.Layer();
+      	text = new Kinetic.Text({
+	  		x: 10,
+	  		y: 15,
+	  		text: 'Click to Edit',
+	  		fontSize: 30,
+
+	  		fontFamily: 'Open Sans',
+	  		fill: 'black'
+		});
+      	text2 = new Kinetic.Text({
+	  		x: 10,
+	  		y: 45,
+	  		text: 'Click to Edit',
+	  		fontSize: 30,
+	  		fontFamily: 'Comic Sans',
+	  		fill: 'black'
+		});
+		
+		layer.add(text);
+		layer.add(text2);
+		stage.add(layer);
+
+		readyEditing(stage);
+		text.setEditable(true);
+		
+		text.drawMethod = function(){layer.draw()};
+		text.defaultText = "Click to Edit";
+		text2.setEditable(true);
+		text2.drawMethod = function(){layer.draw()};
+		text2.defaultText = "Click to Edit";
+
+		</script>
+	</body>
+</html>

@@ -1,4 +1,4 @@
-@import url('styles.css');
+@import url("/css/styles");
 
 #subviews {
   float: right;
@@ -86,4 +86,18 @@ input:hover {
     color: #D8D8D8;
     background-color: #FFF;
     cursor: pointer;
+}
+
+#editButton {
+  width: 25px;
+  height: 25px;
+}
+
+figcaption {
+  display: inline;
+}
+#link {
+  text-decoration: none;
+  text-color: #979797;
+  float: right;
 }

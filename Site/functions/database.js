@@ -235,8 +235,10 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
             callback(false); // user does not exist
         else
             bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(error,result) {
-		if (!error)
+		if (!error){
+		    console.log("NO error");
 		    callback(result,null);
+		}
 		else
 		    callback (null, error);
             });
@@ -251,6 +253,7 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
   Parameters: 
   userid, the userid of the use who wants to change their password
   oldPassword, the old password of the user
+
   newPassword, what they want to change their password to
   callback, a function describing what to do with the response
   Produces: 
@@ -267,7 +270,7 @@ module.exports.changePassword = (function (userid, oldPassword, newPassword, cal
     oldPassword = sanitize(oldPassword);
     newPassword = sanitize(newPassword);
     userid = sanitize(userid);
-    module.exports.query("SELECT hashedPassword WHERE userid= '" + userid + "';", function (response, error){
+    module.exports.query("SELECT hashedPassword from users WHERE userid= '" + userid + "';", function (response, error){
 	if (error)
 	    callback(false, error);
 
@@ -275,11 +278,11 @@ module.exports.changePassword = (function (userid, oldPassword, newPassword, cal
 	    callback(false, "Invalid Credentials");
 
 	else
-	    module.exports.verifyUser(userid, oldPassword, function(verified, error){
+	    module.exports.verifyPassword(userid, oldPassword, function(verified, error){
 		if (error)
 		    callback(false, error);
 		else if (!verified)
-		    callback(false, "Invalid Credentials");
+		    callback(false, "Invalid Credentials: password");
 		else
 		    hashPassword(newPassword, function (newHash, error) {
 			if (error)
@@ -340,13 +343,13 @@ module.exports.logIn = (function (user, password, callback) {
 		if (error)
 		    callback(null,error);
 		else if (!rows[0]) // user is also not a username, and therefore is not in the database
-		    callback(null, "user Invalid Credentials");
+		    callback(null, "Invalid Credentials");
 		else
 		    module.exports.verifyPassword(rows[0].userid, password, function (success, error){
 			if (error)
 			    callback(null, error);
 			else if (!success)
-			    callback(null, "password Invalid Credentials");
+			    callback(null, "Invalid Credentials");
 			else{
 			    module.exports.query("UPDATE users SET lastLoginTime='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE userid='" +rows[0].userid +"';", function(response,error){
 				console.log(rows[0].username + " has logged in.");
@@ -402,7 +405,7 @@ module.exports.logIn = (function (user, password, callback) {
   Post-conditions:
   All information from the database will be retrieved
   Preferences:
-  Use database.getIDforUsername to get the id to pass to this function
+  Use database.getIDorUsername to get the id to pass to this function
 */
 
 module.exports.getUser = (function (userid, callback){

@@ -189,3 +189,41 @@ var makeMenuTween = function(target, xEnd, visibility) {
 		easing: Kinetic.Easings.StrongEaseOut
 	});
 };
+
+/**
+ * addLine adds a line between source and sink, connecting to sink via the outletIndex-th outlet
+ * @pre
+ *   sink.children[outletIndex + 3] is an unused outlet
+ */
+ var addLine = function(source, sink, outletIndex) {
+  var line = makeLine(source);
+  var outlet = sink.children[outletIndex + 3];
+  outlet.attrs.lineIn = line;
+  assertRenderable(sink);
+  if (sink.attrs.numInputs == sink.children.length - 3 &&
+    sink.attrs.numInputs < sink.attrs.maxInputs) {
+    addOutlet(sink);
+ }
+ updateForward(sink);
+ lineLayer.add(line);
+ workLayer.draw();
+ lineLayer.draw();
+};
+/**
+ * addOp adds a function object to the workLayer at x, y, with the corresponding attributes given 
+ * by the funName key.
+ */
+var addOp = function(funName, x, y) {
+  var op = makeFunctionGroup(funName, x, y);
+  workLayer.add(op);
+  workLayer.draw();
+};
+/**
+ * addVal adds a value object to the workLayer at x, y, with the corresponding attributes given 
+ * by the valName key.
+ */
+var addVal = function(valName, x, y) {
+  var val = makeValueGroup(valName, x, y);
+  workLayer.add(val);
+  workLayer.draw();
+};
