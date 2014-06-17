@@ -3,7 +3,13 @@
 - workToolGroup on click
 - lineToolGroup on click
 - deleteToolGroup on click
-- toolboxControl on click
+- undoGroup on mousedown
+- undoGroup on mouseup
+- undoGroup on mouseout
+- redoGroup on mousedown
+- redoGroup on mouseup
+- redoGroup on mouseout
+- toolboxControl on mousedown
 */
 workToolGroup.on('click', function(){
   if (makingLine) {
@@ -51,6 +57,38 @@ deleteToolGroup.on('click', function() {
     disableTool(lineToolGroup);
     toolboxLayer.draw();
   }
+});
+
+undoGroup.on('mousedown', function() {
+  undoButton.setAttr('shadowEnabled', true);
+  toolboxLayer.draw();
+});
+
+undoGroup.on('mouseup', function() {
+  undoButton.setAttr('shadowEnabled', false);
+  toolboxLayer.draw();
+  undoAction(actionArray[currIndex]);
+
+});
+
+undoGroup.on('mouseout', function() {
+  undoButton.setAttr('shadowEnabled', false);
+  toolboxLayer.draw();
+});
+
+redoGroup.on('mousedown', function() {
+  redoButton.setAttr('shadowEnabled', true);
+  toolboxLayer.draw();
+});
+
+redoGroup.on('mouseup', function() {
+  redoButton.setAttr('shadowEnabled', false);
+  toolboxLayer.draw();
+});
+
+redoGroup.on('mouseout', function() {
+  redoButton.setAttr('shadowEnabled', false);
+  toolboxLayer.draw();
 });
 
 toolboxControl.on('mousedown', function() {

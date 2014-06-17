@@ -68,9 +68,11 @@ There are 3 different modes:
           source.attrs.lineOut[i].attrs.sourceIndex--;
         }
         source.attrs.lineOut.splice(index, 1);
-        line.destroy();
+        insertToArray(actionToObject('replace', line));
+        line.remove();
         shape.attrs.lineIn = null;
-      } else {
+      } 
+      else {
         parent.attrs.numInputs++;
       } // check if theres already a line going in to the outlet
       shape.attrs.lineIn = currLine;
@@ -87,9 +89,12 @@ There are 3 different modes:
         renderCanvas(parent);
       }
     }
+    insertToTable(currLine);
+    insertToArray(actionToObject('insert', currLine));
     updateForward(parent);
     } // if clicked on self, else clicked on a valid outlet
-  } else {
+  } // if makingline
+  else {
     if (isImageBox(shape)) {
       if (!shape.attrs.expanded) {
         renderCanvas(parent);
@@ -102,18 +107,17 @@ There are 3 different modes:
       setTimeout(function() {workLayer.draw()}, 50);
     } else {
       makingLine = true;
-      var group = evt.target.getParent();
-      currLine = makeLine(group);
-      group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
+      currLine = makeLine(parent);
+      parent.attrs.lineOut[parent.attrs.lineOut.length] = currLine;
       lineLayer.add(currLine);
     }
   }
 } else if (deleteToolOn) {
+  insertToArray(actionToObject('delete', parent));
   // deal with lines coming in to the node being deleted
-  var group = parent;
   var targetLine;
-  for(var i = 3; i < group.children.length; i++) {
-    targetLine = group.children[i].attrs.lineIn;
+  for(var i = 3; i < parent.children.length; i++) {
+    targetLine = parent.children[i].attrs.lineIn;
     if(targetLine != null) {
       targetLine.attrs.outlet = null;
       var index = targetLine.attrs.sourceIndex;
@@ -122,33 +126,32 @@ There are 3 different modes:
         source.attrs.lineOut[j].attrs.sourceIndex--;
       }
       targetLine.attrs.source.attrs.lineOut.splice(index, 1);
-      targetLine.destroy();
+      targetLine.remove();
     }
   }
   // deal with the lines leading out of the node being deleted
   var outletParent;
-  for(var i = 0; i < group.attrs.lineOut.length; i++) {
-    targetLine = group.attrs.lineOut[i];
+  for(var i = 0; i < parent.attrs.lineOut.length; i++) {
+    targetLine = parent.attrs.lineOut[i];
     outletParent = targetLine.attrs.outlet.getParent();
     outletParent.attrs.numInputs--;
     targetLine.attrs.outlet.attrs.lineIn = null;
     assertRenderable(outletParent);
     updateForward(outletParent);
-    targetLine.destroy();
+    targetLine.remove();
   }
-  var render = group.attrs.renderLayer
+  var render = parent.attrs.renderLayer
   if (render != null) {
     render.destroy();
   }
-  if (currShape == group) {
-    console.log('here');
+  if (currShape == parent) {
     currShape = undefined;
     funBarText.setAttr('text', '');
     funBarLayer.draw();
   }
-  group.destroy();
+  
+  parent.remove();
 }
-
 workLayer.draw();
 lineLayer.draw();
 });
