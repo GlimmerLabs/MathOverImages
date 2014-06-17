@@ -6,8 +6,12 @@ block extraMetas
 block extraLinks
 
 block stylesheets
+<<<<<<< HEAD
 	link(rel='stylesheet', href='/css/profile')
 	link(rel='stylesheet', href='/css/styles')
+=======
+	link(rel='stylesheet', href='/css/defaultAccount')
+>>>>>>> 653c8f52de3b61b03c12f742f87113177e79f5e3
 
 block content
 	div(id='main')
@@ -22,6 +26,7 @@ block content
 			p= "member since " + viewing.signupTime
 		div(id='featuredImage')
 			figure
+<<<<<<< HEAD
 				a(href='singleImage.html')
 					img(src='/samples/bw1.jpg' alt='Untitled by username')
 					p
@@ -43,3 +48,13 @@ block content
 				form(action='#' method='POST')
 					textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
 					input(type='submit' id='submit' name='submit')
+=======
+				a(href='#'): img(src='/samples/bw0.jpg')
+				figcaption Untitled by Zoe
+
+		div(id='bio')
+			p= viewing.about
+		form(action='#' method='POST')
+			textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
+			input(type='submit' id='submit' name='submit')
+>>>>>>> 653c8f52de3b61b03c12f742f87113177e79f5e3

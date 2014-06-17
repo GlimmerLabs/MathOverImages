@@ -50,7 +50,7 @@ There are 3 different modes:
     } else if (lineToolOn) {
       if (makingLine) {
         if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
-          currLine.attrs.source.attrs.lineOut.splice([currLine.attrs.source.attrs.lineOut.length - 1], 1);
+          currLine.attrs.source.attrs.lineOut.splice(currLine.attrs.source.attrs.lineOut.length - 1, 1);
           currLine.destroy();
           if (isOutlet(shape)) {
             shape.scale({ x: 1, y: 1 });
@@ -61,8 +61,15 @@ There are 3 different modes:
       if (shape.attrs.lineIn != null) {
         //POSSIBLE NEED TO DESTROY LINE ITSELF
         var source = shape.attrs.lineIn.attrs.source;
-        source.attrs.lineOut[shape.attrs.lineIn.attrs.sourceIndex].destroy();
-        source.attrs.lineOut.splice([shape.attrs.lineIn.attrs.sourceIndex], 1);
+        var index = shape.attrs.lineIn.attrs.sourceIndex
+        var line = source.attrs.lineOut[index];
+        
+        for (var i = index + 1; i < source.attrs.lineOut.length; i++) {
+          source.attrs.lineOut[i].attrs.sourceIndex--;
+        }
+        source.attrs.lineOut.splice(index, 1);
+        line.destroy();
+        shape.attrs.lineIn = null;
       } else {
         parent.attrs.numInputs++;
       } // check if theres already a line going in to the outlet
@@ -76,10 +83,10 @@ There are 3 different modes:
       if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
         parent.attrs.numInputs < parent.attrs.maxInputs) {
         addOutlet(parent);
-        if (parent.children[2].attrs.expanded) {
-          renderCanvas(parent);
-        }
+      if (parent.children[2].attrs.expanded) {
+        renderCanvas(parent);
       }
+    }
     updateForward(parent);
     } // if clicked on self, else clicked on a valid outlet
   } else {
@@ -109,7 +116,12 @@ There are 3 different modes:
     targetLine = group.children[i].attrs.lineIn;
     if(targetLine != null) {
       targetLine.attrs.outlet = null;
-      targetLine.attrs.source.attrs.lineOut.splice(targetLine.attrs.sourceIndex, 1);
+      var index = targetLine.attrs.sourceIndex;
+      var source = targetLine.attrs.source;
+      for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
+        source.attrs.lineOut[j].attrs.sourceIndex--;
+      }
+      targetLine.attrs.source.attrs.lineOut.splice(index, 1);
       targetLine.destroy();
     }
   }
@@ -117,13 +129,11 @@ There are 3 different modes:
   var outletParent;
   for(var i = 0; i < group.attrs.lineOut.length; i++) {
     targetLine = group.attrs.lineOut[i];
-    if (targetLine.attrs.outlet != null) {
-      outletParent = targetLine.attrs.outlet.getParent();
-      outletParent.attrs.numInputs--;
-      targetLine.attrs.outlet.attrs.lineIn = null;
-      assertRenderable(outletParent);
-      updateForward(outletParent);
-    }
+    outletParent = targetLine.attrs.outlet.getParent();
+    outletParent.attrs.numInputs--;
+    targetLine.attrs.outlet.attrs.lineIn = null;
+    assertRenderable(outletParent);
+    updateForward(outletParent);
     targetLine.destroy();
   }
   var render = group.attrs.renderLayer
@@ -157,7 +167,10 @@ lineLayer.draw();
        }
        currShape = group
        currText = currShape.attrs.renderFunction;
-       if (currText != null) {
+       if (group.name() == 'rgb') {
+        currText = 'rgb(' + currText + ')';
+      } 
+      if (currText != null) {
         currShape.children[0].setAttrs({
           shadowColor: 'darkblue',
           shadowOpacity: 1,
@@ -165,18 +178,19 @@ lineLayer.draw();
         });
         var currFontSize;
         if (currText.length <= 12) {
-            currFontSize = funBarDisplayFontSize;
-          } 
-          else if (currText.length >= 26){
-            currFontSize = 10;
-          }
-          else {
-            currFontSize = 264 / currText.length;
-          }
+          currFontSize = funBarDisplayFontSize;
+        } 
+        else if (currText.length >= 26){
+          currFontSize = 10;
+        }
+        else {
+          currFontSize = 264 / currText.length;
+        }
         funBarText.setAttrs({
           text: currText,
           fontSize: currFontSize
-          });
+        });
+        
         funBarLayer.draw();
       }
       group.startDrag();
@@ -275,4 +289,4 @@ else if (deleteToolOn) {
       }
       workLayer.draw();
     }
-});
+  });
