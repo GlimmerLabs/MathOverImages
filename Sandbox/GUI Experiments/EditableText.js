@@ -192,7 +192,7 @@ function readyEditing(stage)
 				activeText.setText(textPreCursor + "." + textPostCursor);
 				activeText.cursor.position++;
 			}
-			if(e.which == 8){ // 8 is the delete key
+			if(e.which == 8){ // 8 is the backspace key; 48 is the delete key
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
 				activeText.cursor.position--;
 			}
