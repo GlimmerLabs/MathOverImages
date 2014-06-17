@@ -87,3 +87,17 @@ input:hover {
     background-color: #FFF;
     cursor: pointer;
 }
+
+#editButton {
+  width: 25px;
+  height: 25px;
+}
+
+figcaption {
+  display: inline;
+}
+#link {
+  text-decoration: none;
+  text-color: #979797;
+  float: right;
+}
