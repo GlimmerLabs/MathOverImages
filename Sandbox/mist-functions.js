@@ -4,7 +4,7 @@
  *   and so forth.
  */
 
-// +-------+-----------------------------------------------------------
+// +-------+---------------------------------------------------------
 // | Notes |
 // +-------+
 
@@ -39,13 +39,13 @@
 
  */
 
-// +-------+-----------------------------------------------------------
+// +-------+---------------------------------------------------------
 // | Setup |
 // +-------+
 
 try { MIST = MIST; } catch (err) { MIST = new Object(); }
 
-// +-------------------+-----------------------------------------------
+// +-------------------+---------------------------------------------
 // | General Utilities |
 // +-------------------+
 
@@ -98,7 +98,7 @@ function nspaces(n)
   return ncopies(n, " ");
 } // nspaces
 
-// +----------------+--------------------------------------------------
+// +----------------+------------------------------------------------
 // | MIST Utilities |
 // +----------------+
 
@@ -236,7 +236,7 @@ MIST.sameExp = function(a,b,checkedLoops)
   return false;
 } // MIST.sameExp
 
-// +--------------+----------------------------------------------------
+// +--------------+--------------------------------------------------
 // | Constructors |
 // +--------------+
 
@@ -333,7 +333,7 @@ MIST.Val = function(name) {
  *   exp, a MIST. expression describing the image
  *   context, a bunch of hashes
  * Purpose:
- *   Create the description of an image.
+ *   Create the description of a greyscale image.
  */
 MIST.ImageGrey = function(exp)
 {
@@ -341,7 +341,232 @@ MIST.ImageGrey = function(exp)
   this.context = getArgs(arguments,1);
 } // MIST.ImageGrey
 
-// +-------------------+-----------------------------------------------
+// +----------------------+------------------------------------------
+// | Function Information |
+// +----------------------+
+
+/**
+ * A bit of information on the installed functions.
+ */
+MIST.FunInfo = function(name, display, minarity, maxarity, paramnames) {
+  this.name = name;
+  this.display = display;
+  this.minarity = minarity;
+  this.maxarity = maxarity;
+  this.paramnames = paramnames;
+} // FunInfo
+
+/**
+ * Clear information on all functions.
+ */
+MIST.clearFuns = function()
+{
+  MIST.funs = {};
+} // MIST.clearFuns
+
+/**
+ * Add information on a function.
+ */
+MIST.addFun = function(name, display, minarity, maxarity, paramnames) {
+  if (!MIST.funs) { MIST.clearFuns(); }
+  MIST.funs[name] = new MIST.FunInfo(name, display, minarity, maxarity, paramnames);
+} // MIST.addFun
+
+/**
+ * Add information on the standard functions.  (Should these be in a table
+ * somewhere?)
+ */
+MIST.addStandardFunctions = function() {
+ 
+} // MIST.addStandardFunctions
+
+/**
+ * Get information on a function.  Returns undefined if the function is
+ * not yet defined.
+ */
+MIST.getFun = function(name) {
+  if (!MIST.funs) return undefined;
+  return MIST.funs[name]);
+} // MIST.getFun
+
+// +---------+-------------------------------------------------------
+// | Parsing |
+// +---------+
+
+MIST.alpha = /[a-zA-Z]/;
+
+MIST.tokens = Object.freeze({UNKNOWN:0, OPEN:1, CLOSE:2, COMMA:3, 
+  ID:4, NUM:5, EOF:6});
+
+MIST.Token = function(type,text,row,col)
+{
+  this.type = type;
+  this.text = text;
+  this.row = row;
+  this.col = col;
+} // MIST.Token
+
+MIST.Input = function(text)
+{
+  this.text = text;
+  this.pos = 0;
+  this.row = 1;
+  this.col = 1;
+  this.len = text.length;
+
+  // Determine if we're at the end of the input
+  this.eof = function() {
+    return this.pos >= this.len;
+  } // eof
+
+  // Peek at the next input character
+  this.peek = function() {
+    if (this.eof())
+      return undefined;
+    else
+      return this.text[this.pos];
+  }; // peek
+
+  // Get the next character
+  this.next = function() {
+    var c = this.peek();
+    if (c == undefined) {
+      return undefined;
+    }
+    else {
+      var result = new MIST.Token(MIST.tokens.UNKNOWN, c, 
+          this.row, this.col);
+      ++this.pos;
+      ++this.col;
+      if (c == "\n") {
+        ++this.row;
+        this.col = 1;
+      }
+      return result;
+    }
+  } // next()
+
+  // Skip over whitespace
+  this.skipWhitespace = function() {
+    var ws = /[ \t\n]/;
+    while (ws.test(this.peek())) {
+      this.next();
+    } // while
+  } // skipWhitespace
+} // MIST.Input
+
+/**
+ * Throw a parse or tokenize error.
+ */
+MIST.parseError = function(text, row, col) {
+  if (row) MIST.row = row;
+  if (col) MIST.col = col;
+  throw "Error at line " + MIST.row + ", column " + MIST.col + ": " + text;
+} // parseError
+
+/**
+ * Tokenize a string.
+ */
+MIST.tokenize = function(str) {
+  var tokens = [];
+  var input = new MIST.Input(str);
+  input.skipWhitespace();
+  while (!input.eof())
+    {
+      var ch = input.next();
+      if (ch.text == "(") {
+        ch.type = MIST.tokens.OPEN;
+        tokens.push(ch);
+      }
+      else if (ch.text == ")") {
+        ch.type = MIST.tokens.CLOSE;
+        tokens.push(ch);
+      }
+      else if (ch.text == ",") {
+        ch.type = MIST.tokens.COMMA;
+        tokens.push(ch);
+      }
+      else if (MIST.alpha.test(ch.text)) {
+        var col = ch.col;
+        var row = ch.row;
+        var id = ch.text;
+        var c;
+        while ((c = input.peek()) && MIST.alpha.test(c)) {
+          id += c;
+          input.next();
+        } // while
+        ch.type = MIST.tokens.ID;
+        ch.text = id;
+        tokens.push(ch);
+      } // if it's an id
+      else {
+        MIST.parseError("Invalid character (" + ch.text + ")", ch.row, ch.col);
+      } // else
+      input.skipWhitespace();
+    } // while
+  tokens.push(new MIST.Token(MIST.tokens.EOF, "<eof>", input.row, input.col));
+  return tokens;
+} // MIST.tokenize
+
+peekType = function(tokens) {
+  if (!tokens[0])
+    return MIST.tokens.UNKNOWN;
+  else
+    return tokens[0].type;
+} // peekType
+
+MIST.parse = function(str) {
+  var kernel = function(tokens) {
+    // This should never happen, but let's be safe.
+    if (tokens.length == 0) {
+      MIST.parseError("Unexpected end of input", 0, 0);
+    }
+
+    var tok = tokens.shift();
+
+    // Check for end of input
+    if (tok.type == MIST.tokens.EOF) {
+      MIST.parseError("Unexpected end of input", tok.row, tok.col);
+    }
+
+    // Only identifiers are allowed at the top level.
+    if (tok.type != MIST.tokens.ID) {
+      MIST.parseError("Unexpected token (" + tok.text + ")", tok.row, tok.col);
+    } // if it's not an identifier
+  
+    // Is it a function call?
+    if (peekType(tokens) == MIST.tokens.OPEN) {
+      tokens.shift();
+      var children = [];
+      while (peekType(tokens) != MIST.tokens.CLOSE) {
+        children.push(kernel(tokens));
+        if (peekType(tokens) == MIST.tokens.COMMA) {
+          tokens.shift();
+          if (peekType(tokens) == MIST.tokens.CLOSE) {
+            MIST.parseError("Close paren follows comma", tokens[0].col, tokens[0].row);
+          } // if there's a close paren after a comma
+        } // if there's a comma
+      } // while
+      tokens.shift();
+      return new MIST.App(tok.text, children);
+    } // if it's a function call
+  
+    // Otherwise, it's a singleton
+    else {
+      return new MIST.Val(tok.text);
+    } // if it's a singleton
+  }; // kernel
+
+  var tokens = MIST.tokenize(str);
+  var result = kernel(tokens);
+  if ((tokens.length > 1) || (peekType(tokens) != MIST.tokens.EOF)) {
+    MIST.parseError("Extra text after expression", tokens[0].col,
+      tokens[0].row);
+  } 
+  return result;
+} // MIST.parse
+
+// +-------------------+---------------------------------------------
 // | Simulated Objects |
 // +-------------------+
 
@@ -366,7 +591,7 @@ function SimulatedTime()
   this.y = 0;
 } // SimulatedTime
 
-// +-------------+-----------------------------------------------------
+// +-------------+---------------------------------------------------
 // | Quick Hacks |
 // +-------------+
 
@@ -407,7 +632,7 @@ function testArgs()
   return getArgs(arguments, 1);
 } // testArgs
 
-// +--------------------+----------------------------------------------
+// +--------------------+--------------------------------------------
 // | Sample Expressions |
 // +--------------------+
 
