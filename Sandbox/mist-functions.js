@@ -32,7 +32,10 @@
    JSON.stringify on the object.  When you want to restore the object,
    use MIST.rebuild on the resulting string.  (Unfortunately, JSON.parse
    does not restore object type information or function fields, so
-   MIST.rebuild does that extra work.)
+   MIST.rebuild does that extra work.)  
+
+   Alternately, use restore (from mist-utils.js) on the result of calling
+   JSON.parse on the string.
 
    5. Many of the MIST functions rely on a MIST object.  We start each
    file with instructions to build that object.
@@ -236,9 +239,9 @@ MIST.sameExp = function(a,b,checkedLoops)
   return false;
 } // MIST.sameExp
 
-// +--------------+--------------------------------------------------
-// | Constructors |
-// +--------------+
+// +-----------------+-----------------------------------------------
+// | Class: MIST.App |
+// +-----------------+
 
 /**
  * The application of an operation to zero or more operands.
@@ -260,28 +263,37 @@ MIST.App = function(operation) {
     this.code = this.operation + "()";
   else
     this.code = this.operation + "(" + this.operands.join(",") + ")";
-
-  // Set up the toString method.
-  this.toString = function() { return this.code; };
-
-  // Set up the prettyPrint method.
-  this.prettyPrint = function(indent) 
-    {
-      if (!indent) { indent = ""; }
-
-      if (this.operands.length == 0) {
-        return indent + this.operation + "()\n";
-      }
-      else { // if there are operands
-        var newindent = indent + nspaces(this.operation.length);
-        var pp = function(val) { return val.prettyPrint(newindent+" ") };
-        return indent + this.operation 
-               + "(\n" 
-               + this.operands.map(pp).join("")
-               + newindent + ")\n";
-      } // has operands
-    };
 } // MIST.App
+
+/**
+ * Convert the application to a string.
+ */
+MIST.App.prototype.toString = function() { 
+  return this.code; 
+};
+
+/**
+ * Print the application, indented by some number of spaces.
+ */
+MIST.App.prototype.prettyPrint = function(indent) {
+  if (!indent) { indent = ""; }
+
+  if (this.operands.length == 0) {
+    return indent + this.operation + "()\n";
+  }
+  else { // if there are operands
+    var newindent = indent + nspaces(this.operation.length);
+    var pp = function(val) { return val.prettyPrint(newindent+" ") };
+    return indent + this.operation 
+       + "(\n" 
+           + this.operands.map(pp).join(",")
+           + newindent + ")\n";
+  } // has operands
+};
+
+// +-----------------+-----------------------------------------------
+// | Class: MIST.Fun |
+// +-----------------+
 
 /**
  * MIST functions are expressions that have parameters.
@@ -298,18 +310,34 @@ MIST.Fun = function(parameters, body)
             + "(" + this.parameters.join(",") + ") "
             + "{ return " + this.body.toString() + "})";
 
-  // Method: toString
-  this.toString = function() { return this.code; };
-
-  // Method: prettyPrint
-  this.prettyPrint = function(indent) { return this.body.prettyPrint(indent); };
-  this.toFunction = function() 
-    { 
-      var code = "var " + this.name  + " = " + this.toString();
-      eval(code);
-      return eval(this.name);
-    };
 } // MIST.Fun
+
+/**
+ * Convert to a string.
+ */
+MIST.Fun.prototype.toString = function() {
+  return this.code;
+} // toString
+
+/**
+ * Pretty print.
+ */
+MIST.Fun.prototype.prettyPrint = function (indent) {
+  return this.body.prettyPrint(indent); 
+};
+
+/**
+ * Convert to an executable Javascript function.
+ */
+MIST.Fun.prototype.toFunction = function() { 
+  var code = "var " + this.name  + " = " + this.toString();
+  eval(code);
+  return eval(this.name);
+};
+
+// +-----------------+-----------------------------------------------
+// | Class: MIST.Val |
+// +-----------------+
 
 /**
  * A basic value.  (Either a number of the name of something.)
@@ -318,13 +346,26 @@ MIST.Val = function(name) {
   this.class = "MIST.Val";
   this.name = name;
   this.code = "" + name;
-  this.toString = function() { return this.code; }; 
-  this.prettyPrint = function(indent)
-    {
-      if (!indent) { indent = ""; }
-      return indent + this.name + "\n";
-    }; // this.prettyPrint
 } // MIST.Val
+
+/**
+ * Convert to a string.
+ */
+MIST.Val.prototype.toString = function() { 
+  return this.code; 
+}; // MIST.Val.prototype.toString
+
+/**
+ * Print nicely indented.
+ */
+MIST.Val.prototype.prettyPrint = function(indent) {
+  if (!indent) { indent = ""; }
+  return indent + this.name + "\n";
+}; // MIST.Val.prettyPrint
+
+// +-----------------------+-----------------------------------------
+// | Class: MIST.ImageGray |
+// +-----------------------+
 
 /**
  * Constructor:
