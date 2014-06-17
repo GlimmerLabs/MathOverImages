@@ -1,5 +1,47 @@
 @import url("/css/styles");
 
+
+/* Single Image - Large */
+#largeImage figure img{
+	height: 400px;
+	width: 400px;
+}
+
+#largeImage figcaption{
+	text-align:right;
+	color: #979797;
+}
+
+#largeImage {
+	clear:both;
+	margin:0 auto;
+	float: left;
+
+}
+
+#largeImage figure {
+	display:inline-block;
+	margin: 10px;
+}
+
+#largeImage h1 {
+	font-size:1.5em;
+	text-align:center;
+}
+
+#largeImage a {
+	color: #979797;
+	text-decoration:none
+}
+
+
+#largeImage a:hover {
+	color: #666;
+}
+
+/*end of image - large */
+
+
 /* Single Image - Large */
 #largeImage2 figure img{
 height: 400px;
@@ -7,29 +49,29 @@ width: 400px;
 }
 
 #largeImage2 figcaption{
-  text-align:right;
-  color: #979797;
+	text-align:right;
+	color: #979797;
 }
 
 #largeImage2 {
-  clear:both;
-  margin:0 auto;
+	clear:both;
+	margin:0 auto;
 }
 
 #largeImage2 figure {
-  display:inline-block;
-  margin: 10px 200px;
+	display:inline-block;
+	margin: 10px 200px;
 
 }
 
 #largeImage2 h1 {
-  font-size:1.5em;
-  text-align:center;
+	font-size:1.5em;
+	text-align:center;
 }
 
 #largeImage2 a {
-  color: #979797;
-  text-decoration:none;
+	color: #979797;
+	text-decoration:none;
 }
 
 img {
