@@ -5,14 +5,13 @@ block extraMetas
 block extraLinks
 
 block stylesheets
-	link(rel='stylesheet', href='/css/styles')
 	link(rel='stylesheet', href='/css/signup')
 block content
 	div(id='main')
 		div(id='pageTitle')
 			h1 log in
 		div(id='flashZone')
-			h1 Welcome back to MIST! Enter your username and password to begin 
+			h1 Welcome back to MIST! Enter your username and password to begin
 		form(method='POST')
 			table
 				tr
@@ -23,5 +22,5 @@ block content
 					td: input(type='password' name='password' required='required' placeholder='password' class='signupField')
 					td(id='passwordvalid')
 						span
-			
+
 			input(type='submit' value='log in')

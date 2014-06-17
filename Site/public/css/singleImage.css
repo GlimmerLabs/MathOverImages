@@ -1,3 +1,5 @@
+@import url("/css/styles");
+
 /* Single Image - Large */
 #largeImage2 figure img{
 height: 400px;
@@ -81,7 +83,7 @@ color: #9B9B9B;
 
 #imageTitle {
 color: #979797;
-border: 2px solid #3FAAA0; 
+border: 2px solid #3FAAA0;
 text-align: center;
 width: 181px;
 font-size: 20px;
