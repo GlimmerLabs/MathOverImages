@@ -145,14 +145,23 @@ var isUndoTool = function(target) {
  * NOTE: this will always recalculate the entire function
  */
  var findRenderFunction = function(group) {
- 	group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
- 		for(var i = 3; i < group.children.length; i++) {
- 			if(group.children[i].attrs.lineIn != null) {
- 				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
- 				group.attrs.renderFunction += functions[group.attrs.name].separator
- 			}
+ 	if(group.name() != "rgb") {
+ 		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
+ 			for(var i = 3; i < group.children.length; i++) {
+ 				if(group.children[i].attrs.lineIn != null) {
+ 					group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
+ 					group.attrs.renderFunction += functions[group.attrs.name].separator
+ 				}
 		} // add each element to the equation
 		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
+}
+else {
+	group.attrs.renderFunction = [
+	group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
+	group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
+	group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
+	];
+}
 };
 
 /**
@@ -163,7 +172,8 @@ var isUndoTool = function(target) {
  		findRenderFunction(group);
  		group.children[2].setAttr('visible', true);
  		return true;
- 	} else {
+ 	} 
+ 	else {
  		group.children[2].setAttr('visible', false);
  		if(group.attrs.renderLayer != null) {
  			animation = false;
@@ -189,7 +199,15 @@ var isUndoTool = function(target) {
 		});
 		var box = group.children[2];
 		canvas = currLayer.canvas._canvas;
-		renderFun(MOIbody2fun(group.attrs.renderFunction), canvas, group.x() + box.x(), group.y() + box.y(), renderSideLength, renderSideLength);
+		if (group.attrs.name == "rgb") {
+			rfun = MOIbody2fun(group.attrs.renderFunction[0]);
+			gfun = MOIbody2fun(group.attrs.renderFunction[1]);
+			bfun = MOIbody2fun(group.attrs.renderFunction[2]);
+			renderRGB(rfun, gfun, bfun, canvas, group.x() + box.x(), group.y() + box.y(), renderSideLength, renderSideLength);
+		} 
+		else {
+			renderFun(MOIbody2fun(group.attrs.renderFunction), canvas, group.x() + box.x(), group.y() + box.y(), renderSideLength, renderSideLength);
+		}
 	};
 
 	var collapseCanvas = function(group){
@@ -260,7 +278,7 @@ var isUndoTool = function(target) {
 		moveButton.play();
 	};
 
-		/* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
+	/* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
 	var disableTool = function(toolGroup) {
 		toolGroup.children[0].setAttr('shadowEnabled', false);
 		var name = toolGroup.name();
