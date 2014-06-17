@@ -6,31 +6,40 @@ block extraMetas
 block extraLinks
 
 block stylesheets
-	link(rel='stylesheet', href='/css/defaultAccount')
+	link(rel='stylesheet', href='/css/profile')
 	link(rel='stylesheet', href='/css/styles')
 
 block content
 	div(id='main')
-		div(id = 'userTitle')
-			div(id='titleTitle'): h1 viewing.username
-		a(href='/challenges')
-			div(id='tab1Deselected'): h2 challenges
-		a(href='/badges')
-			div(id='tab2Deselected'): h2 badges
-		a(href='/albums')
-			div(id='tab3Deselected'): h2 albums
-		a(href='/functions')
-			div(id='tab4Deselected'): h2 functions
-		div(id='timeStamp')
+		div(id = 'pageTitle')
+			h1= viewing.username
+		div(id = 'subviews')
+			a(href='/challenges' class='subview' id='selected') about
+			a(href='/badges' class='subview') badges
+			a(href='/albums' class='subview') albums
+			a(href='/challenges' class='subview') challenges
+		div(id='subTitle')
 			p= "member since " + viewing.signupTime
-		div(id='largeImage')
+		div(id='featuredImage')
 			figure
-				a(href='#'): img(src='/samples/bw0.jpg')
-				figcaption Untitled by Zoe
-
-		div(id='bio')
-			p= viewing.about
-		form(action='#' method='POST')
-			textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
-			input(type='submit' id='submit' name='submit')
-		
+				a(href='singleImage.html')
+					img(src='/samples/bw1.jpg' alt='Untitled by username')
+					p
+						figcaption= "Untitled by " +  viewing.username
+		if isLoggedIn
+			a(href='/accountSettings' id='link') Account Settings
+			div(id='bio')
+				a(href='/changeContent')
+					img(src='/icons/edit_button.png' id='editButton')
+				figcaption    My name is Alex and I am cool.
+				p= viewing.about
+				form(action='#' method='POST')
+					textarea(name='styled-textarea' id='styled' cols='40' rows='10') here is where we will put a mailbox
+					input(type='submit' id='submit' name='submit')
+		else
+			div(id='bio')
+				p My name is Alex and I am cool.
+				p= viewing.about
+				form(action='#' method='POST')
+					textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
+					input(type='submit' id='submit' name='submit')
