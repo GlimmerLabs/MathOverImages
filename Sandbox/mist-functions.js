@@ -29,13 +29,13 @@
    method.
 
    4. When you want to store any of these objects in the database, use
-   JSON.stringify on the object.  When you want to restore the object,
-   use MIST.rebuild on the resulting string.  (Unfortunately, JSON.parse
-   does not restore object type information or function fields, so
-   MIST.rebuild does that extra work.)  
+   `JSON.stringify` on the object.  When you want to restore the object,
+   use `restore(JSON.parse(str))`, where `restore` comes from 
+   `mist-utils.js`.  (Unfortunately, JSON.parse does not restore prototypes,
+   so we need to do that by hand.)
 
-   Alternately, use restore (from mist-utils.js) on the result of calling
-   JSON.parse on the string.
+   Alternately, use MIST.rebuild on the resulting string, but that
+   approach is deprecated.
 
    5. Many of the MIST functions rely on a MIST object.  We start each
    file with instructions to build that object.
