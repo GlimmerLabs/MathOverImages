@@ -1,0 +1,45 @@
+extends ./partials/framework
+block title
+	title Account Settings
+block extraMetas
+block extraLinks
+	script(type='text/javascript' src='/js/accountSettings')
+	script(type='text/javascript' src='js/signup')
+block stylesheets
+	link(rel='stylesheet', href='/css/styles')
+	link(rel='stylesheet', href='/css/accountSettings')
+block content
+	div(id='main')
+		div(id='pageTitle')
+			h1 my settings
+		div(id='flashZone')
+			h1 Security is very important to us. Don't forget to change your password every now and again ;)
+		form(method='POST')
+			table
+				tr
+					td(id ='headers') username
+					td(id='content')= user.username
+					td: button(type='button'): img(src='/icons/edit_button.png' id='editButton')
+				tr
+					td(id ='headers') password
+					td
+					td: a(href='/passwordChange.jade'): button(type='button'): img(src='/icons/edit_button.png' id='editButton')
+				tr
+					td(id ='headers') current password:
+					td(id='content')
+						input(type='password' name='oldpassword' required='required' placeholder='password' class='signupField' id='oldpassword')
+					td
+				tr
+					td(id ='headers') new password:
+					td(id='content')
+						input(type='password' name='newPassword' required='required' placeholder='password' class='signupField' id='newpassword1')
+					td
+				tr
+					td(id ='headers') reconfirm password:
+					td(id='content')
+						input(type='password' name='repassword' required='required' placeholder='re-enter password' class='signupField' id='newpassword2')
+				tr
+					td(id='headers') email
+					td(id='content')=  user.email
+					td: button(type='button'): img(src='/icons/edit_button.png' id='editButton')
+			input(type='submit' name='submit' value ='submit')
