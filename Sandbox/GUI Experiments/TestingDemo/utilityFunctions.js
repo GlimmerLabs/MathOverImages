@@ -13,7 +13,7 @@ isValue determines if target is a valueGroup and returns a boolean value.
 target is an object.
 */
 var isValue = function(target) {
-	return (target.attrs.maxInputs == null);
+	return (target.attrs.maxInputs == null && target.nodeType == 'Group');
 };
 
 /*
@@ -29,7 +29,7 @@ isLine determines if target is a line and returns a boolean value.
 target is an object.
 */
 var isLine = function(target) {
-	return (target.attrs.outlet != null);
+	return (target.className == 'Line');
 };
 
 /*
