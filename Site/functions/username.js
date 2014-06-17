@@ -10,7 +10,8 @@ module.exports.buildPage = function(req, res, database) {
 		    res.render('../public/views/profile.jade',{
 			loggedIn: req.session.loggedIn,
 			user: req.session.user,
-			viewing: userObject
+			viewing: userObject,
+			isLoggedIn: true
 			});
 		});
 	});

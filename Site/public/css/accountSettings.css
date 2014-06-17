@@ -1,5 +1,11 @@
-@import url("/css/styles");
-
+#editButton {
+ width: 25px;
+ height: 25px;
+ decoration: none;
+}
+#content {
+text-align: center;
+}
 #pageTitle {
     background-color:3FAAA0;
     color: #FFF;

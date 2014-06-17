@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script src="globalVariables.js"></script>  
+  <script src="utilityFunctions.js"></script>
+  <script src="constructors.js"></script>
+  <script src="render.js"></script>
+  <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+  </script>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  } 
+  #container {
+    background-color: rgb(241, 248, 255);
+    width: 900px;
+    height: 600px;
+  }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="initializeStage.js"></script>
+  <script src="makeMenu.js"></script>
+  <script src="makeToolbox.js"></script>
+  <script src="makeFunctionBar.js"></script>
+  <script src="workLayerEvents.js"></script>
+  <script src="menuEvents.js"></script>
+  <script src="dragLayerEvents.js"></script>
+  <script src="lineLayerEvents.js"></script>
+  <script src="toolboxEvents.js"></script>
+  <script>
+  stage.draw();
+  </script>
+</body>
+<html>
