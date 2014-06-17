@@ -90,6 +90,14 @@ header nav li:hover {
 	clear: left;
 }
 
+#subTitle {
+	float: left;
+	clear: left;
+	color: #979797;
+	margin: -15px -80px;
+	display: block;
+}
+
 /* Footer */
 footer nav ul {
 	margin:0;
