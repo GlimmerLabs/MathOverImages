@@ -104,12 +104,18 @@ module.exports = function(app,passport,database) {
 	res.sendfile('./public/images/icons/' + req.params.file);
     });
 
-    / *accountSettings */
+    /* ============== account settings ==================== */
     app.get('/accountSettings', function(req,res){
 	accountSettings.buildPage(req, res, database);
     });
     app.post('/accountSettings', function(req,res){
-	accountSettings.changeInfo(req, res, database);
+	if(req.body.usernameSubmit != null) {
+	    accountSettings.changeUsername(req, res, database);
+	} else if (req.body.passwordSubmit != null) {
+	    accountSettings.changePassword(req, res, database);
+	} else {
+	    accountSettings.changeEmail(req, res, database);
+	}
     });
 
     /* ============== css distribution =================== */
