@@ -31,6 +31,8 @@ Kinetic.Text.prototype.isActive = false;
 Kinetic.Text.prototype.setEditable = function(state){this.isEditable = state;}
 Kinetic.Text.prototype.defaultText = null;
 Kinetic.Text.prototype.drawMethod = function(){};
+Kinetic.Text.prototype.capitalized = false;
+Kinetic.Text.prototype.matchingCharacters = /[0-9.]/;
 Kinetic.Text.prototype.measureText = function(family, size, text){
 	this.parent.canvas.context._context.font = size + "px" + " "  + family;
 	return this.parent.canvas.context._context.measureText(text);
@@ -181,19 +183,18 @@ function readyEditing(stage)
 			var currentText = activeText.getText();
 			var textPreCursor = currentText.slice(0, activeText.cursor.position);
 			var textPostCursor = currentText.slice(activeText.cursor.position, currentText.length);
+			var addedKey = false;
+			var cursorPositionChange = 0;
 			if(keycode >= 48 && keycode <= 57){ // keycode 48 is the key "0" and 57 is the key "9"
 				var key = "0123456789"[e.which-48]; // get which number key was pressed
-				activeText.setText(textPreCursor + key + textPostCursor);
-				activeText.cursor.position++;
+				addedKey = true;
 			}
 			if(keycode >= 96 && keycode <= 105){ // keycode 96 is the numpad key "0" and 105 is the numpad key "9"
 				var key = "0123456789"[e.which-96]; // get which number key was pressed
-				activeText.setText(textPreCursor + key + textPostCursor);
-				activeText.cursor.position++;
-			}
+				addedKey = true;
 			if(keycode == 190 || keycode == 110){ // 190 is the "." key 110 is the numpad version
-				activeText.setText(textPreCursor + "." + textPostCursor);
-				activeText.cursor.position++;
+				var key = "."
+				addedKey = true;
 			}
 			if(keycode == 8 || keycode == 46){ // 8 is the backspace key; 46 is the delete key
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
@@ -204,6 +205,12 @@ function readyEditing(stage)
 			}
 			if(e.which == 39){ // 39 is the right arrow key
 				activeText.cursor.position++;
+			}
+			if(addedKey){
+				if(activeText.matchingCharacters.test(key)){
+					activeText.setText(textPreCursor + key + textPostCursor);
+					cursor.position++;
+				}
 			}
 			activeText.cursor.validatePosition();
 			activeText.cursor.updatePosition();
