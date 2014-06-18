@@ -1,12 +1,17 @@
 extends ./partials/framework
 block title
 	title= viewing.username + " on MIST"
+
 block extraMetas
 block extraLinks
 
 block stylesheets
 
 	link(rel='stylesheet', href='/css/profile')
+	link(rel='stylesheet', href='/css/styles')
+
+	link(rel='stylesheet', href='/css/defaultAccount')
+
 
 block content
 	div(id='main')
@@ -18,14 +23,14 @@ block content
 			a(href='/albums' class='subview') albums
 			a(href='/challenges' class='subview') challenges
 		div(id='subTitle')
-			= "member since " + viewing.signupTime
+			p= "member since " + viewing.signupTime
 		div(id='featuredImage')
 			figure
 				a(href='singleImage.html')
 					img(src='/samples/bw1.jpg' alt='Untitled by username')
 					p
 						figcaption= "Untitled by " +  viewing.username
-		if isLoggedIn
+		if viewingSelf
 			a(href='/accountSettings' id='link') Account Settings
 			div(id='bio')
 				a(href='/changeContent')
@@ -42,3 +47,8 @@ block content
 				form(action='#' method='POST')
 					textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
 					input(type='submit' id='submit' name='submit')
+
+
+
+
+

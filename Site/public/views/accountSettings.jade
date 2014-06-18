@@ -21,25 +21,37 @@ block content
 					td(id='content')= user.username
 					td: button(type='button'): img(src='/icons/edit_button.png' id='editButton')
 				tr
+					td(id='headers') change username:
+					td(id='content'): input(type='username' name='newUsername' placeholder='username' class='signupField' id='newUsername')
+				tr
+					td(id='headers') reconfirm username:
+					td(id='content'): input(type='username' name='newUsername2' placeholder='re-enter username' class='signupField' id='newUsername2')
+				tr
 					td(id ='headers') password
 					td
 					td: a(href='/passwordChange.jade'): button(type='button'): img(src='/icons/edit_button.png' id='editButton')
 				tr
-					td(id ='headers') current password:
-					td(id='content')
-						input(type='password' name='oldpassword' required='required' placeholder='password' class='signupField' id='oldpassword')
-					td
-				tr
 					td(id ='headers') new password:
 					td(id='content')
-						input(type='password' name='newPassword' required='required' placeholder='password' class='signupField' id='newpassword1')
-					td
+						input(type='password' name='newPassword'  placeholder='password' class='signupField' )
 				tr
 					td(id ='headers') reconfirm password:
 					td(id='content')
-						input(type='password' name='repassword' required='required' placeholder='re-enter password' class='signupField' id='newpassword2')
+						input(type='password' name='newPassword2'  placeholder='re-enter password' class='signupField')
 				tr
 					td(id='headers') email
 					td(id='content')=  user.email
 					td: button(type='button'): img(src='/icons/edit_button.png' id='editButton')
+				tr
+					td(id ='headers') new primary email:
+					td(id='content')
+						input(type='email' name='newEmail'  placeholder='new email' class='signupField' id='newEmail1')
+				tr
+					td(id ='headers') confirm new email:
+					td(id='content')
+						input(type='email' name='newEmail2'  placeholder='re-enter email' class='signupField' id='newEmail2')
+				tr
+					td(id ='headers') current password:
+					td(id='content')
+						input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
 			input(type='submit' name='submit' value ='submit')

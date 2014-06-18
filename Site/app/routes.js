@@ -54,7 +54,7 @@ module.exports = function(app,passport,database) {
     /* ============== log out =================== */
     app.get('/logout', function(req,res){
 	req.session.loggedIn = false;
-	req.session.username = null;
+	req.session.user = null;
 	res.redirect('/');
     });
 
@@ -63,12 +63,16 @@ module.exports = function(app,passport,database) {
 	username.buildPage(req, res, database);
     });
 
+    app.get('/me', function(req, res) {
+	username.goToMyProfile(req, res, database);
+    });
+
     /* function page */
     app.get('/user/:username/functions', function(req,res){
 	functions.buildPage(req, res, database);
     });
 
-    /* gallery page */
+    /* gallery/random gallery page */
     app.get('/gallery', function(req,res) {
       gallery.buildPage(req, res, database);
     });
