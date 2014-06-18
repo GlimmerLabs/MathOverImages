@@ -168,6 +168,7 @@ function readyEditing(stage)
 			}
 		});
 	document.body.onkeydown = function(e) {
+		var keycode = e.which || e.keyCode;
 		if(activeText != null){
 			clearTimeout(activeText.cursor.timeout);
 			activeText.cursor.shouldChange = false;
@@ -180,21 +181,21 @@ function readyEditing(stage)
 			var currentText = activeText.getText();
 			var textPreCursor = currentText.slice(0, activeText.cursor.position);
 			var textPostCursor = currentText.slice(activeText.cursor.position, currentText.length);
-			if(e.which >= 48 && e.which <= 57){ // keycode 48 is the key "0" and 57 is the key "9"
+			if(keycode >= 48 && keycode <= 57){ // keycode 48 is the key "0" and 57 is the key "9"
 				var key = "0123456789"[e.which-48]; // get which number key was pressed
 				activeText.setText(textPreCursor + key + textPostCursor);
 				activeText.cursor.position++;
 			}
-			if(e.which >= 96 && e.which <= 105){ // keycode 96 is the numpad key "0" and 105 is the numpad key "9"
+			if(keycode >= 96 && keycode <= 105){ // keycode 96 is the numpad key "0" and 105 is the numpad key "9"
 				var key = "0123456789"[e.which-96]; // get which number key was pressed
 				activeText.setText(textPreCursor + key + textPostCursor);
 				activeText.cursor.position++;
 			}
-			if(e.which == 190 || e.which == 110){ // 190 is the "." key 110 is the numpad version
+			if(keycode == 190 || keycode == 110){ // 190 is the "." key 110 is the numpad version
 				activeText.setText(textPreCursor + "." + textPostCursor);
 				activeText.cursor.position++;
 			}
-			if(e.which == 8 || e.which == 46){ // 8 is the backspace key; 46 is the delete key
+			if(keycode == 8 || keycode == 46){ // 8 is the backspace key; 46 is the delete key
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
 				activeText.cursor.position--;
 			}
