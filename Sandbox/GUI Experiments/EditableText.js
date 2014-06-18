@@ -192,6 +192,7 @@ function readyEditing(stage)
 			if(keycode >= 96 && keycode <= 105){ // keycode 96 is the numpad key "0" and 105 is the numpad key "9"
 				var key = "0123456789"[e.which-96]; // get which number key was pressed
 				addedKey = true;
+			}
 			if(keycode == 190 || keycode == 110){ // 190 is the "." key 110 is the numpad version
 				var key = "."
 				addedKey = true;
@@ -209,7 +210,7 @@ function readyEditing(stage)
 			if(addedKey){
 				if(activeText.matchingCharacters.test(key)){
 					activeText.setText(textPreCursor + key + textPostCursor);
-					cursor.position++;
+					activeText.cursor.position++;
 				}
 			}
 			activeText.cursor.validatePosition();
