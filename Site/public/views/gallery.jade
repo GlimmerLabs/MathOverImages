@@ -5,12 +5,21 @@ block extraMetas
 block extraLinks
 
 block stylesheets
-	link(rel='stylesheet', href='/css/styles')
+	link(rel='stylesheet', href='/css/gallery')
 
 block content
 	div(id='main')
 		div(id='pageTitle')
-				div(id='titleTitle'): h1 Gallery
-			tr
-				p= generateNarrative()
-				img(src='/samples/color2.jpg')
+				h1 gallery
+		div(id='subviews')
+			a(href='#random' class='subview' id='selected') random
+			a(href='#recent' class='subview') recent
+			a(href='#top' class='subview') top rated
+			a(href='#recent' class='subview') featured
+		div(id='images')
+			- for (var i=0; i < images.length; i++)
+				figure
+					img(src='/samples/color2.jpg')
+					figcaption(class='right') username
+					figcaption(class='left') ★5
+
