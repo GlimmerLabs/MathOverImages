@@ -35,7 +35,20 @@ Kinetic.Text.prototype.measureText = function(family, size, text){
 	this.parent.canvas.context._context.font = size + "px" + " "  + family;
 	return this.parent.canvas.context._context.measureText(text);
 }
-Kinetic.Text.prototype.addCursor = function(){
+Kinetic.Text.prototype.removeFocus = function(){
+	if(this.cursor != null){
+		clearInterval(this.cursor.interval);
+		this.cursor.remove();
+		this.cursor = null;
+	}
+	this.isActive = false;
+	if(this.text() == ""){
+		this.text(this.defaultText);
+	}
+	this.drawMethod();
+	activeText = null;
+}
+Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 	var x = this.x();
 	var fontSize = this.fontSize();
 	var align = this.align();
@@ -108,6 +121,9 @@ Kinetic.Text.prototype.addCursor = function(){
 			active.drawMethod();
 		}
 	}, 750);
+	if(this.text() != this.defaultText){
+		cursor.moveToClosestPosition(mouseRelativeX);
+	}
 }
 activeText = null;
 currentEvent = null;
@@ -118,15 +134,7 @@ function readyEditing(stage)
 			if(event.evt != currentEvent){
 				currentEvent = null;
 				if (activeText != null){
-					clearInterval(activeText.cursor.interval);
-					activeText.cursor.remove();
-					activeText.cursor = null;
-					activeText.isActive = false;
-					if(activeText.text() == ""){
-						activeText.text(activeText.defaultText);
-					}
-					activeText.drawMethod();
-					activeText = null;
+					activeText.removeFocus();
 				}
 			}
 		});
@@ -138,21 +146,15 @@ function readyEditing(stage)
 				if (event.target.isEditable){
 						if(event.target != activeText){
 							if (activeText != null){
-								clearInterval(activeText.cursor.interval);
-								activeText.cursor.remove();
-								activeText.cursor = null;
-								activeText.isActive = false;
-								if(activeText.text() == ""){
-									activeText.text(activeText.defaultText);
-								}
-								activeText.drawMethod();
-								activeText = null;
+								activeText.removeFocus();
 							}
 							activeText = event.target;
 							if (activeText.text() == activeText.defaultText){
 								activeText.text("");
 							}
-							activeText.addCursor();
+							var mouseX = stage.getPointerPosition().x;
+							var textX = activeText.x();
+							activeText.addCursor(mouseX - textX);
 							activeText.isActive = true;
 						}
 						else{
@@ -192,7 +194,7 @@ function readyEditing(stage)
 				activeText.setText(textPreCursor + "." + textPostCursor);
 				activeText.cursor.position++;
 			}
-			if(e.which == 8){ // 8 is the backspace key; 48 is the delete key
+			if(e.which == 8 || e.which == 46){ // 8 is the backspace key; 46 is the delete key
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
 				activeText.cursor.position--;
 			}
