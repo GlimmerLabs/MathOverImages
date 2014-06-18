@@ -98,6 +98,16 @@ header nav li:hover {
 	display: block;
 }
 
+.code {
+	font-family: Courier New, Courier, monospace;
+	font-size: 2em;
+}
+
+form input[type='submit'] {
+	background: #D8D8D8;
+	color: white;
+}
+
 /* Footer */
 footer nav ul {
 	margin:0;
