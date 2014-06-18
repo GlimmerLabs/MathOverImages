@@ -132,8 +132,15 @@ form input[type='submit'] {
 	background-color: #979797;
 }
 
-figcaption{
-	text-align:right;
+figure figcaption.left {
+	float: left;
+	text-align: left;
+	color: #979797;
+}
+
+figure figcaption.right {
+	text-align: right;
+	float: right;
 	color: #979797;
 }
 

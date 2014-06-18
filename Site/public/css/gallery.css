@@ -15,13 +15,18 @@
 }
 
 #images figure {
-	width:140px;
+	width:180px;
 	float: left;
 	margin: 50px;
 
 }
 
 #images figure img{
-	width: 140px;
+	width: 180px;
+}
 
+
+figure figcaption.left:first-letter{
+	color: #EFDC5C;
+	font-size: 1em;
 }

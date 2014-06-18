@@ -27,22 +27,11 @@ figure img {
 	width: 400px;
 }
 
-
-figure figcaption.left {
-	float: left;
-	text-align: left;
-	color: #979797;
-}
 figure figcaption.left:first-letter{
 	color: #EFDC5C;
 	font-size: 1em;
 }
 
-figure figcaption.right {
-	text-align: right;
-	float: right;
-	color: #979797;
-}
 #comments {
 	width:50%;
 	margin: 0 auto;
