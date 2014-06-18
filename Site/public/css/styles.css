@@ -79,7 +79,7 @@ header nav li:hover {
 	background-color: #EFDC5C;
 }
 
-#pageTitle {
+#pageTitle h1{
 	border: 7px solid white;
 	margin: 15px;
 	color: #FFF;
