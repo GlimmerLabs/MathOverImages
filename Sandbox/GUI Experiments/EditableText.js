@@ -35,6 +35,19 @@ Kinetic.Text.prototype.measureText = function(family, size, text){
 	this.parent.canvas.context._context.font = size + "px" + " "  + family;
 	return this.parent.canvas.context._context.measureText(text);
 }
+Kinetic.Text.prototype.removeFocus = function(){
+	if(this.cursor != null){
+		clearInterval(this.cursor.interval);
+		this.cursor.remove();
+		this.cursor = null;
+	}
+	this.isActive = false;
+	if(this.text() == ""){
+		this.text(this.defaultText);
+	}
+	this.drawMethod();
+	activeText = null;
+}
 Kinetic.Text.prototype.addCursor = function(){
 	var x = this.x();
 	var fontSize = this.fontSize();
@@ -118,15 +131,7 @@ function readyEditing(stage)
 			if(event.evt != currentEvent){
 				currentEvent = null;
 				if (activeText != null){
-					clearInterval(activeText.cursor.interval);
-					activeText.cursor.remove();
-					activeText.cursor = null;
-					activeText.isActive = false;
-					if(activeText.text() == ""){
-						activeText.text(activeText.defaultText);
-					}
-					activeText.drawMethod();
-					activeText = null;
+					activeText.removeFocus();
 				}
 			}
 		});
@@ -138,15 +143,7 @@ function readyEditing(stage)
 				if (event.target.isEditable){
 						if(event.target != activeText){
 							if (activeText != null){
-								clearInterval(activeText.cursor.interval);
-								activeText.cursor.remove();
-								activeText.cursor = null;
-								activeText.isActive = false;
-								if(activeText.text() == ""){
-									activeText.text(activeText.defaultText);
-								}
-								activeText.drawMethod();
-								activeText = null;
+								activeText.removeFocus();
 							}
 							activeText = event.target;
 							if (activeText.text() == activeText.defaultText){
