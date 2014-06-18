@@ -96,9 +96,10 @@
   };
 
   var undoAction = function(actionObj) {
-  	var action = actionObj.action;
-    var element = elementTable[actionObj.id];
-    if (action == 'delete') {
+    if (currIndex > 0) {
+     var action = actionObj.action;
+     var element = elementTable[actionObj.id];
+     if (action == 'delete') {
       if (actionObj.type == 'node') {
         element.moveTo(workLayer);
         var connections = actionObj.connections;
@@ -109,50 +110,36 @@
         currShape.children[0].setAttrs({shadowColor: 'darkblue'});
       }
       else {
-        var source = actionObj.source;
-        var outlet = actionObj.sink.children[actionObj.sinkIndex + 3];
-        element.moveTo(lineLayer);
-        // connect line to source
-        element.attrs.source = source;
-        // change sourceIndex in line
-        element.attrs.sourceIndex = source.attrs.lineOut.length;
-        // connect source to line
-        source.attrs.lineOut[source.attrs.lineOut.length] = element;
-        // connect line to outlet
-        element.attrs.outlet = outlet;
-        // connect outlet to line
-        outlet.attrs.lineIn = element;
-        assertRenderable(actionObj.sink);
-        element.setAttrs({
-          scale: 1,
-          shadowEnabled: false
-        });
-        currShape = actionObj.sink;
-        dragLayer.draw();
-        currShape = actionObj.source;
-        dragLayer.draw();
+        insertLine(actionObj);
       } // else element is a line
       workLayer.draw();
-      
+      }
+      else if (action == 'insert') {
+        if (actionObj.type == 'node') {
+          element.remove(); 
+        }
+        else {
+          removeLine(element);
+          lineLayer.draw()
+        }
+        workLayer.draw();
+      }
+      else if (action == 'move') {
+        var newX = actionObj.x1;
+        var newY = actionObj.y1;
+        element.setAttrs({
+          x: newX,
+          y: newY
+        });
+        currShape = element;
+        dragLayer.draw(); 
+        workLayer.draw();
+
+      }
+      else {
+
+      }
     }
-  	else if (action == 'insert') {
-
-  	}
-  	else if (action == 'move') {
-      var newX = actionObj.x1;
-      var newY = actionObj.y1;
-      element.setAttrs({
-        x: newX,
-        y: newY
-      });
-      currShape = element;
-      dragLayer.draw(); 
-      workLayer.draw();
-      
-  	}
-  	else {
-
-  	}
   };
 
   var redoAction = function(actionObj) {
@@ -201,32 +188,19 @@
         } // if node
         // else line
         else {
-          var outlet = element.attrs.outlet;
-          var parent = outlet.parent;
-          element.attrs.source.attrs.lineOut.splice(element.attrs.sourceIndex, 1);
-          outlet.attrs.lineIn = null;
-          parent.attrs.numInputs--;
-          element.remove();
-          if (parent == currShape) {
-            if (assertRenderable(parent)) {
-              funBarText.setAttr('text', currShape.attrs.renderFunction);
-            }
-            else {
-              currShape.children[0].setAttr('shadowEnabled', false);
-              currShape = undefined;
-              funBarText.setAttr('text', ''); 
-            }
-            funBarLayer.draw();
-          } 
-          else {
-            assertRenderable(parent);
-          }    
-          updateForward(outlet.parent);
+          removeLine(element);
         }
       } // if delete
       //else if insert
       else if (action == 'insert') {
-
+        if (actionObj.type == 'node') {
+          element.moveTo(workLayer);
+        }
+        else {
+          insertLine(actionObj);
+          lineLayer.draw();
+        }
+        workLayer.draw();
       } // if insert
       // else if move
       else if (action == 'move') {
@@ -248,3 +222,68 @@
       lineLayer.draw();
     } // currIndex < totalIndex
   }; // function redoAction(actionObj)
+
+
+  /**
+   * removeLine take a line and removes it from the workspace and 
+   * removes all other associations to the line in its source and sink. 
+   * updates funBar text. 
+   */
+   var removeLine = function(line) {
+    var outlet = line.attrs.outlet;
+    var parent = outlet.parent;
+    line.attrs.source.attrs.lineOut.splice(line.attrs.sourceIndex, 1);
+    outlet.attrs.lineIn = null;
+    parent.attrs.numInputs--;
+    line.remove();
+    if (parent == currShape) {
+      if (assertRenderable(parent)) {
+        funBarText.setAttr('text', currShape.attrs.renderFunction);
+      }
+      else {
+        currShape.children[0].setAttr('shadowEnabled', false);
+        currShape = undefined;
+        funBarText.setAttr('text', ''); 
+      }
+      funBarLayer.draw();
+    } 
+    else {
+      assertRenderable(parent);
+    }    
+    updateForward(outlet.parent);
+  };
+
+  /**
+   * insertLine takes an actionObj, finds the corresponding line, moves it to the 
+   * lineLayer, and connects the line to its source and sink.
+   * updates the funBar text. 
+   */ 
+   var insertLine = function(actionObj) {
+    var source = actionObj.source;
+    var outlet = actionObj.sink.children[actionObj.sinkIndex + 3];
+    var element = elementTable[actionObj.id];
+    element.moveTo(lineLayer);
+    // connect line to source
+    element.attrs.source = source;
+    // change sourceIndex in line
+    element.attrs.sourceIndex = source.attrs.lineOut.length;
+    // connect source to line
+    source.attrs.lineOut[source.attrs.lineOut.length] = element;
+    // connect line to outlet
+    element.attrs.outlet = outlet;
+    // connect outlet to line
+    outlet.attrs.lineIn = element;
+    assertRenderable(actionObj.sink);
+    if (currShape != undefined) {
+      updateFunBar();
+    } 
+    element.setAttrs({
+      scale: 1,
+      shadowEnabled: false
+    });
+    currShape = actionObj.sink;
+    dragLayer.draw();
+    currShape = actionObj.source;
+    dragLayer.draw();
+  }
+
