@@ -29,7 +29,7 @@ module.exports.buildPage = function(req, res, database) {
 */
 module.exports.getRandomImages= (function(count, callback) {
 
-    database.query("SELECT * FROM images ORDER BY RAND() LIMIT " + count, function(rows, error){
+    database.query("SELECT images.*,users.username FROM images, users ORDER BY RAND() LIMIT " + count, function(rows, error){
 	callback(rows, error);
     });
 
@@ -55,7 +55,7 @@ module.exports.getRandomImages= (function(count, callback) {
 */
 module.exports.getRecentImages= (function(count, callback) {
 
-    database.query("SELECT * FROM images ORDER BY modifiedAt DESC LIMIT " + count, function(rows, error){
+    database.query("SELECT images.*, users.username FROM images, users ORDER BY modifiedAt DESC LIMIT " + count, function(rows, error){
 	callback(rows, error);
     });
 
