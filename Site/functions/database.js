@@ -236,7 +236,6 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
         else
             bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(error,result) {
 		if (!error){
-		    console.log("NO error");
 		    callback(result,null);
 		}
 		else
@@ -244,6 +243,49 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
             });
     });
 }); // database.verifyPassword(userid, passwordToTest, callback(verified));
+
+/*
+  Procedure:
+  database.changeUsername(userid, newUsername, Callback(success, error));
+  Purpose:
+  To allow a user to change their username
+  Parameters:
+  userid, the userid of the use who wants to change their password
+  newUsername, what they want to change their username to callback
+  Produces:
+  success, a boolean success indicator
+  error, any error occurred along the way
+  Pre-conditions:
+  user has logged in, and therefore has access to their userid
+  Post-conditions:
+  username needs to be changed
+  Preferences:
+  None
+*/
+module.exports.changeUsername = (function (userid, newUsername, password, callback){
+    newUsername = sanitize(newUsername);
+    userid = sanitize(userid);
+    password = sanitize(password);
+    module.exports.verifyPassword(userid, password, function(verified, error){
+	if (!verified)
+	    callback(false, error);
+	else
+	    // Check to see if username or email are already in the database
+
+	    module.exports.userExists(newUsername, function(exists){
+		if (exists) // Username exists
+		    callback(false, "ERROR: Username already exists.");
+		else  // user does not already exist, proceed with creation
+		    module.exports.query("UPDATE users SET username='" + newUsername +"' WHERE userid = '" + userid + "';", function (rows, error){
+			if (!error) {
+			    callback(true,error);
+			}
+			else
+			    callback(false,error);
+		    });
+	    });
+    });
+}); // database.changeUsername(user, newUsername, callback(success, error));
 
 /*
   Procedure: 
@@ -270,34 +312,67 @@ module.exports.changePassword = (function (userid, oldPassword, newPassword, cal
     oldPassword = sanitize(oldPassword);
     newPassword = sanitize(newPassword);
     userid = sanitize(userid);
-    module.exports.query("SELECT hashedPassword from users WHERE userid= '" + userid + "';", function (response, error){
+    module.exports.verifyPassword(userid, oldPassword, function(verified, error){
 	if (error)
 	    callback(false, error);
-
-	else if (!response[0])
-	    callback(false, "Invalid Credentials");
-
+	else if (!verified)
+	    callback(false, "Invalid Credentials: password");
 	else
-	    module.exports.verifyPassword(userid, oldPassword, function(verified, error){
+	    hashPassword(newPassword, function (newHash, error) {
 		if (error)
 		    callback(false, error);
-		else if (!verified)
-		    callback(false, "Invalid Credentials: password");
 		else
-		    hashPassword(newPassword, function (newHash, error) {
+		    module.exports.query("UPDATE users SET hashedPassword='" + newHash +"' WHERE userid = '" + userid + "';", function (rows, error){
 			if (error)
 			    callback(false, error);
 			else
-			    module.exports.query("UPDATE users SET hashedPassword='" + newHash +"' WHERE userid = '" + userid + "';", function (rows, error){
-				if (error)
-				    callback(false, error);
-				else
-				    callback(true, null);
-			    });
+			    callback(true, null);
 		    });
 	    });
     });
 }); // database.changePassword(user, oldPassword, newPassword, callback(success, error));
+/*
+  Procedure:
+  database.changeEmail(userid, newEmail, Callback(success, error));
+  Purpose:
+  To allow a user to change their emails
+  Parameters:
+  userid, the userid of the use who wants to change their password
+  newEmail, what they want to change their primary email to callback
+  Produces:
+  success, a boolean success indicator
+  error, any error occurred along the way
+  Pre-conditions:
+  user has logged in, and therefore has access to their userid
+  Post-conditions:
+  email has been changed
+  Preferences:
+  None
+*/
+module.exports.changeEmail = (function (userid, newEmail, password, callback){
+    newEmail = sanitize(newEmail);
+    userid = sanitize(userid);
+    password = sanitize(password);
+    module.exports.verifyPassword(userid, password, function(verified, error){
+	if (!verified)
+	    callback(false, error);
+	else
+	    // Check to see if username or email are already in the database
+	    module.exports.userExists(newEmail, function(exists){
+		if (exists) // Email exists
+		    callback(false, "ERROR: Email already in use.");
+		else  // email does not already exist, proceed with creation
+		    module.exports.query("UPDATE users SET email='" + newEmail +"' WHERE userid = '" + userid + "';", function (rows, error){
+			if (!error) {
+			    callback(true,error);
+			}
+			else
+			    callback(false,error);
+		    });
+	    });
+    });
+}); // database.changeEmail(user, newEmail, callback(success, error));
+
 
 /*
   Procedure:
@@ -343,7 +418,7 @@ module.exports.logIn = (function (user, password, callback) {
 		if (error)
 		    callback(null,error);
 		else if (!rows[0]) // user is also not a username, and therefore is not in the database
-		    callback(null, "Invalid Credentials");
+		    callback(null, "Invalid Username");
 		else
 		    module.exports.verifyPassword(rows[0].userid, password, function (success, error){
 			if (error)
