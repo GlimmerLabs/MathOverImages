@@ -152,20 +152,22 @@ var isUndoTool = function(target) {
  					group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
  					group.attrs.renderFunction += functions[group.attrs.name].separator
  				}
-		} // add each element to the equation
-		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
-}
-else {
+			} // add each element to the equation
+			group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
+	}
+	else {
 	group.attrs.renderFunction = [
 	group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
 	group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
 	group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
 	];
-}
+	}
 };
 
 /**
- * assertRenderable takes a function group and checks if it is renderable. If true, it finds the renderFunction for the group, makes the imageBox visible and returns true. If false, it makes the imageBox invisible and returns false.
+ * assertRenderable takes a function group and checks if it is renderable. 
+ * If true, it finds the renderFunction for the group, makes the imageBox visible 
+ * and returns true. If false, it makes the imageBox invisible and returns false.
  */
  var assertRenderable = function(group) {
  	if (isRenderable(group)) {
@@ -184,9 +186,41 @@ else {
  	}
  };
 
-/*
-	renderCanvas takes a function or value group and renders a 50 by 50 image starting where the image box is located.  
-	*/
+/**
+ * updateFunBar changes the text in the funBar according to the currShape.
+ */
+ var updateFunBar = function() {
+ 	currText = currShape.attrs.renderFunction;
+ 	if (currShape.name() == 'rgb') {
+ 		currText = 'rgb(' + currText + ')';
+ 	} 
+ 	if (currText != null) {
+ 		currShape.children[0].setAttrs({
+ 			shadowColor: 'darkblue',
+ 			shadowOpacity: 1,
+ 			shadowEnabled: true
+ 		});
+ 		var currFontSize;
+ 		if (currText.length <= 12) {
+ 			currFontSize = funBarDisplayFontSize;
+ 		} 
+ 		else if (currText.length >= 26) {
+ 			currFontSize = 10;
+ 		}
+ 		else {
+ 			currFontSize = 264 / currText.length;
+ 		}
+ 		funBarText.setAttrs({
+ 			text: currText,
+ 			fontSize: currFontSize
+ 		});
+ 		funBarLayer.draw();
+ 	}
+ };
+
+/**
+ * renderCanvas takes a function or value group and renders a 50 by 50 image starting where the image box is located.  
+ */
 	var renderCanvas = function(group) {
 		var currLayer = group.attrs.renderLayer; 
 		if (currLayer == null){
@@ -216,7 +250,8 @@ else {
 		group.attrs.renderLayer = null;
 		group.children[2].setAttrs({
 			width: imageBoxSideLength,
-			height: imageBoxSideLength
+			height: imageBoxSideLength,
+			expanded: false
 		});	
 	};
 /**
@@ -267,7 +302,7 @@ else {
 			var moveFunction = makeMenuTween(menuFunctions[i], menuCornerWidth + 2 * buttonWidth + functMenuXSpacing + i * (functMenuXSpacing + functionTotalSideLength), true)
 			moveFunction.play();
 		}
-	}
+	};
 	/* move the functionsButton to the right of the screen (for when values are expanded). */
 	var moveFunctionsButtonRight = function() {
 		var moveButton = makeMenuTween(functionsButton, width - buttonWidth, true)
