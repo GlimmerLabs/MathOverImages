@@ -40,14 +40,16 @@ There are 3 different modes:
         if (!shape.attrs.expanded) {
           renderCanvas(parent);
           shape.attrs.expanded = true;
-        } else {
+        }
+        else {
           shape.attrs.expanded = false;
           animation = false;
           setTimeout(function() {collapseCanvas(parent)}, 50);
         }
         setTimeout(function() {workLayer.draw()}, 50);
       }
-    } else if (lineToolOn) {
+    }
+    else if (lineToolOn) {
       if (makingLine) {
         if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
           currLine.attrs.source.attrs.lineOut.splice(currLine.attrs.source.attrs.lineOut.length - 1, 1);
@@ -56,7 +58,8 @@ There are 3 different modes:
             shape.scale({ x: 1, y: 1 });
           }
           makingLine = false;
-        } else if (isOutlet(shape)) {
+        }
+        else if (isOutlet(shape)) {
       //check if outlet already has an input
       if (shape.attrs.lineIn != null) {
         //POSSIBLE NEED TO DESTROY LINE ITSELF
@@ -196,6 +199,7 @@ lineLayer.draw();
         
         funBarLayer.draw();
       }
+      insertToArray(actionToObject('move', group));
       group.startDrag();
       workLayer.draw();
       dragLayer.draw();

@@ -25,7 +25,8 @@
         renderCanvas(group);
       } // if 
       if (inTable(group)) {
-        insertToArray(actionToObject('move', group));
+        actionArray[currIndex - 1].x2 = group.x();
+        actionArray[currIndex - 1].y2 = group.y();
       }
       else {
         insertToTable(group);

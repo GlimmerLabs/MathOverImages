@@ -38,8 +38,8 @@
   			type: 'node',
   			id: group._id.toString(), 
   			action: action,
-  			x: group.x(),
-  			y: group.y(),
+  			x1: group.x(),
+  			y1: group.y(),
   			connections: []
   		};
   		if (action == 'delete') {
@@ -52,9 +52,7 @@
   			if (isFunction(group)) {
   				for (var i = OUTLET_OFFSET; i < group.children.length; i++) {
   					var lineIn = group.children[i].attrs.lineIn;
-  					console.log(isLine(lineIn));
   					if (lineIn != null && lineIn != undefined) {
-  						
   						obj['connections'][child++] = actionToObject('delete', lineIn);
   					} // if lineIn is not null
   				} // for each incoming edge
@@ -70,6 +68,7 @@
   			action: action,
   			source: group.attrs.source,
   			sink: group.attrs.outlet.parent,
+        sinkIndex: group.attrs.outlet.attrs.outletIndex
   		};
   	} // if it's a line
   	return obj; 	
@@ -98,16 +97,154 @@
 
   var undoAction = function(actionObj) {
   	var action = actionObj.action;
-  	if (action == 'delete') {
-
-  	}
+    var element = elementTable[actionObj.id];
+    if (action == 'delete') {
+      if (actionObj.type == 'node') {
+        element.moveTo(workLayer);
+        var connections = actionObj.connections;
+        for (var i = 0; i < connections.length; i++) {
+          undoAction(connections[i]);
+        }
+        currShape = element;
+        currShape.children[0].setAttrs({shadowColor: 'darkblue'});
+      }
+      else {
+        var source = actionObj.source;
+        var outlet = actionObj.sink.children[actionObj.sinkIndex + 3];
+        element.moveTo(lineLayer);
+        // connect line to source
+        element.attrs.source = source;
+        // change sourceIndex in line
+        element.attrs.sourceIndex = source.attrs.lineOut.length;
+        // connect source to line
+        source.attrs.lineOut[source.attrs.lineOut.length] = element;
+        // connect line to outlet
+        element.attrs.outlet = outlet;
+        // connect outlet to line
+        outlet.attrs.lineIn = element;
+        assertRenderable(actionObj.sink);
+        element.setAttrs({
+          scale: 1,
+          shadowEnabled: false
+        });
+        currShape = actionObj.sink;
+        dragLayer.draw();
+        currShape = actionObj.source;
+        dragLayer.draw();
+      } // else element is a line
+      workLayer.draw();
+      
+    }
   	else if (action == 'insert') {
 
   	}
   	else if (action == 'move') {
-
+      var newX = actionObj.x1;
+      var newY = actionObj.y1;
+      element.setAttrs({
+        x: newX,
+        y: newY
+      });
+      currShape = element;
+      dragLayer.draw(); 
+      workLayer.draw();
+      
   	}
   	else {
 
   	}
   };
+
+  var redoAction = function(actionObj) {
+    // if the currIndex is less than the totalIndex (there are still valid actions)
+    if (currIndex < totalIndex) {
+      var action = actionObj.action;
+      var element = elementTable[actionObj.id];
+      // if you are redoing a delete
+      if (action == 'delete') {
+        // if you are deleting a node
+        if (actionObj.type == 'node') {
+          // deal with lines coming in to the node being deleted
+          var targetLine;
+          for(var i = 3; i < element.children.length; i++) {
+            targetLine = element.children[i].attrs.lineIn;
+            if(targetLine != null) {
+              targetLine.attrs.outlet = null;
+              var index = targetLine.attrs.sourceIndex;
+              var source = targetLine.attrs.source;
+              
+              for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
+                source.attrs.lineOut[j].attrs.sourceIndex--;
+              }
+              targetLine.attrs.source.attrs.lineOut.splice(index, 1);
+              targetLine.remove();
+            }
+          }
+          // deal with the lines leading out of the node being deleted
+          var outletParent;
+          for(var i = 0; i < element.attrs.lineOut.length; i++) {
+            targetLine = element.attrs.lineOut[i];
+            outletParent = targetLine.attrs.outlet.parent;
+            outletParent.attrs.numInputs--;
+            targetLine.attrs.outlet.attrs.lineIn = null;
+            assertRenderable(outletParent);
+            updateForward(outletParent);
+            targetLine.remove();
+          } 
+          // remove text from funBar
+          if (currShape == element) {
+            currShape = undefined;
+            funBarText.setAttr('text', '');
+            funBarLayer.draw();
+          }
+          element.remove();
+        } // if node
+        // else line
+        else {
+          var outlet = element.attrs.outlet;
+          var parent = outlet.parent;
+          element.attrs.source.attrs.lineOut.splice(element.attrs.sourceIndex, 1);
+          outlet.attrs.lineIn = null;
+          parent.attrs.numInputs--;
+          element.remove();
+          if (parent == currShape) {
+            if (assertRenderable(parent)) {
+              funBarText.setAttr('text', currShape.attrs.renderFunction);
+            }
+            else {
+              currShape.children[0].setAttr('shadowEnabled', false);
+              currShape = undefined;
+              funBarText.setAttr('text', ''); 
+            }
+            funBarLayer.draw();
+          } 
+          else {
+            assertRenderable(parent);
+          }    
+          updateForward(outlet.parent);
+        }
+      } // if delete
+      //else if insert
+      else if (action == 'insert') {
+
+      } // if insert
+      // else if move
+      else if (action == 'move') {
+        var newX = actionObj.x2;
+        var newY = actionObj.y2;
+        var group = elementTable[actionObj.id];
+        group.setAttrs({
+          x: newX,
+          y: newY
+        });
+        currShape = group;
+      } // if move
+      // else replace
+      else {
+
+      } // else replace
+      dragLayer.draw(); 
+      workLayer.draw();
+      lineLayer.draw();
+    } // currIndex < totalIndex
+  }; // function redoAction(actionObj)
