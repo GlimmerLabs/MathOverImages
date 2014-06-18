@@ -201,7 +201,7 @@ function readyEditing(stage)
 				addedKey = true;
 			}
 			if(keycode >= 65 && keycode <= 90){ // keycode 65 is the key "a" and 90 is the key "z"
-				var key = "abcdefghijklmnopqrstuvewxyz"[e.which-65]; // get which letter key was pressed
+				var key = "abcdefghijklmnopqrstuvwxyz"[e.which-65]; // get which letter key was pressed
 				addedKey = true;
 			}
 			if(keycode == 190 || keycode == 110){ // 190 is the "." key 110 is the numpad version
