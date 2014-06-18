@@ -43,6 +43,7 @@ Kinetic.Text.prototype.removeFocus = function(){
 		this.cursor.remove();
 		this.cursor = null;
 	}
+	this.capitalized = false;
 	this.isActive = false;
 	if(this.text() == ""){
 		this.text(this.defaultText);
@@ -169,6 +170,12 @@ function readyEditing(stage)
 					}
 			}
 		});
+	document.body.onkeyup = function(e){
+		var keycode = e.which || e.keyCode;
+		if(keycode == 16 && activeText != null){
+			activeText.capitalized = false;
+		}
+	}
 	document.body.onkeydown = function(e) {
 		var keycode = e.which || e.keyCode;
 		if(activeText != null){
@@ -197,6 +204,9 @@ function readyEditing(stage)
 				var key = "."
 				addedKey = true;
 			}
+			if(keycode == 16){
+				activeText.capitalized = true;
+			}
 			if(keycode == 8 || keycode == 46){ // 8 is the backspace key; 46 is the delete key
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
 				activeText.cursor.position--;
@@ -208,6 +218,9 @@ function readyEditing(stage)
 				activeText.cursor.position++;
 			}
 			if(addedKey){
+				if(activeText.capitalized){
+					key = key.toUpperCase();
+				}
 				if(activeText.matchingCharacters.test(key)){
 					activeText.setText(textPreCursor + key + textPostCursor);
 					activeText.cursor.position++;
