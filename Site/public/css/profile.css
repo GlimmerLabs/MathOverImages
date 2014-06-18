@@ -1,29 +1,5 @@
 @import url("/css/styles");
 
-#subviews {
-	float: right;
-	width: 450px;
-	margin: -21px 0px;
-}
-
-.subview {
-
-	text-decoration: none;
-	color: white;
-	background-color: #D8D8D8;
-	display: inline-block;
-	height: 50px;
-	width: 42%;
-	text-align: center;
-	font-size: 2em;
-	float: left;
-	margin: 20px 2%;
-}
-
-.subview:hover, #selected {
-	background-color: #979797;
-}
-
 #bio {
 	padding: 2%;
 	width: 50%;
@@ -40,11 +16,6 @@
 #featuredImage img {
 	width:380px;
 	height: 380px;
-}
-
-#featuredImage figcaption{
-	text-align:right;
-	color: #979797;
 }
 
 #contactUser {
