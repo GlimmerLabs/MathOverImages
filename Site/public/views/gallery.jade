@@ -20,6 +20,6 @@ block content
 			- for (var i=0; i < images.length; i++)
 				figure
 					img(src='/samples/color2.jpg')
-					figcaption(class='right') username
-					figcaption(class='left') ★5
+					figcaption(class='right')= images[i].username
+					figcaption(class='left')= "★" + images[i].rating
 
