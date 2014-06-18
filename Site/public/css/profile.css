@@ -1,103 +1,65 @@
 @import url("/css/styles");
 
-#subviews {
-  float: right;
-  width: 450px;
-  margin: -21px 0px;
-}
-
-.subview {
-
-  text-decoration: none;
-  color: white;
-  background-color: #D8D8D8;
-  display: inline-block;
-  height: 50px;
-  width: 42%;
-  text-align: center;
-  font-size: 2em;
-  float: left;
-  margin: 20px 2%;
-}
-
-.subview:hover, #selected {
-  background-color: #979797;
-}
-
-#subTitle {
-  float: left;
-  clear: left;
-  color: #979797;
-  margin: -15px -80px;
-  display: block;
-
-}
-
 #bio {
-  padding: 2%;
-  width: 50%;
-  float: left;
-  font-size: 1.5em;
-  color: #979797;
+	padding: 2%;
+	width: 50%;
+	float: left;
+	font-size: 1.5em;
+	color: #979797;
 }
 
 #featuredImage {
-  float: left;
-  clear: left;
+	float: left;
+	clear: left;
 }
 
 #featuredImage img {
-  width:380px;
-  height: 380px;
-}
-
-#featuredImage figcaption{
-  text-align:right;
-  color: #979797;
+	width:380px;
+	height: 380px;
 }
 
 #contactUser {
-  float: left;
-  padding: 20px;
+	float: left;
+	padding: 20px;
 }
 
 #contactUser textarea {
-  border-radius: 3px;
-  border: 1px solid #979797;
-  -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.50);
-  box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.50);
-  width: 500px;
-  height: 50px;
-  color: #BBBBBB;
+	border-radius: 3px;
+	border: 1px solid #979797;
+	-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+	box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+	width: 500px;
+	height: 50px;
+	color: #BBBBBB;
 }
 
 #contactUser input {
-  display: block;
-  float: right;
-  color: #FFF;
-  background-color: #D8D8D8;
-  border:1px solid white;
-  font-size: 1.5em;
-  font-weight: 800;
-  padding: 3px 20px;
+	display: block;
+	float: right;
+	color: #FFF;
+	background-color: #D8D8D8;
+	border:1px solid white;
+	font-size: 1.5em;
+	font-weight: 800;
+	padding: 3px 20px;
 }
 
 input:hover {
-    color: #D8D8D8;
-    background-color: #FFF;
-    cursor: pointer;
+	color: #D8D8D8;
+	background-color: #FFF;
+	cursor: pointer;
 }
 
 #editButton {
-  width: 25px;
-  height: 25px;
+	width: 25px;
+	height: 25px;
 }
 
 figcaption {
-  display: inline;
+	display: inline;
 }
 #link {
-  text-decoration: none;
-  text-color: #979797;
-  float: right;
+	text-decoration: none;
+	text-color: #979797;
+	float: right;
 }
