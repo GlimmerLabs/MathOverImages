@@ -48,7 +48,7 @@ Kinetic.Text.prototype.removeFocus = function(){
 	this.drawMethod();
 	activeText = null;
 }
-Kinetic.Text.prototype.addCursor = function(){
+Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 	var x = this.x();
 	var fontSize = this.fontSize();
 	var align = this.align();
@@ -121,6 +121,9 @@ Kinetic.Text.prototype.addCursor = function(){
 			active.drawMethod();
 		}
 	}, 750);
+	if(this.text() != this.defaultText){
+		cursor.moveToClosestPosition(mouseRelativeX);
+	}
 }
 activeText = null;
 currentEvent = null;
@@ -149,7 +152,9 @@ function readyEditing(stage)
 							if (activeText.text() == activeText.defaultText){
 								activeText.text("");
 							}
-							activeText.addCursor();
+							var mouseX = stage.getPointerPosition().x;
+							var textX = activeText.x();
+							activeText.addCursor(mouseX - textX);
 							activeText.isActive = true;
 						}
 						else{
