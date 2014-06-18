@@ -67,8 +67,8 @@ undoGroup.on('mousedown', function() {
 undoGroup.on('mouseup', function() {
   undoButton.setAttr('shadowEnabled', false);
   toolboxLayer.draw();
-  undoAction(actionArray[currIndex]);
-
+  undoAction(actionArray[currIndex - 1]);
+  currIndex--;
 });
 
 undoGroup.on('mouseout', function() {
@@ -84,6 +84,8 @@ redoGroup.on('mousedown', function() {
 redoGroup.on('mouseup', function() {
   redoButton.setAttr('shadowEnabled', false);
   toolboxLayer.draw();
+  redoAction(actionArray[currIndex]);
+  currIndex++;
 });
 
 redoGroup.on('mouseout', function() {

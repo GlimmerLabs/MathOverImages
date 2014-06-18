@@ -32,7 +32,7 @@ var funBarText = new Kinetic.Text({
   width: (funBarWidth / 2) - funBarTextOffset,
   height: funBarHeight - (2 * funBarOffset),
   fill: 'black',
-  fontFamily: 'Courier',
+  fontFamily: 'Courier New',
   fontSize: funBarDisplayFontSize
 });
 funBar.add(funBarText);
