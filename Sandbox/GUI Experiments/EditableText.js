@@ -122,7 +122,7 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 		}
 	}, 750);
 	if(this.text() != this.defaultText){
-		cursor.moveToClosestPosition(mouseRelativeX);
+		cursor.moveToClosestPosition(mouseRelativeX + cursor.offsetX());
 	}
 }
 activeText = null;
@@ -161,7 +161,7 @@ function readyEditing(stage)
 							var cursor = activeText.cursor;
 							var mouseX = stage.getPointerPosition().x;
 							var textX = activeText.x();
-							cursor.moveToClosestPosition(mouseX - textX);
+							cursor.moveToClosestPosition(mouseX - textX + cursor.offsetX());
 						}
 						currentEvent = event.evt;
 					}
