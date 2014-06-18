@@ -13,7 +13,7 @@ block content
 		div(id='pageTitle')
 			h1 my settings
 		div(id='flashZone')
-			h1 Security is very important to us. Don't forget to change your password every now and again ;)
+			h1 Security is very important to us
 		form(method='POST')
 			table
 				tr
@@ -27,6 +27,13 @@ block content
 					td(id='headers') confirm username:
 					td(id='content'): input(type='username' name='newUsername2' placeholder='re-enter username' class='signupField' id='newUsername2')
 				tr
+					td(id ='headers') current password:
+					td(id='content')
+						input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
+			input(type='submit' name='usernameSubmit' value ='submit')
+		form(method='POST')
+			table
+				tr
 					td(id ='headers') password
 					td
 					td: a(href='/passwordChange.jade'): button(type='button'): img(src='/icons/edit_button.png' id='editButton')
@@ -38,6 +45,13 @@ block content
 					td(id ='headers') confirm password:
 					td(id='content')
 						input(type='password' name='newPassword2'  placeholder='re-enter password' class='signupField')
+				tr
+					td(id ='headers') current password:
+					td(id='content')
+						input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
+			input(type='submit' name='passwordSubmit' value ='submit')
+		form(method='POST' name='emailSubmit')
+			table
 				tr
 					td(id='headers') email
 					td(id='content')=  user.email
@@ -54,4 +68,4 @@ block content
 					td(id ='headers') current password:
 					td(id='content')
 						input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
-			input(type='submit' name='submit' value ='submit')
+			input(type='submit' name='emailSubmit' value ='submit')

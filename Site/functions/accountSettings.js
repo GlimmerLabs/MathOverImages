@@ -18,7 +18,9 @@ module.exports.changeEmail= (function(req, res, database){
 	    }
 	    else
 	    {
-
+		req.session.user.email = req.body.newEmail;
+		console.log(req.session.user.email);
+		res.redirect("/me");
 	    }
 	});
     else
@@ -37,6 +39,7 @@ module.exports.changeUsername= (function(req, res, database){
 	    {
 		req.session.user.username = req.body.newUsername;
 		console.log(req.session.user.username);
+		res.redirect("/me");
 	    }
 	});
     else
@@ -54,28 +57,9 @@ module.exports.changePassword= (function(req, res, database){
 	    }
 	    else
 	    {
-
+		res.redirect("/me");
 	    }
 	});
     else
 	res.end ("new passwords don't match, please try again"); // Make error landing page
-});
-
-module.exports.changeInfo = (function(req, res, database) {
-    var changed = false;
-    if(req.body.newUsername != '') {
-	changed = true;
-	module.exports.changeUsername(req, res, database);
-    }
-    if (req.body.newEmail != '') {
-	changed = true;
-	module.exports.changeEmail(req, res, database);
-    }
-    if (req.body.newPassword != '') {
-	changed = true;
-	module.exports.changePassword(req, res, database);
-    }
-    if(changed) {
-	res.redirect("/me");
-    }
 });
