@@ -23,7 +23,7 @@
 	  		fill: 'black'
 		});
       	text2 = new Kinetic.Text({
-	  		x: 10,
+	  		x: stage.width() / 2,
 	  		y: 45,
 	  		text: 'Click to Edit',
 	  		fontSize: 30,
@@ -41,7 +41,13 @@
 		text.drawMethod = function(){layer.draw()};
 		text.defaultText = "Click to Edit";
 		text2.setEditable(true);
-		text2.drawMethod = function(){layer.draw()};
+		text2.drawMethod = function(){
+			layer.draw()
+			this.offsetX(this.width()/2);
+			if(this.cursor != null){
+				this.cursor.offsetX(this.width()/2);
+			}
+		};
 		text2.defaultText = "Click to Edit";
 
 		</script>
