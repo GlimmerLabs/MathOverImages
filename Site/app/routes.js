@@ -78,7 +78,7 @@ module.exports = function(app,passport,database) {
     });
 
     /* albums page */
-    app.get('/albums/:userid', function(req,res){
+    app.get('/albums', function(req,res){
 	albums.buildPage(req, res, database);
     });
 

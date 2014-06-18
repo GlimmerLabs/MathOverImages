@@ -18,12 +18,12 @@ block content
 		div(id = 'pageTitle')
 			h1= viewing.username
 		div(id = 'subviews')
-			a(href='/challenges' class='subview' id='selected') about
+			a(href='/me' class='subview' id='selected') about
 			a(href='/badges' class='subview') badges
 			a(href='/albums' class='subview') albums
 			a(href='/challenges' class='subview') challenges
 		div(id='subTitle')
-			p= "member since " + viewing.signupTime
+			p= "member since " + viewing.signupTime.toLocaleDateString()
 		div(id='featuredImage')
 			figure
 				a(href='singleImage.html')
