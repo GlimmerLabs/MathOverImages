@@ -23,11 +23,20 @@
 	padding: 20px;
 }
 
+textarea{
+    resize: none;
+    color: #111111;
+    border-radius: 3px;
+    border: 1px solid #979797;
+    -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+    box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+}
+
 #contactUser textarea {
 	border-radius: 3px;
 	border: 1px solid #979797;
-	-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.50);
-	box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+	-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+	box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
 	width: 500px;
 	height: 50px;
 	color: #BBBBBB;
