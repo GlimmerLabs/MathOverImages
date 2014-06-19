@@ -13,8 +13,7 @@ module.exports.buildPage = function(req, res, database) {
 			loggedIn: req.session.loggedIn,
 			user: req.session.user,
 			viewing: userObject,
-			viewingSelf: (req.session.user.username === 
-				     req.params.username)
+			viewingSelf: (req.session.user != null) && (req.session.user.username === req.params.username)
 			});
 		});
 	});
@@ -40,4 +39,19 @@ module.exports.goToMyProfile = function(req, res, database) {
 	res.redirect("login");
     }
 };
-			    
+
+module.exports.changeAboutSection = function(req, res, database) {
+    database.getIDforUsername(req.session.user.username,
+	function(userid, error) {
+	    if(error)
+		res.end (error);
+	    else
+		database.changeAboutSection(req.session.user.userid, req.body.aboutSection,
+					   function(success, error) {
+					       if(!success)
+						   res.end(error)
+					       else
+						   res.redirect('/me');
+					   });
+    });
+}

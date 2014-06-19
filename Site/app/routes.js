@@ -67,6 +67,21 @@ module.exports = function(app,passport,database) {
 	username.goToMyProfile(req, res, database);
     });
 
+    app.post('/user/:username', function(req,res){
+    if ((req.session.user != null) && (req.session.user.username === req.params.username))
+    {
+	if(req.body.aboutSubmit != null) {
+	    username.changeAboutSection(req, res);
+	}}
+    });
+
+    app.post('/me', function(req,res){
+	if(req.body.aboutSubmit != null) {
+	    username.changeAboutSection(req, res, database);
+	}
+    });
+
+
     /* function page */
     app.get('/user/:username/functions', function(req,res){
 	functions.buildPage(req, res, database);
