@@ -1,118 +1,82 @@
 @import url("/css/styles");
-
-/* Single Image - Large */
-#largeImage2 figure img{
-height: 400px;
-width: 400px;
+#main {
+	text-align: center;
 }
 
-#largeImage2 figcaption{
-  text-align:right;
-  color: #979797;
+h1 {
+	color: #4A4A4A;
+	font-size: 2em;
+	margin: 0 auto;
 }
 
-#largeImage2 {
-  clear:both;
-  margin:0 auto;
+h2 {
+	color: #979797;
+	font-size: 1em;
+	margin: 0 auto;
+	padding: 0;
 }
 
-#largeImage2 figure {
-  display:inline-block;
-  margin: 10px 200px;
+figure{
+	margin: 5px auto;
+	width: 400px;
 
 }
 
-#largeImage2 h1 {
-  font-size:1.5em;
-  text-align:center;
+figure img {
+	height: 400px;
+	width: 400px;
 }
 
-#largeImage2 a {
-  color: #979797;
-  text-decoration:none;
+
+figure figcaption.left {
+	float: left;
+	text-align: left;
+	color: #979797;
+}
+figure figcaption.left:first-letter{
+	color: #EFDC5C;
+	font-size: 1em;
 }
 
-img {
-width: 600px;
-height: 600px;
-margin-left: auto;
-margin-right: auto;
+figure figcaption.right {
+	text-align: right;
+	float: right;
+	color: #979797;
 }
-
-#largeImage2 a:hover {
-color: #666;
-}
-
-/*end of image - large */
-
-#authorNameIcon {
-color: #FFF;
-font-size: 14px;
-background-color: #3fAAA0;
-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.50);
-text-align: center;
-border-radius: 10px;
-padding: 10px;
-}
-
-#userNameIcon{
-color: #FFF;
-font-size: 14px;
-background-color: #979797;
-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.50);
-text-align: center;
-border-radius: 10px;
-padding: 10px;
-border-spacing: 5px;
-}
-
-textarea#styled  {
-border: 1px solid #979797;
-box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-font-family: Hei-Regular;
-font-size: 16px;
-color: #BBB;
-float: left;
-margin: 60px 0px;
-}
-
 #comments {
-font-family: "Open-Sans", sans-serif;
-color: #9B9B9B;
+	width:50%;
+	margin: 0 auto;
 }
 
-#imageTitle {
-color: #979797;
-border: 2px solid #3FAAA0;
-text-align: center;
-width: 181px;
-font-size: 20px;
-margin: 0px 50px;
+.comment h1 a{
+	clear: left;
+	margin: 10px;
+	color: #FFF;
+	font-size: .5em;
+	box-shadow: -4px 5px 4px 0px #666;
+	text-align: center;
+	border-radius: 10px;
+	padding: 10px;
+	background-color: #979797;
+	float: left;
+	text-decoration: none;
 }
 
-#imageInfo {
-font-family: "Open-Sans", sans-serif;
-color: #4A4A4A;
-margin: 0px 340px;
+.comment p {
+	float: left;
 }
 
-table {
-margin: 0px 90px;
+.comment h1.op a{
+	background-color: #3fAAA0;
 }
 
-#add {
-font-family: "Open-Sans", sans-serif;
-font-weight: bold;
-font-size: 60px;
-color: #E1E1E1;
-float: left;
+#leaveComment form {
+	float: left;
 }
 
-#add:active {
-color: 3FAAA0;
-}
-
-p {
-font-family: "Open-Sans", sans-serif;
-color: #4A4A4A;
+#leaveComment form textarea{
+	width: 300px;
+	height: 40px;
+	margin: 10px;
+	resize: none;
 }

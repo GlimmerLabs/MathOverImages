@@ -1,106 +1,73 @@
 @import url("/css/styles");
 
-#main {
-  margin:100px;
-}
-
 #featuredImage {
-  text-align: center;
+	text-align: center;
 }
 
 
-#create {
-  height:80px;
-  width: 290px;
-  margin: 80px 20px;
-  float: left;
-  background-color: #979797;
-  font-weight:bold;
-  color: #FFF;
-  text-align:center;
-  text-transform:lowercase;
+#create, #tutorials {
+	height:80px;
+	width: 290px;
+	margin: 80px 20px;
+	float: left;
+	background-color: #979797;
+	font-weight:bold;
+	color: #FFF;
+	text-align:center;
+	text-transform:lowercase;
+	text-decoration:none;
 }
-#create:hover {
-  background-color: #FFF;
-  color: #979797;
+#create:hover, #tutorials:hover{
+	background-color: #FFF;
+	color: #979797;
 
 }
 
 #tutorials {
-  height:80px;
-  width: 290px;
-  margin: 80px 20px;
-  float: right;
-  background-color: #3FAAA0;
-  color: #FFF;
-  text-align:center;
-  font-weight:bold;
-
-
-
+	float: right;
+	background-color: #3FAAA0;
 }
-
 
 #tutorials:hover {
-  background-color: #FFF;
-  color: #3FAAA0;
-
+	color: #3FAAA0;
 }
 
-#tutorials h1, #create h1, #tutorials h1:hover, #create h1:hover{
-
-  font-size: 4em;
-  margin:-5px;
-  padding:0;
-
-
+#tutorials, #create, #tutorials:hover, #create:hover{
+	font-size: 4em;
+	margin:-5px;
+	padding:0;
 }
-
-#galleryImages {
-  clear:both;
-  margin:0 auto;
-
-
-}
-
 
 #galleryImages figure {
-  display:inline-block;
-  margin: 10px;
+	display:inline-block;
+	margin: 10px;
 }
 
 #galleryImages figure img{
-  height: 140px;
-  width: 140px;
-
+	height: 140px;
+	width: 140px;
 }
 
 #galleryImages figcaption{
-  text-align:right;
-  color: #979797;
+	text-align:right;
+	color: #979797;
 }
 
 #galleryImages h1 {
-  font-size:1.5em;
-  text-align:center;
-
-
+	font-size:1.5em;
+	text-align:center;
 }
 
 #galleryImages a {
-  color: #979797;
-  text-decoration:none;
-
-
+	color: #979797;
+	text-decoration:none;
 }
 
 #galleryImages a:hover {
-  color: #666;
+	color: #666;
 }
 
 #figset {
-
-  margin:0 auto;
-  width: 1010px;
-
+	margin: 150px auto 0 auto;
+	width: 1010px;
 }

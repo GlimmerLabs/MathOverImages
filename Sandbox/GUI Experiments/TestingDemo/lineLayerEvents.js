@@ -12,7 +12,8 @@ lineLayer.on('click', function(evt) {
     shape.attrs.source.attrs.lineOut.splice(shape.attrs.sourceIndex, 1);
     outlet.attrs.lineIn = null;
     parent.attrs.numInputs--;
-    shape.destroy();
+    shape.remove();
+    insertToArray(actionToObject('delete', shape));
     if (parent == currShape) {
       if (assertRenderable(parent)) {
         funBarText.setAttr('text', currShape.attrs.renderFunction);

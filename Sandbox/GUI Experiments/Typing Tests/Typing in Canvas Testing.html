@@ -1,0 +1,86 @@
+<html>
+	<head>
+		<title>Typing Test</title>
+	</head>
+	<body>
+		<div id="container"></div>
+		<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"> </script>
+		<script>
+      	var stage = new Kinetic.Stage({
+        	container: 'container',
+        	width: 500,
+        	height: 200
+      	});
+      	var layer = new Kinetic.Layer();
+      	text = new Kinetic.Text({
+	  		x: 10,
+	  		y: 15,
+	  		text: '#',
+	  		fontSize: 30,
+	  		fontFamily: 'Calibri',
+	  		fill: 'black'
+		});
+		layer.add(text);
+		stage.add(layer);
+		layer.draw();
+		isActive = false;
+		shift = true;
+		text.on("mousedown", function(){isActive = true;})
+		stage.on("mousedown", 
+			function(event)
+			{
+				if(event.target != text)
+				{
+					isActive = false;
+				}
+			})
+		function changeText(mode, adding)
+		{
+			var currentText = text.getText();
+			if(mode == "delete")
+			{
+				text.setText(currentText.slice(0, currentText.length - 1));
+			}
+			if(mode == "add")
+			{
+				text.setText(currentText + adding);
+			}
+			layer.draw();
+		}
+		function getKey(which)
+		{
+			if(which >= 48 && which <= 57)
+			{
+				return "0123456789"[which-48];
+			}
+			if(which >= 65 && which <= 90)
+			{
+				return "abcdefghijklmnopqrstuvwxyz"[which-65];
+			}
+			if(which == 32)
+			{
+				return " "
+			}
+			if(which == 190)
+			{
+				return ".";
+			}
+			return ""
+		}
+		document.body.onkeydown = function(e)
+		{
+			if(isActive)
+			{
+				if(e.which == 8) // 8 is the delete key
+				{
+					changeText("delete");
+				}
+				else
+				{
+					changeText("add", getKey(e.which));
+				}
+			}
+		}
+		</script>
+	</body>
+</html>

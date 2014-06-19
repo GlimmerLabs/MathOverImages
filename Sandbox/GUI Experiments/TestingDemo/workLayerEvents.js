@@ -40,14 +40,16 @@ There are 3 different modes:
         if (!shape.attrs.expanded) {
           renderCanvas(parent);
           shape.attrs.expanded = true;
-        } else {
+        }
+        else {
           shape.attrs.expanded = false;
           animation = false;
           setTimeout(function() {collapseCanvas(parent)}, 50);
         }
         setTimeout(function() {workLayer.draw()}, 50);
       }
-    } else if (lineToolOn) {
+    }
+    else if (lineToolOn) {
       if (makingLine) {
         if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
           currLine.attrs.source.attrs.lineOut.splice(currLine.attrs.source.attrs.lineOut.length - 1, 1);
@@ -56,7 +58,8 @@ There are 3 different modes:
             shape.scale({ x: 1, y: 1 });
           }
           makingLine = false;
-        } else if (isOutlet(shape)) {
+        }
+        else if (isOutlet(shape)) {
       //check if outlet already has an input
       if (shape.attrs.lineIn != null) {
         //POSSIBLE NEED TO DESTROY LINE ITSELF
@@ -68,9 +71,11 @@ There are 3 different modes:
           source.attrs.lineOut[i].attrs.sourceIndex--;
         }
         source.attrs.lineOut.splice(index, 1);
-        line.destroy();
+        insertToArray(actionToObject('replace', line));
+        line.remove();
         shape.attrs.lineIn = null;
-      } else {
+      } 
+      else {
         parent.attrs.numInputs++;
       } // check if theres already a line going in to the outlet
       shape.attrs.lineIn = currLine;
@@ -80,6 +85,10 @@ There are 3 different modes:
       makingLine = false;
       shape.scale({ x: 1, y: 1 });
       assertRenderable(parent);
+      // if there is a currShape, update the text in funBar
+      if (currShape != undefined){
+       updateFunBar();
+      }
       if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
         parent.attrs.numInputs < parent.attrs.maxInputs) {
         addOutlet(parent);
@@ -87,9 +96,12 @@ There are 3 different modes:
         renderCanvas(parent);
       }
     }
+    insertToTable(currLine);
+    insertToArray(actionToObject('insert', currLine));
     updateForward(parent);
     } // if clicked on self, else clicked on a valid outlet
-  } else {
+  } // if makingline
+  else {
     if (isImageBox(shape)) {
       if (!shape.attrs.expanded) {
         renderCanvas(parent);
@@ -102,18 +114,17 @@ There are 3 different modes:
       setTimeout(function() {workLayer.draw()}, 50);
     } else {
       makingLine = true;
-      var group = evt.target.getParent();
-      currLine = makeLine(group);
-      group.attrs.lineOut[group.attrs.lineOut.length] = currLine;
+      currLine = makeLine(parent);
+      parent.attrs.lineOut[parent.attrs.lineOut.length] = currLine;
       lineLayer.add(currLine);
     }
   }
 } else if (deleteToolOn) {
+  insertToArray(actionToObject('delete', parent));
   // deal with lines coming in to the node being deleted
-  var group = parent;
   var targetLine;
-  for(var i = 3; i < group.children.length; i++) {
-    targetLine = group.children[i].attrs.lineIn;
+  for(var i = 3; i < parent.children.length; i++) {
+    targetLine = parent.children[i].attrs.lineIn;
     if(targetLine != null) {
       targetLine.attrs.outlet = null;
       var index = targetLine.attrs.sourceIndex;
@@ -122,33 +133,32 @@ There are 3 different modes:
         source.attrs.lineOut[j].attrs.sourceIndex--;
       }
       targetLine.attrs.source.attrs.lineOut.splice(index, 1);
-      targetLine.destroy();
+      targetLine.remove();
     }
   }
   // deal with the lines leading out of the node being deleted
   var outletParent;
-  for(var i = 0; i < group.attrs.lineOut.length; i++) {
-    targetLine = group.attrs.lineOut[i];
+  for(var i = 0; i < parent.attrs.lineOut.length; i++) {
+    targetLine = parent.attrs.lineOut[i];
     outletParent = targetLine.attrs.outlet.getParent();
     outletParent.attrs.numInputs--;
     targetLine.attrs.outlet.attrs.lineIn = null;
     assertRenderable(outletParent);
     updateForward(outletParent);
-    targetLine.destroy();
+    targetLine.remove();
   }
-  var render = group.attrs.renderLayer
+  var render = parent.attrs.renderLayer
   if (render != null) {
     render.destroy();
   }
-  if (currShape == group) {
-    console.log('here');
+  if (currShape == parent) {
     currShape = undefined;
     funBarText.setAttr('text', '');
     funBarLayer.draw();
   }
-  group.destroy();
+  
+  parent.remove();
 }
-
 workLayer.draw();
 lineLayer.draw();
 });
@@ -166,38 +176,13 @@ lineLayer.draw();
          currShape.children[0].setAttr('shadowEnabled', false);
        }
        currShape = group
-       currText = currShape.attrs.renderFunction;
-       if (group.name() == 'rgb') {
-        currText = 'rgb(' + currText + ')';
-      } 
-      if (currText != null) {
-        currShape.children[0].setAttrs({
-          shadowColor: 'darkblue',
-          shadowOpacity: 1,
-          shadowEnabled: true
-        });
-        var currFontSize;
-        if (currText.length <= 12) {
-          currFontSize = funBarDisplayFontSize;
-        } 
-        else if (currText.length >= 26){
-          currFontSize = 10;
-        }
-        else {
-          currFontSize = 264 / currText.length;
-        }
-        funBarText.setAttrs({
-          text: currText,
-          fontSize: currFontSize
-        });
-        
-        funBarLayer.draw();
-      }
-      group.startDrag();
-      workLayer.draw();
-      dragLayer.draw();
+       updateFunBar();
+       insertToArray(actionToObject('move', group));
+       group.startDrag();
+       workLayer.draw();
+       dragLayer.draw();
 
-      if (group.attrs.renderLayer != null) {
+       if (group.attrs.renderLayer != null) {
         group.attrs.renderLayer.draw();
       }
     }
