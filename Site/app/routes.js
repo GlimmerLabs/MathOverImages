@@ -89,7 +89,19 @@ module.exports = function(app,passport,database) {
 
     /* gallery/random gallery page */
     app.get('/gallery', function(req,res) {
-      gallery.buildPage(req, res, database);
+      res.redirect('/gallery/random');
+    });
+
+    app.get('/gallery/random', function(req, res) {
+	gallery.buildRandomPage(req, res, database);
+    });
+
+    app.get('/gallery/recent', function(req, res) {
+	res.redirect('/gallery/recent/1');
+    });
+
+    app.get('/gallery/recent/:pageNumber', function(req, res) {
+	gallery.buildRecentsPage(req, res, database);
     });
 
     /* albums page */
