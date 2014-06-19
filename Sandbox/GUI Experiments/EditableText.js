@@ -33,9 +33,10 @@ Kinetic.Text.prototype.defaultText = null;
 Kinetic.Text.prototype.drawMethod = function(){};
 Kinetic.Text.prototype.capitalized = false;
 Kinetic.Text.prototype.matchingCharacters = /[0-9.]/;
+Kinetic.Text.prototype.parentLayer = this.parent;
 Kinetic.Text.prototype.measureText = function(family, size, text){
-	this.parent.canvas.context._context.font = size + "px" + " "  + family;
-	return this.parent.canvas.context._context.measureText(text);
+	this.parentLayer.canvas.context._context.font = size + "px" + " "  + family;
+	return this.parentLayer.canvas.context._context.measureText(text);
 }
 Kinetic.Text.prototype.removeFocus = function(){
 	if(this.cursor != null){
