@@ -20,6 +20,7 @@ var stage = new Kinetic.Stage({
  var lineLayer = new Kinetic.Layer();
  var menuLayer = new Kinetic.Layer();
  var menuButtonLayer = new Kinetic.Layer();
+ var menuControlLayer = new Kinetic.Layer();
  var workLayer = new Kinetic.Layer();
  var borderLayer = new Kinetic.Layer();
  var funBarLayer = new Kinetic.Layer();
@@ -33,6 +34,7 @@ var stage = new Kinetic.Stage({
  stage.add(lineLayer);
  stage.add(menuLayer);
  stage.add(menuButtonLayer);
+ stage.add(menuControlLayer);
  stage.add(workLayer);
  stage.add(borderLayer);
  stage.add(toolboxLayer);
