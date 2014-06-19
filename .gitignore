@@ -6,3 +6,4 @@
 auth.js
 node_modules
 Site/certs/*
+mist_backup_*
