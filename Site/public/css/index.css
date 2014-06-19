@@ -2,8 +2,11 @@
 
 #featuredImage {
 	text-align: center;
+	margin: 20px;
 }
-
+#featuredImage img{
+	height: 425px;
+}
 
 #create, #tutorials {
 	height:80px;
