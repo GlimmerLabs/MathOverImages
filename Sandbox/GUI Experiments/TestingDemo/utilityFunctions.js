@@ -246,13 +246,15 @@ var isUndoTool = function(target) {
 	};
 
 	var collapseCanvas = function(group){
-		group.attrs.renderLayer.destroy();
-		group.attrs.renderLayer = null;
-		group.children[2].setAttrs({
-			width: imageBoxSideLength,
-			height: imageBoxSideLength,
-			expanded: false
-		});	
+		if (group.attrs.renderLayer != null) {
+			group.attrs.renderLayer.destroy();
+			group.attrs.renderLayer = null;
+			group.children[2].setAttrs({
+				width: imageBoxSideLength,
+				height: imageBoxSideLength,
+				expanded: false
+			});	
+		}
 	};
 /**
  * updateForward takes a group and makes sure all groups for which it is a source are
