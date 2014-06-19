@@ -2,18 +2,27 @@
  * Functions related to the gallery.
  */
 var filedatabase;
-module.exports.buildPage = (function(req, res, database) {
-  filedatabase=database;
-  module.exports.getRandomImages (9, function(images, error){
-
-    res.render('../public/views/gallery.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user,
-      images: images
+module.exports.buildRandomPage = (function(req, res, database) {
+    filedatabase=database;
+    module.exports.getRandomImages (9, function(images, error){
+	res.render('../public/views/gallery.jade',{
+	    loggedIn: req.session.loggedIn,
+	    user: req.session.user,
+	    images: images
+	});
     });
-  });
 });
 
+module.exports.buildRecentsPage = function(req, res, database) {
+    filedatabase=database;
+    module.exports.getRecentImages(9, req.params.pageNumber, function(images, error) {
+	res.render('../public/views/gallery.jade',{
+	    loggedIn: req.session.loggedIn,
+	    user: req.session.user,
+	    images: images
+	});
+    });
+};
 /**
  * Access random images in the gallery.
  */
@@ -34,8 +43,7 @@ module.exports.buildPage = (function(req, res, database) {
   None
 */
 module.exports.getRandomImages= (function(count, callback) {
-
-    filedatabase.query("SELECT images.*,users.username FROM images, users ORDER BY RAND() LIMIT" + count, function(rows, error){
+    filedatabase.query("SELECT images.* ,users.username FROM images NATURAL JOIN  users ORDER BY RAND() LIMIT " + count + ";", function(rows, error){
 	callback(rows, error);
     });
 
@@ -64,7 +72,7 @@ module.exports.getRecentImages= (function(count, page, callback) {
 
     var start = (page-1)*count;
     var end = (page*count)-1;
-    filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT" + start +","+ end, function(rows, error){
+    filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT " + start +","+ end + ";", function(rows, error){
 	callback(rows, error);
     });
 });
