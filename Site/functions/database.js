@@ -373,6 +373,36 @@ module.exports.changeEmail = (function (userid, newEmail, password, callback){
     });
 }); // database.changeEmail(user, newEmail, callback(success, error));
 
+/*
+  Procedure:
+  database.changeAboutSection(userid, newAbout, Callback(success, error));
+  Purpose:
+  To allow a user to change their About Section
+  Parameters:
+  userid, the userid of the use who wants to change their password
+  newAbout, a new about section to display
+  Produces:
+  success, a boolean success indicator
+  error, any error occurred along the way
+  Pre-conditions:
+  user has logged in, and therefore has access to their about section
+  Post-conditions:
+  about section has to be changed
+  Preferences:
+  None
+*/
+module.exports.changeAboutSection = (function (userid, newAbout, callback){
+    newAbout = sanitize(newAbout);
+    userid = sanitize(userid);
+    console.log("new about: " + newAbout);
+    module.exports.query("UPDATE users SET about='" + newAbout +"' WHERE userid= '"+userid+ "';", function (rows, error){
+	if (error)
+	    callback(false, error);
+	else
+	    callback(true, error);
+    });
+
+});//database.changeAboutSection(userid, newAbout);
 
 /*
   Procedure:
