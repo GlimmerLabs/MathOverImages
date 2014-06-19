@@ -24,6 +24,14 @@
       if (group.children[2].attrs.expanded) {
         renderCanvas(group);
       } // if 
+      if (inTable(group)) {
+        actionArray[currIndex - 1].x2 = group.x();
+        actionArray[currIndex - 1].y2 = group.y();
+      }
+      else {
+        insertToTable(group);
+        insertToArray(actionToObject('insert', group));
+      }
     } 
     else {
     // deal with lines coming in to the node being deleted
@@ -33,7 +41,7 @@
       if(targetLine != null) {
         targetLine.attrs.outlet = null;
         targetLine.attrs.source.attrs.lineOut.splice(targetLine.attrs.sourceIndex, 1);
-        targetLine.destroy();
+        targetLine.remove();
       }
     }
     // deal with the lines leading out of the node being deleted
@@ -47,10 +55,16 @@
         assertRenderable(outletParent);
         updateForward(outletParent);
       }
-      targetLine.destroy();
+      targetLine.remove();
     }
     lineLayer.draw();
-    group.destroy();
+    if (inTable(group)){
+      insertToArray(actionToObject('delete', group));
+      group.remove();
+    }
+    else {
+      group.destroy();
+    }
   }
   menuLayer.draw();
   menuButtonLayer.draw();

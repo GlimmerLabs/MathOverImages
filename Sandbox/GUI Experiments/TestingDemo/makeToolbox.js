@@ -228,7 +228,16 @@
   });
   deleteToolGroup.add(deleteToolCover);
 
+  var undoRedoScale = .3;
+
   // add the undo tool button
+  var undoGroup = new Kinetic.Group({
+    x: toolboxShift,
+    y: (toolboxShift * 4) + (toolboxButtonSize * 3),
+    name: 'undo'
+  });
+  toolboxGroup.add(undoGroup);
+
   var undoButton = new Kinetic.Shape({
     sceneFunc: function(context) {
       context.beginPath();
@@ -241,12 +250,12 @@
       context.closePath();
       context.fillStrokeShape(this);
     },
-    x: toolboxShift -3,
-    y: (toolboxShift*5) + (toolboxButtonSize * 3) + 15,
+    x: 0,
+    y: toolboxButtonSize - toolboxShift + 5,
     name: 'undo',
-    scaleX: .35,
-    scaleY: .35,
-    fill: '#B3B1B1',
+    scaleX: undoRedoScale,
+    scaleY: undoRedoScale,
+    fill: '#E3E3E3',
     stroke: 'black',
     strokeWidth: 1,
     lineJoin: 'round',
@@ -257,7 +266,23 @@
     shadowOpacity: .5,
     shadowEnabled: false
   });
-  toolboxGroup.add(undoButton);
+  undoGroup.add(undoButton);
+
+  var undoCover = new Kinetic.Rect({
+    x: 0,
+    y: 0,
+    width: toolboxButtonSize,
+    height: toolboxButtonSize,
+    //stroke: 'black'
+  });
+  undoGroup.add(undoCover);
+
+  var redoGroup = new Kinetic.Group({
+    x: toolboxShift,
+    y: (toolboxShift * 5) + (toolboxButtonSize * 4),
+    name: 'redo'
+  });
+  toolboxGroup.add(redoGroup);
 
   var redoButton = new Kinetic.Shape({
     sceneFunc: function(context) {
@@ -271,12 +296,12 @@
       context.closePath();
       context.fillStrokeShape(this);
     },
-    x: toolboxShift + toolboxButtonSize + 3,
-    y: (toolboxShift*5) + (toolboxButtonSize * 4) + 20,
+    x: toolboxButtonSize,
+    y: toolboxButtonSize - toolboxShift,
     name: 'redo',
-    scaleX: -.35,
-    scaleY: .35,
-    fill: '#B3B1B1',
+    scaleX: -undoRedoScale,
+    scaleY: undoRedoScale,
+    fill: '#E3E3E3',
     stroke: 'black',
     strokeWidth: 1,
     lineJoin: 'round',
@@ -287,5 +312,15 @@
     shadowOpacity: .5,
     shadowEnabled: false
   });
-  toolboxGroup.add(redoButton);
+  redoGroup.add(redoButton);
+
+  var redoCover = new Kinetic.Rect({
+    x: 0,
+    y: 0,
+    width: toolboxButtonSize,
+    height: toolboxButtonSize,
+    //stroke: 'black'
+  });
+  redoGroup.add(redoCover);
+
   enableWorkTool();
