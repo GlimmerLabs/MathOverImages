@@ -9,12 +9,21 @@ var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var jade = require('jade');
 var compress = require('compression');
+var fs = require('fs');
 
-
+/* set up HTTPS */
 var https = require('https');
+var httpsOptions = {
+  key: fs.readFileSync('./certs/server.key'),
+  cert: fs.readFileSync('./certs/server.crt')
+}
+
+
+
+
 var http = require('http');
 var app = express();
-var port = 8080;
+var port = 80;
 var mysql = require('mysql');
 var passport = require('passport');
 var flash = require('connect-flash');
@@ -47,7 +56,10 @@ require('./app/routes.js')(app,passport,database);
 
 //==================== launch ====================
 
-app.listen(port);
+http.createServer(app).listen(port);
+
+
+https.createServer(httpsOptions, app).listen(443);
 console.log('Operating on port '+ port);
 
 
