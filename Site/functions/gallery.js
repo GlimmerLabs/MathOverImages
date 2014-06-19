@@ -35,14 +35,14 @@ module.exports.buildPage = (function(req, res, database) {
 */
 module.exports.getRandomImages= (function(count, callback) {
 
-    filedatabase.query("SELECT images.*,users.username FROM images, users ORDER BY RAND() LIMIT " + count, function(rows, error){
+    filedatabase.query("SELECT images.*,users.username FROM images, users ORDER BY RAND() LIMIT" + count, function(rows, error){
 	callback(rows, error);
     });
 
 });
 
 /**
- * Access random images in the gallery.
+ * Access recent images in the gallery.
  */
 /*
   Procedure:
@@ -60,10 +60,11 @@ module.exports.getRandomImages= (function(count, callback) {
   Post-conditions:
   None
 */
-module.exports.getRecentImages= (function(count, callback) {
+module.exports.getRecentImages= (function(count, page, callback) {
 
-    filedatabase.query("SELECT images.*, users.username FROM images, users ORDER BY modifiedAt DESC LIMIT " + count, function(rows, error){
+    var start = (page-1)*count;
+    var end = (page*count)-1;
+    filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT" + start +","+ end, function(rows, error){
 	callback(rows, error);
     });
-
 });

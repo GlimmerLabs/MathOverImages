@@ -8,9 +8,6 @@ block extraLinks
 block stylesheets
 
 	link(rel='stylesheet', href='/css/profile')
-	link(rel='stylesheet', href='/css/styles')
-
-	link(rel='stylesheet', href='/css/defaultAccount')
 
 
 block content
@@ -26,7 +23,6 @@ block content
 			p= "member since " + viewing.signupTime.toLocaleDateString()
 		div(id='featuredImage')
 			figure
-				a(href='singleImage.html')
 					img(src='/samples/bw1.jpg' alt='Untitled by username')
 					p
 						figcaption= "Untitled by " +  viewing.username
@@ -35,20 +31,16 @@ block content
 			div(id='bio')
 				a(href='/changeContent')
 					img(src='/icons/edit_button.png' id='editButton')
-				figcaption    My name is Alex and I am cool.
-				p= viewing.about
+				figcaption= viewing.about
+				form(method='POST')
+					textarea(name='aboutSection' cols='40' rows='10')= viewing.about
+					input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
 				form(action='#' method='POST')
 					textarea(name='styled-textarea' id='styled' cols='40' rows='10') here is where we will put a mailbox
 					input(type='submit' id='submit' name='submit')
 		else
 			div(id='bio')
-				p My name is Alex and I am cool.
-				p= viewing.about
+				figcaption= viewing.about
 				form(action='#' method='POST')
 					textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
 					input(type='submit' id='submit' name='submit')
-
-
-
-
-
