@@ -23,7 +23,7 @@ var httpsOptions = {
 
 var http = require('http');
 var app = express();
-var port = 9000;
+var port = 8000;
 var mysql = require('mysql');
 var passport = require('passport');
 var flash = require('connect-flash');
@@ -59,7 +59,5 @@ require('./app/routes.js')(app,passport,database);
 http.createServer(app).listen(port);
 
 
-https.createServer(httpsOptions, app).listen(4000);
+https.createServer(httpsOptions, app).listen(443);
 console.log('Operating on port '+ port);
-
-
