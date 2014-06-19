@@ -78,6 +78,8 @@
   	actionArray[currIndex] = actionObj;
   	currIndex++;
   	totalIndex = currIndex;
+    shadeUndoRedo();
+    toolboxLayer.draw();
   };
 
   var insertToTable = function(group) {
@@ -116,6 +118,9 @@
       }
       else if (action == 'insert') {
         if (actionObj.type == 'node') {
+          if (element.attrs.renderLayer != null) {
+            collapseCanvas(element);
+          }
           element.remove(); 
         }
         else {
@@ -131,6 +136,11 @@
           x: newX,
           y: newY
         });
+        if (element.children[2].attrs.expanded) {
+          element.attrs.renderLayer.draw();
+          renderCanvas(element);
+        }
+        //collapseCanvas(element);
         currShape = element;
         dragLayer.draw(); 
         workLayer.draw();
@@ -285,5 +295,20 @@
     dragLayer.draw();
     currShape = actionObj.source;
     dragLayer.draw();
-  }
+  };
+
+  var shadeUndoRedo = function() {
+    if (currIndex > 0) {
+      undoButton.setAttr('fill', 'grey');
+    } 
+    else {
+      undoButton.setAttr('fill', '#B3B1B1');
+    } 
+    if (currIndex < totalIndex) {
+      redoButton.setAttr('fill', 'grey');
+    }
+    else {
+      redoButton.setAttr('fill', '#B3B1B1');
+    } 
+  };
 
