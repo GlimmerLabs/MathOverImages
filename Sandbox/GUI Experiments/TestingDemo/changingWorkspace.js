@@ -216,12 +216,16 @@
       else if (action == 'move') {
         var newX = actionObj.x2;
         var newY = actionObj.y2;
-        var group = elementTable[actionObj.id];
-        group.setAttrs({
+        var element = elementTable[actionObj.id];
+        element.setAttrs({
           x: newX,
           y: newY
         });
-        currShape = group;
+        if (element.children[2].attrs.expanded) {
+          element.attrs.renderLayer.draw();
+          renderCanvas(element);
+        }
+        currShape = element;
       } // if move
       // else replace
       else {
@@ -302,13 +306,13 @@
       undoButton.setAttr('fill', 'grey');
     } 
     else {
-      undoButton.setAttr('fill', '#B3B1B1');
+      undoButton.setAttr('fill', '#E3E3E3');
     } 
     if (currIndex < totalIndex) {
       redoButton.setAttr('fill', 'grey');
     }
     else {
-      redoButton.setAttr('fill', '#B3B1B1');
+      redoButton.setAttr('fill', '#E3E3E3');
     } 
   };
 

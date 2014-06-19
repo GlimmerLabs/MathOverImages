@@ -201,14 +201,14 @@ var isUndoTool = function(target) {
  			shadowEnabled: true
  		});
  		var currFontSize;
- 		if (currText.length <= 12) {
+ 		if (currText.length <= 50) {
  			currFontSize = funBarDisplayFontSize;
  		} 
- 		else if (currText.length >= 26) {
+ 		else if (currText.length >= 110) {
  			currFontSize = 10;
  		}
  		else {
- 			currFontSize = 264 / currText.length;
+ 			currFontSize = 1100 / currText.length;
  		}
  		funBarText.setAttrs({
  			text: currText,
