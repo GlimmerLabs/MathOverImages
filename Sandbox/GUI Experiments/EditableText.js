@@ -24,7 +24,7 @@
 // +----------------------------+------------------------------------
 // | Extensions to Kinetic.Text |
 // +----------------------------+
-
+// To do: fix for centered text
 
 Kinetic.Text.prototype.isEditable = false;
 Kinetic.Text.prototype.isActive = false;
@@ -32,11 +32,12 @@ Kinetic.Text.prototype.setEditable = function(state){this.isEditable = state;}
 Kinetic.Text.prototype.defaultText = null;
 Kinetic.Text.prototype.drawMethod = function(){};
 Kinetic.Text.prototype.capitalized = false;
+Kinetic.Text.prototype.aligned = "left";
 Kinetic.Text.prototype.matchingCharacters = /[0-9.]/;
-Kinetic.Text.prototype.parentLayer = this.parent;
+Kinetic.Text.prototype.parentLayer = function(){return this.parent};
 Kinetic.Text.prototype.measureText = function(family, size, text){
-	this.parentLayer.canvas.context._context.font = size + "px" + " "  + family;
-	return this.parentLayer.canvas.context._context.measureText(text);
+	this.parentLayer().canvas.context._context.font = size + "px" + " "  + family;
+	return this.parentLayer().canvas.context._context.measureText(text);
 }
 Kinetic.Text.prototype.removeFocus = function(){
 	if(this.cursor != null){
@@ -71,9 +72,34 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 		var textLength = activeText.text().length;
 		cursor.position = Math.min(Math.max(cursor.position, 0), textLength);
 	}
-	cursor.moveLinePosition = function(x){
-		var height = activeText.height();
-		var y = activeText.y();
+	cursor.getLine = function(){
+		var currentLength = 0;
+		var previousLength = 0;
+		var desiredLength = this.position;
+		var text = activeText.textArr;
+		for(var textElement = 0; textElement < text.length; textElement++){
+			previousLength = currentLength;
+			currentLength += text[textElement].text.length;
+			if(desiredLength >= previousLength && desiredLength <= currentLength){
+				return textElement;
+			}
+		}
+	}
+	cursor.getDistanceUpTo = function(position){
+		var currentLength = 0;
+		var previousLength = 0;
+		var text = activeText.textArr;
+		for(var textElement = 0; textElement < text.length; textElement++){
+			previousLength = currentLength;
+			currentLength += text[textElement].text.length;
+			if(position >= previousLength && position <= currentLength){
+				return previousLength;
+			}
+		}
+	}
+	cursor.moveLinePosition = function(x, lineChange){
+		var height = activeText.textHeight;
+		var y = activeText.y() + lineChange;
 		this.points([x, y, x, y + height]);
 		activeText.drawMethod();
 	}
@@ -81,9 +107,13 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
 		var x = activeText.x();
-		var textBeforeCursor = activeText.text().slice(0, this.position);
-		var width = activeText.measureText(family, size, textBeforeCursor).width;
-		cursor.moveLinePosition(x + width);
+		var line = this.getLine();
+		var lineText = activeText.textArr[line];
+		var beginning = this.getDistanceUpTo(this.position);
+		var textBeforeCursor = activeText.text().slice(beginning, this.position);
+		var xOffset = activeText.measureText(family, size, textBeforeCursor).width;
+		var lineOffset = line * activeText.textHeight;
+		cursor.moveLinePosition(x + xOffset, lineOffset);
 	}
 	cursor.moveToClosestPosition = function(where){
 		clearTimeout(activeText.cursor.timeout);
