@@ -1,0 +1,60 @@
+/**
+ * mistui-expert.css
+ *   Some design for the "expert" UI.
+ */
+
+/* +---------------+-------------------------------------------------
+ * | Function Info |
+ * +---------------+
+ */
+
+#funinfo {
+  float: left; 
+  width: 100%;
+}
+
+TH {
+  font-family: Comic Sans, sans-serif;
+  font-weight: normal;
+  color: darkgrey;
+  text-align: right;
+  vertical-align: top;
+}
+
+.wide {
+  width: 100%;
+}
+
+/*
+ * Canvas
+ */
+
+#rendering {
+  float: left; 
+  text-align: center;
+  width: 100%;
+}
+
+/* // +---------+-------------------------------------------------------
+ * // | Message |
+ * // +---------+
+ */
+
+#info {
+}
+
+textarea.message {
+  width: 100%;
+}
+
+.message {
+  font-family: Comic Sans, sans-serif;
+  font-size: small;
+  color: darkgrey;
+}
+
+.error {
+  color: red;
+}
+
+
