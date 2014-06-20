@@ -382,6 +382,92 @@ MIST.ImageGrey = function(exp)
   this.context = getArgs(arguments,1);
 } // MIST.ImageGrey
 
+// +------------------------+----------------------------------------
+// | Class: MIST.Collection |
+// +------------------------+
+
+/*
+  General collections of information.  Used primarily for storing
+  the builtin functions, the user functions, the builtin values,
+  and the user values.
+ */
+
+/**
+ * Constructor.
+ */
+MIST.Collection = function(name, about) {
+  this.class = "MIST.Collection";
+  this.name = name;
+  if (!this.name) { 
+    this.name = "<Untitled>";
+  }
+  this.about = about;
+  if (!this.about) {
+    this.about = "";
+  }
+  this.values = {};
+} // MIST.Collection
+
+/**
+ * Get all of the keys.
+ */
+MIST.Collection.prototype.keys = function() {
+  return Object.keys(this.values);
+} // MIST.Collecdtion.prototype.keys
+
+/**
+ * Clear the contents of the collection.
+ */
+MIST.Collection.prototype.clear = function() {
+  this.values = {};
+} // MIST.Collection.prototype.clear
+
+/**
+ * Add an object.  (We assume all objects have names.)
+ */
+MIST.Collection.prototype.add = function(obj) {
+  this.values[obj.name] = obj;
+} // MIST.Collection.prototype.add
+
+/**
+ * Look up an object.
+ */
+MIST.Collection.prototype.get = function(name) { 
+  return this.values[name];
+} // MIST.Collection.prototype.get
+
+/**
+ * Add a user function.
+ */
+MIST.Collection.prototype.addUserFun = function(name,display,about,params,code) { 
+  var numParams = 0;
+  if (params) {
+    numParams = params.split(",").length;
+  }
+  this.add(new MIST.FunInfo(name,display,about,
+                            numParams,numParams,
+                            params,code));
+};
+
+/**
+ * Add a user value
+ */
+MIST.Collection.prototype.addUserVal = function(name,display,about,code) {
+  this.add(new MIST.ValInfo(name,display,about,code));
+}; // addUserVal
+
+// +-------------------+---------------------------------------------
+// | Value Information |
+// +-------------------+
+
+MIST.ValInfo = function(name, display, about, code) {
+  this.class = "MIST.ValInfo";
+  this.name = name;
+  this.display = display;
+  this.about = about;
+  this.code = code;
+} // MIST.ValInfo
+
 // +----------------------+------------------------------------------
 // | Function Information |
 // +----------------------+
@@ -389,46 +475,16 @@ MIST.ImageGrey = function(exp)
 /**
  * A bit of information on the installed functions.
  */
-MIST.FunInfo = function(name, display, minarity, maxarity, paramnames) {
+MIST.FunInfo = function(name, display, about, minarity, maxarity, params, code) {
+  this.class = "MIST.FunInfo";
   this.name = name;
   this.display = display;
+  this.about = about;
   this.minarity = minarity;
   this.maxarity = maxarity;
-  this.paramnames = paramnames;
+  this.params = params;
+  this.code = code;
 } // FunInfo
-
-/**
- * Clear information on all functions.
- */
-MIST.clearFuns = function()
-{
-  MIST.funs = {};
-} // MIST.clearFuns
-
-/**
- * Add information on a function.
- */
-MIST.addFun = function(name, display, minarity, maxarity, paramnames) {
-  if (!MIST.funs) { MIST.clearFuns(); }
-  MIST.funs[name] = new MIST.FunInfo(name, display, minarity, maxarity, paramnames);
-} // MIST.addFun
-
-/**
- * Add information on the standard functions.  (Should these be in a table
- * somewhere?)
- */
-MIST.addStandardFunctions = function() {
- 
-} // MIST.addStandardFunctions
-
-/**
- * Get information on a function.  Returns undefined if the function is
- * not yet defined.
- */
-MIST.getFun = function(name) {
-  if (!MIST.funs) return undefined;
-  return MIST.funs[name];
-} // MIST.getFun
 
 // +---------+-------------------------------------------------------
 // | Parsing |
