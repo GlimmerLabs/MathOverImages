@@ -144,6 +144,17 @@ MISTui.addMenuSeparator = function(menu,id) {
 } // addMenuSeparator(menu,id)
 
 /**
+ * Clear all of the elements of a menu.
+ */
+MISTui.clearMenu = function(menu) {
+  var items = document.getElementById(menu + "-items");
+  if (!items) {
+    throw "Cannot find menu " + menu;
+  }
+  items.innerHTML = "";
+} // clearMenu
+  
+/**
  * Format the menu appropriately.
  */
 MISTui.formatMenu = function(menuid) {
