@@ -53,7 +53,7 @@ Kinetic.Text.prototype.removeFocus = function(){
 	this.drawMethod();
 	activeText = null;
 }
-Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
+Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 	var x = this.x();
 	var fontSize = this.fontSize();
 	var align = this.align();
@@ -108,14 +108,18 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 		var size = activeText.fontSize();
 		var x = activeText.x();
 		var line = this.getLine();
-		var lineText = activeText.textArr[line];
+		var lineText = activeText.textArr[line].text;
 		var beginning = this.getDistanceUpTo(this.position);
 		var textBeforeCursor = activeText.text().slice(beginning, this.position);
-		var xOffset = activeText.measureText(family, size, textBeforeCursor).width;
+		var xOffset = activeText.measureText(family, size, textBeforeCursor).width;;
+		if(activeText.aligned == "center"){
+			var lineTextWidth = activeText.measureText(family, size, lineText).width;
+			xOffset += (activeText.width() - lineTextWidth) / 2;
+		}
 		var lineOffset = line * activeText.textHeight;
 		cursor.moveLinePosition(x + xOffset, lineOffset);
 	}
-	cursor.moveToClosestPosition = function(where){
+	cursor.moveToClosestPosition = function(x, y){
 		clearTimeout(activeText.cursor.timeout);
 		activeText.cursor.shouldChange = false;
 		activeText.cursor.opacity(1);
@@ -124,7 +128,9 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 				activeText.cursor.shouldChange = true;
 			}
 		}, 100);
-		var text = activeText.text();
+		var line = Math.round(y / activeText.textHeight); // Get which line the mouse clicked on
+		line -= 1; // convert line to an array index
+		var text = activeText.textArr[line].text;
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
 		var closestDistance = Infinity;
@@ -132,14 +138,14 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 		for(var char = text.length; char >= 0; char--){
 			var chunk = text.slice(0, char);
 			var distance = activeText.measureText(family, size, chunk).width;
-			distance -= where;
+			distance -= x;
 			distance = Math.abs(distance);
 			if(distance < closestDistance){
 				closestIndex = char;
 				closestDistance = distance;
 			}
 		}
-		this.position = closestIndex;
+		this.position = closestIndex + cursor.getDistanceUpTo(line);
 		this.updatePosition();
 	}
 	cursor.moveLinePosition(this.measureText(fontFamily, fontSize, text).width + this.x());
@@ -155,8 +161,17 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 			active.drawMethod();
 		}
 	}, 750);
-	if(this.text() != this.defaultText){
-		cursor.moveToClosestPosition(mouseRelativeX + cursor.offsetX());
+	if(this.text() != this.defaultText && moveToClosest){
+		var mouseX = mouse.x;
+		var textX = this.x();
+		var mouseY = mouse.y;
+		var textY = this.y();
+		var mouseRelativeX = mouseX - textX + cursor.offsetX();
+		var mouseRelativeY = mouseY - textY + cursor.offsetY();
+		cursor.moveToClosestPosition(mouseRelativeX, mouseRelativeY);
+	}
+	else{
+		cursor.updatePosition();
 	}
 }
 activeText = null;
@@ -183,19 +198,25 @@ function readyEditing(stage)
 								activeText.removeFocus();
 							}
 							activeText = event.target;
+							var moveCursorToClosest = true;
 							if (activeText.text() == activeText.defaultText){
+
 								activeText.text("");
+								var moveCursorToClosest = false;
 							}
-							var mouseX = stage.getPointerPosition().x;
 							var textX = activeText.x();
-							activeText.addCursor(mouseX - textX);
+							activeText.addCursor(moveCursorToClosest, stage.getPointerPosition());
 							activeText.isActive = true;
 						}
 						else{
 							var cursor = activeText.cursor;
 							var mouseX = stage.getPointerPosition().x;
 							var textX = activeText.x();
-							cursor.moveToClosestPosition(mouseX - textX + cursor.offsetX());
+							var mouseY = stage.getPointerPosition().y;
+							var textY = activeText.y();
+							var mouseRelativeX = mouseX - textX + cursor.offsetX();
+							var mouseRelativeY = mouseY - textY + cursor.offsetY();
+							cursor.moveToClosestPosition(mouseRelativeX, mouseRelativeY);
 						}
 						currentEvent = event.evt;
 					}
@@ -246,11 +267,15 @@ function readyEditing(stage)
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
 				activeText.cursor.position--;
 			}
-			if(e.which == 37){ // 37 is the left arrow key
+			if(keycode == 37){ // 37 is the left arrow key
 				activeText.cursor.position--;
 			}
-			if(e.which == 39){ // 39 is the right arrow key
+			if(keycode == 39){ // 39 is the right arrow key
 				activeText.cursor.position++;
+			}
+			if(keycode == 189 || keycode == 109){ // 189 and 109 are the - keys: normal, numpad respectively
+				var key = ".";
+				addedKey = true;
 			}
 			if(addedKey){
 				if(activeText.capitalized){

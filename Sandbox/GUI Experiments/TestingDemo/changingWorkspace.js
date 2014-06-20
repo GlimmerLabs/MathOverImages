@@ -74,6 +74,11 @@
   	return obj; 	
   };
 
+/**
+ * insertToArray takes an object properly formatted for the actionArray and puts
+ * it in the array, increments the currIndex, updates the totalIndex, updates the
+ * redo/undo button shading and draws the toolboxLayer
+ */
   var insertToArray = function(actionObj) {
   	actionArray[currIndex] = actionObj;
   	currIndex++;
@@ -82,6 +87,10 @@
     toolboxLayer.draw();
   };
 
+/**
+ * insertToTable takes a group newly added to the workspace and adds it the 
+ * elementTable along with the group's id number as the key.
+ */
   var insertToTable = function(group) {
   	var stringId = group._id.toString();
   	elementTable[stringId] = group;
@@ -97,45 +106,66 @@
   	return (elementTable[stringId] != undefined);
   };
 
+  /**
+   * undoAction takes an action from the action array and if an undo action is
+   * possible, undoes one of the action (delete, insert, move, or replace)
+   * for either a node or a line. The currIndex is updated and relevant layers
+   * redrawn.
+   */
   var undoAction = function(actionObj) {
+    // if the an undo action is valid (there are actions to be undone)
     if (currIndex > 0) {
      var action = actionObj.action;
      var element = elementTable[actionObj.id];
+     // if the action in question is a deletion
      if (action == 'delete') {
+      // if working with a node
       if (actionObj.type == 'node') {
+        // put the object back on the worklayer
         element.moveTo(workLayer);
         var connections = actionObj.connections;
         for (var i = 0; i < connections.length; i++) {
+          // re-call the function on the line in question's deletion
           undoAction(connections[i]);
-        }
+        } // go through each of the old line connections
         currShape = element;
         currShape.children[0].setAttrs({shadowColor: 'darkblue'});
-      }
+      } // if node
+      // if working with a line
       else {
         insertLine(actionObj);
       } // else element is a line
       workLayer.draw();
-      }
+      } // if delete
+      // if the action in question is an insertion
       else if (action == 'insert') {
         if (actionObj.type == 'node') {
           if (element.attrs.renderLayer != null) {
+            // close an open canvas
             collapseCanvas(element);
           }
+          // remove the object from its layer
           element.remove(); 
-        }
+        } // if node
+        // if working with a line
         else {
+          // remove the line and update its indexes
           removeLine(element);
           lineLayer.draw()
         }
         workLayer.draw();
-      }
+      } // if insert
+      // if the action in question is a movement
       else if (action == 'move') {
+        // get the old position
         var newX = actionObj.x1;
         var newY = actionObj.y1;
+        // set the object back to its old position
         element.setAttrs({
           x: newX,
           y: newY
         });
+        // re-render the canvas if previously open
         if (element.children[2].attrs.expanded) {
           element.attrs.renderLayer.draw();
           renderCanvas(element);
@@ -145,13 +175,21 @@
         dragLayer.draw(); 
         workLayer.draw();
 
-      }
+      } // if move
+      // if the action in question is a replacement
       else {
-
-      }
-    }
+        // ***** currently in progress *******
+      } // if replace
+    } // if undo
   };
 
+
+  /**
+   * redoAction takes an action from the action array and if a redo action is
+   * possible, redoes one of the action (delete, insert, move, or replace)
+   * for either a node or a line. The currIndex is updated and relevant layers
+   * redrawn.
+   */
   var redoAction = function(actionObj) {
     // if the currIndex is less than the totalIndex (there are still valid actions)
     if (currIndex < totalIndex) {
@@ -163,29 +201,42 @@
         if (actionObj.type == 'node') {
           // deal with lines coming in to the node being deleted
           var targetLine;
+          // go through each of the outlets of the object
           for(var i = 3; i < element.children.length; i++) {
+            // grab each line to the outlet
             targetLine = element.children[i].attrs.lineIn;
+            // if such a line exists
             if(targetLine != null) {
+              // empty out the outlet
               targetLine.attrs.outlet = null;
               var index = targetLine.attrs.sourceIndex;
               var source = targetLine.attrs.source;
-              
+              // go through the source's lineOuts after the lineOut of interest
               for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
+                // incrementing all of their positions
                 source.attrs.lineOut[j].attrs.sourceIndex--;
               }
+              // remove the lineOut of interest
               targetLine.attrs.source.attrs.lineOut.splice(index, 1);
               targetLine.remove();
-            }
+            } // if not null
           }
           // deal with the lines leading out of the node being deleted
           var outletParent;
+          // go through each of the lineOuts
           for(var i = 0; i < element.attrs.lineOut.length; i++) {
+            // grab the line of interest
             targetLine = element.attrs.lineOut[i];
+            // grab its sink's parent
             outletParent = targetLine.attrs.outlet.parent;
+            // decrement the sink's inputs
             outletParent.attrs.numInputs--;
+            // empty out the sink's outlet
             targetLine.attrs.outlet.attrs.lineIn = null;
+            // check and update the rendering of the sink
             assertRenderable(outletParent);
             updateForward(outletParent);
+            // remove the line from the lineLayer
             targetLine.remove();
           } 
           // remove text from funBar
@@ -194,19 +245,25 @@
             funBarText.setAttr('text', '');
             funBarLayer.draw();
           }
+          // remove the element form the workLayer
           element.remove();
         } // if node
         // else line
         else {
+          // remove the line and update th esink and source's indexes
           removeLine(element);
         }
       } // if delete
       //else if insert
       else if (action == 'insert') {
+        // if working with a ndoe
         if (actionObj.type == 'node') {
+          // remove the element from the workLayer
           element.moveTo(workLayer);
-        }
+        } // if node
+        // if working with a line
         else {
+          // insert the old line
           insertLine(actionObj);
           lineLayer.draw();
         }
@@ -214,22 +271,27 @@
       } // if insert
       // else if move
       else if (action == 'move') {
+        // grab the ending position of the movement
         var newX = actionObj.x2;
         var newY = actionObj.y2;
+        // grab fo the object
         var element = elementTable[actionObj.id];
+        // re-move the object back to the changed position
         element.setAttrs({
           x: newX,
           y: newY
         });
+        // re-render a canvas if previously open
         if (element.children[2].attrs.expanded) {
           element.attrs.renderLayer.draw();
           renderCanvas(element);
         }
+        // update the currShape
         currShape = element;
       } // if move
       // else replace
       else {
-
+        // ******** currently in progress ******
       } // else replace
       dragLayer.draw(); 
       workLayer.draw();
@@ -246,24 +308,34 @@
    var removeLine = function(line) {
     var outlet = line.attrs.outlet;
     var parent = outlet.parent;
+    // remove the sourceIndex'th lineOut from the line's source
     line.attrs.source.attrs.lineOut.splice(line.attrs.sourceIndex, 1);
+    // empty out the sink's outlet
     outlet.attrs.lineIn = null;
+    // update the sink's number of outlets
     parent.attrs.numInputs--;
+    // remove the line form the lineLayer
     line.remove();
+    // if the sink is the currShape
     if (parent == currShape) {
+      // if the sink is still renderable, update the funBarText
       if (assertRenderable(parent)) {
         funBarText.setAttr('text', currShape.attrs.renderFunction);
-      }
+      } // if renderable
+      // if sink un-renderable
       else {
+        // update currShape's identification and the funBarText
         currShape.children[0].setAttr('shadowEnabled', false);
         currShape = undefined;
         funBarText.setAttr('text', ''); 
-      }
+      } // if un-renderable
       funBarLayer.draw();
-    } 
+    } // if currShape
     else {
+      // if sink is not currShape, assert and update renderability of sink
       assertRenderable(parent);
-    }    
+    }
+    // update
     updateForward(outlet.parent);
   };
 
@@ -276,6 +348,7 @@
     var source = actionObj.source;
     var outlet = actionObj.sink.children[actionObj.sinkIndex + 3];
     var element = elementTable[actionObj.id];
+    // move old line to the lineLayer
     element.moveTo(lineLayer);
     // connect line to source
     element.attrs.source = source;
@@ -287,31 +360,51 @@
     element.attrs.outlet = outlet;
     // connect outlet to line
     outlet.attrs.lineIn = element;
+    // assert and update renderability of the sink
     assertRenderable(actionObj.sink);
+    // if the currShape is defined
     if (currShape != undefined) {
+      // update the funBarText
       updateFunBar();
-    } 
+    }
+    // set the line's attributes
     element.setAttrs({
       scale: 1,
       shadowEnabled: false
     });
+    // update the currshape to be the sink and re-draw
     currShape = actionObj.sink;
     dragLayer.draw();
+    // update the currShape to be the source and re-draw
     currShape = actionObj.source;
     dragLayer.draw();
   };
 
+
+  /**
+   * shadeUndoRedo takes no parameters and instead works off of the global
+   * variables currIndex and totalIndex to update the attributes of the 
+   * undo/redo buttons to reflect their validity.
+   */ 
   var shadeUndoRedo = function() {
+    // if an undo action is possible
     if (currIndex > 0) {
+      // color the undo button grey
       undoButton.setAttr('fill', 'grey');
     } 
+    // if undo is invalid
     else {
+      // color the undo button a lighter grey
       undoButton.setAttr('fill', '#E3E3E3');
     } 
+    // is a redo action is possible
     if (currIndex < totalIndex) {
+      // color the undo button grey
       redoButton.setAttr('fill', 'grey');
     }
+    // if redo is invalid
     else {
+      // color the undo button a lighter grey
       redoButton.setAttr('fill', '#E3E3E3');
     } 
   };
