@@ -444,9 +444,7 @@ MIST.Collection.prototype.addUserFun = function(name,display,about,params,code) 
   if (params) {
     numParams = params.split(",").length;
   }
-  this.add(new MIST.FunInfo(name,display,about,
-                            numParams,numParams,
-                            params,code));
+  this.add(new MIST.FunInfo(name,display,about,params,{code:code}));
 };
 
 /**
@@ -456,16 +454,26 @@ MIST.Collection.prototype.addUserVal = function(name,display,about,code) {
   this.add(new MIST.ValInfo(name,display,about,code));
 }; // addUserVal
 
+/**
+ * Add a builtin function.
+ */
+MIST.Collection.prototype.addBuiltinFun = function(name,display,about,params,minarity,maxarity,type) {
+  this.add(new MIST.FunInfo(name, display, about, params,
+    {minarity:minarity, maxarity:maxarity, type:type}));
+} // addBuiltinFun
+
 // +-------------------+---------------------------------------------
 // | Value Information |
 // +-------------------+
 
-MIST.ValInfo = function(name, display, about, code) {
+MIST.ValInfo = function(name, display, about, other) {
   this.class = "MIST.ValInfo";
   this.name = name;
   this.display = display;
   this.about = about;
-  this.code = code;
+  for (var key in other) {
+    this[key] = other[key];
+  } // for
 } // MIST.ValInfo
 
 // +----------------------+------------------------------------------
@@ -475,16 +483,16 @@ MIST.ValInfo = function(name, display, about, code) {
 /**
  * A bit of information on the installed functions.
  */
-MIST.FunInfo = function(name, display, about, minarity, maxarity, params, code) {
+MIST.FunInfo = function(name, display, about, params, other) {
   this.class = "MIST.FunInfo";
   this.name = name;
   this.display = display;
   this.about = about;
-  this.minarity = minarity;
-  this.maxarity = maxarity;
   this.params = params;
-  this.code = code;
-} // FunInfo
+  for (var key in other) {
+    this[key] = other[key];
+  } // for
+} // MIST.FunInfo
 
 // +---------+-------------------------------------------------------
 // | Parsing |
