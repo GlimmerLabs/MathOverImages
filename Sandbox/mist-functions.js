@@ -499,6 +499,7 @@ MIST.FunInfo = function(name, display, about, params, other) {
 // +---------+
 
 MIST.alpha = /[a-zA-Z]/;
+MIST.digit = /[0-9]/;
 
 MIST.tokens = Object.freeze({UNKNOWN:0, OPEN:1, CLOSE:2, COMMA:3, 
   ID:4, NUM:5, EOF:6});
@@ -591,12 +592,30 @@ MIST.tokenize = function(str) {
         ch.type = MIST.tokens.COMMA;
         tokens.push(ch);
       }
-      else if (MIST.alpha.test(ch.text)) {
+      else if (/[0-9-.]/.test(ch.text)) {
+        var num = ch.text;
+        var c;
+        var dot = (ch.text == ".");
+        while ((c = input.peek()) && 
+            (/[0-9]/.test(c) || (!dot && (c == ".")))) {
+          input.next();
+          num += c;
+          if (c == ".") { dot = true; }
+        } // while
+        if (num == "-") {
+          MIST.parseError("Singleton negative signs not allowed.", 
+            ch.row, ch.col);
+        } // if we only saw a negative sign
+        ch.type = MIST.tokens.NUM;
+        ch.text = num;
+        tokens.push(ch);
+      }
+      else if (/[A-Za-z]/.test(ch.text)) {
         var col = ch.col;
         var row = ch.row;
         var id = ch.text;
         var c;
-        while ((c = input.peek()) && MIST.alpha.test(c)) {
+        while ((c = input.peek()) && /[A-Za-z0-9]/.test(c)) {
           id += c;
           input.next();
         } // while
@@ -634,13 +653,18 @@ MIST.parse = function(str) {
       MIST.parseError("Unexpected end of input", tok.row, tok.col);
     }
 
-    // Only identifiers are allowed at the top level.
-    if (tok.type != MIST.tokens.ID) {
+    // Is it a number?
+    if (tok.type == MIST.tokens.NUM) {
+      return new MIST.Val(tok.text);
+    } // MIST.tokens.NUM
+    
+    // Only identifiers and numbers are allowed at the top level.
+    else if (tok.type != MIST.tokens.ID) {
       MIST.parseError("Unexpected token (" + tok.text + ")", tok.row, tok.col);
     } // if it's not an identifier
-  
+
     // Is it a function call?
-    if (peekType(tokens) == MIST.tokens.OPEN) {
+    else if (peekType(tokens) == MIST.tokens.OPEN) {
       tokens.shift();
       var children = [];
       while (peekType(tokens) != MIST.tokens.CLOSE) {
