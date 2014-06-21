@@ -72,7 +72,7 @@ function wrap(val)
 var abs = function(i) {
   return Math.abs(i);
 }; // abs
-BUILTIN("abs", "abs", "Compute the absolute value of i", "i", 
+BUILTIN("abs", "abs", "The absolute value of i", "i", 
   1, 1, "GENERAL");
 
 var average = function(a) {
@@ -84,7 +84,7 @@ BUILTIN("average", "ave", "Average 2 or more values", "...",
 var cosine = function(a) {
   return Math.cos(Math.PI * a);
 }; // cosine
-BUILTIN("cosine", "cos", "Compute the cosine of pi times a", "a",
+BUILTIN("cosine", "cos", "The cosine of pi*a", "a",
   1, 1, "GENERAL");
 
 var multiply = function() {
@@ -94,7 +94,7 @@ var multiply = function() {
   }
   return product;
 }; // multiply
-BUILTIN("multiply", "mult", "Average 2 or more values", "...",
+BUILTIN("multiply", "mult", "Multiply 2 or more values", "...",
   2, 20, "GENERAL");
 
 var rgb = function(r,g,b) {
@@ -108,7 +108,8 @@ var sign = function(range) {
   else 
     return 1;
 }; 
-BUILTIN("sign", "sign", "Convert negative numbers to -1 and non-negative nubmers to 1", 1, 1, "GENERAL");
+BUILTIN("sign", "sign", 
+  "If i < 0, returns -1; if i >- 0, returns 1", "i", 1, 1, "GENERAL");
 
 var signz = function(range)
 {
@@ -119,11 +120,14 @@ var signz = function(range)
   else
     return range;
 }; 
+BUILTIN("signz", "signz", 
+  "If i < 0, returns -1; if i > 0, returns 1; if i is 0, returns 1.",
+  "i", 1, 1, "GENERAL");
 
 var sine = function(a) {
     return Math.sin(Math.PI * a);
 };
-BUILTIN("sine", "sin", "Compute the sine of pi times a", "a",
+BUILTIN("sine", "sin", "The sine of pi*a", "a",
   1, 1, "GENERAL");
 
 var square = function(i) {
@@ -138,9 +142,9 @@ var sum = function() {
   } 
   return sum;
 }; // sum
-BUILTIN("sum", "sum", "Sum 2 or more values.  If the sum would exceed 1, has the value 1.  If the sum would be less than -1, has the value -1", 2, 20, "GENERAL");
+BUILTIN("sum", "sum", "Sum 2 or more values.  If the sum would exceed 1, has the value 1.  If the sum would be less than -1, has the value -1", "...", 2, 20, "GENERAL");
 
 var wrapsum = function() {
     return wrap(sum.apply(this, arguments));
 };
-BUILTIN("wrapsum", "wsum", "Sum 2 or more values, wrapping around from 1 to -1 (or vice versa) if the sum is too large or too small", 2, 20, "GENERAL");
+BUILTIN("wrapsum", "wsum", "Sum 2 or more values, wrapping around from 1 to -1 (or vice versa) if the sum is too large or too small", "...", 2, 20, "GENERAL");
