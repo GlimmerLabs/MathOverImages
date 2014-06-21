@@ -22,7 +22,7 @@
 
      4. Add separators to the menu with
        
-        MISTui.addSeparator(id-of-menu, id-of-separator);
+        MISTui.addSeparator(id-of-separator);
 
      5. Refresh the menu after adding items and separators with
 
@@ -75,17 +75,23 @@ MISTui.addMenu = function(parent, menuid, menuname) {
   }
 
   // Generate the menu 
-  var menu = document.createElement("li");
+  var top = document.createElement("div");
+  top.style.float = "left";
+  var menu = document.createElement("ul");
+  menu.id = menuid;
+  menu.className = "mistmenu";
+  top.appendChild(menu);
+  var contents = document.createElement("li");
   var label = document.createElement("a");
   label.innerHTML = menuname;
-  menu.appendChild(label);
+  contents.appendChild(label);
   var items = document.createElement("ul");
   items.id = menuid+"-items";
-  items.className = "menu";
-  menu.appendChild(items);
+  contents.appendChild(items);
+  menu.appendChild(contents);
 
   // Add the menu
-  parent.appendChild(menu);
+  parent.appendChild(top);
 
   // And do the formatting
   MISTui.formatMenu(menuid);
@@ -131,7 +137,7 @@ MISTui.addMenuSeparator = function(menu,id) {
   // Build the item
   var item = document.createElement("li");
   item.id = id;
-  item.className = "separator";
+  item.innerHTML = "-";
 
   // Add the item to the list of items
   items.appendChild(item);
@@ -152,12 +158,43 @@ MISTui.clearMenu = function(menu) {
  * Format the menu appropriately.
  */
 MISTui.formatMenu = function(menuid) {
+  var menuSettings = {position:{my:"left top", at:"left bottom"}};
+  // And style it appropriately
+  var selector = "#" + menuid;
+  $(selector).menu(menuSettings);
+
+  // Here's a hack for removing the caret icon (which they call carat)
+  $(selector).menu("option", "icons", { submenu: "remove" });
+  $(".ui-menu-icon.ui-icon.remove").remove();
 } // formatMenu
+
+/**
+ * Create the HTML for a menu (no items).  This code probably isn't
+ * necessary, but was useful during development.
+ */
+MISTui.makeMenuHTML = function(menuid, menuname)
+{
+  if (!menuname) { menuname = menuid; }
+    var lines = [
+       '  <div style="float: left;">',
+       '    <ul id="' + menuid + '">',
+       '      <li>',
+       '        <a href="#">' + menuname + '</a>',
+       '        <ul id="' + menuid + '-items">',
+       '        </ul>',
+       '      </li>',
+       '      </ul>',
+       '  </div>',
+       ''
+     ];
+     return lines.join('\n');
+}; // MISTui.makeMenuHTML
 
 /**
  * Refresh an existing menu (e.g., after adding or removing an element).
  */
 MISTui.refreshMenu = function(menuid) {
+  $("#" + menuid).menu("refresh");
 }; // MISTui.refreshMenu
 
 /**
