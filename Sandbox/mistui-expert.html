@@ -250,7 +250,7 @@ function failSaveFunction(msg) {
  */
 function loadFunction() {
   selectedFiles = false;
-  $("#load-function").dialog("open");
+  $("#load-function-dialog").dialog("open");
 }
 
 /**
@@ -356,14 +356,7 @@ $(document).ready(function() {
     }
   });
 
-  console.log("Setting up fred");
-  $("#fred").dialog({
-    autoOpen: false,
-    resizable: false,
-    width: "50%",
-    modal: true});
-
-  $("#load-function").dialog({
+  $("#load-function-dialog").dialog({
     autoOpen: false,
     resizable: false,
     width: "50%",
@@ -401,7 +394,6 @@ $(document).ready(function() {
       }
     }
   });
-  console.log("Done");
 
   // The MIST menu.
   MISTui.addMenu("menubar", "mist-menu", "MIST");
@@ -475,7 +467,7 @@ $(document).ready(function() {
     function(event) {
       alert("Not yet implemented.");
     });
-  MISTui.addMenuItem("function-menu", "fred", "Load Function ...",
+  MISTui.addMenuItem("function-menu", "load-function", "Load Function ...",
     "Load a function from the local filesystem",
     function(event) {
       loadFunction();
@@ -599,13 +591,6 @@ context.fillRect(0,0,canvas.width,canvas.height);
 
 <!-- Dialog Boxes -->
 
-<div id="fred" title="Fred">
-
-</div>
-
-<div id="smith" title="Smit">
-</div>
-
 <div id="confirm-replace-function" title="Replace Existing Function?">
 
 <p>
@@ -664,7 +649,7 @@ context.fillRect(0,0,canvas.width,canvas.height);
 
 </div>
 
-<div id="load-function" title="Load Function">
+<div id="load-function-dialog" title="Load Function">
 
 <p>
   Select the file to load.  Note that MIST functions are typically
@@ -674,7 +659,7 @@ context.fillRect(0,0,canvas.width,canvas.height);
 <form>
 <fieldset>
   <label for="loadfun-filename">File Name</label>
-  <input type="file" name="loadfun-filename" id="loadfun-filename">
+  <input type="file" accept="application/json" name="loadfun-filename" id="loadfun-filename">
 </fieldset>
 </form>
 
