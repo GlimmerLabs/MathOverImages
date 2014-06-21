@@ -45,13 +45,13 @@ var HELP_ID = "helptext";
  */
 MISTui.addHelp = function(id,helptext) {
   var selector = "#" + id;
-  $(selector).mouseenter(function(event) {
+  var showhelp = function(event) {
     var loc = document.getElementById(id).getBoundingClientRect();
     MISTui.showHelp(helptext, loc.right-5, loc.top+3); // Yay magic numbers
-  });
-  $(selector).mouseout(function(event) {
-    MISTui.hideHelp();
-  });
+  };
+  $(selector).mouseenter(showhelp);
+  $(selector).mouseover(showhelp);
+  $(selector).mouseout(MISTui.hideHelp);
 }; // MISTui.addHelp
 
 /**
