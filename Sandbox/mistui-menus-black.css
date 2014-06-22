@@ -74,7 +74,7 @@ ul.menu li {
 }
 
 /* When you hover over a menu title, it becomes grey */
-ul.menubar li:hover{
+ul.menubar li:hover {
   background-color: grey;
   color: black;
 }
@@ -86,6 +86,17 @@ ul.menubar li:hover ul.menu {
   top: 100%;
   left: 0;
   visibility: visible;
+}
+
+/* When you disable an item, we go back to the normal state, even if
+   we are hovering. */
+ul.menubar li.disabled:hover {
+  background-color: black;
+  color: white;
+}
+
+ul.menubar li.disabled:hover ul.menu {
+  display: none;
 }
 
 /* Menus are also not lists. */
