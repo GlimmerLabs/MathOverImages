@@ -48,6 +48,43 @@
 
 try { MIST = MIST; } catch (err) { MIST = new Object(); }
 
+// +----------------------+------------------------------------------
+// | Types of Expressions |
+// +----------------------+
+
+MIST.TYPE = {};
+
+MIST.TYPE.RGB = "RGB";
+MIST.TYPE.HSV = "HSV";
+MIST.TYPE.NUMBER = "NUMBER";
+
+/**
+ * Determine the type of an expression, given a series of function
+ * and value definitions.
+ */
+MIST.expType = function(exp,context) {
+  // Long term: Scan through the expression.
+  // Short term: Look at the top-level operation
+  if (exp instanceof MIST.App) {
+    if (exp.operation == "rgb") {
+      return MIST.TYPE.RGB;
+    }
+    else if (exp.operation == "hsv") {
+      return MIST.TYPE.HSV;
+    }
+    else {
+      return MIST.TYPE.NUMBER;
+    }
+  } // if it's an application
+
+  // If it's just a value, we should look at the type of the value.
+  // But right now, we assume we'll only have numeric contants and
+  // not HSV or RGB constants.
+  else {
+    return MIST.TYPE.NUMBER;
+  } // A value
+} // MIST.expType
+
 // +-------------------+---------------------------------------------
 // | General Utilities |
 // +-------------------+
