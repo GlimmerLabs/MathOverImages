@@ -672,7 +672,7 @@ MIST.parse = function(str) {
         if (peekType(tokens) == MIST.tokens.COMMA) {
           tokens.shift();
           if (peekType(tokens) == MIST.tokens.CLOSE) {
-            MIST.parseError("Close paren follows comma", tokens[0].col, tokens[0].row);
+            MIST.parseError("Close paren follows comma", tokens[0].row, tokens[0].col);
           } // if there's a close paren after a comma
         } // if there's a comma
       } // while
@@ -689,8 +689,8 @@ MIST.parse = function(str) {
   var tokens = MIST.tokenize(str);
   var result = kernel(tokens);
   if ((tokens.length > 1) || (peekType(tokens) != MIST.tokens.EOF)) {
-    MIST.parseError("Extra text after expression", tokens[0].col,
-      tokens[0].row);
+    MIST.parseError("Extra text after expression", tokens[0].row,
+      tokens[0].col);
   } 
   return result;
 } // MIST.parse
