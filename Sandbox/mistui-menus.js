@@ -100,6 +100,19 @@ MISTui.addMenuItem = function(menu, id, name, help, handler) {
     throw "Cannot find menu " + menu;
   }
 
+  var wrapHandler = function(menu,handler) {
+    return function(evt) {
+      // Get rid of the help
+      MISTui.hideHelp();
+      // Disable the menu temporarily so that it disappears
+      var li = document.getElementById(menu + "-items").parentNode;
+      li.className = "disabled";
+      setTimeout(function() { li.className = ""; }, 100);
+      // And do the real handling.
+      handler(evt);
+    }
+  } // wrapHandler
+
   // Build the item
   var item = document.createElement("li");
   item.id = id;
@@ -107,7 +120,10 @@ MISTui.addMenuItem = function(menu, id, name, help, handler) {
 
   // Add the handler
   if (handler) {
-    item.onclick = handler;
+    item.onclick = wrapHandler(menu,handler);
+  }
+  else {  
+    item.onclick = wrapHandler(menu, function(evt) { });
   }
 
   // Add the item to the list of items
