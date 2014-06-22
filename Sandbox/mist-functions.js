@@ -291,7 +291,8 @@ MIST.App = function(operation) {
   // Validate the operands
   for (var i = 0; i < this.operands.length; i++) {
     if (!MIST.isExp(this.operands[i])) {
-      throw "Subexpression " + i + "is invalid: " + this.operands[i];
+      console.log(this.operands);
+      throw "Subexpression " + i +  "is invalid: " + this.operands[i];
     } // if
   } // for
 
@@ -652,7 +653,7 @@ MIST.tokenize = function(str) {
         var row = ch.row;
         var id = ch.text;
         var c;
-        while ((c = input.peek()) && /[A-Za-z0-9]/.test(c)) {
+        while ((c = input.peek()) && /[A-Za-z0-9.]/.test(c)) {
           id += c;
           input.next();
         } // while
