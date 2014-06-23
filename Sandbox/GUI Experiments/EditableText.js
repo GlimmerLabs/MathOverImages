@@ -112,7 +112,7 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		var beginning = this.getDistanceUpTo(this.position);
 		var textBeforeCursor = activeText.text().slice(beginning, this.position);
 		var xOffset = activeText.measureText(family, size, textBeforeCursor).width;;
-		if(activeText.aligned == "center"){
+		if (activeText.aligned == "center") {
 			var lineTextWidth = activeText.measureText(family, size, lineText).width;
 			xOffset += (activeText.width() - lineTextWidth) / 2;
 		}
@@ -135,13 +135,13 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		var size = activeText.fontSize();
 		var closestDistance = Infinity;
 		var closestIndex = -1;
-		for(var char = text.length; char >= 0; char--){
-			var chunk = text.slice(0, char);
+		for(var ch = text.length; ch >= 0; ch--){
+			var chunk = text.slice(0, ch);
 			var distance = activeText.measureText(family, size, chunk).width;
 			distance -= x;
 			distance = Math.abs(distance);
 			if(distance < closestDistance){
-				closestIndex = char;
+				closestIndex = ch;
 				closestDistance = distance;
 			}
 		}
