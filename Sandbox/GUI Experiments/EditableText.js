@@ -24,16 +24,20 @@
 // +----------------------------+------------------------------------
 // | Extensions to Kinetic.Text |
 // +----------------------------+
-
+// To do: fix for centered text
 
 Kinetic.Text.prototype.isEditable = false;
 Kinetic.Text.prototype.isActive = false;
 Kinetic.Text.prototype.setEditable = function(state){this.isEditable = state;}
 Kinetic.Text.prototype.defaultText = null;
 Kinetic.Text.prototype.drawMethod = function(){};
+Kinetic.Text.prototype.capitalized = false;
+Kinetic.Text.prototype.aligned = "left";
+Kinetic.Text.prototype.matchingCharacters = /[0-9.]/;
+Kinetic.Text.prototype.parentLayer = function(){return this.parent};
 Kinetic.Text.prototype.measureText = function(family, size, text){
-	this.parent.canvas.context._context.font = size + "px" + " "  + family;
-	return this.parent.canvas.context._context.measureText(text);
+	this.parentLayer().canvas.context._context.font = size + "px" + " "  + family;
+	return this.parentLayer().canvas.context._context.measureText(text);
 }
 Kinetic.Text.prototype.removeFocus = function(){
 	if(this.cursor != null){
@@ -41,6 +45,7 @@ Kinetic.Text.prototype.removeFocus = function(){
 		this.cursor.remove();
 		this.cursor = null;
 	}
+	this.capitalized = false;
 	this.isActive = false;
 	if(this.text() == ""){
 		this.text(this.defaultText);
@@ -48,7 +53,7 @@ Kinetic.Text.prototype.removeFocus = function(){
 	this.drawMethod();
 	activeText = null;
 }
-Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
+Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 	var x = this.x();
 	var fontSize = this.fontSize();
 	var align = this.align();
@@ -67,9 +72,34 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 		var textLength = activeText.text().length;
 		cursor.position = Math.min(Math.max(cursor.position, 0), textLength);
 	}
-	cursor.moveLinePosition = function(x){
-		var height = activeText.height();
-		var y = activeText.y();
+	cursor.getLine = function(){
+		var currentLength = 0;
+		var previousLength = 0;
+		var desiredLength = this.position;
+		var text = activeText.textArr;
+		for(var textElement = 0; textElement < text.length; textElement++){
+			previousLength = currentLength;
+			currentLength += text[textElement].text.length;
+			if(desiredLength >= previousLength && desiredLength <= currentLength){
+				return textElement;
+			}
+		}
+	}
+	cursor.getDistanceUpTo = function(position){
+		var currentLength = 0;
+		var previousLength = 0;
+		var text = activeText.textArr;
+		for(var textElement = 0; textElement < text.length; textElement++){
+			previousLength = currentLength;
+			currentLength += text[textElement].text.length;
+			if(position >= previousLength && position <= currentLength){
+				return previousLength;
+			}
+		}
+	}
+	cursor.moveLinePosition = function(x, lineChange){
+		var height = activeText.textHeight;
+		var y = activeText.y() + lineChange;
 		this.points([x, y, x, y + height]);
 		activeText.drawMethod();
 	}
@@ -77,11 +107,19 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
 		var x = activeText.x();
-		var textBeforeCursor = activeText.text().slice(0, this.position);
-		var width = activeText.measureText(family, size, textBeforeCursor).width;
-		cursor.moveLinePosition(x + width);
+		var line = this.getLine();
+		var lineText = activeText.textArr[line].text;
+		var beginning = this.getDistanceUpTo(this.position);
+		var textBeforeCursor = activeText.text().slice(beginning, this.position);
+		var xOffset = activeText.measureText(family, size, textBeforeCursor).width;;
+		if(activeText.aligned == "center"){
+			var lineTextWidth = activeText.measureText(family, size, lineText).width;
+			xOffset += (activeText.width() - lineTextWidth) / 2;
+		}
+		var lineOffset = line * activeText.textHeight;
+		cursor.moveLinePosition(x + xOffset, lineOffset);
 	}
-	cursor.moveToClosestPosition = function(where){
+	cursor.moveToClosestPosition = function(x, y){
 		clearTimeout(activeText.cursor.timeout);
 		activeText.cursor.shouldChange = false;
 		activeText.cursor.opacity(1);
@@ -90,7 +128,9 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 				activeText.cursor.shouldChange = true;
 			}
 		}, 100);
-		var text = activeText.text();
+		var line = Math.round(y / activeText.textHeight); // Get which line the mouse clicked on
+		line -= 1; // convert line to an array index
+		var text = activeText.textArr[line].text;
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
 		var closestDistance = Infinity;
@@ -98,14 +138,14 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 		for(var char = text.length; char >= 0; char--){
 			var chunk = text.slice(0, char);
 			var distance = activeText.measureText(family, size, chunk).width;
-			distance -= where;
+			distance -= x;
 			distance = Math.abs(distance);
 			if(distance < closestDistance){
 				closestIndex = char;
 				closestDistance = distance;
 			}
 		}
-		this.position = closestIndex;
+		this.position = closestIndex + cursor.getDistanceUpTo(line);
 		this.updatePosition();
 	}
 	cursor.moveLinePosition(this.measureText(fontFamily, fontSize, text).width + this.x());
@@ -121,8 +161,17 @@ Kinetic.Text.prototype.addCursor = function(mouseRelativeX){
 			active.drawMethod();
 		}
 	}, 750);
-	if(this.text() != this.defaultText){
-		cursor.moveToClosestPosition(mouseRelativeX + cursor.offsetX());
+	if(this.text() != this.defaultText && moveToClosest){
+		var mouseX = mouse.x;
+		var textX = this.x();
+		var mouseY = mouse.y;
+		var textY = this.y();
+		var mouseRelativeX = mouseX - textX + cursor.offsetX();
+		var mouseRelativeY = mouseY - textY + cursor.offsetY();
+		cursor.moveToClosestPosition(mouseRelativeX, mouseRelativeY);
+	}
+	else{
+		cursor.updatePosition();
 	}
 }
 activeText = null;
@@ -149,25 +198,38 @@ function readyEditing(stage)
 								activeText.removeFocus();
 							}
 							activeText = event.target;
+							var moveCursorToClosest = true;
 							if (activeText.text() == activeText.defaultText){
+
 								activeText.text("");
+								var moveCursorToClosest = false;
 							}
-							var mouseX = stage.getPointerPosition().x;
 							var textX = activeText.x();
-							activeText.addCursor(mouseX - textX);
+							activeText.addCursor(moveCursorToClosest, stage.getPointerPosition());
 							activeText.isActive = true;
 						}
 						else{
 							var cursor = activeText.cursor;
 							var mouseX = stage.getPointerPosition().x;
 							var textX = activeText.x();
-							cursor.moveToClosestPosition(mouseX - textX + cursor.offsetX());
+							var mouseY = stage.getPointerPosition().y;
+							var textY = activeText.y();
+							var mouseRelativeX = mouseX - textX + cursor.offsetX();
+							var mouseRelativeY = mouseY - textY + cursor.offsetY();
+							cursor.moveToClosestPosition(mouseRelativeX, mouseRelativeY);
 						}
 						currentEvent = event.evt;
 					}
 			}
 		});
+	document.body.onkeyup = function(e){
+		var keycode = e.which || e.keyCode;
+		if(keycode == 16 && activeText != null){
+			activeText.capitalized = false;
+		}
+	}
 	document.body.onkeydown = function(e) {
+		var keycode = e.which || e.keyCode;
 		if(activeText != null){
 			clearTimeout(activeText.cursor.timeout);
 			activeText.cursor.shouldChange = false;
@@ -180,29 +242,49 @@ function readyEditing(stage)
 			var currentText = activeText.getText();
 			var textPreCursor = currentText.slice(0, activeText.cursor.position);
 			var textPostCursor = currentText.slice(activeText.cursor.position, currentText.length);
-			if(e.which >= 48 && e.which <= 57){ // keycode 48 is the key "0" and 57 is the key "9"
+			var addedKey = false;
+			var cursorPositionChange = 0;
+			if(keycode >= 48 && keycode <= 57){ // keycode 48 is the key "0" and 57 is the key "9"
 				var key = "0123456789"[e.which-48]; // get which number key was pressed
-				activeText.setText(textPreCursor + key + textPostCursor);
-				activeText.cursor.position++;
+				addedKey = true;
 			}
-			if(e.which >= 96 && e.which <= 105){ // keycode 96 is the numpad key "0" and 105 is the numpad key "9"
+			if(keycode >= 96 && keycode <= 105){ // keycode 96 is the numpad key "0" and 105 is the numpad key "9"
 				var key = "0123456789"[e.which-96]; // get which number key was pressed
-				activeText.setText(textPreCursor + key + textPostCursor);
-				activeText.cursor.position++;
+				addedKey = true;
 			}
-			if(e.which == 190 || e.which == 110){ // 190 is the "." key 110 is the numpad version
-				activeText.setText(textPreCursor + "." + textPostCursor);
-				activeText.cursor.position++;
+			if(keycode >= 65 && keycode <= 90){ // keycode 65 is the key "a" and 90 is the key "z"
+				var key = "abcdefghijklmnopqrstuvwxyz"[e.which-65]; // get which letter key was pressed
+				addedKey = true;
 			}
-			if(e.which == 8 || e.which == 46){ // 8 is the backspace key; 46 is the delete key
+			if(keycode == 190 || keycode == 110){ // 190 is the "." key 110 is the numpad version
+				var key = "."
+				addedKey = true;
+			}
+			if(keycode == 16){
+				activeText.capitalized = true;
+			}
+			if(keycode == 8 || keycode == 46){ // 8 is the backspace key; 46 is the delete key
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
 				activeText.cursor.position--;
 			}
-			if(e.which == 37){ // 37 is the left arrow key
+			if(keycode == 37){ // 37 is the left arrow key
 				activeText.cursor.position--;
 			}
-			if(e.which == 39){ // 39 is the right arrow key
+			if(keycode == 39){ // 39 is the right arrow key
 				activeText.cursor.position++;
+			}
+			if(keycode == 189 || keycode == 109){ // 189 and 109 are the - keys: normal, numpad respectively
+				var key = ".";
+				addedKey = true;
+			}
+			if(addedKey){
+				if(activeText.capitalized){
+					key = key.toUpperCase();
+				}
+				if(activeText.matchingCharacters.test(key)){
+					activeText.setText(textPreCursor + key + textPostCursor);
+					activeText.cursor.position++;
+				}
 			}
 			activeText.cursor.validatePosition();
 			activeText.cursor.updatePosition();

@@ -30,8 +30,6 @@ if ($decode) {
   echo(base64_decode($data));
 }
 else {
-  echo("Content-type: $type\n");
-  echo("filename: $filename\n");
   echo($data);
 }
 ?>
