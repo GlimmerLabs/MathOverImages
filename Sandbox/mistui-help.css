@@ -1,0 +1,13 @@
+/**
+ * mistui-help.css
+ *   Styles for the help system described in mistui-help.js
+ */
+.misthelp {
+  position: absolute;
+  border: 8px solid rgb(250,250,250);
+  background: rgb(250,250,250);
+  width: 100px;
+  border-radius: 8px;
+  font-size: small;
+  font-family: Comic Sans, sans-serif
+}

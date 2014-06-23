@@ -113,7 +113,9 @@ var borderLine = new Kinetic.Line({
     height: menuControlHeight,
     fill: menuControlColor,
     stroke: 'black',
-    strokeWidth: .5
+    strokeWidth: .5,
+    shadowColor: 'black',
+    shadowEnabled: false
   });
   newGroup.add(newRect);
   var newText = new Kinetic.Text({
@@ -133,6 +135,6 @@ var openButton = makeMenuButton('Open Workspace', menuOffset, (2*menuOffset) + m
 var saveButton = makeMenuButton('Save Workspace', menuOffset, (3*menuOffset) + 
   (2*menuControlHeight));
 
-menuButtonLayer.add(openNewButton);
-menuButtonLayer.add(openButton);
-menuButtonLayer.add(saveButton);
+menuControlLayer.add(openNewButton);
+menuControlLayer.add(openButton);
+menuControlLayer.add(saveButton);

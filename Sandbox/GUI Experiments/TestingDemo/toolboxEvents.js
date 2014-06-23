@@ -60,15 +60,20 @@ deleteToolGroup.on('click', function() {
 });
 
 undoGroup.on('mousedown', function() {
-  undoButton.setAttr('shadowEnabled', true);
-  toolboxLayer.draw();
+  if (currIndex > 0) {
+    undoButton.setAttr('shadowEnabled', true);
+    toolboxLayer.draw();
+  }
 });
 
 undoGroup.on('mouseup', function() {
-  undoButton.setAttr('shadowEnabled', false);
-  toolboxLayer.draw();
-  undoAction(actionArray[currIndex]);
-
+  if (currIndex > 0) {
+    undoButton.setAttr('shadowEnabled', false);
+    undoAction(actionArray[currIndex - 1]);
+    currIndex--;
+    shadeUndoRedo();
+    toolboxLayer.draw();
+  }
 });
 
 undoGroup.on('mouseout', function() {
@@ -77,13 +82,20 @@ undoGroup.on('mouseout', function() {
 });
 
 redoGroup.on('mousedown', function() {
-  redoButton.setAttr('shadowEnabled', true);
-  toolboxLayer.draw();
+  if (totalIndex > currIndex) {
+    redoButton.setAttr('shadowEnabled', true);
+    toolboxLayer.draw();
+  }
 });
 
 redoGroup.on('mouseup', function() {
-  redoButton.setAttr('shadowEnabled', false);
-  toolboxLayer.draw();
+  if (totalIndex > currIndex) {
+    redoButton.setAttr('shadowEnabled', false);
+    redoAction(actionArray[currIndex]);
+    currIndex++;
+    shadeUndoRedo();
+    toolboxLayer.draw();
+  }
 });
 
 redoGroup.on('mouseout', function() {
