@@ -99,7 +99,7 @@ function insertText(text) {
 /**
  * Fill in the details of the insert menu.
  */
-function updateInsert() {
+function updateInsertMenu() {
   var makeInserter = function(txt) {
     return function(evt) {
       insertText(txt);
@@ -134,7 +134,7 @@ function updateInsert() {
 
 
   MISTui.refreshMenu("insert-menu");
-} // updateInsert()
+} // updateInsertMenu()
 
 /**
  * Fill in the details of the help menu.
@@ -235,10 +235,10 @@ function exportFunction(fname) {
   var code = document.getElementById("funcode").value;
 
   // Compute the number of parameter
-  nparams = params.split(",").lenght;
+  nparams = params.split(",").length;
   
   // Build an appropriate object
-  var fun = new MIST.FunInfo(name, name, about, nparams, nparams, params, code);
+  var fun = new MIST.FunInfo(name, name, about, params, {code:code});
 
   // Convert it to JSON
   var json = JSON.stringify(fun);
@@ -264,6 +264,14 @@ function loadFunction() {
 }
 
 /**
+ * Open a workspace stored in a file.
+ */
+function openWorkspace() {
+  selectedFiles = false;
+  $("#open-workspace-dialog").dialog("open");
+}
+
+/**
  * Save a function to the workspace.
  */
 var saveContinuation = {};
@@ -279,7 +287,7 @@ function saveFunction(success,failure) {
   saveContinuation.failure = failure;
   saveContinuation.success = function() {
     workspace.userfuns.addUserFun(name, name, about, params, code);
-    updateInsert();
+    updateInsertMenu();
     success();
   };
   if (!name) {
@@ -298,6 +306,29 @@ function saveFunction(success,failure) {
     saveContinuation.success();
   }
 } // saveFunction()
+
+/**
+ * Save a workspace, prompting for a file name.
+ */
+var saveWorkspaceContinuation = {};
+function saveWorkspaceAs() {
+  saveWorkspace.failure = function() { };
+  saveWorkspace.success = function() {
+    saveWorkspace(document.getElementById("workspace-filename"));
+  };
+  $("#save-workspace-dialog").dialog("open");
+} // saveWorkspaceAs
+
+/**
+ * Save a workspace using a particular file name.
+ */
+function saveWorkspace(fname) {
+  // Convert it to JSON
+  var json = JSON.stringify(workspace);
+
+  // And save it
+  download(fname, "text/json", json);
+} // saveWorkspace
 
 /**
  * Start the animation running.
@@ -422,6 +453,56 @@ $(document).ready(function() {
     }
   });
 
+  // Opening workspaces.
+  $("#open-workspace-dialog").dialog({
+    autoOpen: false,
+    resizable: false,
+    width: "50%",
+    modal: true,
+    buttons: {
+      "Open": function() {
+        $(this).dialog("close");
+        if (selectedFiles) {
+          var reader = new FileReader();
+          reader.onload = function(evt) {
+            var json = evt.target.result;
+            console.log(evt.target.result);
+            var fun;
+            try {
+              var ws = JSON.parse(json);
+            }
+            catch (err) {
+              alert("File does not contain a workspace.");
+              return;
+            }
+            workspace.userfuns = ws.userfuns;
+            workspace.uservals = ws.uservals;
+            updateInsertMenu();
+          }; // reader.onload
+          reader.readAsText(selectedFiles[0]);
+        } // if (selectedFiles)
+      },
+      "Cancel": function() {
+        $(this).dialog("close");
+      }
+    }
+  });
+
+  $("#save-workspace-dialog").dialog({
+    autoOpen: false,
+    resizable: false,
+    width: "50%",
+    modal: true,
+    buttons: {
+      "Export": function() {
+        $(this).dialog("close");
+      },
+      "Cancel": function() {
+        $(this).dialog("close");
+      }
+    }
+  });
+
   // The MIST menu.
   MISTui.addMenu("menubar", "mist-menu", "MIST");
   MISTui.addMenuItem("mist-menu", "about-mist", "About MIST", false,
@@ -439,9 +520,7 @@ $(document).ready(function() {
     });
   MISTui.addMenuItem("file-menu", "workspace-open", "Open Workspace...",
     "Open a workspace stored on the local filesystem",
-    function(event) {
-      alert("Not yet implemented.");
-    });
+    openWorkspace);
 /*
   MISTui.addMenuItem("file-menu", "workspace-load", "Load Workspace...",
     "Load a workspace from the MIST server",
@@ -453,12 +532,12 @@ $(document).ready(function() {
   MISTui.addMenuItem("file-menu", "workspace-save", "Save Workspace",
     "Save the workspace to the local filesystem.",
     function(event) {
-      alert("Not yet implemented.");
+      saveWorkspace("mist.ws");
     });
   MISTui.addMenuItem("file-menu", "workspace-save-as", "Save Workspace As...",
     "Save the workspace to the local filesystem.",
     function(event) {
-      alert("Not yet implemented.");
+      alert("Not yet implemented");
     });
 /*
   MISTui.addMenuItem("file-menu", "workspace-store", "Store Workspace",
@@ -524,7 +603,7 @@ $(document).ready(function() {
 
   // The insert menu
   MISTui.addMenu("menubar", "insert-menu", "Insert");
-  updateInsert();
+  updateInsertMenu();
 
   // Observe when we get a file
   document.getElementById("loadfun-filename").addEventListener('change',
@@ -687,6 +766,32 @@ context.fillRect(0,0,canvas.width,canvas.height);
 <fieldset>
   <label for="loadfun-filename">File Name</label>
   <input type="file" accept="text/json" name="loadfun-filename" id="loadfun-filename">
+</fieldset>
+</form>
+
+</div>
+
+<div id="open-workspace-dialog" title="Open Workspace">
+
+<p>
+  Select the workspace to open.
+</p>
+
+<form>
+<fieldset>
+  <label for="loadfun-filename">File Name</label>
+  <input type="file" accept="text/json" name="loadfun-filename" id="loadfun-filename">
+</fieldset>
+</form>
+
+</div>
+
+<div id="save-workspace-dialog" title="Save Workspace">
+
+<form>
+<fieldset>
+  <label for="workspace-filename">File Name</label>
+  <input type="text" name="workspace-filename" id="workspace-filename">
 </fieldset>
 </form>
 
