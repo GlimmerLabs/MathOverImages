@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>JQuery Experiment</title>
+
+<!-- Style Sheets -->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="mistui-menus-black.css">
+<link rel="stylesheet" href="mistui-help.css">
+
+<style>
+</style>
+
+<!-- Javascript/JQuery -->
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<!-- Javascript/MISTui -->
+<script src="mistui-menus.js"></script>
+<script src="mistui-help.js"></script>
+
+<!-- Page-Specific JavaScript -->
+
+<script>
+// +------+----------------------------------------------------------
+// | Misc |
+// +------+
+
+/**
+ * Remove all of the classes in an element and its children.
+ */
+function clearClasses(elt) {
+  elt.className = "";
+  for (var i = 0; i < elt.children.length; i++) {
+    clearClasses(elt.children[i]);
+  } // for
+} // clearClasses
+
+// +-----------------+-----------------------------------------------
+// | Set Up Handlers |
+// +-----------------+
+
+$(document).ready(function() {
+  var menuSettings = {
+    // I like menus to expand downward.
+    position:{my:"left top", at:"left bottom"},
+    // I don't want icons
+    icons: {}
+  };
+
+  // Make nice menus out of the HTML.
+  $("#file-menu").menu(menuSettings);
+
+  // Handlers for the menus.
+  $("#about-mist").click(function() { 
+    alert("MIST - The Mathematical Image Synthesis Toolkit"); 
+  });
+
+  // Help text for the menus.
+  MISTui.addHelp("workspace-open", "Open a workspace stored on the local filesystem.");
+  MISTui.addHelp("workspace-load", "Load a workspace from your account.");
+  console.log("Done setup.");
+
+/*
+  // Add the mist menu
+  MISTui.addMenu("menubar","mist-menu","MIST");
+  MISTui.addMenuItem("mist-menu", "about-mist", "About MIST",
+      false, 
+      function (event) {
+        alert("MIST is the Mathematical Image Synthesis Toolkit.");
+      });
+  MISTui.formatMenu("mist-menu");
+ */
+
+  MISTui.addMenu("menubar","bar-menu","Bar");
+  MISTui.addMenuItem("bar-menu", "bar-a", "Alpha", 
+                     "Alpha beta gamma delta epsilon",
+                     function(event) { alert("Bar A"); });
+  MISTui.addMenuItem("bar-menu", "bar-b", "Bravo", "Yay!",
+                     function(event) { alert("Bar B"); });
+  MISTui.addMenuItem("bar-menu", "bar-c", "Charlie", "Charlie is a nickname for Charles",
+                     function(event) { alert("Bar C"); });
+  MISTui.addMenuSeparator("bar-menu", "bar-sep");
+  MISTui.addMenuItem("bar-menu", "bar-d", "Dingo", "Remove Alpha",
+                     function(event) { MISTui.removeMenuItem("bar-menu", "bar-b"); });
+  MISTui.refreshMenu("bar-menu");
+
+  // $("#bar-menu").menu("refresh");
+/*
+  console.log(document.getElementById("bar-menu"));
+  console.log(document.getElementById("bar-menu"));
+  clearClasses(document.getElementById("bar-menu"));
+  document.getElementById("bar-menu").className = "mistmenu";
+  console.log(document.getElementById("bar-menu"));
+  MISTui.formatMenu("bar-menu");
+  console.log(document.getElementById("bar-menu"));
+*/
+
+  MISTui.formatMenu("foo-menu");
+
+  MISTui.addMenuItem("qux-menu", "qux-a", "Alpha", false,
+                     function(event) { alert("Qux A"); });
+  MISTui.addMenuItem("qux-menu", "qux-b", "Bravo", false,
+                     function(event) { alert("Qux B"); });
+  MISTui.addMenuItem("qux-menu", "qux-c", "Charlie", false,
+                     function(event) { alert("Qux C"); });
+  MISTui.formatMenu("qux-menu");
+
+  
+  document.getElementById("baz").innerHTML = ('<ul id="baz-menu"><li><a href="#">Baz</a><ul><li><a href="#">Alpha</a></li><li><a href="#">Bravo</a></li><li><a href="#">Charlie</a></li></ul></li></ul>');
+  MISTui.formatMenu("baz-menu");
+/*
+  // Add the help menu
+  MISTui.addMenu("menubar","help-menu","Help");
+ */
+ // Check on the barmenu
+  console.log(document.getElementById("bar-menu").class);
+});
+</script>
+</head>
+<body>
+
+<div id="menubar" class="menubar">
+
+<script>
+  document.write(MISTui.makeMenuHTML("qux-menu", "Qux"));
+</script>
+
+  <div style="float: left;">
+    <ul id="foo-menu">
+      <li id="foo">
+        <a href="#">Foo</a>
+        <ul id="foo-menu-items">
+          <li id="foo-a"><a href="#">Alpha</a></li>
+          <li id="foo-b"><a href="#">Bravo</a></li>
+          <li id="foo-c"><a href="#">Charlie</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div style="float:left;" id="baz">
+  </div>
+
+<!--
+  <div style="float: left;">
+    <ul id="file-menu">
+      <li id="file-menuitem"><a href="#">File</a>
+      <ul>
+        <li id="workspace-new"><a href="#" onhover="console.log('boo')">New Workspace</a>
+        <li id="workspace-open"><a href="#">Open Workspace ...</a>
+        <li id="workspace-load"><a href="#">Load Workspace ...</a>
+        <li>-</li>
+        <li id="workspace-save"><a href="#">Save Workspace</a>
+        <li id="workspace-save-as"><a href="#">Save Workspace As ...</a>
+      </ul>
+      </li>
+    </ul>
+  </div>
+-->
+</div> <!-- menubar -->
+
+</body>
+</html>
