@@ -230,3 +230,34 @@ var addVal = function(valName, x, y) {
   workLayer.add(val);
   workLayer.draw();
 };
+
+var createEditableText = function (group) {
+	var backgroundBox = new Kinetic.Rect({
+		x: -4,
+		y: functionTotalSideLength + 5,
+		width: functionTotalSideLength,
+		height: 20,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: .5
+	});
+	var editableTextBox = new Kinetic.Text({
+		x: -4,
+		y: functionTotalSideLength + 5,
+		text: 'Enter a Value',
+		fontSize: 10,
+		width: functionTotalSideLength,
+		height: 20,
+		align: "center",
+		fontFamily: 'Open Sans',
+		fill: 'black'
+	});
+	group.add(backgroundBox);
+	group.add(editableTextBox);
+	editableTextBox.setEditable(true);
+	editableTextBox.aligned = "center";
+	editableTextBox.defaultText = 'Enter a Value';
+	editableTextBox.drawMethod = function(){
+		workLayer.draw()
+	};
+};
