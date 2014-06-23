@@ -22,11 +22,13 @@ jquery-ui.css">
 <script src="mist-layout.js"></script>
 <script src="mist-functions-layout.js"></script>
 <script src="mist-functions-builtin.js"></script>
+<script src="mist-render.js"></script>
 
 <!-- MISTui Libraries -->
 <script src="mistui-dialogs.js"></script>
 <script src="mistui-help.js"></script>
 <script src="mistui-menus.js"></script>
+<script src="mistui-animation.js"></script>
 
 <!-- JQuery Libraries -->
 <script src="//code.jquery.com/jquery-1.11.1.js"></script>
@@ -94,16 +96,16 @@ function insertText(text) {
   }
 } // insertText(txt)
 
-function makeInserter(text) {
-  return function(evt) {
-    insertText(text);
-  };
-}
-
 /**
  * Fill in the details of the insert menu.
  */
 function updateInsert() {
+  var makeInserter = function(txt) {
+    return function(evt) {
+      insertText(txt);
+    };
+  }; // makeInserter
+
   var addFunctions = function(collection)  {
     var keys = collection.keys().sort();
     for (var i = 0; i < keys.length; i++) {
@@ -296,6 +298,23 @@ function saveFunction(success,failure) {
     saveContinuation.success();
   }
 } // saveFunction()
+
+/**
+ * Start the animation running.
+ */
+function startAnimation() {
+  MIST.ui.startAnimation(document.getElementById("funcode").value,
+      document.getElementById("funparams").value, {},
+      document.getElementById("canvas"),
+      function(txt) { document.getElementById("message").value = txt; });
+} // startAnimation
+
+/**
+ * Stop the animation from running.
+ */
+function stopAnimation() {
+  MIST.ui.stopAnimation();
+} // stopAnimation
 
 // +------------------+----------------------------------------------
 // | Final Page Setup |
@@ -569,8 +588,8 @@ $(document).ready(function() {
 <div style="text-align: center;">
 <canvas id="canvas" width="200" height="200"></canvas>
 <br/>
-<input type="button" id="start" value="Start"/>
-<input type="button" id="stop" value="Stop"/>
+<input type="button" id="start" value="Start" onClick="startAnimation()"/>
+<input type="button" id="stop" value="Stop" onClick="stopAnimation()"/>
 </div> <!-- center -->
 <script>
 var canvas = document.getElementById("canvas");
@@ -594,7 +613,7 @@ context.fillRect(0,0,canvas.width,canvas.height);
 <script>
 <!-- showBasicInfo(); -->
 </script>
-<textarea style="border: none;" class="message" rows="5" readonly="readonly"></textarea>
+<textarea id="message" style="border: none;" class="message" rows="5" readonly="readonly"></textarea>
 </div>
 
 <!-- Dialog Boxes -->
@@ -667,7 +686,7 @@ context.fillRect(0,0,canvas.width,canvas.height);
 <form>
 <fieldset>
   <label for="loadfun-filename">File Name</label>
-  <input type="file" accept="application/json" name="loadfun-filename" id="loadfun-filename">
+  <input type="file" accept="text/json" name="loadfun-filename" id="loadfun-filename">
 </fieldset>
 </form>
 
