@@ -266,6 +266,7 @@ function readyEditing(stage)
 			if(keycode == 8 || keycode == 46){ // 8 is the backspace key; 46 is the delete key
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
 				activeText.cursor.position--;
+				e.preventDefault(); // Prevents backspace from moving back a page
 			}
 			if(keycode == 37){ // 37 is the left arrow key
 				activeText.cursor.position--;
