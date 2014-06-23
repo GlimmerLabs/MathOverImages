@@ -34,7 +34,7 @@ Kinetic.Text.prototype.drawMethod = function(){};
 Kinetic.Text.prototype.capitalized = false;
 Kinetic.Text.prototype.aligned = "left";
 Kinetic.Text.prototype.matchingCharacters = /[0-9.]/;
-Kinetic.Text.prototype.parentLayer = function(){return this.parent};
+Kinetic.Text.prototype.parentLayer = function(){return this.getLayer()};
 Kinetic.Text.prototype.measureText = function(family, size, text){
 	this.parentLayer().canvas.context._context.font = size + "px" + " "  + family;
 	return this.parentLayer().canvas.context._context.measureText(text);
@@ -268,6 +268,9 @@ function readyEditing(stage)
 				activeText.cursor.position--;
 				e.preventDefault(); // Prevents backspace from moving back a page
 			}
+			if(keycode == 13){
+				activeText.removeFocus();
+			}
 			if(keycode == 37){ // 37 is the left arrow key
 				activeText.cursor.position--;
 			}
@@ -287,9 +290,11 @@ function readyEditing(stage)
 					activeText.cursor.position++;
 				}
 			}
-			activeText.cursor.validatePosition();
-			activeText.cursor.updatePosition();
-			activeText.drawMethod();
+			if(activeText != null){
+				activeText.cursor.validatePosition();
+				activeText.cursor.updatePosition();
+				activeText.drawMethod();
+			}
 		}
 	}
 }

@@ -20,6 +20,7 @@
       } // if new function 
       else if (isValue(group)) {
         group.children[2].setAttr('visible', true);
+        
       }
       if (group.children[2].attrs.expanded) {
         renderCanvas(group);
@@ -29,6 +30,9 @@
         actionArray[currIndex - 1].y2 = group.y();
       }
       else {
+        if (group.attrs.name == 'constant') {
+          createEditableText(group);
+        }
         insertToTable(group);
         insertToArray(actionToObject('insert', group));
       }
