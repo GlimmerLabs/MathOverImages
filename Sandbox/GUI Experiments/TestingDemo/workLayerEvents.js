@@ -172,6 +172,7 @@ lineLayer.draw();
       if (!isImageBox(evt.target)) {
         var group = evt.target.getParent();
         group.moveTo(dragLayer);
+        setDragShadow(group);
         if (currShape != undefined) {
          currShape.children[0].setAttr('shadowEnabled', false);
        }
@@ -200,6 +201,32 @@ lineLayer.draw();
     }
   });
 
+  dragLayer.on('dragmove', function() {
+    if (dragShape != null) {
+      var pos = stage.getPointerPosition();
+      var node = workLayer.getIntersection(pos);
+      if (node) {
+        var group = node.getParent();
+        if ((isValue(group) && isValue(dragShape)) ||
+            (isFunction(group) && isFunction(dragShape))) {
+          group.setAttrs({
+            scaleX: 1.2,
+            scaleY: 1.2
+          });
+          scaledObj = group;
+        }
+      }
+      else if (scaledObj != null) {
+        scaledObj.setAttrs({
+          scaleX: 1,
+          scaleY: 1
+        });
+        scaledObj = null;
+      }
+      workLayer.draw();
+    }
+  });
+
   /*
   while making a line, make outlets grow when they are moused over to signify that they
   are valid connections
@@ -225,20 +252,20 @@ workLayer.on('mouseover', function(evt) {
           y: 1.5
         });
         workLayer.draw();
-    } // if outlet
-  } 
-} 
-else if (deleteToolOn) {
-  if (isFunction(parent) || isValue(parent)) {
-    parent.children[0].setAttrs({
-      shadowColor: deleteColor,
-      shadowOpacity: 1,
-      shadowEnabled: true
-    });
-  }
-  workLayer.draw();
-}
-});
+        } // if outlet
+      } 
+    } 
+    else if (deleteToolOn) {
+      if (isFunction(parent) || isValue(parent)) {
+        parent.children[0].setAttrs({
+          shadowColor: deleteColor,
+          shadowOpacity: 1,
+          shadowEnabled: true
+        });
+      }
+      workLayer.draw();
+    }
+  });
 
 /*
   when the cursor is moved out of an outlet while drawing a line, return it to its
@@ -258,20 +285,20 @@ else if (deleteToolOn) {
             y: 1
           });
           workLayer.draw();
-        } //if outlet
-      } //if makingLine
-    } 
-    else if (deleteToolOn) {
-      if (isFunction(parent) || isValue(parent)) {
-        if (parent == currShape){
-          parent.children[0].setAttr('shadowColor', 'darkblue');
-        } 
-        else {
-          parent.children[0].setAttrs({
-            shadowEnabled: false
-          });
+          } //if outlet
+        } //if makingLine
+      } 
+      else if (deleteToolOn) {
+        if (isFunction(parent) || isValue(parent)) {
+          if (parent == currShape){
+            parent.children[0].setAttr('shadowColor', 'darkblue');
+          } 
+          else {
+            parent.children[0].setAttrs({
+              shadowEnabled: false
+            });
+          }
         }
+        workLayer.draw();
       }
-      workLayer.draw();
-    }
-  });
+    });
