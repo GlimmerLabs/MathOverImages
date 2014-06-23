@@ -105,10 +105,13 @@ var functionExpanded = false;
 /* variables to globally reference the most recently used object/line and current state */
 var currShape;
 var currLine;
+var dragShape = null;
+var scaledObj = null;
 
 //OTHER BOOLEANS
 var makingLine = false;
 var animation = false;
+
 
 // CONSTANTS
 

@@ -3,6 +3,16 @@
 - on mouseup
 - on draw
 */
+/* workaround to make sure intersections work while dragging
+   KineticJS's getIntersection doesn't work when using the 'mousedown' event
+    to startDrag */
+    dragLayer.on('dragstart', function() {
+      if (dragShape) {
+        dragShape.stopDrag();
+        dragShape.startDrag();
+        dragLayer.draw();
+      }
+    });
 /*
   when an object being dragged is released:
   1. check that it isnt in the menu area
@@ -13,6 +23,7 @@
     var group = evt.target.getParent();
     if (group.attrs.y > menuHeight) {
       group.moveTo(workLayer);
+      group.children[0].setAttr('shadowEnabled', false);
       if (isFunction(group) && group.children.length < 4) {
         for (var i = 0; i < functions[group.attrs.name].min; i++) {
           addOutlet(group);
@@ -70,6 +81,7 @@
       group.destroy();
     }
   }
+  dragShape = null;
   menuLayer.draw();
   menuButtonLayer.draw();
   dragLayer.draw();

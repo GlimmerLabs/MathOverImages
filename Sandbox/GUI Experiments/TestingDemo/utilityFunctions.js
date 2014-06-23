@@ -1,120 +1,6 @@
 //UTILITY FUNCTIONS
 
-/*
-isFunction determines if target is a functionGroup and returns a boolean value. 
-target is an object.
-*/
-var isFunction = function(target) {
-	return (target.attrs.maxInputs != null);
-};
 
-/*
-isValue determines if target is a valueGroup and returns a boolean value. 
-target is an object.
-*/
-var isValue = function(target) {
-	return (target.attrs.maxInputs == null && target.nodeType == 'Group');
-};
-
-/*
-isOutlet determines if target is an outletGroup and returns a boolean value. 
-target is an object.
-*/
-var isOutlet = function(target) {
-	return (target.name() != null && target.attrs.name.substring(0,6) == 'outlet');
-};
-
-/*
-isLine determines if target is a line and returns a boolean value. 
-target is an object.
-*/
-var isLine = function(target) {
-	return (target.className == 'Line');
-};
-
-/*
-isImageBox determines if target is an image box and returns a boolean value. 
-target is an object.
-*/
-var isImageBox = function(target) {
-	return (target.name() != null && target.attrs.name == 'imageBox');
-}
-
-/*
-isDrawTool determines if target is the drawing tool on the pallette and returns a boolean value. 
-target is an object.
-*/
-var isDrawTool = function(target) {
-	return (target.name() != null && target.attrs.name == 'draw');
-}
-
-/*
-isDeleteTool determines if target is the drawing tool on the pallette and returns a boolean value. 
-target is an object.
-*/
-var isDeleteTool = function(target) {
-	return (target.name() != null && target.attrs.name == 'delete');
-}
-
-/*
-isToolControl determines if target is the tool group controller on the pallette and returns a boolean value. 
-target is an object.
-*/
-var isToolControl = function(target) {
-	return (target.name() != null && target.attrs.name == 'toolControl');
-}
-
-/*
-isRedoTool determines if target is the redo tool on the pallette and returns a boolean value. 
-target is an object.
-*/
-var isRedoTool = function(target) {
-	return (target.name() != null && target.attrs.name == 'redo');
-}
-
-/*
-isUndoTool determines if target is the redo tool on the pallette and returns a boolean value. 
-target is an object.
-*/
-var isUndoTool = function(target) {
-	return (target.name() != null && target.attrs.name == 'undo');
-}
-
-/**
- * isRenderable takes a node, and returns true if it is a value group or a
- * function group with sufficient inputs, and false if it is a function group
- * with insufficient inputs.
- */
- var isRenderable = function(group) {
- 	if (isValue(group)) {
- 		return true;
- 	} else {
- 		var validInputs = 0;
- 		for(var i = 3; i < group.children.length; i++) {
- 			lineIn = group.children[i].attrs.lineIn;
- 			if (lineIn != null && isRenderable(lineIn.attrs.source)) {
- 				validInputs++;
- 			}
- 		}
- 		return validInputs >= group.attrs.minInputs;
- 	}
- }
-
- var isCycle = function(sourceGroup, outletGroup) {
-
- 	var lineOut = outletGroup.attrs.lineOut;
- 	if (lineOut.length === 0) {
- 		return false;
- 	}
- 	for(var i = 0; i < lineOut.length; i++) {
- 		if (sourceGroup == lineOut[i].attrs.outlet.parent) {
- 			return true;
- 		} else if (isCycle(sourceGroup, lineOut[i].attrs.outlet.parent) ) {
- 			return true;
- 		}
- 	}
- 	return false;
- }
 
  // METHODS
 
@@ -163,28 +49,6 @@ var isUndoTool = function(target) {
 	];
 	}
 };
-
-/**
- * assertRenderable takes a function group and checks if it is renderable. 
- * If true, it finds the renderFunction for the group, makes the imageBox visible 
- * and returns true. If false, it makes the imageBox invisible and returns false.
- */
- var assertRenderable = function(group) {
- 	if (isRenderable(group)) {
- 		findRenderFunction(group);
- 		group.children[2].setAttr('visible', true);
- 		return true;
- 	} 
- 	else {
- 		group.attrs.renderFunction = null;
- 		group.children[2].setAttr('visible', false);
- 		if(group.attrs.renderLayer != null) {
- 			animation = false;
- 			collapseCanvas(group);
- 		}
- 		return false;
- 	}
- };
 
 /**
  * updateFunBar changes the text in the funBar according to the currShape.
@@ -269,53 +133,6 @@ var isUndoTool = function(target) {
  	}
  };
 
-	// Create functions to Move Menu Items
-	/* move the valueGroups in the menu to their original location. */
-	var moveValueNodesIn = function() {
-		for (var i = 0; i < menuValues.length; i++) {
-			var moveValue = makeMenuTween(menuValues[i], menuValuesXStart, false);
-			moveValue.play();
-		}
-	};
-	/* move the valueGroups to their expanded location. */
-	var expandValueNodes = function() {
-		for (var i = 0; i < menuValues.length; i++) {
-			var moveValue = makeMenuTween(menuValues[i], menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionTotalSideLength), true);
-			moveValue.play();
-		}
-	};
-	/* move the functionGroups to their original position. */
-	var moveFunctionNodesIn = function() {
-		for (var i = 0; i < menuFunctions.length; i++) {
-			var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXStart, false);
-			moveFunction.play();
-		}
-	};
-	/* move the functionGroups to the right of the screen. (For when values are expanded).*/
-	var moveFunctionNodesRight = function() {
-		for (var i = 0; i < menuFunctions.length; i++) {
-			var moveFunction = makeMenuTween(menuFunctions[i], menuFunctsXEnd, false);
-			moveFunction.play();
-		}
-	};
-	/* move the functionGroups to their expanded position. */
-	var expandFunctionNodes = function() {
-		for (var i = 0; i < menuFunctions.length; i++) {
-			var moveFunction = makeMenuTween(menuFunctions[i], menuCornerWidth + 2 * buttonWidth + functMenuXSpacing + i * (functMenuXSpacing + functionTotalSideLength), true)
-			moveFunction.play();
-		}
-	};
-	/* move the functionsButton to the right of the screen (for when values are expanded). */
-	var moveFunctionsButtonRight = function() {
-		var moveButton = makeMenuTween(functionsButton, width - buttonWidth, true)
-		moveButton.play();
-	};
-	/* move the functionsButon to it's original position. */
-	var moveFunctionsButtonLeft = function() {
-		var moveButton = makeMenuTween(functionsButton, menuCornerWidth + buttonWidth, true)
-		moveButton.play();
-	};
-
 	/* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
 	var disableTool = function(toolGroup) {
 		toolGroup.children[0].setAttr('shadowEnabled', false);
@@ -338,3 +155,38 @@ var isUndoTool = function(target) {
 		disableTool(deleteToolGroup);
 		toolboxLayer.draw();
 	};
+
+/**
+ * workspaceToArray takes all the nodes in the workLayer and all the lines in the 
+ * lineLayer and puts them into an array.
+ */
+var workspaceToArray = function() {
+	var wArray = [];
+	var workChildren = workLayer.getChildren();
+	var lineChildren = lineLayer.getChildren();
+	var i = 0;
+	for (i; i < workChildren.length; i++) {
+		wArray[i] = workChildren[i]; 
+	}
+	for (var j = 0; j < lineChildren.length; j++, i++) {
+		wArray[i] = lineChildren[j];
+	}
+	return wArray;
+};
+
+/**
+ * setDragShadow takes a function or value group and activates drag shadow
+ */
+var setDragShadow = function(group) {
+	group.children[0].setAttrs({
+		shadowColor: 'black',
+		shadowEnabled: true
+	});
+};
+
+
+
+
+
+
+
