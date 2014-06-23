@@ -102,12 +102,12 @@ MISTui.addMenuItem = function(menu, id, name, help, handler) {
 
   var wrapHandler = function(menu,handler) {
     return function(evt) {
-      // Get rid of the help
-      MISTui.hideHelp();
       // Disable the menu temporarily so that it disappears
       var li = document.getElementById(menu + "-items").parentNode;
       li.className = "disabled";
-      setTimeout(function() { li.className = ""; }, 100);
+      setTimeout(function() { li.className = ""; }, 500);
+      // Get rid of the help
+      MISTui.hideHelp();
       // And do the real handling.
       handler(evt);
     }
