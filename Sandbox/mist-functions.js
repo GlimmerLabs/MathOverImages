@@ -48,6 +48,43 @@
 
 try { MIST = MIST; } catch (err) { MIST = new Object(); }
 
+// +----------------------+------------------------------------------
+// | Types of Expressions |
+// +----------------------+
+
+MIST.TYPE = {};
+
+MIST.TYPE.RGB = "RGB";
+MIST.TYPE.HSV = "HSV";
+MIST.TYPE.NUMBER = "NUMBER";
+
+/**
+ * Determine the type of an expression, given a series of function
+ * and value definitions.
+ */
+MIST.expType = function(exp,context) {
+  // Long term: Scan through the expression.
+  // Short term: Look at the top-level operation
+  if (exp instanceof MIST.App) {
+    if (exp.operation == "rgb") {
+      return MIST.TYPE.RGB;
+    }
+    else if (exp.operation == "hsv") {
+      return MIST.TYPE.HSV;
+    }
+    else {
+      return MIST.TYPE.NUMBER;
+    }
+  } // if it's an application
+
+  // If it's just a value, we should look at the type of the value.
+  // But right now, we assume we'll only have numeric contants and
+  // not HSV or RGB constants.
+  else {
+    return MIST.TYPE.NUMBER;
+  } // A value
+} // MIST.expType
+
 // +-------------------+---------------------------------------------
 // | General Utilities |
 // +-------------------+
@@ -254,7 +291,8 @@ MIST.App = function(operation) {
   // Validate the operands
   for (var i = 0; i < this.operands.length; i++) {
     if (!MIST.isExp(this.operands[i])) {
-      throw "Subexpression " + i + "is invalid: " + this.operands[i];
+      console.log(this.operands);
+      throw "Subexpression " + i +  "is invalid: " + this.operands[i];
     } // if
   } // for
 
@@ -382,6 +420,100 @@ MIST.ImageGrey = function(exp)
   this.context = getArgs(arguments,1);
 } // MIST.ImageGrey
 
+// +------------------------+----------------------------------------
+// | Class: MIST.Collection |
+// +------------------------+
+
+/*
+  General collections of information.  Used primarily for storing
+  the builtin functions, the user functions, the builtin values,
+  and the user values.
+ */
+
+/**
+ * Constructor.
+ */
+MIST.Collection = function(name, about) {
+  this.class = "MIST.Collection";
+  this.name = name;
+  if (!this.name) { 
+    this.name = "<Untitled>";
+  }
+  this.about = about;
+  if (!this.about) {
+    this.about = "";
+  }
+  this.values = {};
+} // MIST.Collection
+
+/**
+ * Get all of the keys.
+ */
+MIST.Collection.prototype.keys = function() {
+  return Object.keys(this.values);
+} // MIST.Collecdtion.prototype.keys
+
+/**
+ * Clear the contents of the collection.
+ */
+MIST.Collection.prototype.clear = function() {
+  this.values = {};
+} // MIST.Collection.prototype.clear
+
+/**
+ * Add an object.  (We assume all objects have names.)
+ */
+MIST.Collection.prototype.add = function(obj) {
+  this.values[obj.name] = obj;
+} // MIST.Collection.prototype.add
+
+/**
+ * Look up an object.
+ */
+MIST.Collection.prototype.get = function(name) { 
+  return this.values[name];
+} // MIST.Collection.prototype.get
+
+/**
+ * Add a user function.
+ */
+MIST.Collection.prototype.addUserFun = function(name,display,about,params,code) { 
+  var numParams = 0;
+  if (params) {
+    numParams = params.split(",").length;
+  }
+  this.add(new MIST.FunInfo(name,display,about,params,{code:code}));
+};
+
+/**
+ * Add a user value
+ */
+MIST.Collection.prototype.addUserVal = function(name,display,about,code) {
+  this.add(new MIST.ValInfo(name,display,about,code));
+}; // addUserVal
+
+/**
+ * Add a builtin function.
+ */
+MIST.Collection.prototype.addBuiltinFun = function(name,display,about,params,minarity,maxarity,type) {
+  this.add(new MIST.FunInfo(name, display, about, params,
+    {minarity:minarity, maxarity:maxarity, type:type}));
+} // addBuiltinFun
+
+// +-------------------+---------------------------------------------
+// | Value Information |
+// +-------------------+
+
+MIST.ValInfo = function(name, display, about, other) {
+  this.class = "MIST.ValInfo";
+  this.name = name;
+  this.display = display;
+  this.about = about;
+  for (var key in other) {
+    this[key] = other[key];
+  } // for
+} // MIST.ValInfo
+
 // +----------------------+------------------------------------------
 // | Function Information |
 // +----------------------+
@@ -389,52 +521,23 @@ MIST.ImageGrey = function(exp)
 /**
  * A bit of information on the installed functions.
  */
-MIST.FunInfo = function(name, display, minarity, maxarity, paramnames) {
+MIST.FunInfo = function(name, display, about, params, other) {
+  this.class = "MIST.FunInfo";
   this.name = name;
   this.display = display;
-  this.minarity = minarity;
-  this.maxarity = maxarity;
-  this.paramnames = paramnames;
-} // FunInfo
-
-/**
- * Clear information on all functions.
- */
-MIST.clearFuns = function()
-{
-  MIST.funs = {};
-} // MIST.clearFuns
-
-/**
- * Add information on a function.
- */
-MIST.addFun = function(name, display, minarity, maxarity, paramnames) {
-  if (!MIST.funs) { MIST.clearFuns(); }
-  MIST.funs[name] = new MIST.FunInfo(name, display, minarity, maxarity, paramnames);
-} // MIST.addFun
-
-/**
- * Add information on the standard functions.  (Should these be in a table
- * somewhere?)
- */
-MIST.addStandardFunctions = function() {
- 
-} // MIST.addStandardFunctions
-
-/**
- * Get information on a function.  Returns undefined if the function is
- * not yet defined.
- */
-MIST.getFun = function(name) {
-  if (!MIST.funs) return undefined;
-  return MIST.funs[name];
-} // MIST.getFun
+  this.about = about;
+  this.params = params;
+  for (var key in other) {
+    this[key] = other[key];
+  } // for
+} // MIST.FunInfo
 
 // +---------+-------------------------------------------------------
 // | Parsing |
 // +---------+
 
 MIST.alpha = /[a-zA-Z]/;
+MIST.digit = /[0-9]/;
 
 MIST.tokens = Object.freeze({UNKNOWN:0, OPEN:1, CLOSE:2, COMMA:3, 
   ID:4, NUM:5, EOF:6});
@@ -527,12 +630,30 @@ MIST.tokenize = function(str) {
         ch.type = MIST.tokens.COMMA;
         tokens.push(ch);
       }
-      else if (MIST.alpha.test(ch.text)) {
+      else if (/[0-9-.]/.test(ch.text)) {
+        var num = ch.text;
+        var c;
+        var dot = (ch.text == ".");
+        while ((c = input.peek()) && 
+            (/[0-9]/.test(c) || (!dot && (c == ".")))) {
+          input.next();
+          num += c;
+          if (c == ".") { dot = true; }
+        } // while
+        if (num == "-") {
+          MIST.parseError("Singleton negative signs not allowed.", 
+            ch.row, ch.col);
+        } // if we only saw a negative sign
+        ch.type = MIST.tokens.NUM;
+        ch.text = num;
+        tokens.push(ch);
+      }
+      else if (/[A-Za-z]/.test(ch.text)) {
         var col = ch.col;
         var row = ch.row;
         var id = ch.text;
         var c;
-        while ((c = input.peek()) && MIST.alpha.test(c)) {
+        while ((c = input.peek()) && /[A-Za-z0-9.]/.test(c)) {
           id += c;
           input.next();
         } // while
@@ -570,13 +691,18 @@ MIST.parse = function(str) {
       MIST.parseError("Unexpected end of input", tok.row, tok.col);
     }
 
-    // Only identifiers are allowed at the top level.
-    if (tok.type != MIST.tokens.ID) {
+    // Is it a number?
+    if (tok.type == MIST.tokens.NUM) {
+      return new MIST.Val(tok.text);
+    } // MIST.tokens.NUM
+    
+    // Only identifiers and numbers are allowed at the top level.
+    else if (tok.type != MIST.tokens.ID) {
       MIST.parseError("Unexpected token (" + tok.text + ")", tok.row, tok.col);
     } // if it's not an identifier
-  
+
     // Is it a function call?
-    if (peekType(tokens) == MIST.tokens.OPEN) {
+    else if (peekType(tokens) == MIST.tokens.OPEN) {
       tokens.shift();
       var children = [];
       while (peekType(tokens) != MIST.tokens.CLOSE) {
@@ -584,7 +710,7 @@ MIST.parse = function(str) {
         if (peekType(tokens) == MIST.tokens.COMMA) {
           tokens.shift();
           if (peekType(tokens) == MIST.tokens.CLOSE) {
-            MIST.parseError("Close paren follows comma", tokens[0].col, tokens[0].row);
+            MIST.parseError("Close paren follows comma", tokens[0].row, tokens[0].col);
           } // if there's a close paren after a comma
         } // if there's a comma
       } // while
@@ -601,8 +727,8 @@ MIST.parse = function(str) {
   var tokens = MIST.tokenize(str);
   var result = kernel(tokens);
   if ((tokens.length > 1) || (peekType(tokens) != MIST.tokens.EOF)) {
-    MIST.parseError("Extra text after expression", tokens[0].col,
-      tokens[0].row);
+    MIST.parseError("Extra text after expression", tokens[0].row,
+      tokens[0].col);
   } 
   return result;
 } // MIST.parse

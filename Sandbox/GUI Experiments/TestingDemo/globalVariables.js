@@ -41,6 +41,7 @@ var menuAnimDuration = 1;
 var menuOffset = 10;
 var menuControlHeight = menuHeight / 5;
 var menuControlColor = 'lightblue';
+var menuControlSelect = '#BEEDFA'; 
 var menuControlTextColor = 'black';
 var menuTextOffset = menuControlHeight / 5;
 
@@ -52,17 +53,18 @@ var toolboxButtonSize = width / 30;
 var deleteColor = '#A30F0F'; 
 
 //FUNCTIONBAR
-var funBarWidth = width / 2.5;
-var funBarHeight = height / 10;
+var funBarWidth = width;
+var funBarHeight = height / 15;
 var funBarBackgroundColor = 'lightblue';
-var funBarOffset = funBarWidth / 36;
-var funBarTextOffset = 2 * funBarOffset;
+var funBarOffset = funBarHeight * .17;
+var funBarTextAreaWidth = funBarWidth * .75;
+var funBarTextAreaHeight = funBarHeight * .66;
+var funBarTextOffset = funBarOffset* 1.5;
 var funBarDisplayFontSize = 22; 
 var funBarFontSize = 12;
-var funBarSaveFunX = funBarWidth * .76;
-var funBarSaveFunY = 1.5 * funBarOffset;
-var funBarIconSideLength = funBarWidth / 15;
-var funBarIconTextWidth = funBarIconSideLength + (2 * funBarOffset);
+var funBarIconOffset = funBarWidth / 16;
+var funBarIconSideLength = funBarHeight / 4;
+var funBarIconTextWidth = funBarWidth * (2/45);
 var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
 

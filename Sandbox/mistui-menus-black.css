@@ -1,0 +1,126 @@
+/**
+ * mistui-menus-black.css
+ *   MISTui settings for the standard "white on black" menus.  
+ *
+ */
+
+/* +-------+---------------------------------------------------------
+ * | Usage |
+ * +-------+
+ */
+
+/*
+   1. Start with an unnumbered list with class `menubar`
+      <ul class="menubar">
+      </ul>
+
+   2. Add list items that give the menu title and have another
+      unnumbered list with class `menu`.
+
+      <li>
+        <ul class="menu">File</ul>
+        </ul>
+      </li>
+
+   3. The elements in the list are as normal.
+
+   4. Add separators
+ */
+
+/* +------+----------------------------------------------------------
+ * | Code |
+ * +------+
+ */
+
+/* Menus and menu bars don't appear as lists.  */
+ul.menubar,
+ul.menu {
+ list-style: none;
+ font-family: Comic Sans, sans-serif;
+ font-size: small;
+ background-color: black;
+ color: white;
+}
+
+/* Set up uniform padding. */
+ul.menubar,
+ul.menubar li,
+ul.menu li {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 7px; 
+  padding-left: 5px;
+}
+
+ul.menu {
+  padding-left: 4px;
+  padding-right: 8px;
+}
+
+ul.menu li {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* Set up the background color of menu items */
+ul.menubar li,
+mul.menu li
+
+/* The items in the menu bar are displayed inline, so side-by-side. */
+ul.menubar li,
+ul.menu li {
+  display: inline;
+  position: relative;
+}
+
+/* When you hover over a menu title, it becomes grey */
+ul.menubar li:hover {
+  background-color: grey;
+  color: black;
+}
+
+/* When you hover over a menu title, its menu becomes visibile */
+ul.menubar li:hover ul.menu {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  visibility: visible;
+}
+
+/* When you disable an item, we go back to the normal state, even if
+   we are hovering. */
+ul.menubar li.disabled:hover {
+  background-color: black;
+  color: white;
+}
+
+ul.menubar li.disabled:hover ul.menu {
+  display: none;
+}
+
+/* Menus are also not lists. */
+ul.menu {
+ display: none;
+ visibility: hidden;
+ outline: none;
+}
+
+/* Menu items get displayed vertically (I think) */
+ul.menu li {
+  display: block;
+  white-space: nowrap;
+}
+
+ul.menu li.separator {
+  padding: 0;
+  padding-left; 7px;
+  margin: 10px -6px 5px -2px;
+  border-top: 1px solid lightgrey;
+  height: 0;
+}
+
+ul.menu li a {
+  text-decoration: none;
+  color: white;
+}

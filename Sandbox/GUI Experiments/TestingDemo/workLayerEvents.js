@@ -40,14 +40,16 @@ There are 3 different modes:
         if (!shape.attrs.expanded) {
           renderCanvas(parent);
           shape.attrs.expanded = true;
-        } else {
+        }
+        else {
           shape.attrs.expanded = false;
           animation = false;
           setTimeout(function() {collapseCanvas(parent)}, 50);
         }
         setTimeout(function() {workLayer.draw()}, 50);
       }
-    } else if (lineToolOn) {
+    }
+    else if (lineToolOn) {
       if (makingLine) {
         if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
           currLine.attrs.source.attrs.lineOut.splice(currLine.attrs.source.attrs.lineOut.length - 1, 1);
@@ -56,7 +58,8 @@ There are 3 different modes:
             shape.scale({ x: 1, y: 1 });
           }
           makingLine = false;
-        } else if (isOutlet(shape)) {
+        }
+        else if (isOutlet(shape)) {
       //check if outlet already has an input
       if (shape.attrs.lineIn != null) {
         //POSSIBLE NEED TO DESTROY LINE ITSELF
@@ -82,6 +85,10 @@ There are 3 different modes:
       makingLine = false;
       shape.scale({ x: 1, y: 1 });
       assertRenderable(parent);
+      // if there is a currShape, update the text in funBar
+      if (currShape != undefined){
+       updateFunBar();
+      }
       if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
         parent.attrs.numInputs < parent.attrs.maxInputs) {
         addOutlet(parent);
@@ -169,38 +176,13 @@ lineLayer.draw();
          currShape.children[0].setAttr('shadowEnabled', false);
        }
        currShape = group
-       currText = currShape.attrs.renderFunction;
-       if (group.name() == 'rgb') {
-        currText = 'rgb(' + currText + ')';
-      } 
-      if (currText != null) {
-        currShape.children[0].setAttrs({
-          shadowColor: 'darkblue',
-          shadowOpacity: 1,
-          shadowEnabled: true
-        });
-        var currFontSize;
-        if (currText.length <= 12) {
-          currFontSize = funBarDisplayFontSize;
-        } 
-        else if (currText.length >= 26){
-          currFontSize = 10;
-        }
-        else {
-          currFontSize = 264 / currText.length;
-        }
-        funBarText.setAttrs({
-          text: currText,
-          fontSize: currFontSize
-        });
-        
-        funBarLayer.draw();
-      }
-      group.startDrag();
-      workLayer.draw();
-      dragLayer.draw();
+       updateFunBar();
+       insertToArray(actionToObject('move', group));
+       group.startDrag();
+       workLayer.draw();
+       dragLayer.draw();
 
-      if (group.attrs.renderLayer != null) {
+       if (group.attrs.renderLayer != null) {
         group.attrs.renderLayer.draw();
       }
     }
