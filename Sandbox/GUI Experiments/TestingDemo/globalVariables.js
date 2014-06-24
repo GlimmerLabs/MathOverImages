@@ -9,15 +9,17 @@ var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
 var functionColor = '#508C37';
 
 var valueSideLength = functionTotalSideLength / 1.414;
-var valueXYColor = 'gray'
-var valueTimeColor = 'gold'
-var valueConstantColor = 'purple'
+var valueXYColor = 'gray';
+var valueTimeColor = 'gold';
+var valueConstantColor = 'purple';
 
 var imageBoxSideLength = width / 80;
-var imageBoxColor = 'white'
+var imageBoxColor = 'white';
 var functionImageBoxOffset = width / 300;
 var valueImageBoxOffset = width / 31;
 var renderSideLength = width / 18;
+
+var variableColor = 'blue';
 
 var outletXOffset = width / 255;
 var outletYOffset = functionRectSideLength / 3;
@@ -90,7 +92,7 @@ var values = {
 	minute:		{rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
 	hour: 		{rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
 	day: 			{rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-	constant:	{rep: '', 	 max: 20, min: 2, color: valueConstantColor},
+	constant:	{rep: '', 	 max: 20, min: 2, color: valueConstantColor}
 }
 
 // TOOLBOX BOOLEANS
