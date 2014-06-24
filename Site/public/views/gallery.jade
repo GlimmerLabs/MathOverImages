@@ -19,7 +19,8 @@ block content
 			div(id='images')
 			- for (var i=0; i < images.length; i++)
 				figure
-					img(src='/samples/color2.jpg')
+					a(href='/image/' + images[i].imageid)
+						img(src='/samples/color2.jpg')
 					figcaption(class='right')= images[i].username
 					figcaption(class='left')= "★" + images[i].rating
 		a(href='/gallery/random/' + currentPage + 1) previous
