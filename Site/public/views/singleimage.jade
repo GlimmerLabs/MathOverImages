@@ -13,7 +13,7 @@ block content
 		figure
 			img(src='/samples/color1.jpg')
 			figcaption(class='left')= "★" + image.rating
-			figcaption(class='right')= "by " + image.username
+			a(href='/user/'+ image.username): figcaption(class='right')= image.username
 		p(class='code')= image.code
 		div
 		div(id='comments')
@@ -21,8 +21,8 @@ block content
 				h1(class='op'): a(href='/user/'+ image.username)= image.username
 				p I like the gradation from white to black I achieved in this image.
 			div(class='comment')
-				h1: a(href='/user/cutechick') cutechick
-				p Great work! Maybe try doing something similar in RGB?
+				h1: a(href='/user/qt314') qt314
+				p Great work! Maybe try doing something similar in RGB? Great work! Maybe try doing something similar in RGB? Great Great Great Great Great
 			if loggedIn
 				div(id='leaveComment' class='comment')
 					h1: a(href='/user/' + user.username)= user.username
