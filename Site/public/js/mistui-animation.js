@@ -49,12 +49,17 @@ MIST.ui.stopAnimation = function() {
 MIST.ui.startAnimation = function(exp,params,context,canvas,log)
 {
   // Set up a hash for the parameters
-  var tmp = params.split(",");
   MIST.ui.animator.params = {};
-  for (var i = 0; i < tmp.length; i++) {
-    MIST.ui.animator.params[tmp[i]] = -1;
-  } // for
+  if (params != "") {
+    var tmp = params.split(",");
+    for (var i = 0; i < tmp.length; i++) {
+      if (params[i] != "") {
+        MIST.ui.animator.params[tmp[i]] = -1;
+      } // if
+    } // for
+  } // if (
 
+  MIST.parse(exp);
   // Get the remaining info
   try {
     MIST.ui.animator.exp = MIST.parse(exp);

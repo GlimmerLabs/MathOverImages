@@ -188,9 +188,11 @@ MIST.expToRGB = function(exp,context) {
   //      var _tmp_ = r2c(-exp);
   //      return [_tmp_, _tmp_, _tmp];
   else if (type == MIST.TYPE.NUMBER) {
-    return eval("(function(x,y,t,m,p) { " + contextCode +
-        + "; var _tmp_ = r2c(-" + exp.toString() + 
-        "); return [_tmp_, _tmp_, _tmp_]; })");
+    var code = "(function(x,y,t,m,p) { " + contextCode +
+        "; var _tmp_ = r2c(-" + exp.toString() + 
+        "); return [_tmp_, _tmp_, _tmp_]; })";
+    // console.log(code);
+    return eval(code);
   }
   else {
     throw "Can not handle expressions of type " + type;
