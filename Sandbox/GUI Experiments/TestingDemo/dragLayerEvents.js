@@ -23,8 +23,9 @@
     var group = evt.target.getParent();
     if (scaledObj) {
       scaledObj.setAttr('scale', { x: 1, y: 1 });
-      group.attrs.x = scaledObj.attrs.x;
-      group.attrs.y = scaledObj.attrs.y;
+      console.log()
+      group.setAttr('x', scaledObj.attrs.x);
+      group.setAttr('y', scaledObj.attrs.y);
       replaceNode(scaledObj, group);
       scaledObj = null;
       group.moveTo(workLayer);
@@ -58,6 +59,7 @@
       }
     } 
     else {
+      currShape = null;
       // deal with lines coming in to the node being deleted
       var targetLine;
       for(var i = 3; i < group.children.length; i++) {
@@ -96,6 +98,7 @@
   menuButtonLayer.draw();
   dragLayer.draw();
   workLayer.draw();
+  lineLayer.draw();
 }); 
 /*
  * While an object is being dragged, move all lines connected to it with it.

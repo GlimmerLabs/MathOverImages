@@ -105,6 +105,7 @@ menuButtonLayer.on('click', function(){
       newGroup.startDrag();
       dragLayer.draw();
       dragShape = newGroup;
+      currShape = newGroup;
     }
   });
 

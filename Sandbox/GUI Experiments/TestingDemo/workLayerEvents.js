@@ -213,6 +213,15 @@ lineLayer.draw();
             scaleX: 1.2,
             scaleY: 1.2
           });
+        /*
+          group.children[2].setAttrs({
+            scaleX: .8,
+            scaleY: .8
+          });
+          */
+          if (group.children[2].attrs.expanded) {
+            renderCanvas(group);
+          }
           scaledObj = group;
         }
       }
@@ -221,6 +230,9 @@ lineLayer.draw();
           scaleX: 1,
           scaleY: 1
         });
+        if (scaledObj.children[2].attrs.expanded) {
+            renderCanvas(scaledObj);
+          }
         scaledObj = null;
       }
       workLayer.draw();

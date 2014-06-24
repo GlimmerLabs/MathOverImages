@@ -97,15 +97,21 @@ else {
 			height: renderSideLength
 		});
 		var box = group.children[2];
+		currLayer.draw();
 		canvas = currLayer.canvas._canvas;
+			var groupScale = group.attrs.scaleX;
+			var canvasX = group.x() + (groupScale * box.x());
+			var canvasY = group.y() + (groupScale * box.y());
+			var canvasWidth = groupScale * box.width();
+			var canvasHeight = groupScale * box.height();
 		if (group.attrs.name == "rgb") {
 			rfun = MOIbody2fun(group.attrs.renderFunction[0]);
 			gfun = MOIbody2fun(group.attrs.renderFunction[1]);
 			bfun = MOIbody2fun(group.attrs.renderFunction[2]);
-			renderRGB(rfun, gfun, bfun, canvas, group.x() + box.x(), group.y() + box.y(), renderSideLength, renderSideLength);
+			renderRGB(rfun, gfun, bfun, canvas, canvasX, canvasY, canvasWidth, canvasHeight);
 		} 
 		else {
-			renderFun(MOIbody2fun(group.attrs.renderFunction), canvas, group.x() + box.x(), group.y() + box.y(), renderSideLength, renderSideLength);
+			renderFun(MOIbody2fun(group.attrs.renderFunction), canvas, canvasX, canvasY, canvasWidth, canvasHeight);
 		}
 	};
 
@@ -190,6 +196,7 @@ else {
  */
  var replaceNode = function(oldNode, newNode) {
  	var tempOut = oldNode.attrs.lineOut;
+ 	collapseCanvas(oldNode);
  	oldNode.remove();
  	for(var i = 0; i < tempOut.length; i++) {
  		tempOut[i].attrs.source = newNode;
@@ -205,7 +212,7 @@ else {
  			}
  			var outletIndex = 3; // which outlet we are applying the next input to
  			for(var i = 0; i < newNode.attrs.maxInputs; i++) {
- 				if(oldNode.children[i+3].attrs.lineIn) {
+ 				if (oldNode.children[i+3].attrs.lineIn) {
  					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i+3].attrs.lineIn;
  					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
  					outletIndex++;
@@ -219,27 +226,20 @@ else {
  			}
  		} 
  		else {
- 			while (newNode.children.length < oldNode.children.length || 
- 				newNode.children.length - OUTLET_OFFSET < newNode.attrs.minInputs) {
- 				addOutlet(newNode);
- 			}
+ 			addOutlet(newNode);
  			var outletIndex = 3;
  			for (var i = 3; i < oldNode.children.length; i++) {
  				if (oldNode.children[i].attrs.lineIn) { 
  					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
  					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
+ 					addOutlet(newNode);
  					outletIndex++;
  				}
  			}
- 			if (newNode.attrs.maxInputs > newNode.children.length - OUTLET_OFFSET &&
- 				newNode.children[newNode.children.length -1]) {
- 				addOutlet(newNode);
- 			}
  		}
  	}
- 	if (assertRenderable(newNode)) {
- 		updateForward(newNode);
-	}
+ 	assertRenderable(newNode);
+ 	updateForward(newNode);
 
 	lineLayer.draw();
 	workLayer.draw();
