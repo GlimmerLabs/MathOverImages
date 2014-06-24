@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>MISTui Menu Experiment</title>
+
+<!-- Style Sheets -->
+<link rel="stylesheet" href="mistui-menus-black.css">
+<link rel="stylesheet" href="mistui-help.css">
+
+<style>
+</style>
+
+<!-- Javascript/JQuery -->
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<!-- Javascript/MISTui -->
+<script src="mistui-menus.js"></script>
+<script src="mistui-help.js"></script>
+
+<!-- Page-Specific JavaScript -->
+
+<script>
+// +------+----------------------------------------------------------
+// | Misc |
+// +------+
+
+// +----------------+------------------------------------------------
+// | Postprocessing |
+// +----------------+
+
+$(document).ready(function() {
+  MISTui.addMenu("menubar","bar-menu","Bar");
+  MISTui.addMenuItem("bar-menu", "bar-a", "Alpha Alpha Alpha", 
+                     "Alpha beta gamma delta epsilon",
+                     function(event) { alert("Bar A"); });
+  MISTui.addMenuItem("bar-menu", "bar-b", "Bravo", "Yay!",
+                     function(event) { alert("Bar B"); });
+  MISTui.addMenuItem("bar-menu", "bar-c", "Charlie", "Charlie is a nickname for Charles",
+                     function(event) { alert("Bar C"); });
+  MISTui.addMenuSeparator("bar-menu", "bar-sep");
+  MISTui.addMenuItem("bar-menu", "bar-d", "Dingo", "Remove Beta",
+                     function(event) { MISTui.removeMenuItem("bar-menu", "bar-b"); });
+  MISTui.refreshMenu("bar-menu");
+
+  MISTui.addMenu("menubar","foo-menu","Foo");
+  MISTui.addMenuItem("foo-menu", "dan", "Daniel Rebelsky", "Is a great programmer", false);
+});
+</script>
+</head>
+<body>
+
+<ul id="menubar" class="menubar">
+</ul>
+
+</body>
+</html>

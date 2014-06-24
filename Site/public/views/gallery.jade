@@ -16,13 +16,12 @@ block content
 			a(href='/gallery/recent' class='subview') recent
 			a(href='/gallery/toprated' class='subview') top rated
 			a(href='#recent' class='subview') featured
-		div(id='images')
+			div(id='images')
 			- for (var i=0; i < images.length; i++)
 				figure
-					img(src='/samples/color2.jpg')
+					a(href='/image/' + images[i].imageid)
+						img(src='/samples/color2.jpg')
 					figcaption(class='right')= images[i].username
 					figcaption(class='left')= "★" + images[i].rating
-		form(method='POST')
-			input(type='submit' name='prevButton' value ='PREVIOUS')
-		form(method='POST')
-			input(type='submit' name='nextButton' value ='NEXT')
+		a(href='/gallery/random/' + currentPage + 1) previous
+		a(href='/gallery/random/' + ++currentPage) next

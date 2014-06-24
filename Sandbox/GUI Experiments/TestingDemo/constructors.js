@@ -154,7 +154,8 @@
 			fill: '#FFC440',
 			stroke: 'black',
 			strokeWidth: 1,
-			lineIn: null
+			lineIn: null,
+			outletIndex: functGroup.children.length - 3
 		});
 		return outlet;
 	};
@@ -196,13 +197,15 @@ var makeMenuTween = function(target, xEnd, visibility) {
  *   sink.children[outletIndex + 3] is an unused outlet
  */
  var addLine = function(source, sink, outletIndex) {
-  var line = makeLine(source);
-  var outlet = sink.children[outletIndex + 3];
-  outlet.attrs.lineIn = line;
-  assertRenderable(sink);
-  if (sink.attrs.numInputs == sink.children.length - 3 &&
-    sink.attrs.numInputs < sink.attrs.maxInputs) {
-    addOutlet(sink);
+ 	var line = makeLine(source);
+ 	var outlet = sink.children[outletIndex + 3];
+ 	source.attrs.lineOut[source.attrs.lineOut.length] = line;
+ 	outlet.attrs.lineIn = line;
+ 	line.attrs.outlet = outlet;
+ 	assertRenderable(sink);
+ 	if (sink.attrs.numInputs == sink.children.length - 3 &&
+ 		sink.attrs.numInputs < sink.attrs.maxInputs) {
+ 		addOutlet(sink);
  }
  updateForward(sink);
  lineLayer.add(line);
