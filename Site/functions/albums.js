@@ -1,8 +1,10 @@
 /**
  * Functions related to the album.
  */
+
+
 module.exports.buildPage =  function(req, res, database) {
-	database.albumsInfo(req.session.user.userid, function(albums, error){
+	database.albumsInfo(req.params.userid, function(albums, error){
 	    if(error)
 		res.end(error)
 	    else
