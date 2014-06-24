@@ -67,7 +67,7 @@
                     for (var i = startingIndex; i < oldGroup.children.length; i++) {
                         var lineIn = oldGroup.children[i].attrs.lineIn;
                         if (lineIn != null && lineIn != undefined) {
-                            obj['connections'][child++] = actionToObject('replace', lineIn);
+                            obj['connections'][child++] = actionToObject('delete', lineIn);
                         } 
                     }
                 }
@@ -84,6 +84,10 @@
   			sink: group.attrs.outlet.parent,
             sinkIndex: group.attrs.outlet.attrs.outletIndex
         };
+        if (action == 'replace') {
+            var oldLine = arguments[2];
+            obj.deleteLine = actionToObject('delete', oldLine);
+        }
   	} // if it's a line
   	return obj; 	
   };
@@ -149,7 +153,6 @@
       else {
         insertLine(actionObj);
       } // else element is a line
-      workLayer.draw();
       } // if delete
       // if the action in question is an insertion
       else if (action == 'insert') {
@@ -165,9 +168,7 @@
         else {
           // remove the line and update its indexes
           removeLine(element);
-          lineLayer.draw()
       }
-      workLayer.draw();
       } // if insert
       // if the action in question is a movement
       else if (action == 'move') {
@@ -186,15 +187,30 @@
       }
         //collapseCanvas(element);
         currShape = element;
-        dragLayer.draw(); 
-        workLayer.draw();
-
       } // if move
       // if the action in question is a replacement
       else {
         // ***** currently in progress *******
+        if (actionObj.type == 'node') {
+            var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
+            oldGroup.moveTo(workLayer);
+            for (var i = 0; i < actionObj.connections.length; i++)
+            {
+                insertLine(actionObj.connections[i]);
+                oldGroup.attrs.numInputs++;
+            }
+            replaceNode (element, oldGroup);
+            workLayer.draw();
+        } // if node
+        else {
+            removeLine(element);
+            insertLine(actionObj.deleteLine);
+        } // else line
       } // if replace
     } // if undo
+    workLayer.draw();
+    dragLayer.draw();
+    lineLayer.draw();
 };
 
 
@@ -306,6 +322,14 @@
       // else replace
       else {
         // ******** currently in progress ******
+        if (actionObj.type == 'node') {
+            var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
+            element.moveTo(workLayer);
+            replaceNode (oldGroup, element);
+        } // if node
+        else {
+
+        } // else line
       } // else replace
       dragLayer.draw(); 
       workLayer.draw();
@@ -328,7 +352,7 @@
     outlet.attrs.lineIn = null;
     // update the sink's number of outlets
     parent.attrs.numInputs--;
-    // remove the line form the lineLayer
+    // remove the line from the lineLayer
     line.remove();
     // if the sink is the currShape
     if (parent == currShape) {
@@ -374,6 +398,8 @@
     element.attrs.outlet = outlet;
     // connect outlet to line
     outlet.attrs.lineIn = element;
+    // increment numInputs
+    actionObj.sink.attrs.numInputs++;
     // assert and update renderability of the sink
     assertRenderable(actionObj.sink);
     // if the currShape is defined
