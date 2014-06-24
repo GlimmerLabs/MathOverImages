@@ -31,22 +31,22 @@
  * NOTE: this will always recalculate the entire function
  */
  var findRenderFunction = function(group) {
- 	if(group.name() != "rgb") {
+ 	if(group.attrs.renderFunction instanceof Array) {
  		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
- 			for(var i = 3; i < group.children.length; i++) {
- 				if(group.children[i].attrs.lineIn != null) {
- 					group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
- 					group.attrs.renderFunction += functions[group.attrs.name].separator
- 				}
-			} // add each element to the equation
-			group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
-}
-else {
-	group.attrs.renderFunction = [
-	group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
-	group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
-	group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
-	];
+ 		for(var i = 3; i < group.children.length; i++) {
+ 			if(group.children[i].attrs.lineIn != null) {
+				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
+ 				group.attrs.renderFunction += functions[group.attrs.name].separator
+ 			}
+		} // add each element to the equation
+		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
+	}
+	else {
+		group.attrs.renderFunction = [
+			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
+			group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
+			group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
+		];
 }
 };
 
@@ -55,7 +55,8 @@ else {
  */
  var updateFunBar = function() {
  	currText = currShape.attrs.renderFunction;
- 	if (currShape.name() == 'rgb') {
+ 	if (group.attrs.renderFunction instanceof Array) {
+ 		// NEEDS UPDATE FOR RGB OUTPUTS
  		currText = 'rgb(' + currText + ')';
  	} 
  	if (currText != null) {
@@ -104,7 +105,7 @@ else {
 			var canvasY = group.y() + (groupScale * box.y());
 			var canvasWidth = groupScale * box.width();
 			var canvasHeight = groupScale * box.height();
-		if (group.attrs.name == "rgb") {
+		if (group.attrs.renderFunction instanceof Array) {
 			rfun = MOIbody2fun(group.attrs.renderFunction[0]);
 			gfun = MOIbody2fun(group.attrs.renderFunction[1]);
 			bfun = MOIbody2fun(group.attrs.renderFunction[2]);
