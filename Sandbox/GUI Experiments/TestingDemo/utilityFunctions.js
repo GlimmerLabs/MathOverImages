@@ -31,7 +31,14 @@
  * NOTE: this will always recalculate the entire function
  */
  var findRenderFunction = function(group) {
- 	if(group.attrs.renderFunction instanceof Array) {
+ 	var childOfRGB = false;
+ 	for(var i = 3; i < group.children.length; i++) {
+ 		if(group.children[i].attrs.lineIn.attrs.source.renderFunction instanceof Array) {
+ 			childOfRGB = true;
+ 			break;
+ 		}
+ 	}
+ 	if(group.attrs.name == 'rgb' || childOfRGB) {
  		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
  		for(var i = 3; i < group.children.length; i++) {
  			if(group.children[i].attrs.lineIn != null) {
@@ -40,7 +47,7 @@
  			}
 		} // add each element to the equation
 		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
-	}
+	} // if we are dealing with RGB rendering
 	else {
 		group.attrs.renderFunction = [
 			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
