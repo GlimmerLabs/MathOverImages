@@ -18,12 +18,13 @@ html(lang='en')
 			nav
 				ul
 					span(class='main')
-						li: a(href='#') create
-						li: a(href='#') challenges
+						li: a(href='/default') create
+						li: a(href='/default') challenges
 						li: a(href='/gallery') gallery
 						li: a(href='/about') about
 						if loggedIn
-							li: a(href='/me') my account
+							li: a(href='/me')= user.username
+							li: a(href='/logout') log out
 						else
 							li(id='slider') login/signup
 					form(method='POST' action='/login' class='hidden')
@@ -39,14 +40,14 @@ html(lang='en')
 			p ©2014 Glimmer Labs
 			nav
 				ul
-					li: a(href='#') create
-					li: a(href='#') challenges
-					li: a(href='#') gallery
-					li: a(href='#') about
+					li: a(href='/default') create
+					li: a(href='/default') challenges
+					li: a(href='/gallery') gallery
+					li: a(href='/about') about
 					if loggedIn
 						li: a(href='#') my account
 					else
 						li: a(href='/login') login
 						li: a(href='/signup') signup
-					li: a(href='#') license
-					li: a(href='#') privacy policy
+					li: a(href='/default') license
+					li: a(href='/default') privacy policy
