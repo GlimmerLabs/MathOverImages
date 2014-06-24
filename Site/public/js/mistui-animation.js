@@ -94,7 +94,7 @@ MIST.ui.animator.frame = function() {
   MIST.ui.animator.log(paramInfo);
   // Make the frame
   MIST.ui.animator.time = MIST.render(MIST.ui.animator.exp, context,
-      MIST.ui.animator.canvas)
+      MIST.ui.animator.canvas, 40, 40)
   // And schedule the next frame
   if (MIST.ui.animator.on) {
     setTimeout(MIST.ui.animator.frame, 1000/MIST.ui.animator.fps);
