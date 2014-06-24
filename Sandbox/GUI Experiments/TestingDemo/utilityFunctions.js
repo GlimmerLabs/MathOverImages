@@ -38,23 +38,26 @@
  			break;
  		}
  	}
- 	if(group.attrs.name == 'rgb' || childOfRGB) {
- 		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
+ 	if(group.attrs.name == 'rgb') {
+ 		group.attrs.renderFunction = [
+			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
+			group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
+			group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
+		];
+	} // if we are dealing with RGB rendering
+	else if (childOfRGB) {
+		// STUB
+		console.log('RGB output is not yet implemented');
+	}
+	else {
+		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
  		for(var i = 3; i < group.children.length; i++) {
  			if(group.children[i].attrs.lineIn != null) {
 				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
  				group.attrs.renderFunction += functions[group.attrs.name].separator
  			}
 		} // add each element to the equation
-		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
-	} // if we are dealing with RGB rendering
-	else {
-		group.attrs.renderFunction = [
-			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
-			group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
-			group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
-		];
-}
+		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';}
 };
 
 /**

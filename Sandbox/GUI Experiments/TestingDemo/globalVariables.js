@@ -73,16 +73,16 @@ var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
 var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 var functions = {
-	add: 			{rep: '+', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
-	multiply: {rep: '*', 	 max: 20, min: 2, prefix: '', 		separator: '*'},
-	negate: 	{rep: '-', 	 max: 1,  min: 1, prefix: '-', 		separator: ' '},
-	sine: 		{rep: 'sin', max: 1,  min: 1, prefix: 'sin', 	separator: ' '},
-	cosine: 	{rep: 'cos', max: 1,  min: 1, prefix: 'cos', 	separator: ' '},
-	absolute: {rep: 'abs', max: 1,  min: 1, prefix: 'abs', 	separator: ' '},
-	average: 	{rep: 'ave', max: 20, min: 2, prefix: 'ave', 	separator: ','},
-	sign: 		{rep: 'sign',max: 1,  min: 1, prefix: 'sign', separator: ' '},
-	wrap: 		{rep: 'wrap',max: 1,  min: 1, prefix: 'wrap', separator: ' '},
-	rgb: 			{rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', 	separator: ','}
+	add:       {rep: '+',   max: 20, min: 2, prefix: 'sum'},
+	multiply:  {rep: '*',   max: 20, min: 2, prefix: 'mult'},
+	negate:    {rep: '-',   max: 1,  min: 1, prefix: '-'},
+	sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin'},
+	cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos'},
+	absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs'},
+	average:   {rep: 'ave', max: 20, min: 2, prefix: 'ave'},
+	sign: 	   {rep: 'sign',max: 1,  min: 1, prefix: 'sign'},
+	wrapsum:   {rep: 'wrap',max: 1,  min: 1, prefix: 'wsum'},
+	rgb: 			{rep: 'rgb', max: 3,  min: 3, prefix: 'rgb'}
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 var values = {
