@@ -33,12 +33,13 @@
  var findRenderFunction = function(group) {
  	var childOfRGB = false;
  	for(var i = 3; i < group.children.length; i++) {
- 		if(group.children[i].attrs.lineIn.attrs.source.renderFunction instanceof Array) {
+ 		if (group.children[i].attrs.lineIn && 
+ 			group.children[i].attrs.lineIn.attrs.source.renderFunction instanceof Array) {
  			childOfRGB = true;
  			break;
  		}
  	}
- 	if(group.attrs.name == 'rgb') {
+ 	if (group.attrs.name == 'rgb') {
  		group.attrs.renderFunction = [
 			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
 			group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
