@@ -1,41 +1,41 @@
 extends ./partials/framework
 block title
-	title= viewing.username + " on MIST"
+  title= viewing.username + " on MIST"
 
 block extraMetas
 block extraLinks
 
 block stylesheets
 
-	link(rel='stylesheet', href='/css/profile')
+  link(rel='stylesheet', href='/css/profile')
 
 
 block content
-	div(id='main')
-		div(id = 'pageTitle')
-			h1= viewing.username
-		div(id = 'subviews')
-			a(href='/me' class='subview' id='selected') about
-			a(href='/badges' class='subview') badges
-			a(href='/albums' class='subview') albums
-			a(href='/challenges' class='subview') challenges
-		div(id='subTitle')
-			p= "member since " + viewing.signupTime.toLocaleDateString()
-		div(id='featuredImage')
-			figure
-					img(src='/samples/bw1.jpg' alt='Untitled by username')
-					p
-						figcaption= "Untitled by " +  viewing.username
-		if viewingSelf
-			a(href='/accountSettings' class='settings'): account account settings
-			div(id='bio')
-				a(href='/changeContent')
-					img(src='/icons/edit_button.png' id='editButton')
-				figcaption= viewing.about
-				form(method='POST')
-					textarea(name='aboutSection' cols='40' rows='10')= viewing.about
-					input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
-		else
-			div(id='bio')
-				figcaption= viewing.about
-				form(action='#' method='POST')
+  div(id='main')
+    div(id = 'pageTitle')
+      h1= viewing.username
+    div(id = 'subviews')
+      a(href='/me' class='subview' id='selected') about
+      a(href='/badges' class='subview') badges
+      a(href='/albums' class='subview') albums
+      a(href='/challenges' class='subview') challenges
+    div(id='subTitle')
+      p= "member since " + viewing.signupTime.toLocaleDateString()
+    div(id='featuredImage')
+      figure
+          img(src='/samples/bw1.jpg' alt='Untitled by username')
+          p
+            figcaption= "Untitled by " +  viewing.username
+    if viewingSelf
+      a(href='/accountSettings' class='settings'): account account settings
+      div(id='bio')
+        button(type='button' id='changeBio')
+          img(src='/icons/edit_button.png')
+        figcaption= viewing.about
+          form(method='POST' id='editBio')
+            textarea(name='aboutSection' cols='40' rows='10')= viewing.about
+            input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
+    else
+      div(id='bio')
+        figcaption= viewing.about
+        form(action='#' method='POST')
