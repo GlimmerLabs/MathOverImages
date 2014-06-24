@@ -121,11 +121,14 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		var textBeforeCursor = activeText.text().slice(beginning, this.position);
 		var xOffset = activeText.measureText(family, size, textBeforeCursor).width;;
 		if (activeText.aligned == "center") {
-			var lineTextWidth = activeText.measureText(family, size, lineText).width;
-			xOffset += (activeText.width() - lineTextWidth) / 2;
+			xOffset += this.offsetCentered(family, size, lineText);
 		}
 		var lineOffset = line * activeText.textHeight;
 		cursor.moveLinePosition(x + xOffset, lineOffset);
+	}
+	cursor.offsetCentered = function(family, size, text){
+		var lineTextWidth = activeText.measureText(family, size, text).width;
+		return (activeText.width() - lineTextWidth) / 2;
 	}
 	cursor.moveToClosestPosition = function(x, y){
 		clearTimeout(activeText.cursor.timeout);
@@ -143,8 +146,7 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
 		if (activeText.aligned == "center") {
-			var lineTextWidth = activeText.measureText(family, size, text).width;
-			x += (activeText.width() - lineTextWidth) / 2;
+			x -= this.offsetCentered(family, size, text);
 		}
 		var closestDistance = Infinity;
 		var closestIndex = -1;
