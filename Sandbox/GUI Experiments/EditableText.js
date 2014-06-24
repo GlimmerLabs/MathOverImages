@@ -72,10 +72,10 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		var textLength = activeText.text().length;
 		cursor.position = Math.min(Math.max(cursor.position, 0), textLength);
 	}
-	cursor.getLine = function(){
+	cursor.getLine = function(cursorPosition){
 		var currentLength = 0;
 		var previousLength = 0;
-		var desiredLength = this.position;
+		var desiredLength = cursorPosition;
 		var text = activeText.textArr;
 		for(var textElement = 0; textElement < text.length; textElement++){
 			previousLength = currentLength;
@@ -85,13 +85,21 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 			}
 		}
 	}
+	cursor.getPosition = function(line){
+		var textArray = activeText.textArr;
+		var position = 0;
+		for(var textArrayIndex = 0; textArrayIndex < line; textArrayIndex++){
+			position += textArray[textArrayIndex].text.length;
+		}
+		return position;
+	}
 	cursor.getDistanceUpTo = function(position){
 		var currentLength = 0;
 		var previousLength = 0;
-		var text = activeText.textArr;
-		for(var textElement = 0; textElement < text.length; textElement++){
+		var textArray = activeText.textArr;
+		for(var textArrayIndex = 0; textArrayIndex < textArray.length; textArrayIndex++){
 			previousLength = currentLength;
-			currentLength += text[textElement].text.length;
+			currentLength += textArray[textArrayIndex].text.length;
 			if(position >= previousLength && position <= currentLength){
 				return previousLength;
 			}
@@ -107,7 +115,7 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
 		var x = activeText.x();
-		var line = this.getLine();
+		var line = this.getLine(this.position);
 		var lineText = activeText.textArr[line].text;
 		var beginning = this.getDistanceUpTo(this.position);
 		var textBeforeCursor = activeText.text().slice(beginning, this.position);
@@ -129,8 +137,13 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 			}
 		}, 100);
 		var line = Math.round(y / activeText.textHeight); // Get which line the mouse clicked on
+		line = Math.max(1, Math.min(line, activeText.textArr.length)); // Assures that line is an actual line
 		line -= 1; // convert line to an array index
 		var text = activeText.textArr[line].text;
+		if (activeText.aligned == "center") {
+			var lineTextWidth = activeText.measureText(family, size, text).width;
+			x += (activeText.width() - lineTextWidth) / 2;
+		}
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
 		var closestDistance = Infinity;
@@ -145,7 +158,7 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 				closestDistance = distance;
 			}
 		}
-		this.position = closestIndex + cursor.getDistanceUpTo(line);
+		this.position = closestIndex + cursor.getPosition(line);
 		this.updatePosition();
 	}
 	cursor.moveLinePosition(this.measureText(fontFamily, fontSize, text).width + this.x());
