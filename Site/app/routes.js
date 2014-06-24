@@ -125,6 +125,13 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path:  /expert
+  //   The expert UI
+  app.get('/expert', function(req,res) {
+    res.sendfile('./public/html/expert.html');
+  });
+
+  // --------------------------------------------------
   // Path:  /gallery
   //   Galleries, including the random gallery
   app.get('/gallery', function(req,res) {
