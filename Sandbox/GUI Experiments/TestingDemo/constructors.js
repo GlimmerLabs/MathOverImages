@@ -17,7 +17,8 @@
 	with top right corner at the given x, y coordinate.
 	*/
 	var makeFunctionGroup = function(funName, x, y) {
-		/* create group that will contain information on the function and the shapes making up the representation on screen. */
+		/* create group that will contain information on the function and the shapes 
+			making up the representation on screen. */
 		var newGroup = new Kinetic.Group({
 			name: funName,
 			x: x - functionHalfStrokeWidth,
@@ -57,7 +58,7 @@
 			align: 'center'
 		});
 		newGroup.add(newText);
-		/* create small box in the bottom right corner. Originally is not visible.*/
+		/* create small box in the bottom right corner. Initially, it is not visible.*/
 		var newBox = new Kinetic.Rect({
 			name: 'imageBox',
 			x: functionRectSideLength + functionImageBoxOffset,
@@ -133,6 +134,62 @@
 		return newGroup;
 	};
 
+/* 
+	makeVariableGroup an integer x, and an integer y, and returns a variable node
+	that can be used as a temporary input, and exported as an empty outlet for a function
+	*/
+	var makeVariableGroup = function(x, y) {
+		/* initialize group for the variable */
+		var newGroup = new Kinetic.Group({
+			name: 'variable',
+			x: x,
+			y: y,
+			lineOut: [],
+			visible: false,
+			renderFunction: null,
+			renderLayer: null,
+			label: ''
+		});
+		/* create circle shape. */
+		var newCircle = new Kinetic.Circle({
+			x: functionTotalSideLength/2,
+			y: functionTotalSideLength/2,
+			radius: functionTotalSideLength/2,
+			fill: variableColor,
+			rotation: 45,
+			name: 'variableCircle'
+		});
+		newGroup.add(newCircle);
+		/* create text to be displayed on diamond. */
+		var newText = new Kinetic.Text({
+			text: "",
+			fontFamily: 'OpenSans',
+			fill: 'black',
+			fontSize: 16,
+			x: 0,
+			y: functionTotalSideLength/2,
+			width: functionRectSideLength,
+			align: 'center'
+		});
+		newGroup.add(newText);
+		/* create small box in bottom right corner. Originally not visible. */
+		var newBox = new Kinetic.Rect({
+			name: 'imageBox',
+			x: valueImageBoxOffset,
+			y: valueImageBoxOffset,
+			width: imageBoxSideLength,
+			height: imageBoxSideLength,
+			fill: imageBoxColor,
+			stroke: 'black',
+			strokeWidth: .5,
+			visible: false,
+			expanded: false
+		});
+		newGroup.add(newBox);
+
+		return newGroup;
+	};
+
 /*
 	makeOutlet takes a function node object, functGroup, and returns an outlet node object 
 	to be added to that group.
@@ -150,7 +207,8 @@
 			},
 			name: 'outlet' + (functGroup.children.length - 3),
 			x:functGroup.children[0].x() + outletXOffset,
-			y:functGroup.children[0].y() + (functGroup.children.length - 3) * outletYOffset + functionHalfStrokeWidth,
+			y:functGroup.children[0].y() + (functGroup.children.length - 3) * 
+				outletYOffset + functionHalfStrokeWidth,
 			fill: '#FFC440',
 			stroke: 'black',
 			strokeWidth: 1,
@@ -160,7 +218,8 @@
 		return outlet;
 	};
 /*
-	makeLine takes either a functionGroup object or valueGroup object as input (source) and creates a line that begins at the left edge of source. 
+	makeLine takes either a functionGroup object or valueGroup object as input
+	(source) and creates a line that begins at the left edge of source. 
 	*/
 	var makeLine = function(source) {
 		var newLine = new Kinetic.Line({
@@ -180,7 +239,10 @@
 		return newLine;
 	}
 /*
-makeMenuTween takes a node (target), an integer (xEnd), and a boolean (visibility). It returns a kinetic tween that will move target to xEnd, without changing y value; and with the visibility to the specified boolean values.*/
+makeMenuTween takes a node (target), an integer (xEnd), and a boolean (visibility).
+It returns a kinetic tween that will move target to xEnd, without changing y value,
+and with the visibility to the specified boolean values.
+*/
 var makeMenuTween = function(target, xEnd, visibility) {
 	return new Kinetic.Tween({
 		node: target,
@@ -261,3 +323,4 @@ var createEditableText = function (group) {
 		workLayer.draw()
 	};
 };
+
