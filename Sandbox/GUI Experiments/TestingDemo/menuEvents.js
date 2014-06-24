@@ -104,3 +104,33 @@ menuButtonLayer.on('click', function(){
   dragLayer.draw();
 }
 });
+
+// CONTROL MENU EVENTS 
+menuControlLayer.on('mouseover', function(evt) {
+  var parent = evt.target.getParent();
+  var shape = parent.children[0];
+  shape.setAttr('fill', menuControlSelect);
+  menuControlLayer.draw();
+});
+
+menuControlLayer.on('mouseout', function(evt){
+  var parent = evt.target.getParent();
+  var shape = parent.children[0];
+  shape.setAttr('fill', menuControlColor);
+  shape.setAttr('shadowEnabled', false);
+  menuControlLayer.draw();
+});
+
+menuControlLayer.on('mousedown', function(evt){
+  var parent = evt.target.getParent();
+  var shape = parent.children[0];
+  shape.setAttr('shadowEnabled', true);
+  menuControlLayer.draw();
+});
+
+menuControlLayer.on('mouseup', function(evt){
+  var parent = evt.target.getParent();
+  var shape = parent.children[0];
+  shape.setAttr('shadowEnabled', false);
+  menuControlLayer.draw();
+});
