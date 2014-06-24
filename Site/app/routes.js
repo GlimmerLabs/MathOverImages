@@ -1,4 +1,9 @@
-// app/routes.js
+/**
+ * app/routes.js
+ *   Information on mapping various URLs to functions or files.
+ */
+
+// Application-specific libraries.
 var gallery = require("../functions/gallery.js");
 var albums = require("../functions/albums.js");
 var albumContents = require("../functions/albumContents.js");
@@ -8,6 +13,27 @@ var username = require("../functions/username.js");
 var image = require("../functions/image.js");
 var login = require("../functions/login.js");
 var signup = require("../functions/signup.js");
+
+// Some utilities
+
+/**
+ * Send a file with an optional suffix.
+ */
+function sendFileWithSuffix(res,path,suffix) {
+  res.sendfile(path, function(err) {
+    if (err) {
+      console.log("First response: " + err);
+      res.sendfile(path + suffix, function(err) {
+        console.log("Second response: " + err);
+	if (err) {
+          res.send(404,'');
+	}
+      });
+    }
+  });
+}
+
+// Primary exports
 
 module.exports = function(app,passport,database) {
     /* ======================  HOME PAGE =======================*/
@@ -81,7 +107,6 @@ module.exports = function(app,passport,database) {
 	}
     });
 
-
     /* function page */
     app.get('/user/:username/functions', function(req,res){
 	functions.buildPage(req, res, database);
@@ -114,7 +139,7 @@ module.exports = function(app,passport,database) {
 	image.buildPage(req, res, database);
     });
 
- /* albumContents page */
+    /* albumContents page */
     app.get('/albums/:albumid', function(req,res){
 	albumContents.buildPage(req, res, database);
     });
@@ -126,7 +151,6 @@ module.exports = function(app,passport,database) {
     app.get('/logos/:file', function(req,res){
 	res.sendfile('./public/images/logos/' + req.params.file);
     });
-
     app.get('/icons/:file', function(req,res){
 	res.sendfile('./public/images/icons/' + req.params.file);
     });
@@ -146,14 +170,15 @@ module.exports = function(app,passport,database) {
     });
 
     /* ============== css distribution =================== */
-    app.get('/css/:page', function(req,res){
-	res.sendfile('./public/css/' + req.params.page + '.css');
+    app.get('/css/:file', function(req,res) {
+        sendFileWithSuffix(res, './public/css/' + req.params.file, '.css');
     });
 
     /* ============== client-side javascript distribution =================== */
     app.get('/js/:file', function(req,res){
-	res.sendfile('./public/js/' + req.params.file + '.js');
+        sendFileWithSuffix(res, './public/js/' + req.params.file, '.js');
     });
+
     /* ============== dynamic content distribution =================== */
     app.post('/api', function(req,res){
 	if (req.body.funct === "checkAvailability"){
