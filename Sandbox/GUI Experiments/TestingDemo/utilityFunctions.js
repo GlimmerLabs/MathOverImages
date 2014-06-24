@@ -55,7 +55,7 @@
  		for(var i = 3; i < group.children.length; i++) {
  			if(group.children[i].attrs.lineIn != null) {
 				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
- 				group.attrs.renderFunction += functions[group.attrs.name].separator
+ 				group.attrs.renderFunction += ',';
  			}
 		} // add each element to the equation
 		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';}
