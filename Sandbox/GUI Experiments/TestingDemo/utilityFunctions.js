@@ -40,14 +40,14 @@
  				}
 			} // add each element to the equation
 			group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
-	}
-	else {
+}
+else {
 	group.attrs.renderFunction = [
 	group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
 	group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
 	group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
 	];
-	}
+}
 };
 
 /**
@@ -85,12 +85,12 @@
 /**
  * renderCanvas takes a function or value group and renders a 50 by 50 image starting where the image box is located.  
  */
-	var renderCanvas = function(group) {
-		var currLayer = group.attrs.renderLayer; 
-		if (currLayer == null){
-			currLayer = new Kinetic.Layer();
-			group.setAttr('renderLayer', currLayer);
-			stage.add(currLayer);
+ var renderCanvas = function(group) {
+ 	var currLayer = group.attrs.renderLayer; 
+ 	if (currLayer == null){
+ 		currLayer = new Kinetic.Layer();
+ 		group.setAttr('renderLayer', currLayer);
+ 		stage.add(currLayer);
 		} // if 
 		group.children[2].setAttrs({
 			width: renderSideLength,
@@ -133,59 +133,117 @@
  	}
  };
 
-	/* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
-	var disableTool = function(toolGroup) {
-		toolGroup.children[0].setAttr('shadowEnabled', false);
-		var name = toolGroup.name();
-		if (name == 'workTool') {
-			workToolOn = false;
-		} 
-		else if (name == 'lineTool') {
-			lineToolOn = false;
-		}
-		else {
-			deleteToolOn = false;
-		}
-	};
+ /* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
+ var disableTool = function(toolGroup) {
+ 	toolGroup.children[0].setAttr('shadowEnabled', false);
+ 	var name = toolGroup.name();
+ 	if (name == 'workTool') {
+ 		workToolOn = false;
+ 	} 
+ 	else if (name == 'lineTool') {
+ 		lineToolOn = false;
+ 	}
+ 	else {
+ 		deleteToolOn = false;
+ 	}
+ };
 
-	var enableWorkTool = function() {
-		workToolGroup.children[0].setAttr('shadowEnabled', true);
-		workToolOn = true;
-		disableTool(lineToolGroup);
-		disableTool(deleteToolGroup);
-		toolboxLayer.draw();
-	};
+ var enableWorkTool = function() {
+ 	workToolGroup.children[0].setAttr('shadowEnabled', true);
+ 	workToolOn = true;
+ 	disableTool(lineToolGroup);
+ 	disableTool(deleteToolGroup);
+ 	toolboxLayer.draw();
+ };
 
 /**
  * workspaceToArray takes all the nodes in the workLayer and all the lines in the 
  * lineLayer and puts them into an array.
  */
-var workspaceToArray = function() {
-	var wArray = [];
-	var workChildren = workLayer.getChildren();
-	var lineChildren = lineLayer.getChildren();
-	var i = 0;
-	for (i; i < workChildren.length; i++) {
-		wArray[i] = workChildren[i]; 
-	}
-	for (var j = 0; j < lineChildren.length; j++, i++) {
-		wArray[i] = lineChildren[j];
-	}
-	return wArray;
-};
+ var workspaceToArray = function() {
+ 	var wArray = [];
+ 	var workChildren = workLayer.getChildren();
+ 	var lineChildren = lineLayer.getChildren();
+ 	var i = 0;
+ 	for (i; i < workChildren.length; i++) {
+ 		wArray[i] = workChildren[i]; 
+ 	}
+ 	for (var j = 0; j < lineChildren.length; j++, i++) {
+ 		wArray[i] = lineChildren[j];
+ 	}
+ 	return wArray;
+ };
 
 /**
  * setDragShadow takes a function or value group and activates drag shadow
  */
-var setDragShadow = function(group) {
-	group.children[0].setAttrs({
-		shadowColor: 'black',
-		shadowEnabled: true
-	});
-};
+ var setDragShadow = function(group) {
+ 	group.children[0].setAttrs({
+ 		shadowColor: 'black',
+ 		shadowEnabled: true
+ 	});
+ };
 
+/**
+ * replaceNode takes an old node and a new node and replaces the old node with
+ *	the new one, removing the old one from the layer.
+ */
+ var replaceNode = function(oldNode, newNode) {
+ 	var tempOut = oldNode.attrs.lineOut;
+ 	oldNode.remove();
+ 	for(var i = 0; i < tempOut.length; i++) {
+ 		tempOut[i].attrs.source = newNode;
+ 	}
+ 	newNode.attrs.lineOut = tempOut;
+ 	// Theres more to do if we are replacing a function:
+ 	if (isFunction(newNode) && isFunction(oldNode)) {
+ 		// check if oldNode allows more inputs than newNode
+ 		if (newNode.attrs.maxInputs < oldNode.children.length - OUTLET_OFFSET) {
+ 			// add appropriate outlets to newNode
+ 			while (newNode.children.length < newNode.attrs.maxInputs + 3) {
+ 				addOutlet(newNode);
+ 			}
+ 			var outletIndex = 3; // which outlet we are applying the next input to
+ 			for(var i = 0; i < newNode.attrs.maxInputs; i++) {
+ 				if(oldNode.children[i+3].attrs.lineIn) {
+ 					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i+3].attrs.lineIn;
+ 					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
+ 					outletIndex++;
+ 				}
+ 			}
+ 			while (i < oldNode.children.length - OUTLET_OFFSET) {
+ 				if(oldNode.children[i+3].attrs.lineIn) {
+ 					removeLine(oldNode.children[i + 3].attrs.lineIn);
+ 				}
+ 				i++;
+ 			}
+ 		} 
+ 		else {
+ 			while (newNode.children.length < oldNode.children.length || 
+ 				newNode.children.length - OUTLET_OFFSET < newNode.attrs.minInputs) {
+ 				addOutlet(newNode);
+ 			}
+ 			var outletIndex = 3;
+ 			for (var i = 3; i < oldNode.children.length; i++) {
+ 				if (oldNode.children[i].attrs.lineIn) { 
+ 					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
+ 					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
+ 					outletIndex++;
+ 				}
+ 			}
+ 			if (newNode.attrs.maxInputs > newNode.children.length - OUTLET_OFFSET &&
+ 				newNode.children[newNode.children.length -1]) {
+ 				addOutlet(newNode);
+ 			}
+ 		}
+ 	}
+ 	if (assertRenderable(newNode)) {
+ 		updateForward(newNode);
+	}
 
-
+	lineLayer.draw();
+	workLayer.draw();
+ }
 
 
 
