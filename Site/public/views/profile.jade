@@ -27,7 +27,7 @@ block content
 					p
 						figcaption= "Untitled by " +  viewing.username
 		if viewingSelf
-			a(href='/accountSettings' id='link') Account Settings
+			a(href='/accountSettings' class='settings'): account account settings
 			div(id='bio')
 				a(href='/changeContent')
 					img(src='/icons/edit_button.png' id='editButton')
@@ -35,12 +35,7 @@ block content
 				form(method='POST')
 					textarea(name='aboutSection' cols='40' rows='10')= viewing.about
 					input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
-				form(action='#' method='POST')
-					textarea(name='styled-textarea' id='styled' cols='40' rows='10') here is where we will put a mailbox
-					input(type='submit' id='submit' name='submit')
 		else
 			div(id='bio')
 				figcaption= viewing.about
 				form(action='#' method='POST')
-					textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
-					input(type='submit' id='submit' name='submit')
