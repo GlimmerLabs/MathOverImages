@@ -65,7 +65,7 @@
  */
  var updateFunBar = function() {
  	currText = currShape.attrs.renderFunction;
- 	if (group.attrs.renderFunction instanceof Array) {
+ 	if (currShape.attrs.renderFunction instanceof Array) {
  		// NEEDS UPDATE FOR RGB OUTPUTS
  		currText = 'rgb(' + currText + ')';
  	} 
