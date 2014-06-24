@@ -73,6 +73,16 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path:  /about
+  //   About MIST
+  app.get('/about', function(req,res) {
+    res.render('../public/views/about.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  // --------------------------------------------------
   // Path:  /accountSettings
   //   Account settings
   app.get('/accountSettings', function(req,res) {
@@ -92,7 +102,7 @@ module.exports = function(app,passport,database) {
   // Path:  /albums
   //   Albums page
   app.get('/albums', function(req,res) {
-    albums.buildPage(req, res, database);
+    res.redirect('/user/' + req.session.user.username + '/albums');
   });
   app.get('/albums/:albumid', function(req,res) {
     albumContents.buildPage(req, res, database);
@@ -125,6 +135,16 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path:  /default
+  //   A default page, used when we haven't yet implemented the page
+  app.get('/default', function(req, res) {
+    res.render('../public/views/default.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  // --------------------------------------------------
   // Path:  /expert
   //   The expert UI
   app.get('/expert', function(req,res) {
@@ -148,6 +168,14 @@ module.exports = function(app,passport,database) {
 
   app.get('/gallery/recent/:pageNumber', function(req, res) {
     gallery.buildRecentsPage(req, res, database);
+  });
+
+  app.get('/gallery/toprated', function(req, res) {
+    res.redirect('/gallery/toprated/1');
+  });
+
+  app.get('/gallery/toprated/:pageNumber', function(req, res) {
+    gallery.buildTopRatedPage(req, res, database);
   });
 
   // --------------------------------------------------
@@ -246,6 +274,15 @@ module.exports = function(app,passport,database) {
     if(req.body.aboutSubmit != null) {
       username.changeAboutSection(req, res);
     }}
+  });
+
+  // --------------------------------------------------
+  // Path:  /user/*/albums
+  //    User albums page
+  app.get('/user/:username/albums', function(req,res) {
+    console.log(req.params.userid);
+    console.log(req.session.user.username);
+    albums.buildPage(req, res, database);
   });
 
   // --------------------------------------------------
