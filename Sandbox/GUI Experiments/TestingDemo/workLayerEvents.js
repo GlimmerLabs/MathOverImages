@@ -61,22 +61,25 @@ There are 3 different modes:
         }
         else if (isOutlet(shape)) {
       //check if outlet already has an input
+      var isReplacement;
       if (shape.attrs.lineIn != null) {
         //POSSIBLE NEED TO DESTROY LINE ITSELF
         var source = shape.attrs.lineIn.attrs.source;
         var index = shape.attrs.lineIn.attrs.sourceIndex
         var line = source.attrs.lineOut[index];
-        
+        insertToArray(actionToObject('replace', line, shape.attrs.lineIn));
+        isReplacement = true;
         for (var i = index + 1; i < source.attrs.lineOut.length; i++) {
           source.attrs.lineOut[i].attrs.sourceIndex--;
         }
         source.attrs.lineOut.splice(index, 1);
-        insertToArray(actionToObject('replace', line));
+        
         line.remove();
         shape.attrs.lineIn = null;
       } 
       else {
         parent.attrs.numInputs++;
+        isReplacement = false;
       } // check if theres already a line going in to the outlet
       shape.attrs.lineIn = currLine;
       currLine.points()[2] = parent.x();
@@ -97,7 +100,9 @@ There are 3 different modes:
       }
     }
     insertToTable(currLine);
-    insertToArray(actionToObject('insert', currLine));
+    if (!isReplacement){
+      insertToArray(actionToObject('insert', currLine));
+    }
     updateForward(parent);
     } // if clicked on self, else clicked on a valid outlet
   } // if makingline

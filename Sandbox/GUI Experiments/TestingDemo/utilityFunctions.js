@@ -240,23 +240,26 @@
  			}
  		} 
  		else {
- 			addOutlet(newNode);
- 			var outletIndex = 3;
- 			for (var i = 3; i < oldNode.children.length; i++) {
- 				if (oldNode.children[i].attrs.lineIn) { 
- 					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
- 					newNode.attrs.numInputs++;
- 					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
- 					addOutlet(newNode);
- 					outletIndex++;
+ 			if (newNode.attrs.numInputs != newNode.children.length - 4) {
+ 				addOutlet(newNode);
+ 				var outletIndex = 3;
+ 				for (var i = 3; i < oldNode.children.length; i++) {
+ 					if (oldNode.children[i].attrs.lineIn) { 
+ 						newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
+ 						newNode.attrs.numInputs++;
+ 						newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
+ 						addOutlet(newNode);
+ 						outletIndex++;
+ 					}
  				}
- 			}
+ 			} 
+
  		}
  		assertRenderable(newNode);
  	}
  	updateForward(newNode);
-	lineLayer.draw();
-	workLayer.draw();
+ 	lineLayer.draw();
+ 	workLayer.draw();
  }
 
 
