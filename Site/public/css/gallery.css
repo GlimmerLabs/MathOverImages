@@ -1,11 +1,32 @@
 @import url("/css/styles");
 
+/*this is gallery.css*/
+
 #main {
 	margin:100px;
 }
 
 #pageTitle {
 	background-color: #3FAAA0;
+}
+
+#albumPageTitle {
+	height:140px;
+	min-width:600px;
+	margin: 0px -110px;
+	float: left;
+	background-color: #EFDC5C;
+}
+
+#albumPageTitle h1{
+	border: 7px solid white;
+	margin: 15px;
+	color: #FFF;
+	display: inline-block;
+	font-weight: 800;
+	font-size: 4em;
+	padding: 5px;
+	clear: left;
 }
 
 #images {
@@ -30,3 +51,9 @@ figure figcaption.left:first-letter{
 	color: #EFDC5C;
 	font-size: 1em;
 }
+
+figure figcaption.center{
+    text-align: center;
+    color: #979797;
+}
+

@@ -20,7 +20,7 @@ block content
           tr
             td(id='headers') username
             td(id='content')= user.username
-            td: button(type='button' id='edit-username'): img(src='/icons/edit_button.png' class='editButton1')
+            td: button(type='button' id='edit-username'): img(src='/icons/edit_button.png' class='editButton')
         tbody(id='username-form')
           tr(id='item')
             td(id='headers') change username:
@@ -40,8 +40,8 @@ block content
         thead
           tr
             td(id ='headers') password
-            td
-            td: button(type='button' id='edit-password'): img(src='/icons/edit_button.png' class='editButton2')
+            td(id='content')
+            td: button(type='button' id='edit-password'): img(src='/icons/edit_button.png' class='editButton')
         tbody(id='password-form')
           tr(id='item')
             td(id ='headers') new password:
@@ -64,7 +64,7 @@ block content
           tr
             td(id='headers') email
             td(id='content')=  user.email
-            td: button(type='button' id='edit-email'): img(src='/icons/edit_button.png' class='editButton3')
+            td: button(type='button' id='edit-email'): img(src='/icons/edit_button.png' class='editButton')
         tbody(id='email-form')
           tr(id='item')
             td(id ='headers') new primary email:
