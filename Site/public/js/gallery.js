@@ -54,11 +54,12 @@ function setup(i) {
   stopAnimation(i);
 
   // Add event handlers to the element for animating and stopping animation
-  canvas.mouseenter = function(evt) {
+  console.log("Adding handlers to canvas " + i);
+  canvas.onmouseover = function(evt) {
     startAnimation(i);
   } // canvas.mouseenter
 
-  canvas.mouseleave = function(evt) {
+  canvas.onmouseout = function(evt) {
     stopAnimation(i);
   } // canvas.mouseleave
 
