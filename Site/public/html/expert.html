@@ -43,19 +43,22 @@ jquery-ui.css">
 /**
  * The current workspace.
  */
+var ws;
 var workspace = {};
 workspace.userfuns = new MIST.Collection("User-defined functions", "Functions defined by the user.");
 workspace.uservals = new MIST.Collection("User-defined values", "Values defined by the user.");
 
 // Simulated population of the workspace
+/*
 workspace.userfuns.addUserFun("fun1", "fun1", "My first function", "i",
   "x+i");
 workspace.userfuns.addUserFun("fun2", "fun2", "My function", "i,j",
   "x*i+y*j");
 workspace.userfuns.addUserFun("myfun", "myfun", "My function", "i,j",
   "x*i+y*j");
+ */
 workspace.uservals.addUserVal("val1", "val1", "x*y", "x*y");
-workspace.uservals.addUserVal("val2", "val2", "Almost as circle", "x*x+y*y");
+workspace.uservals.addUserVal("val2", "val2", "Almost a circle", "x*x+y*y");
 
 /**
  * The list of selected files.
@@ -334,8 +337,14 @@ function saveWorkspace(fname) {
  * Start the animation running.
  */
 function startAnimation() {
+  var context = {};
+  /*
+  for (var name in workspace.userfuns.keys()) {
+    context[name] = workspace.userfuns.get[name];
+  } // for
+   */
   MIST.ui.startAnimation(document.getElementById("funcode").value,
-      document.getElementById("funparams").value, {},
+      document.getElementById("funparams").value, context,
       document.getElementById("canvas"),
       function(txt) { document.getElementById("message").value = txt; });
 } // startAnimation
@@ -429,7 +438,7 @@ $(document).ready(function() {
             console.log(evt.target.result);
             var fun;
             try {
-              var fun = JSON.parse(json);
+              var fun = restore(JSON.parse(json));
             }
             catch (err) {
               alert("File does not contain a MIST Function");
@@ -466,10 +475,10 @@ $(document).ready(function() {
           var reader = new FileReader();
           reader.onload = function(evt) {
             var json = evt.target.result;
-            console.log(evt.target.result);
             var fun;
             try {
-              var ws = JSON.parse(json);
+              ws = JSON.parse(json);
+              restore(ws);
             }
             catch (err) {
               alert("File does not contain a workspace.");
@@ -610,8 +619,16 @@ $(document).ready(function() {
     function(evt) {
       // Note which files are selected
       selectedFiles = evt.target.files;
-      // ove the focus
+      // Move the focus
       $(":button:contains('Load')").focus();
+    }
+  );
+  document.getElementById("loadws-filename").addEventListener('change',
+    function(evt) {
+      // Note which files are selected
+      selectedFiles = evt.target.files;
+      // Move the focus
+      $(":button:contains('Open')").focus();
     }
   );
 });
@@ -780,7 +797,7 @@ context.fillRect(0,0,canvas.width,canvas.height);
 <form>
 <fieldset>
   <label for="loadfun-filename">File Name</label>
-  <input type="file" accept="text/json" name="loadfun-filename" id="loadfun-filename">
+  <input type="file" accept="text/json" name="loadws-filename" id="loadws-filename">
 </fieldset>
 </form>
 
