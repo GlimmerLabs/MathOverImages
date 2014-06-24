@@ -140,11 +140,12 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		line = Math.max(1, Math.min(line, activeText.textArr.length)); // Assures that line is an actual line
 		line -= 1; // convert line to an array index
 		var text = activeText.textArr[line].text;
-		if (activeText.aligned == "center") {
-			x += (activeText.width() - activeText.textArr[line].width) / 2;
-		}
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
+		if (activeText.aligned == "center") {
+			var lineTextWidth = activeText.measureText(family, size, text).width;
+			x += (activeText.width() - lineTextWidth) / 2;
+		}
 		var closestDistance = Infinity;
 		var closestIndex = -1;
 		for(var ch = text.length; ch >= 0; ch--){
