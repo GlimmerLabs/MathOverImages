@@ -237,10 +237,9 @@ else {
  				}
  			}
  		}
+ 		assertRenderable(newNode);
  	}
- 	assertRenderable(newNode);
  	updateForward(newNode);
-
 	lineLayer.draw();
 	workLayer.draw();
  }

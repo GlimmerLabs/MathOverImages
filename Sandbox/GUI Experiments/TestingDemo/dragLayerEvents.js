@@ -23,7 +23,6 @@
     var group = evt.target.getParent();
     if (scaledObj) {
       scaledObj.setAttr('scale', { x: 1, y: 1 });
-      console.log()
       group.setAttr('x', scaledObj.attrs.x);
       group.setAttr('y', scaledObj.attrs.y);
       replaceNode(scaledObj, group);
