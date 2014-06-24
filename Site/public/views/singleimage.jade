@@ -1,31 +1,44 @@
 extends ./partials/framework
 block title
-	title= image.title + " by " + image.username + " on MIST"
+  title= image.title + " by " + image.username + " on MIST"
 block extraMetas
 block extraLinks
+  script(type='text/javascript' src='/js/mist-utils.js')
+  script(type='text/javascript' src='/js/mist-functions.js')
+  script(type='text/javascript' src='/js/mist-layout.js')
+  script(type='text/javascript' src='/js/mist-functions-layout.js')
+  script(type='text/javascript' src='/js/mist-functions-builtin.js')
+  script(type='text/javascript' src='/js/mist-render.js')
+  script(type='text/javascript' src='/js/mistui-dialogs.js')
+  script(type='text/javascript' src='/js/mistui-help.js')
+  script(type='text/javascript' src='/js/mistui-menus.js')
+  script(type='text/javascript' src='/js/mistui-animation.js')
+  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+  script(type='text/javascript' src='/js/imagepage.js')
 
 block stylesheets
-	link(rel='stylesheet' href='/css/singleImage')
+  link(rel='stylesheet' href='/css/singleImage')
 block content
-	div(id='main')
-		h1= image.title
-		h2= image.modifiedAt.toLocaleDateString()
-		figure
-			img(src='/samples/color1.jpg')
-			figcaption(class='left')= "★" + image.rating
-			figcaption(class='right')= "by " + image.username
-		p(class='code')= image.code
-		div
-		div(id='comments')
-			div(class='comment')
-				h1(class='op'): a(href='/user/'+ image.username)= image.username
-				p I like the gradation from white to black I achieved in this image.
-			div(class='comment')
-				h1: a(href='/user/cutechick') cutechick
-				p Great work! Maybe try doing something similar in RGB?
-			if loggedIn
-				div(id='leaveComment' class='comment')
-					h1: a(href='/user/' + user.username)= user.username
-					form(method='POST')
-						textarea(placeholder='leave a comment')
-						input(type='submit' value='submit')
+  div(id='main')
+    h1= image.title
+    h2= image.modifiedAt.toLocaleDateString()
+    figure
+      canvas(id='canvas' width='400' height='400')
+      // img(src='/samples/color1.jpg')
+      figcaption(class='left')= "★" + image.rating
+      figcaption(class='right')= "by " + image.username
+    p(id='code' class='code')= image.code
+    div
+    div(id='comments')
+      div(class='comment')
+        h1(class='op'): a(href='/user/'+ image.username)= image.username
+        p I like the gradation from white to black I achieved in this image.
+      div(class='comment')
+        h1: a(href='/user/cutechick') cutechick
+        p Great work! Maybe try doing something similar in RGB?
+      if loggedIn
+        div(id='leaveComment' class='comment')
+          h1: a(href='/user/' + user.username)= user.username
+          form(method='POST')
+            textarea(placeholder='leave a comment')
+            input(type='submit' value='submit')
