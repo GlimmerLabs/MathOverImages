@@ -42,12 +42,12 @@
   			y1: group.y(),
   			connections: []
   		};
+        var child = 0;
   		if (action == 'delete') {
-  			var child = 0;
   			// Remember all the outgoing edges we're deleting.
   			for (var i = 0; i < group.attrs.lineOut.length; i++) {
-  					obj['connections'][child++] = actionToObject('delete', group.attrs.lineOut[i]);
-  			}
+                 obj['connections'][child++] = actionToObject('delete', group.attrs.lineOut[i]);
+             }
   			// Remember all the incoming edges we're deleting.
   			if (isFunction(group)) {
   				for (var i = OUTLET_OFFSET; i < group.children.length; i++) {
@@ -58,8 +58,22 @@
   				} // for each incoming edge
   			} // if there are incoming edge
   		} // if we're deleting things
+        else if (action == 'replace') {
+            var oldGroup = arguments[2]
+            obj.oldGroup = oldGroup;
+            if (isFunction(group)) {
+                if(group.attrs.maxInputs < oldGroup.children.length - 3) {
+                    var startingIndex = OUTLET_OFFSET + group.attrs.maxInputs;
+                    for (var i = startingIndex; i < oldGroup.children.length; i++) {
+                        var lineIn = oldGroup.children[i].attrs.lineIn;
+                        if (lineIn != null && lineIn != undefined) {
+                            obj['connections'][child++] = actionToObject('replace', lineIn);
+                        } 
+                    }
+                }
+            }
+        } // if we're replacing things
   	} // if it's a function or value
-
   	// If it's a line
   	else if (isLine(group)) {
   		var obj = {
@@ -68,8 +82,8 @@
   			action: action,
   			source: group.attrs.source,
   			sink: group.attrs.outlet.parent,
-        sinkIndex: group.attrs.outlet.attrs.outletIndex
-  		};
+            sinkIndex: group.attrs.outlet.attrs.outletIndex
+        };
   	} // if it's a line
   	return obj; 	
   };
@@ -79,32 +93,32 @@
  * it in the array, increments the currIndex, updates the totalIndex, updates the
  * redo/undo button shading and draws the toolboxLayer
  */
-  var insertToArray = function(actionObj) {
-  	actionArray[currIndex] = actionObj;
-  	currIndex++;
-  	totalIndex = currIndex;
-    shadeUndoRedo();
-    toolboxLayer.draw();
-  };
+ var insertToArray = function(actionObj) {
+     actionArray[currIndex] = actionObj;
+     currIndex++;
+     totalIndex = currIndex;
+     shadeUndoRedo();
+     toolboxLayer.draw();
+ };
 
 /**
  * insertToTable takes a group newly added to the workspace and adds it the 
  * elementTable along with the group's id number as the key.
  */
-  var insertToTable = function(group) {
-  	var stringId = group._id.toString();
-  	elementTable[stringId] = group;
-  };
+ var insertToTable = function(group) {
+     var stringId = group._id.toString();
+     elementTable[stringId] = group;
+ };
 
   /**
    * inTable takes a function or value group and checks if it's already been added
    * to the workspace from the menu. Returns true if group is already in the table, 
    * and false if it has not yet been added. 
    */
-  var inTable = function(group) {
-  	var stringId = group._id.toString();
-  	return (elementTable[stringId] != undefined);
-  };
+   var inTable = function(group) {
+     var stringId = group._id.toString();
+     return (elementTable[stringId] != undefined);
+ };
 
   /**
    * undoAction takes an action from the action array and if an undo action is
@@ -112,11 +126,11 @@
    * for either a node or a line. The currIndex is updated and relevant layers
    * redrawn.
    */
-  var undoAction = function(actionObj) {
+   var undoAction = function(actionObj) {
     // if the an undo action is valid (there are actions to be undone)
     if (currIndex > 0) {
-     var action = actionObj.action;
-     var element = elementTable[actionObj.id];
+       var action = actionObj.action;
+       var element = elementTable[actionObj.id];
      // if the action in question is a deletion
      if (action == 'delete') {
       // if working with a node
@@ -143,7 +157,7 @@
           if (element.attrs.renderLayer != null) {
             // close an open canvas
             collapseCanvas(element);
-          }
+        }
           // remove the object from its layer
           element.remove(); 
         } // if node
@@ -152,8 +166,8 @@
           // remove the line and update its indexes
           removeLine(element);
           lineLayer.draw()
-        }
-        workLayer.draw();
+      }
+      workLayer.draw();
       } // if insert
       // if the action in question is a movement
       else if (action == 'move') {
@@ -164,12 +178,12 @@
         element.setAttrs({
           x: newX,
           y: newY
-        });
+      });
         // re-render the canvas if previously open
         if (element.children[2].attrs.expanded) {
           element.attrs.renderLayer.draw();
           renderCanvas(element);
-        }
+      }
         //collapseCanvas(element);
         currShape = element;
         dragLayer.draw(); 
@@ -181,7 +195,7 @@
         // ***** currently in progress *******
       } // if replace
     } // if undo
-  };
+};
 
 
   /**
@@ -190,7 +204,7 @@
    * for either a node or a line. The currIndex is updated and relevant layers
    * redrawn.
    */
-  var redoAction = function(actionObj) {
+   var redoAction = function(actionObj) {
     // if the currIndex is less than the totalIndex (there are still valid actions)
     if (currIndex < totalIndex) {
       var action = actionObj.action;
@@ -215,12 +229,12 @@
               for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
                 // incrementing all of their positions
                 source.attrs.lineOut[j].attrs.sourceIndex--;
-              }
+            }
               // remove the lineOut of interest
               targetLine.attrs.source.attrs.lineOut.splice(index, 1);
               targetLine.remove();
             } // if not null
-          }
+        }
           // deal with the lines leading out of the node being deleted
           var outletParent;
           // go through each of the lineOuts
@@ -238,13 +252,13 @@
             updateForward(outletParent);
             // remove the line from the lineLayer
             targetLine.remove();
-          } 
+        } 
           // remove text from funBar
           if (currShape == element) {
             currShape = undefined;
             funBarText.setAttr('text', '');
             funBarLayer.draw();
-          }
+        }
           // remove the element form the workLayer
           element.remove();
         } // if node
@@ -252,7 +266,7 @@
         else {
           // remove the line and update th esink and source's indexes
           removeLine(element);
-        }
+      }
       } // if delete
       //else if insert
       else if (action == 'insert') {
@@ -266,8 +280,8 @@
           // insert the old line
           insertLine(actionObj);
           lineLayer.draw();
-        }
-        workLayer.draw();
+      }
+      workLayer.draw();
       } // if insert
       // else if move
       else if (action == 'move') {
@@ -280,12 +294,12 @@
         element.setAttrs({
           x: newX,
           y: newY
-        });
+      });
         // re-render a canvas if previously open
         if (element.children[2].attrs.expanded) {
           element.attrs.renderLayer.draw();
           renderCanvas(element);
-        }
+      }
         // update the currShape
         currShape = element;
       } // if move
@@ -334,10 +348,10 @@
     else {
       // if sink is not currShape, assert and update renderability of sink
       assertRenderable(parent);
-    }
+  }
     // update
     updateForward(outlet.parent);
-  };
+};
 
   /**
    * insertLine takes an actionObj, finds the corresponding line, moves it to the 
@@ -366,19 +380,19 @@
     if (currShape != undefined) {
       // update the funBarText
       updateFunBar();
-    }
+  }
     // set the line's attributes
     element.setAttrs({
       scale: 1,
       shadowEnabled: false
-    });
+  });
     // update the currshape to be the sink and re-draw
     currShape = actionObj.sink;
     dragLayer.draw();
     // update the currShape to be the source and re-draw
     currShape = actionObj.source;
     dragLayer.draw();
-  };
+};
 
 
   /**
@@ -386,26 +400,26 @@
    * variables currIndex and totalIndex to update the attributes of the 
    * undo/redo buttons to reflect their validity.
    */ 
-  var shadeUndoRedo = function() {
+   var shadeUndoRedo = function() {
     // if an undo action is possible
     if (currIndex > 0) {
       // color the undo button grey
       undoButton.setAttr('fill', 'grey');
-    } 
+  } 
     // if undo is invalid
     else {
       // color the undo button a lighter grey
       undoButton.setAttr('fill', '#E3E3E3');
-    } 
+  } 
     // is a redo action is possible
     if (currIndex < totalIndex) {
       // color the undo button grey
       redoButton.setAttr('fill', 'grey');
-    }
+  }
     // if redo is invalid
     else {
       // color the undo button a lighter grey
       redoButton.setAttr('fill', '#E3E3E3');
-    } 
-  };
+  } 
+};
 

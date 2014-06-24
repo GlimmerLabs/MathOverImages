@@ -25,6 +25,10 @@
       scaledObj.setAttr('scale', { x: 1, y: 1 });
       group.setAttr('x', scaledObj.attrs.x);
       group.setAttr('y', scaledObj.attrs.y);
+      insertToTable(group);
+      
+      insertToArray(actionToObject('replace', group, scaledObj));
+
       replaceNode(scaledObj, group);
       scaledObj = null;
       group.moveTo(workLayer);
