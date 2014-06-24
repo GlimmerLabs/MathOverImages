@@ -1,77 +1,83 @@
 extends ./partials/framework
 block title
-	title Account Settings
+  title Account Settings
 block extraMetas
 block extraLinks
-	script(type='text/javascript' src='js/accountSettings')
-	script(type='text/javascript' src='js/signup')
+  script(type='text/javascript' src='js/accountSettings')
+  script(type='text/javascript' src='js/signup')
 block stylesheets
-	link(rel='stylesheet', href='/css/styles')
-	link(rel='stylesheet', href='/css/accountSettings')
+  link(rel='stylesheet', href='/css/styles')
+  link(rel='stylesheet', href='/css/accountSettings')
 block content
-	div(id='main')
-		div(id='pageTitle')
-			h1 my settings
-		div(id='flashZone')
-			h1 Security is very important to us
-		form(method='POST')
-			table
-				tr
-					td(id ='headers') username
-					td(id='content')= user.username
-					td: button(type='button'): img(src='/icons/edit_button.png' id='editButton')
-				tr(id='item')
-					td(id='headers') change username:
-					td(id='content'): input(type='username' name='newUsername' placeholder='username' class='signupField' id='newUsername')
-				tr(id='item')
-					td(id='headers') confirm username:
-					td(id='content'): input(type='username' name='newUsername2' placeholder='re-enter username' class='signupField' id='newUsername2')
-				tr(id='item')
-					td(id ='headers') current password:
-					td(id='content')
-						input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
-				tr(id='item')
-					td
-					td(id='changeInfo'): input(type='submit' name='usernameSubmit' value ='submit')
-		form(method='POST')
-			table
-				tr
-					td(id ='headers') password
-					td
-					td: button(type='button'): img(src='/icons/edit_button.png' id='editButton')
-				tr(id='item')
-					td(id ='headers') new password:
-					td(id='content')
-						input(type='password' name='newPassword'  placeholder='password' class='signupField' )
-				tr(id='item')
-					td(id ='headers') confirm password:
-					td(id='content')
-						input(type='password' name='newPassword2'  placeholder='re-enter password' class='signupField')
-				tr(id='item')
-					td(id ='headers') current password:
-					td(id='content')
-						input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
-				tr(id='item')
-					td
-					td(id='changeInfo'): input(type='submit' name='passwordSubmit' value ='submit')
-		form(method='POST' name='emailSubmit')
-			table
-				tr
-					td(id='headers') email
-					td(id='content')=  user.email
-					td: button(type='button'): img(src='/icons/edit_button.png' id='editButton')
-				tr(id='item')
-					td(id ='headers') new primary email:
-					td(id='content')
-						input(type='email' name='newEmail'  placeholder='new email' class='signupField' id='newEmail1')
-				tr(id='item')
-					td(id ='headers') confirm new email:
-					td(id='content')
-						input(type='email' name='newEmail2'  placeholder='re-enter email' class='signupField' id='newEmail2')
-				tr(id='item')
-					td(id ='headers') current password:
-					td(id='content')
-						input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
-				tr(id='item')
-					td
-					td(id='changeInfo'): input(type='submit' name='emailSubmit' value ='submit')
+  div(id='main')
+    div(id='pageTitle')
+      h1 my settings
+    div(id='flashZone')
+      h1 Security is very important to us
+    form(method='POST')
+      table
+        thead
+          tr
+            td(id='headers') username
+            td(id='content')= user.username
+            td: button(type='button' id='edit-username'): img(src='/icons/edit_button.png' class='editButton1')
+        tbody(id='username-form')
+          tr(id='item')
+            td(id='headers') change username:
+            td(id='content'): input(type='username' name='newUsername' placeholder='username' class='signupField' id='newUsername')
+          tr(id='item')
+            td(id='headers') confirm username:
+            td(id='content'): input(type='username' name='newUsername2' placeholder='re-enter username' class='signupField' id='newUsername2')
+          tr(id='item')
+            td(id ='headers') current password:
+            td(id='content')
+              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
+          tr(id='item')
+            td
+            td(id='changeInfo'): input(type='submit' name='usernameSubmit' value ='submit')
+    form(method='POST')
+      table
+        thead
+          tr
+            td(id ='headers') password
+            td
+            td: button(type='button' id='edit-password'): img(src='/icons/edit_button.png' class='editButton2')
+        tbody(id='password-form')
+          tr(id='item')
+            td(id ='headers') new password:
+            td(id='content')
+              input(type='password' name='newPassword'  placeholder='password' class='signupField' )
+          tr(id='item')
+            td(id ='headers') confirm password:
+            td(id='content')
+              input(type='password' name='newPassword2'  placeholder='re-enter password' class='signupField')
+          tr(id='item')
+            td(id ='headers') current password:
+            td(id='content')
+              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
+          tr(id='item')
+            td
+            td(id='changeInfo'): input(type='submit' name='passwordSubmit' value ='submit')
+    form(method='POST' name='emailSubmit')
+      table
+        thead
+          tr
+            td(id='headers') email
+            td(id='content')=  user.email
+            td: button(type='button' id='edit-email'): img(src='/icons/edit_button.png' class='editButton3')
+        tbody(id='email-form')
+          tr(id='item')
+            td(id ='headers') new primary email:
+            td(id='content')
+              input(type='email' name='newEmail'  placeholder='new email' class='signupField' id='newEmail1')
+          tr(id='item')
+            td(id ='headers') confirm new email:
+            td(id='content')
+              input(type='email' name='newEmail2'  placeholder='re-enter email' class='signupField' id='newEmail2')
+          tr(id='item')
+            td(id ='headers') current password:
+            td(id='content')
+              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
+          tr(id='item')
+            td
+            td(id='changeInfo'): input(type='submit' name='emailSubmit' value ='submit')
