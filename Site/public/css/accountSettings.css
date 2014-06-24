@@ -50,7 +50,6 @@ form {
 table {
     color:#979797;
     margin:40px;
-}
 
 td {
 padding: 10px;
@@ -96,4 +95,10 @@ input[type='submit']:hover {
     background-color: #FFF;
     cursor: pointer;797;
 
+}
+
+#changeInfo {
+    position: relative;
+    top: -100px;
+    text-align: center;
 }
