@@ -225,8 +225,10 @@
  			for(var i = 0; i < newNode.attrs.maxInputs; i++) {
  				if (oldNode.children[i+3].attrs.lineIn) {
  					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i+3].attrs.lineIn;
+ 					newNode.attrs.numInputs++;
  					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
  					outletIndex++;
+
  				}
  			}
  			while (i < oldNode.children.length - OUTLET_OFFSET) {
@@ -242,6 +244,7 @@
  			for (var i = 3; i < oldNode.children.length; i++) {
  				if (oldNode.children[i].attrs.lineIn) { 
  					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
+ 					newNode.attrs.numInputs++;
  					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
  					addOutlet(newNode);
  					outletIndex++;
