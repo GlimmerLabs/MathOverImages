@@ -1,12 +1,29 @@
+/**
+ * accountSettings.js
+ *   Scripts for the account settings page.
+ */
+
+function hideAllForms() {
+  $('#password-form').hide();
+  $('#username-form').hide();
+  $('#email-form').hide();
+  $('#edit-password').show();
+  $('#edit-username').show();
+  $('#edit-email').show();
+}
+
 $(document).ready(function() {
-   $('#editButton').click(function() {
-       var firstSection = rows.filter('.item1').show();
-       rows.not( firstSection ).hide();
-
-       var secondSection = rows.filter('.item2').show();
-       rows.not( secondSection ).hide();
-
-       var thirdSection = rows.filter('.item3').show();
-       rows.not( thirdSection ).hide();
-
+   hideAllForms();
+   $('#edit-username').click(function(evt) {
+       hideAllForms();
+       $('#username-form').show();
+   });
+   $('#edit-password').click(function(evt) {
+       hideAllForms();
+       $('#password-form').show();
+   });
+   $('#edit-email').click(function(evt) {
+       hideAllForms();
+       $('#email-form').show();
+   });
 });
