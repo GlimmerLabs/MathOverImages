@@ -141,8 +141,7 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		line -= 1; // convert line to an array index
 		var text = activeText.textArr[line].text;
 		if (activeText.aligned == "center") {
-			var lineTextWidth = activeText.measureText(family, size, text).width;
-			x += (activeText.width() - lineTextWidth) / 2;
+			x += (activeText.width() - activeText.textArr[line].width) / 2;
 		}
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
