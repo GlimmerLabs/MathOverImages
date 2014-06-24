@@ -23,6 +23,7 @@ module.exports.buildRecentsPage = function(req, res, database) {
 	});
     });
 };
+
 /**
  * Access random images in the gallery.
  */
@@ -73,6 +74,26 @@ module.exports.getRecentImages= (function(count, page, callback) {
     var start = (page-1)*count;
     var end = (page*count)-1;
     filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT " + start +","+ end + ";", function(rows, error){
+	callback(rows, error);
+    });
+});
+
+module.exports.buildTopRatedPage = function(req, res, database) {
+    filedatabase=database;
+    module.exports.getTopRated(9, req.params.pageNumber, function(images, error) {
+	res.render('../public/views/gallery.jade',{
+	    loggedIn: req.session.loggedIn,
+	    user: req.session.user,
+	    images: images
+	});
+    });
+};
+
+module.exports.getTopRated= (function(count, page, callback) {
+
+    var start = (page-1)*count;
+    var end = (page*count)-1;
+    filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY rating DESC LIMIT " + start +","+ end + ";", function(rows, error){
 	callback(rows, error);
     });
 });
