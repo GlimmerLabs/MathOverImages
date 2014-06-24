@@ -3,7 +3,28 @@
  *   Information on mapping various URLs to functions or files.
  */
 
-// Application-specific libraries.
+// +-------+---------------------------------------------------------
+// | Notes |
+// +-------+
+
+/*
+  Questions from SamR upon reformatting.
+
+  1. Why are functions in /user/NAME/functions but albums are
+     in /albums?
+
+  2. What is /samples?
+
+  3. What is /api?
+
+  4. Requires touch the filesystem.  Would it make more sense to
+     do the requires only in the code that uses them?
+ */
+
+// +--------------------------------+--------------------------------
+// | Application-Specific Libraries |
+// +--------------------------------+
+
 var gallery = require("../functions/gallery.js");
 var albums = require("../functions/albums.js");
 var albumContents = require("../functions/albumContents.js");
@@ -14,7 +35,9 @@ var image = require("../functions/image.js");
 var login = require("../functions/login.js");
 var signup = require("../functions/signup.js");
 
-// Some utilities
+// +-----------+-----------------------------------------------------
+// | Utilities |
+// +-----------+
 
 /**
  * Send a file with an optional suffix.
@@ -33,158 +56,204 @@ function sendFileWithSuffix(res,path,suffix) {
   });
 }
 
-// Primary exports
+// +---------+-------------------------------------------------------
+// | Exports |
+// +---------+
 
 module.exports = function(app,passport,database) {
-    /* ======================  HOME PAGE =======================*/
-    app.get('/', function(req, res) {
-	res.render('../public/views/index.jade',{
-	    loggedIn: req.session.loggedIn,
-	    user: req.session.user
-	});
-    });
 
-    /* create page */
-    app.get('/create', function(req,res){
+  // --------------------------------------------------
+  // Path:  /
+  //   HOME PAGE
+  app.get('/', function(req, res) {
+    res.render('../public/views/index.jade',{
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
 
-    });
+  // --------------------------------------------------
+  // Path:  /accountSettings
+  //   Account settings
+  app.get('/accountSettings', function(req,res) {
+    accountSettings.buildPage(req, res, database);
+  });
+  app.post('/accountSettings', function(req,res) {
+    if(req.body.usernameSubmit != null) {
+      accountSettings.changeUsername(req, res, database);
+    } else if (req.body.passwordSubmit != null) {
+      accountSettings.changePassword(req, res, database);
+    } else {
+      accountSettings.changeEmail(req, res, database);
+    }
+  });
 
-    /* ================= signup page ===============*/
-    app.get('/signup', function(req,res){
-	res.render('../public/views/signup.jade');
-    });
+  // --------------------------------------------------
+  // Path:  /albums
+  //   Albums page
+  app.get('/albums', function(req,res) {
+    albums.buildPage(req, res, database);
+  });
+  app.get('/albums/:albumid', function(req,res) {
+    albumContents.buildPage(req, res, database);
+  });
 
-    app.post('/signup', function(req,res){
-	signup.buildPage(req, res, database);
-    });
+  // --------------------------------------------------
+  // Path:  /api
+  //   Dynamic content distribution
+  app.post('/api', function(req,res) {
+    if (req.body.funct === "checkAvailability") {
+      database.userExists(req.body.value, function(exists, error) {
+        res.end((!exists).toString());
+      });
+    }
+  });
 
-    /* ================= verify page ===============*/
-    app.get('/verify', function(req,res){
-	// TODO: VERIFY user
-	res.redirect('/login');
-    });
+  // --------------------------------------------------
+  // Path:  /create
+  //   Page for creating (something)
+  /* create page */
+  app.get('/create', function(req,res) {
 
-    /* ================= login page =============================*/
-    app.get('/login', function(req, res){
-	if(req.session.loggedIn)
-	    res.redirect('/');
-	else{
-	    res.render("../public/views/login.jade");
-	}
-    });
+  });
 
-    app.post('/login', function(req,res){
-	login.buildPage(req, res, database);
-    });
+  // --------------------------------------------------
+  // Path:  /css
+  //   Distribute CSS files
+  app.get('/css/:file', function(req,res) {
+    sendFileWithSuffix(res, './public/css/' + req.params.file, '.css');
+  });
 
-    /* ============== log out =================== */
-    app.get('/logout', function(req,res){
-	req.session.loggedIn = false;
-	req.session.user = null;
-	res.redirect('/');
-    });
+  // --------------------------------------------------
+  // Path:  /gallery
+  //   Galleries, including the random gallery
+  app.get('/gallery', function(req,res) {
+    res.redirect('/gallery/random');
+  });
 
- /* ============== user's profile page =================== */
-    app.get('/user/:username', function(req, res){
-	username.buildPage(req, res, database);
-    });
+  app.get('/gallery/random', function(req, res) {
+    gallery.buildRandomPage(req, res, database);
+  });
 
-    app.get('/me', function(req, res) {
-	username.goToMyProfile(req, res, database);
-    });
+  app.get('/gallery/recent', function(req, res) {
+    res.redirect('/gallery/recent/1');
+  });
 
-    app.post('/user/:username', function(req,res){
-    if ((req.session.user != null) && (req.session.user.username === req.params.username))
-    {
-	if(req.body.aboutSubmit != null) {
-	    username.changeAboutSection(req, res);
-	}}
-    });
+  app.get('/gallery/recent/:pageNumber', function(req, res) {
+    gallery.buildRecentsPage(req, res, database);
+  });
 
-    app.post('/me', function(req,res){
-	if(req.body.aboutSubmit != null) {
-	    username.changeAboutSection(req, res, database);
-	}
-    });
+  // --------------------------------------------------
+  // Path:  /icons
+  //   Various icons
+  app.get('/icons/:file', function(req,res) {
+    res.sendfile('./public/images/icons/' + req.params.file);
+  });
 
-    /* function page */
-    app.get('/user/:username/functions', function(req,res){
-	functions.buildPage(req, res, database);
-    });
+  // --------------------------------------------------
+  // Path:  /image
+  //   Image page
+  app.get('/image/:imageid', function(req,res) {
+    image.buildPage(req, res, database);
+  });
 
-    /* gallery/random gallery page */
-    app.get('/gallery', function(req,res) {
-      res.redirect('/gallery/random');
-    });
+  // --------------------------------------------------
+  // Path:  /js
+  //   Distribute client-side Javascript files
+  app.get('/js/:file', function(req,res) {
+    sendFileWithSuffix(res, './public/js/' + req.params.file, '.js');
+  });
 
-    app.get('/gallery/random', function(req, res) {
-	gallery.buildRandomPage(req, res, database);
-    });
+  // --------------------------------------------------
+  // Path:  /login
+  //   Login page
+  app.get('/login', function(req, res) {
+    if (req.session.loggedIn)
+      res.redirect('/');
+    else {
+      res.render("../public/views/login.jade");
+    }
+  });
 
-    app.get('/gallery/recent', function(req, res) {
-	res.redirect('/gallery/recent/1');
-    });
+  app.post('/login', function(req,res) {
+    login.buildPage(req, res, database);
+  });
 
-    app.get('/gallery/recent/:pageNumber', function(req, res) {
-	gallery.buildRecentsPage(req, res, database);
-    });
+  // --------------------------------------------------
+  // Path:  /logos
+  //   Various logos
+  app.get('/logos/:file', function(req,res) {
+    res.sendfile('./public/images/logos/' + req.params.file);
+  });
 
-    /* albums page */
-    app.get('/albums', function(req,res){
-	albums.buildPage(req, res, database);
-    });
+  // --------------------------------------------------
+  // Path:  /logout
+  //   Logout page
+  app.get('/logout', function(req,res) {
+    req.session.loggedIn = false;
+    req.session.user = null;
+    res.redirect('/');
+  });
 
-    /* image page */
-    app.get('/image/:imageid', function(req,res){
-	image.buildPage(req, res, database);
-    });
+  // --------------------------------------------------
+  // Path:  /me
+  //   User profile page, current user
+  app.get('/me', function(req, res) {
+    username.goToMyProfile(req, res, database);
+  });
 
-    /* albumContents page */
-    app.get('/albums/:albumid', function(req,res){
-	albumContents.buildPage(req, res, database);
-    });
+  app.post('/me', function(req,res) {
+    if(req.body.aboutSubmit != null) {
+      username.changeAboutSection(req, res, database);
+    }
+  });
 
-    /* image distribution */
-    app.get('/samples/:image', function(req,res){
-	res.sendfile('./public/images/samples/' + req.params.image);
-    });
-    app.get('/logos/:file', function(req,res){
-	res.sendfile('./public/images/logos/' + req.params.file);
-    });
-    app.get('/icons/:file', function(req,res){
-	res.sendfile('./public/images/icons/' + req.params.file);
-    });
+  // --------------------------------------------------
+  // Path:  /sample
+  //   Sample images (?)
+  app.get('/samples/:image', function(req,res) {
+    res.sendfile('./public/images/samples/' + req.params.image);
+  });
 
-    /* ============== account settings ==================== */
-    app.get('/accountSettings', function(req,res){
-	accountSettings.buildPage(req, res, database);
-    });
-    app.post('/accountSettings', function(req,res){
-	if(req.body.usernameSubmit != null) {
-	    accountSettings.changeUsername(req, res, database);
-	} else if (req.body.passwordSubmit != null) {
-	    accountSettings.changePassword(req, res, database);
-	} else {
-	    accountSettings.changeEmail(req, res, database);
-	}
-    });
+  // --------------------------------------------------
+  // Path:  /signup
+  //   Signup page
+  app.get('/signup', function(req,res) {
+    res.render('../public/views/signup.jade');
+  });
 
-    /* ============== css distribution =================== */
-    app.get('/css/:file', function(req,res) {
-        sendFileWithSuffix(res, './public/css/' + req.params.file, '.css');
-    });
+  app.post('/signup', function(req,res) {
+    signup.buildPage(req, res, database);
+  });
 
-    /* ============== client-side javascript distribution =================== */
-    app.get('/js/:file', function(req,res){
-        sendFileWithSuffix(res, './public/js/' + req.params.file, '.js');
-    });
+  // --------------------------------------------------
+  // Path:  /user
+  //   User profile pages
+  app.get('/user/:username', function(req, res) {
+    username.buildPage(req, res, database);
+  });
 
-    /* ============== dynamic content distribution =================== */
-    app.post('/api', function(req,res){
-	if (req.body.funct === "checkAvailability"){
-	    database.userExists(req.body.value, function(exists, error){
-		res.end((!exists).toString());
-	    });
-	}
-    });
+  app.post('/user/:username', function(req,res) {
+  if ((req.session.user != null) && 
+    (req.session.user.username === req.params.username)) {
+    if(req.body.aboutSubmit != null) {
+      username.changeAboutSection(req, res);
+    }}
+  });
+
+  // --------------------------------------------------
+  // Path:  /user/*/functions
+  //    User functions page
+  app.get('/user/:username/functions', function(req,res) {
+    functions.buildPage(req, res, database);
+  });
+
+  // --------------------------------------------------
+  // Path:  /verify
+  //   Page for verifying users (not implemented)
+  app.get('/verify', function(req,res) {
+    // TODO: VERIFY user
+    res.redirect('/login');
+  });
+
 };
