@@ -74,7 +74,7 @@ var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 var functions = {
 	add:       {rep: '+',   max: 20, min: 2, prefix: 'sum'},
-	multiply:  {rep: '*',   max: 20, min: 2, prefix: 'multiply'},
+	multiply:  {rep: '*',   max: 20, min: 2, prefix: 'mult'},
 	negate:    {rep: '-',   max: 1,  min: 1, prefix: '-'},
 	sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin'},
 	cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos'},
