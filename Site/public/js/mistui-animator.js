@@ -81,7 +81,7 @@ MIST.ui.Animator.prototype.startAnimation = function()
   }
 } // startAnimation
 // Function to change fps of animation(defaults to 30 if unspecified)
-Mist.ui.Animator.prototype.setFps(fps){
+Mist.ui.Animator.prototype.setFps = function(fps){
   this.fps = fps || 30;
 }
 /**
