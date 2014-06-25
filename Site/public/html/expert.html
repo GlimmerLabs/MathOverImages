@@ -28,7 +28,7 @@ jquery-ui.css">
 <script src="/js/mistui-dialogs.js"></script>
 <script src="/js/mistui-help.js"></script>
 <script src="/js/mistui-menus.js"></script>
-<script src="/js/mistui-animation.js"></script>
+<script src="/js/mistui-animator.js"></script>
 
 <!-- JQuery Libraries -->
 <script src="//code.jquery.com/jquery-1.11.1.js"></script>
@@ -64,6 +64,11 @@ workspace.uservals.addUserVal("val2", "val2", "Almost a circle", "x*x+y*y");
  * The list of selected files.
  */
 var selectedFiles;
+
+/**
+ * The active animator.
+ */
+var animator;
 
 // +-----------+-----------------------------------------------------
 // | Functions |
@@ -344,17 +349,19 @@ function startAnimation() {
     context[name] = workspace.userfuns.get[name];
   } // for
    */
-  MIST.ui.startAnimation(document.getElementById("funcode").value,
+  if (animator) { animator.stop(); }
+  animator = new MIST.ui.Animator(document.getElementById("funcode").value,
       document.getElementById("funparams").value, context,
       document.getElementById("canvas"),
       function(txt) { document.getElementById("message").value = txt; });
+  animator.start();
 } // startAnimation
 
 /**
  * Stop the animation from running.
  */
 function stopAnimation() {
-  MIST.ui.stopAnimation();
+  animator.stop();
 } // stopAnimation
 
 // +------------------+----------------------------------------------
