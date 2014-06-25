@@ -212,6 +212,9 @@
  	var tempOut = oldNode.attrs.lineOut;
  	collapseCanvas(oldNode);
  	oldNode.remove();
+ 	if (newNode.attrs.name == 'constant') {
+        createEditableText(newNode);
+    }
  	for(var i = 0; i < tempOut.length; i++) {
  		tempOut[i].attrs.source = newNode;
  	}
@@ -256,9 +259,9 @@
  		while (newNode.children.length - 3 < newNode.attrs.minInputs) {
  			addOutlet(newNode);
  		}
- 		assertRenderable(newNode);
  		resetNode(oldNode); 
  	}
+ 	assertRenderable(newNode);
  	updateForward(newNode);
  	lineLayer.draw();
  	workLayer.draw();
@@ -294,6 +297,17 @@
  	}
  };
 
-
+/**
+ * wrapValueText takes a string and trucates after 4 characters and adds "..." to the end
+ * used for constant values.
+ */
+var wrapValueText = function(text) {
+	if (text.length > 4) {
+		return text.substring(0,4) + "\n...";
+	}
+	else {
+		return text;
+	}
+};
 
 
