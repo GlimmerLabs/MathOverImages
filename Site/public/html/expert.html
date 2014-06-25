@@ -112,9 +112,10 @@ function updateInsertMenu() {
   var addFunctions = function(collection)  {
     var keys = collection.keys().sort();
     for (var i = 0; i < keys.length; i++) {
-      var fun = collection.get(keys[i]);
-      var txt = fun.name + "(" + fun.params + ")";
-      MISTui.addMenuItem("insert-menu", "insert-" + fun.name, fun.name,
+      var key = keys[i];
+      var fun = collection.get(key);
+      var txt = key + "(" + fun.params + ")";
+      MISTui.addMenuItem("insert-menu", "insert-" + key, key,
         "<b>" + txt + "</b><br/>" + fun.about, makeInserter(txt));
     } // for
   }; // addFunctions
