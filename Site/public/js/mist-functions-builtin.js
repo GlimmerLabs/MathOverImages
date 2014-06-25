@@ -78,13 +78,14 @@ BUILTIN("abs", "abs", "The absolute value of i", "i",
 var average = function(a) {
   return sum.apply(this, arguments)/arguments.length;
 }; // average
-var ave = average;
-BUILTIN("average", "ave", "Average 2 or more values", "...",
+var avg = average;
+BUILTIN("average", "avg", "Average 2 or more values", "...",
   2, 20, "GENERAL");
    
 var cosine = function(a) {
   return Math.cos(Math.PI * a);
 }; // cosine
+var cos = cosine;
 BUILTIN("cosine", "cos", "The cosine of pi*a", "a",
   1, 1, "GENERAL");
 
@@ -116,7 +117,8 @@ var negate = function(value)
 {
  return -value;
 };
-BUILTIN("negate", "negates value");
+var neg = negate;
+BUILTIN("negate", "neg", "negates value");
 var signz = function(range)
 {
   if (range < 0) 
@@ -154,4 +156,5 @@ BUILTIN("sum", "sum", "Sum 2 or more values.  If the sum would exceed 1, has the
 var wrapsum = function() {
     return wrap(sum.apply(this, arguments));
 };
+var wsum = wrapsum;
 BUILTIN("wrapsum", "wsum", "Sum 2 or more values, wrapping around from 1 to -1 (or vice versa) if the sum is too large or too small", "...", 2, 20, "GENERAL");
