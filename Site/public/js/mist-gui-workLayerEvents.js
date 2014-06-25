@@ -79,7 +79,6 @@ There are 3 different modes:
       currLine.points()[3] = parent.y() + shape.y();
       currLine.attrs.outlet = shape;
       parent.attrs.numInputs++;
-      console.log(parent.attrs.name + ": " + parent.attrs.numInputs);
       makingLine = false;
       shape.scale({ x: 1, y: 1 });
       assertRenderable(parent);
