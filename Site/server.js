@@ -18,18 +18,16 @@ var httpsOptions = {
   cert: fs.readFileSync('./certs/cert.pem')
 }
 
-
-
-
 var http = require('http');
 var app = express();
-var http_port = 8080;
-var https_port = 443;
+var http_port = 8081;
+var https_port = 8082;
 var mysql = require('mysql');
 var passport = require('passport');
 var flash = require('connect-flash');
 
 var auth = require('./functions/auth.js');
+var ports = require('./functions/ports.js');
 
 //==================== configuration ====================
 
@@ -57,7 +55,7 @@ require('./app/routes.js')(app,passport,database);
 
 //==================== launch ====================
 
-http.createServer(app).listen(http_port);
-https.createServer(httpsOptions, app).listen(https_port);
-console.log('HTTP operating on port ' + http_port);
-console.log('HTTPS operating on port ' + https_port);
+http.createServer(app).listen(ports.http);
+https.createServer(httpsOptions, app).listen(ports.https);
+console.log('HTTP operating on port ' + ports.http);
+console.log('HTTPS operating on port ' + ports.https);
