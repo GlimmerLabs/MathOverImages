@@ -251,6 +251,9 @@
  				}
  			} 
  		}
+ 		while (newNode.children.length - 3 < newNode.attrs.minInputs) {
+ 			addOutlet(newNode);
+ 		}
  		assertRenderable(newNode);
  		resetNode(oldNode); 
  	}
