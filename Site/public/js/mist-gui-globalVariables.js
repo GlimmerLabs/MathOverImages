@@ -11,7 +11,7 @@ var functionColor = '#508C37';
 var valueSideLength = functionTotalSideLength / 1.414;
 var valueXYColor = 'gray';
 var valueTimeColor = 'gold';
-var valueConstantColor = 'purple';
+var valueConstantColor = '#CD8ADA';
 
 var imageBoxSideLength = width / 80;
 var imageBoxColor = 'white';

@@ -107,7 +107,7 @@
 		/* create text to be displayed on diamond. */
 		var newText = new Kinetic.Text({
 			text: values[valName].rep,
-			fontFamily: 'OpenSans',
+			fontFamily: globalFont,
 			fill: 'black',
 			fontSize: 16,
 			x: 0,
