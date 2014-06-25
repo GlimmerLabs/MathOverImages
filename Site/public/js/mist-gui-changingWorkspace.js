@@ -197,7 +197,6 @@
             for (var i = 0; i < actionObj.connections.length; i++)
             {
                 insertLine(actionObj.connections[i]);
-                oldGroup.attrs.numInputs++;
             }
             replaceNode (element, oldGroup);
             workLayer.draw();
@@ -328,7 +327,8 @@
             replaceNode (oldGroup, element);
         } // if node
         else {
-
+          removeLine(elementTable[actionObj.deleteLine.id]);
+          insertLine(actionObj);
         } // else line
       } // else replace
       dragLayer.draw(); 
@@ -344,20 +344,26 @@
    * updates funBar text. 
    */
    var removeLine = function(line) {
+    console.log('removing line');
     var outlet = line.attrs.outlet;
-    var parent = outlet.parent;
+    var sink = outlet.parent;
+    var index = line.attrs.sourceIndex;
+    var source = line.attrs.source;
+      for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
+        source.attrs.lineOut[j].attrs.sourceIndex--;
+      }
     // remove the sourceIndex'th lineOut from the line's source
-    line.attrs.source.attrs.lineOut.splice(line.attrs.sourceIndex, 1);
+    source.attrs.lineOut.splice(line.attrs.sourceIndex, 1);
     // empty out the sink's outlet
     outlet.attrs.lineIn = null;
     // update the sink's number of outlets
-    parent.attrs.numInputs--;
+    sink.attrs.numInputs--;
     // remove the line from the lineLayer
     line.remove();
     // if the sink is the currShape
-    if (parent == currShape) {
+    if (sink == currShape) {
       // if the sink is still renderable, update the funBarText
-      if (assertRenderable(parent)) {
+      if (assertRenderable(sink)) {
         funBarText.setAttr('text', currShape.attrs.renderFunction);
       } // if renderable
       // if sink un-renderable
@@ -371,7 +377,7 @@
     } // if currShape
     else {
       // if sink is not currShape, assert and update renderability of sink
-      assertRenderable(parent);
+      assertRenderable(sink);
   }
     // update
     updateForward(outlet.parent);
