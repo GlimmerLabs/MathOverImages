@@ -33,6 +33,8 @@ with git complaining that server.js has changed.
 	$ cd functions
 	$ cp /home/mist/MathOverImages/Site/functions/ports.js .
 
+Then edit ports.js to use your own ports.
+
 Running the Server
 ------------------
 
