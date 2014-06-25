@@ -16,14 +16,14 @@ $(document).ready(function() {
    hideAllForms();
    $('#edit-username').click(function(evt) {
        hideAllForms();
-       $('#username-form').toggle();
+       $('#username-form').show();
    });
    $('#edit-password').click(function(evt) {
        hideAllForms();
-       $('#password-form').toggle();
+       $('#password-form').show();
    });
    $('#edit-email').click(function(evt) {
        hideAllForms();
-       $('#email-form').toggle();
+       $('#email-form').show();
    });
 });

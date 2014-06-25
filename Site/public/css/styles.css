@@ -1,4 +1,4 @@
-@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,800');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
 
 
 * {
@@ -89,6 +89,25 @@ header nav li:hover {
 	clear: left;
 }
 
+#pageTitleGeneral {
+	height:140px;
+	min-width:600px;
+	margin: 0px -110px;
+	float: left;
+	background-color: #3FAAA0;
+}
+
+#pageTitleGeneral h1{
+	border: 7px solid white;
+	margin: 15px;
+	color: #FFF;
+	display: inline-block;
+	font-weight: 800;
+	font-size: 4em;
+	padding: 5px;
+	clear: left;
+}
+
 #subTitle {
 	float: left;
 	clear: left;
@@ -103,7 +122,7 @@ header nav li:hover {
 }
 
 form input[type='submit'] {
-	background: #D8D8D8;
+	background: #979797;
 	color: white;
 }
 
@@ -116,7 +135,7 @@ form input[type='submit'] {
 .subview {
 
 	text-decoration: none;
-	color: white;
+	color: #FFF;
 	background-color: #D8D8D8;
 	display: inline-block;
 	height: 50px;
@@ -189,3 +208,4 @@ footer {
 }
 
 /* End of Footer */
+

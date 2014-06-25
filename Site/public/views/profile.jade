@@ -4,7 +4,7 @@ block title
 
 block extraMetas
 block extraLinks
-
+  script(type='text/javascript' src='/js/profile.js')
 block stylesheets
 
   link(rel='stylesheet', href='/css/profile')
@@ -15,9 +15,9 @@ block content
     div(id = 'pageTitle')
       h1= viewing.username
     div(id = 'subviews')
-      a(href='/me' class='subview' id='selected') about
+      a(href='/user/'+ viewing.username class='subview' id='selected') about
       a(href='/badges' class='subview') badges
-      a(href='/albums' class='subview') albums
+      a(href='/user/'+ viewing.username +'/albums' class='subview') albums
       a(href='/challenges' class='subview') challenges
     div(id='subTitle')
       p= "member since " + viewing.signupTime.toLocaleDateString()
@@ -29,10 +29,9 @@ block content
     if viewingSelf
       a(href='/accountSettings' class='settings'): account account settings
       div(id='bio')
-        button(type='button' id='changeBio')
-          img(src='/icons/edit_button.png')
+        input(type='image' id='edit-bio' src='/icons/edit_button.png' value='submit')
         figcaption= viewing.about
-          form(method='POST' id='editBio')
+          form(method='POST' id='bio-form')
             textarea(name='aboutSection' cols='40' rows='10')= viewing.about
             input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
     else

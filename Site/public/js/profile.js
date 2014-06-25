@@ -3,15 +3,15 @@
  *   Scripts for the profile page
  */
 
-function hideAllForms() {
+function hideForm() {
     $('#bio-form').hide();
     $('#edit-bio').show();
 }
 
 $(document).ready(function() {
-    hideAllForms();
+    hideForm();
     $('#edit-bio').click(function(evt) {
-	hideAllForms();
+	hideForm();
 	$('#bio-form').show();
     });
 });
