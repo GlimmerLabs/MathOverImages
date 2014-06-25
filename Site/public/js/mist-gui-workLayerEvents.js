@@ -190,44 +190,7 @@ lineLayer.draw();
     }
   });
 
-  dragLayer.on('dragmove', function() {
-    if (dragShape != null) {
-      var pos = stage.getPointerPosition();
-      var node = workLayer.getIntersection(pos);
-      if (node) {
-        var group = node.getParent();
-        if ((isValue(group) && isValue(dragShape)) ||
-            (isFunction(group) && isFunction(dragShape))) {
-          group.setAttrs({
-            scaleX: 1.2,
-            scaleY: 1.2
-          });
-        /*
-          group.children[2].setAttrs({
-            scaleX: .8,
-            scaleY: .8
-          });
-          */
-          if (group.children[2].attrs.expanded) {
-            renderCanvas(group);
-          }
-          scaledObj = group;
-        }
-      }
-      else if (scaledObj != null) {
-        scaledObj.setAttrs({
-          scaleX: 1,
-          scaleY: 1
-        });
-        if (scaledObj.children[2].attrs.expanded) {
-            renderCanvas(scaledObj);
-          }
-        scaledObj = null;
-      }
-      workLayer.draw();
-    }
-  });
-
+  
   /*
   while making a line, make outlets grow when they are moused over to signify that they
   are valid connections
