@@ -260,6 +260,7 @@
             outletParent = targetLine.attrs.outlet.parent;
             // decrement the sink's inputs
             outletParent.attrs.numInputs--;
+            console.log(outletParent.attrs.name + ": " + outletParent.attrs.numInputs);
             // empty out the sink's outlet
             targetLine.attrs.outlet.attrs.lineIn = null;
             // check and update the rendering of the sink
@@ -357,6 +358,7 @@
     outlet.attrs.lineIn = null;
     // update the sink's number of outlets
     sink.attrs.numInputs--;
+    console.log(sink.attrs.name + ": " + sink.attrs.numInputs);
     // remove the line from the lineLayer
     line.remove();
     // if the sink is the currShape
@@ -405,6 +407,7 @@
     outlet.attrs.lineIn = element;
     // increment numInputs
     actionObj.sink.attrs.numInputs++;
+    console.log(actionObj.sink.attrs.name + ": " + actionObj.sink.attrs.numInputs);
     // assert and update renderability of the sink
     assertRenderable(actionObj.sink);
     // if the currShape is defined

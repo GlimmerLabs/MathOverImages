@@ -227,36 +227,38 @@
  				if (oldNode.children[i+3].attrs.lineIn) {
  					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i+3].attrs.lineIn;
  					newNode.attrs.numInputs++;
+ 					console.log(newNode.attrs.name + ": " + newNode.attrs.numInputs);
  					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
  					outletIndex++;
-
  				}
  			}
  			while (i < oldNode.children.length - OUTLET_OFFSET) {
  				if(oldNode.children[i+3].attrs.lineIn) {
  					removeLine(oldNode.children[i + 3].attrs.lineIn);
- 					oldNode.attrs.numInputs--;
  				}
  				i++;
  			}
  		} 
  		else {
- 			if (newNode.attrs.numInputs != newNode.children.length - 4) {
- 				addOutlet(newNode);
- 				var outletIndex = 3;
- 				for (var i = 3; i < oldNode.children.length; i++) {
- 					if (oldNode.children[i].attrs.lineIn) { 
- 						newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
- 						newNode.attrs.numInputs++;
- 						newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
- 						addOutlet(newNode);
- 						outletIndex++;
- 					}
+ 			addOutlet(newNode);
+ 			var outletIndex = 3;
+ 			for (var i = 3; i < oldNode.children.length; i++) {
+ 				if (oldNode.children[i].attrs.lineIn) { 
+ 					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
+ 					newNode.attrs.numInputs++;
+ 					console.log(newNode.attrs.name + ": " + newNode.attrs.numInputs);
+ 					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
+ 					addOutlet(newNode);
+ 					outletIndex++;
  				}
  			} 
-
  		}
  		assertRenderable(newNode);
+ 		 // destroy the outlets of the oldNode
+ 		for (var i = 3; i < oldNode.children.length; i++) {
+ 			oldNode.children[i].destroy();
+ 		}
+ 		oldNode.attrs.numInputs = 0;
  	}
  	updateForward(newNode);
  	lineLayer.draw();
