@@ -34,7 +34,7 @@ Kinetic.Text.prototype.drawMethod = function(){};
 Kinetic.Text.prototype.capitalized = false;
 Kinetic.Text.prototype.aligned = "left";
 Kinetic.Text.prototype.matchingCharacters = /[0-9.]/;
-Kinetic.Text.prototype.parentLayer = function(){return this.parent};
+Kinetic.Text.prototype.parentLayer = function(){return this.getLayer()};
 Kinetic.Text.prototype.measureText = function(family, size, text){
 	this.parentLayer().canvas.context._context.font = size + "px" + " "  + family;
 	return this.parentLayer().canvas.context._context.measureText(text);
@@ -72,10 +72,10 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		var textLength = activeText.text().length;
 		cursor.position = Math.min(Math.max(cursor.position, 0), textLength);
 	}
-	cursor.getLine = function(){
+	cursor.getLine = function(cursorPosition){
 		var currentLength = 0;
 		var previousLength = 0;
-		var desiredLength = this.position;
+		var desiredLength = cursorPosition;
 		var text = activeText.textArr;
 		for(var textElement = 0; textElement < text.length; textElement++){
 			previousLength = currentLength;
@@ -85,13 +85,21 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 			}
 		}
 	}
+	cursor.getPosition = function(line){
+		var textArray = activeText.textArr;
+		var position = 0;
+		for(var textArrayIndex = 0; textArrayIndex < line; textArrayIndex++){
+			position += textArray[textArrayIndex].text.length;
+		}
+		return position;
+	}
 	cursor.getDistanceUpTo = function(position){
 		var currentLength = 0;
 		var previousLength = 0;
-		var text = activeText.textArr;
-		for(var textElement = 0; textElement < text.length; textElement++){
+		var textArray = activeText.textArr;
+		for(var textArrayIndex = 0; textArrayIndex < textArray.length; textArrayIndex++){
 			previousLength = currentLength;
-			currentLength += text[textElement].text.length;
+			currentLength += textArray[textArrayIndex].text.length;
 			if(position >= previousLength && position <= currentLength){
 				return previousLength;
 			}
@@ -107,17 +115,20 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
 		var x = activeText.x();
-		var line = this.getLine();
+		var line = this.getLine(this.position);
 		var lineText = activeText.textArr[line].text;
 		var beginning = this.getDistanceUpTo(this.position);
 		var textBeforeCursor = activeText.text().slice(beginning, this.position);
 		var xOffset = activeText.measureText(family, size, textBeforeCursor).width;;
-		if(activeText.aligned == "center"){
-			var lineTextWidth = activeText.measureText(family, size, lineText).width;
-			xOffset += (activeText.width() - lineTextWidth) / 2;
+		if (activeText.aligned == "center") {
+			xOffset += this.offsetCentered(family, size, lineText);
 		}
 		var lineOffset = line * activeText.textHeight;
 		cursor.moveLinePosition(x + xOffset, lineOffset);
+	}
+	cursor.offsetCentered = function(family, size, text){
+		var lineTextWidth = activeText.measureText(family, size, text).width;
+		return (activeText.width() - lineTextWidth) / 2;
 	}
 	cursor.moveToClosestPosition = function(x, y){
 		clearTimeout(activeText.cursor.timeout);
@@ -129,23 +140,27 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
 			}
 		}, 100);
 		var line = Math.round(y / activeText.textHeight); // Get which line the mouse clicked on
+		line = Math.max(1, Math.min(line, activeText.textArr.length)); // Assures that line is an actual line
 		line -= 1; // convert line to an array index
 		var text = activeText.textArr[line].text;
 		var family = activeText.fontFamily();
 		var size = activeText.fontSize();
+		if (activeText.aligned == "center") {
+			x -= this.offsetCentered(family, size, text);
+		}
 		var closestDistance = Infinity;
 		var closestIndex = -1;
-		for(var char = text.length; char >= 0; char--){
-			var chunk = text.slice(0, char);
+		for(var ch = text.length; ch >= 0; ch--){
+			var chunk = text.slice(0, ch);
 			var distance = activeText.measureText(family, size, chunk).width;
 			distance -= x;
 			distance = Math.abs(distance);
 			if(distance < closestDistance){
-				closestIndex = char;
+				closestIndex = ch;
 				closestDistance = distance;
 			}
 		}
-		this.position = closestIndex + cursor.getDistanceUpTo(line);
+		this.position = closestIndex + cursor.getPosition(line);
 		this.updatePosition();
 	}
 	cursor.moveLinePosition(this.measureText(fontFamily, fontSize, text).width + this.x());
@@ -266,6 +281,10 @@ function readyEditing(stage)
 			if(keycode == 8 || keycode == 46){ // 8 is the backspace key; 46 is the delete key
 				activeText.setText(textPreCursor.slice(0, textPreCursor.length - 1) + textPostCursor);
 				activeText.cursor.position--;
+				e.preventDefault(); // Prevents backspace from moving back a page
+			}
+			if(keycode == 13){
+				activeText.removeFocus();
 			}
 			if(keycode == 37){ // 37 is the left arrow key
 				activeText.cursor.position--;
@@ -286,9 +305,11 @@ function readyEditing(stage)
 					activeText.cursor.position++;
 				}
 			}
-			activeText.cursor.validatePosition();
-			activeText.cursor.updatePosition();
-			activeText.drawMethod();
+			if(activeText != null){
+				activeText.cursor.validatePosition();
+				activeText.cursor.updatePosition();
+				activeText.drawMethod();
+			}
 		}
 	}
 }
