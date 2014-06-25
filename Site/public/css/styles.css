@@ -143,6 +143,10 @@ figure figcaption.right {
 	color: #979797;
 }
 
+a {
+text-decoration: none;
+}
+
 /* Footer */
 footer nav ul {
 	margin:0;

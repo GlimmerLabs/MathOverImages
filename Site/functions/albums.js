@@ -4,7 +4,12 @@
 
 
 module.exports.buildPage =  function(req, res, database) {
-	database.albumsInfo(req.params.userid, function(albums, error){
+database.getIDforUsername(req.session.user.username,
+	function(userid, error) {
+	    if(error)
+		res.end (error);
+	    else
+	database.albumsInfo(req.session.user.userid, function(albums, error){
 	    if(error)
 		res.end(error)
 	    else
@@ -14,4 +19,5 @@ module.exports.buildPage =  function(req, res, database) {
 		    albums: albums
 		});
 	});
-};
+}
+)}
