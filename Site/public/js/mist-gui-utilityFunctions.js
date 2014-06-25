@@ -35,36 +35,14 @@
  		group.attrs.renderFunction = group.attrs.rep;
  		return;
  	}
- 	var childOfRGB = false;
- 	for(var i = 3; i < group.children.length; i++) {
- 		if (group.children[i].attrs.lineIn && 
- 			group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction instanceof Array) {
- 			childOfRGB = true;
- 			break;
- 		}
- 	}
- 	console.log(childOfRGB);
- 	if (group.attrs.name == 'rgb') {
- 		group.attrs.renderFunction = [
-			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
-			group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
-			group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
-		];
-	} // if we are dealing with RGB rendering
-	else if (childOfRGB) {
-		// STUB
-		console.log('RGB output is not yet implemented');
-
-	}
-	else {
-		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
+ 	group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
  		for(var i = 3; i < group.children.length; i++) {
  			if(group.children[i].attrs.lineIn != null) {
-				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
+ 				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
  				group.attrs.renderFunction += ',';
  			}
-		} // add each element to the equation
-		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';}
+	} // add each element to the equation
+	group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
 };
 
 /**
@@ -122,15 +100,8 @@
 			var canvasY = group.y() + (groupScale * box.y());
 			var canvasWidth = groupScale * box.width();
 			var canvasHeight = groupScale * box.height();
-		if (group.attrs.renderFunction instanceof Array) {
-			rfun = MOIbody2fun(group.attrs.renderFunction[0]);
-			gfun = MOIbody2fun(group.attrs.renderFunction[1]);
-			bfun = MOIbody2fun(group.attrs.renderFunction[2]);
-			renderRGB(rfun, gfun, bfun, canvas, canvasX, canvasY, canvasWidth, canvasHeight);
-		} 
-		else {
-			renderFun(MOIbody2fun(group.attrs.renderFunction), canvas, canvasX, canvasY, canvasWidth, canvasHeight);
-		}
+			var mistObj = MIST.parse(group.attrs.renderFunction);
+			MIST.render(mistObj, {}, canvas, canvasWidth, canvasHeight, canvasX, canvasY, canvasWidth, canvasHeight);
 	};
 
 	var collapseCanvas = function(group){
