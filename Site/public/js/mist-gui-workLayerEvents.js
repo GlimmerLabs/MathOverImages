@@ -71,13 +71,14 @@ There are 3 different modes:
         removeLine(oldLine);
       } 
       else {
-        parent.attrs.numInputs++;
+        
         isReplacement = false;
       } // check if theres already a line going in to the outlet
       shape.attrs.lineIn = currLine;
       currLine.points()[2] = parent.x();
       currLine.points()[3] = parent.y() + shape.y();
       currLine.attrs.outlet = shape;
+      parent.attrs.numInputs++;
       makingLine = false;
       shape.scale({ x: 1, y: 1 });
       assertRenderable(parent);

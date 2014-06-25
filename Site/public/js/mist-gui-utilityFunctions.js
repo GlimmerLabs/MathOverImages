@@ -34,11 +34,12 @@
  	var childOfRGB = false;
  	for(var i = 3; i < group.children.length; i++) {
  		if (group.children[i].attrs.lineIn && 
- 			group.children[i].attrs.lineIn.attrs.source.renderFunction instanceof Array) {
+ 			group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction instanceof Array) {
  			childOfRGB = true;
  			break;
  		}
  	}
+ 	console.log(childOfRGB);
  	if (group.attrs.name == 'rgb') {
  		group.attrs.renderFunction = [
 			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
@@ -49,6 +50,7 @@
 	else if (childOfRGB) {
 		// STUB
 		console.log('RGB output is not yet implemented');
+		
 	}
 	else {
 		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
@@ -229,39 +231,68 @@
  					newNode.attrs.numInputs++;
  					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
  					outletIndex++;
-
  				}
  			}
  			while (i < oldNode.children.length - OUTLET_OFFSET) {
  				if(oldNode.children[i+3].attrs.lineIn) {
  					removeLine(oldNode.children[i + 3].attrs.lineIn);
- 					oldNode.attrs.numInputs--;
  				}
  				i++;
  			}
  		} 
  		else {
- 			if (newNode.attrs.numInputs != newNode.children.length - 4) {
- 				addOutlet(newNode);
- 				var outletIndex = 3;
- 				for (var i = 3; i < oldNode.children.length; i++) {
- 					if (oldNode.children[i].attrs.lineIn) { 
- 						newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
- 						newNode.attrs.numInputs++;
- 						newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
- 						addOutlet(newNode);
- 						outletIndex++;
- 					}
+ 			addOutlet(newNode);
+ 			var outletIndex = 3;
+ 			for (var i = 3; i < oldNode.children.length; i++) {
+ 				if (oldNode.children[i].attrs.lineIn) { 
+ 					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
+ 					newNode.attrs.numInputs++;
+ 					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
+ 					addOutlet(newNode);
+ 					outletIndex++;
  				}
  			} 
-
+ 		}
+ 		while (newNode.children.length - 3 < newNode.attrs.minInputs) {
+ 			addOutlet(newNode);
  		}
  		assertRenderable(newNode);
+ 		resetNode(oldNode); 
  	}
  	updateForward(newNode);
  	lineLayer.draw();
  	workLayer.draw();
- }
+ };
+
+/**
+ * resetNode take a function or value group and returns it to it's original state.
+ * - deletes all outlets
+ * - resets height (if function)
+ * - resets location of imagebox
+ * - resets location of text
+ * - sets numInputs to zero
+ * - sets lineOut array to an empty array
+ * returns nothing.
+ */
+ var resetNode = function(node) {
+ 	// set lineOut array to []
+ 	node.attrs.lineOut = [];
+ 	if (isFunction(node)) {
+ 		// destroy the outlets of the oldNode
+
+ 		for (var i = node.children.length - 1; i > 2; i--) {
+ 			node.children[i].destroy();
+ 		}
+ 		// reset height
+ 		node.children[0].setAttr('height', functionRectSideLength);
+ 		// reset location of text
+ 		node.children[1].setAttr('y', functionTotalSideLength/2 - functionHalfStrokeWidth);
+ 		// reset imagebox location
+ 		node.children[2].setAttr('y', functionRectSideLength + functionImageBoxOffset);
+ 		// set numInputs to zero
+ 		node.attrs.numInputs = 0;
+ 	}
+ };
 
 
 
