@@ -61,22 +61,18 @@ There are 3 different modes:
         }
         else if (isOutlet(shape)) {
       //check if outlet already has an input
+      var isReplacement;
+      var oldLine;
       if (shape.attrs.lineIn != null) {
-        //POSSIBLE NEED TO DESTROY LINE ITSELF
         var source = shape.attrs.lineIn.attrs.source;
         var index = shape.attrs.lineIn.attrs.sourceIndex
-        var line = source.attrs.lineOut[index];
-        
-        for (var i = index + 1; i < source.attrs.lineOut.length; i++) {
-          source.attrs.lineOut[i].attrs.sourceIndex--;
-        }
-        source.attrs.lineOut.splice(index, 1);
-        insertToArray(actionToObject('replace', line));
-        line.remove();
-        shape.attrs.lineIn = null;
+        oldLine = source.attrs.lineOut[index];
+        isReplacement = true;
+        removeLine(oldLine);
       } 
       else {
         parent.attrs.numInputs++;
+        isReplacement = false;
       } // check if theres already a line going in to the outlet
       shape.attrs.lineIn = currLine;
       currLine.points()[2] = parent.x();
@@ -97,7 +93,12 @@ There are 3 different modes:
       }
     }
     insertToTable(currLine);
-    insertToArray(actionToObject('insert', currLine));
+    if (!isReplacement) {
+      insertToArray(actionToObject('insert', currLine));
+    }
+    else {
+      insertToArray(actionToObject('replace', currLine, oldLine));
+    }
     updateForward(parent);
     } // if clicked on self, else clicked on a valid outlet
   } // if makingline
@@ -125,27 +126,14 @@ There are 3 different modes:
   var targetLine;
   for(var i = 3; i < parent.children.length; i++) {
     targetLine = parent.children[i].attrs.lineIn;
-    if(targetLine != null) {
-      targetLine.attrs.outlet = null;
-      var index = targetLine.attrs.sourceIndex;
-      var source = targetLine.attrs.source;
-      for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
-        source.attrs.lineOut[j].attrs.sourceIndex--;
-      }
-      targetLine.attrs.source.attrs.lineOut.splice(index, 1);
-      targetLine.remove();
+    if (targetLine){
+      removeLine(targetLine);
     }
   }
   // deal with the lines leading out of the node being deleted
-  var outletParent;
   for(var i = 0; i < parent.attrs.lineOut.length; i++) {
     targetLine = parent.attrs.lineOut[i];
-    outletParent = targetLine.attrs.outlet.getParent();
-    outletParent.attrs.numInputs--;
-    targetLine.attrs.outlet.attrs.lineIn = null;
-    assertRenderable(outletParent);
-    updateForward(outletParent);
-    targetLine.remove();
+    removeLine(targetLine);
   }
   var render = parent.attrs.renderLayer
   if (render != null) {
@@ -172,6 +160,7 @@ lineLayer.draw();
       if (!isImageBox(evt.target)) {
         var group = evt.target.getParent();
         group.moveTo(dragLayer);
+        setDragShadow(group);
         if (currShape != undefined) {
          currShape.children[0].setAttr('shadowEnabled', false);
        }
@@ -200,6 +189,44 @@ lineLayer.draw();
     }
   });
 
+  dragLayer.on('dragmove', function() {
+    if (dragShape != null) {
+      var pos = stage.getPointerPosition();
+      var node = workLayer.getIntersection(pos);
+      if (node) {
+        var group = node.getParent();
+        if ((isValue(group) && isValue(dragShape)) ||
+            (isFunction(group) && isFunction(dragShape))) {
+          group.setAttrs({
+            scaleX: 1.2,
+            scaleY: 1.2
+          });
+        /*
+          group.children[2].setAttrs({
+            scaleX: .8,
+            scaleY: .8
+          });
+          */
+          if (group.children[2].attrs.expanded) {
+            renderCanvas(group);
+          }
+          scaledObj = group;
+        }
+      }
+      else if (scaledObj != null) {
+        scaledObj.setAttrs({
+          scaleX: 1,
+          scaleY: 1
+        });
+        if (scaledObj.children[2].attrs.expanded) {
+            renderCanvas(scaledObj);
+          }
+        scaledObj = null;
+      }
+      workLayer.draw();
+    }
+  });
+
   /*
   while making a line, make outlets grow when they are moused over to signify that they
   are valid connections
@@ -225,20 +252,20 @@ workLayer.on('mouseover', function(evt) {
           y: 1.5
         });
         workLayer.draw();
-    } // if outlet
-  } 
-} 
-else if (deleteToolOn) {
-  if (isFunction(parent) || isValue(parent)) {
-    parent.children[0].setAttrs({
-      shadowColor: deleteColor,
-      shadowOpacity: 1,
-      shadowEnabled: true
-    });
-  }
-  workLayer.draw();
-}
-});
+        } // if outlet
+      } 
+    } 
+    else if (deleteToolOn) {
+      if (isFunction(parent) || isValue(parent)) {
+        parent.children[0].setAttrs({
+          shadowColor: deleteColor,
+          shadowOpacity: 1,
+          shadowEnabled: true
+        });
+      }
+      workLayer.draw();
+    }
+  });
 
 /*
   when the cursor is moved out of an outlet while drawing a line, return it to its
@@ -258,20 +285,20 @@ else if (deleteToolOn) {
             y: 1
           });
           workLayer.draw();
-        } //if outlet
-      } //if makingLine
-    } 
-    else if (deleteToolOn) {
-      if (isFunction(parent) || isValue(parent)) {
-        if (parent == currShape){
-          parent.children[0].setAttr('shadowColor', 'darkblue');
-        } 
-        else {
-          parent.children[0].setAttrs({
-            shadowEnabled: false
-          });
+          } //if outlet
+        } //if makingLine
+      } 
+      else if (deleteToolOn) {
+        if (isFunction(parent) || isValue(parent)) {
+          if (parent == currShape){
+            parent.children[0].setAttr('shadowColor', 'darkblue');
+          } 
+          else {
+            parent.children[0].setAttrs({
+              shadowEnabled: false
+            });
+          }
         }
+        workLayer.draw();
       }
-      workLayer.draw();
-    }
-  });
+    });

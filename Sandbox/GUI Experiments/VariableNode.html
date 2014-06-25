@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script src="./TestingDemo/globalVariables.js"></script>  
+  <script src="./TestingDemo/constructors.js"></script>
+  <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js">
+  </script>
+  <script src="EditableText.js"></script>
+  <style>
+  body {
+    margin: 0px;
+    padding: 0px;
+  } 
+  #container {
+    background-color: rgb(241, 248, 255);
+    width: 900px;
+    height: 600px;
+  }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+  var stage = new Kinetic.Stage({
+    container: 'container',
+    width: width,
+    height: height
+  });
+
+  var workLayer = new Kinetic.Layer();
+  stage.add(workLayer);
+
+  var newObj = makeVariableGroup(300, 300);
+  newObj.setAttr('visible', true);
+  workLayer.add(newObj);
+
+  stage.draw();
+  </script>
+</body>
+<html>
