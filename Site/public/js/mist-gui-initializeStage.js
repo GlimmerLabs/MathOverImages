@@ -15,6 +15,7 @@ var stage = new Kinetic.Stage({
  *    be connected.
  * 6. The border layer stores static elements of the page such as dividing lines.
  * 7. The drag layer holds nodes while they are being moved about the workspace.
+ * 8. The text layer hold the editabe text boxes for constant values and funtion text.
  */
 
  var lineLayer = new Kinetic.Layer();
@@ -26,6 +27,7 @@ var stage = new Kinetic.Stage({
  var funBarLayer = new Kinetic.Layer();
  var toolboxLayer = new Kinetic.Layer();
  var dragLayer = new Kinetic.Layer();
+ var textLayer = new Kinetic.Layer();
 
 /**
  * Add the layers to the stage. The top layer is the one most recently added, and
@@ -40,3 +42,6 @@ var stage = new Kinetic.Stage({
  stage.add(toolboxLayer);
  stage.add(funBarLayer);
  stage.add(dragLayer);
+ stage.add(textLayer);
+
+readyEditing(stage);

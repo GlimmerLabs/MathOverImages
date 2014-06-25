@@ -155,14 +155,7 @@ function MISTbody2fun(body)
  */
 MIST.expToRGB = function(exp,context) {
   var type = MIST.expType(exp, context);
-
   var tmp = [];
-/*
-  // Contexts as arrays
-  for (var i = 0; i < context.length; i++) {
-    tmp.push("var " + context[i][0] + " = " + context[i][1].toString());
-  }
- */
    // Contexts as objects
   for (var c in context) {
     tmp.push("var " + c + " = " + context[c].toString());
@@ -188,7 +181,7 @@ MIST.expToRGB = function(exp,context) {
   //      var _tmp_ = r2c(-exp);
   //      return [_tmp_, _tmp_, _tmp];
   else if (type == MIST.TYPE.NUMBER) {
-    code = "(function(x,y,t,m,p) { " + contextCode +
+    var code = "(function(x,y,t,m,p) { " + contextCode +
         "; var _tmp_ = r2c(-" + exp.toString() + 
         "); return [_tmp_, _tmp_, _tmp_]; })";
     // console.log(code);
