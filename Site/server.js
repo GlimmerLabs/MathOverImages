@@ -20,8 +20,6 @@ var httpsOptions = {
 
 var http = require('http');
 var app = express();
-var http_port = 8081;
-var https_port = 8082;
 var mysql = require('mysql');
 var passport = require('passport');
 var flash = require('connect-flash');
