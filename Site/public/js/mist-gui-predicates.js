@@ -99,7 +99,6 @@ var isUndoTool = function(target) {
  };
 
  var isCycle = function(sourceGroup, outletGroup) {
-
  	var lineOut = outletGroup.attrs.lineOut;
  	if (lineOut.length === 0) {
  		return false;
