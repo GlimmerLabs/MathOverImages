@@ -78,6 +78,7 @@ BUILTIN("abs", "abs", "The absolute value of i", "i",
 var average = function(a) {
   return sum.apply(this, arguments)/arguments.length;
 }; // average
+var ave = average;
 BUILTIN("average", "ave", "Average 2 or more values", "...",
   2, 20, "GENERAL");
    
@@ -94,6 +95,7 @@ var multiply = function() {
   }
   return product;
 }; // multiply
+var mult = multiply;
 BUILTIN("multiply", "mult", "Multiply 2 or more values", "...",
   2, 20, "GENERAL");
 
@@ -110,7 +112,11 @@ var sign = function(range) {
 }; 
 BUILTIN("sign", "sign", 
   "If i < 0, returns -1; if i >- 0, returns 1", "i", 1, 1, "GENERAL");
-
+var negate = function(value)
+{
+ return -value;
+};
+BUILTIN("negate", "negates value");
 var signz = function(range)
 {
   if (range < 0) 
@@ -127,6 +133,7 @@ BUILTIN("signz", "signz",
 var sine = function(a) {
     return Math.sin(Math.PI * a);
 };
+var sin = sine;
 BUILTIN("sine", "sin", "The sine of pi*a", "a",
   1, 1, "GENERAL");
 
