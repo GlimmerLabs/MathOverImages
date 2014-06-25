@@ -24,8 +24,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "sudo nodemon server.js",
-    "start": "sudo node server.js"
+    "test": "nodemon server.js",
+    "start": "nohup node server.js"
   },
   "repository": {
     "type": "git",

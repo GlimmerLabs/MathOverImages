@@ -9,15 +9,17 @@ var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
 var functionColor = '#508C37';
 
 var valueSideLength = functionTotalSideLength / 1.414;
-var valueXYColor = 'gray'
-var valueTimeColor = 'gold'
-var valueConstantColor = 'purple'
+var valueXYColor = 'gray';
+var valueTimeColor = 'gold';
+var valueConstantColor = '#CD8ADA';
 
 var imageBoxSideLength = width / 80;
-var imageBoxColor = 'white'
+var imageBoxColor = 'white';
 var functionImageBoxOffset = width / 300;
 var valueImageBoxOffset = width / 31;
 var renderSideLength = width / 18;
+
+var variableColor = 'blue';
 
 var outletXOffset = width / 255;
 var outletYOffset = functionRectSideLength / 3;
@@ -71,26 +73,26 @@ var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
 var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 var functions = {
-	add: 			{rep: '+', 	 max: 20, min: 2, prefix: '', 		separator: '+'},
-	multiply: {rep: '*', 	 max: 20, min: 2, prefix: '', 		separator: '*'},
-	negate: 	{rep: '-', 	 max: 1,  min: 1, prefix: '-', 		separator: ' '},
-	sine: 		{rep: 'sin', max: 1,  min: 1, prefix: 'sin', 	separator: ' '},
-	cosine: 	{rep: 'cos', max: 1,  min: 1, prefix: 'cos', 	separator: ' '},
-	absolute: {rep: 'abs', max: 1,  min: 1, prefix: 'abs', 	separator: ' '},
-	average: 	{rep: 'ave', max: 20, min: 2, prefix: 'ave', 	separator: ','},
-	sign: 		{rep: 'sign',max: 1,  min: 1, prefix: 'sign', separator: ' '},
-	wrap: 		{rep: 'wrap',max: 1,  min: 1, prefix: 'wrap', separator: ' '},
-	rgb: 			{rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', 	separator: ','}
+	add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum'},
+	multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult'},
+	negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg'},
+	sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin'},
+	cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos'},
+	absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs'},
+	average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg'},
+	sign:      {rep: 'sign',max: 1,  min: 1, prefix: 'sign'},
+	wrapsum:   {rep: 'wrap',max: 1,  min: 1, prefix: 'wsum'},
+	rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb'}
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 var values = {
-	x: 				{rep: 'x', 	 max: 20, min: 2, color: valueXYColor},
-	y: 				{rep: 'y', 	 max: 20, min: 2, color: valueXYColor},
-	second: 	{rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
-	minute:		{rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
-	hour: 		{rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
-	day: 			{rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-	constant:	{rep: '', 	 max: 20, min: 2, color: valueConstantColor},
+	x:        {rep: 'x',   max: 20, min: 2, color: valueXYColor},
+	y:        {rep: 'y',   max: 20, min: 2, color: valueXYColor},
+	second:   {rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
+	minute:   {rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
+	hour:     {rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
+	day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
+	constant: {rep: '',    max: 20, min: 2, color: valueConstantColor}
 }
 
 // TOOLBOX BOOLEANS
@@ -105,10 +107,13 @@ var functionExpanded = false;
 /* variables to globally reference the most recently used object/line and current state */
 var currShape;
 var currLine;
+var dragShape = null;
+var scaledObj = null;
 
 //OTHER BOOLEANS
 var makingLine = false;
 var animation = false;
+
 
 // CONSTANTS
 

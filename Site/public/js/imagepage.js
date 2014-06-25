@@ -3,11 +3,20 @@
  *   Additional Javascript for the single image page.
  */
 
+// +------+----------------------------------------------------------
+// | Todo |
+// +------+
+
+// Find a way to get the context.
+
 // +------------------+----------------------------------------------
 // | Final Page Setup |
 // +------------------+
 
+var animator;
+
 $(document).ready(function() {
-  MIST.ui.startAnimation(document.getElementById('code').innerHTML,
-     "", {}, document.getElementById("canvas"), function(txt) { });
+  animator = new MIST.ui.Animator(document.getElementById('code').innerHTML,
+    "", {}, document.getElementById("canvas"));
+  animator.start();
 });
