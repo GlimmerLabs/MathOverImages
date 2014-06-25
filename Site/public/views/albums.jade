@@ -4,6 +4,18 @@ block title
 
 block extraMetas
 block extraLinks
+	script(type='text/javascript' src='/js/mist-utils.js')
+	script(type='text/javascript' src='/js/mist-functions.js')
+	script(type='text/javascript' src='/js/mist-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-builtin.js')
+	script(type='text/javascript' src='/js/mist-render.js')
+	script(type='text/javascript' src='/js/mistui-dialogs.js')
+	script(type='text/javascript' src='/js/mistui-help.js')
+	script(type='text/javascript' src='/js/mistui-menus.js')
+	script(type='text/javascript' src='/js/mistui-animation.js')
+	script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+	script(type='text/javascript' src='/js/gallery.js')
 
 block stylesheets
 
@@ -22,5 +34,6 @@ block content
 		div(id = 'albums')
 			- for(var i=0; i < albums.length; i++)
 				figure
-					h1= albums[i].name
-					img(src = '/samples/color2.jpg')
+					a(href='/albums/' + albums[i].albumid)
+							h1= albums[i].name
+							img(src = '/samples/color2.jpg')

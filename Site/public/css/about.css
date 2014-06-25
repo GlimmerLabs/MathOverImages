@@ -8,12 +8,12 @@
   width: 600px;
 }
 
-img {
+#display {
 width: 150px;
 height: 150px;
 }
 table{
-margin: 0px 300px -50px 100px;
+margin: 50px 300px 50px 100px;
 float: left;
 padding: 30px;
 }

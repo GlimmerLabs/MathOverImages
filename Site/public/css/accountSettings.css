@@ -1,11 +1,17 @@
-#editButton {
- width: 25px;
- height: 25px;
+img.editButton {
+ width: 20px;
+ height: 20px;
  decoration: none;
 }
 #content {
 text-align: center;
+width: 250px;
 }
+
+#headers {
+width: 150px;
+}
+
 #pageTitle {
     background-color:3FAAA0;
     color: #FFF;
