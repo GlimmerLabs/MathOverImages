@@ -1,7 +1,5 @@
 @import url("/css/styles");
 
-/*this is gallery.css*/
-
 #main {
 	margin:100px;
 }
@@ -52,8 +50,32 @@ figure figcaption.left:first-letter{
 	font-size: 1em;
 }
 
+figure figcaption.right{
+	color: #979797;
+	font-size: 1em;
+	text-decoration: none;
+}
+
+
 figure figcaption.center{
     text-align: center;
     color: #979797;
 }
 
+h2{
+	color: #979797;
+	text-align: center;
+	width: 60%;
+	margin: 0px auto;
+	font-weight: normal;
+
+}
+
+figcaption.right a:visited {
+    color: inherit;
+}
+
+#previousNext {
+vertical-align: bottom;
+height: 50px;
+}
