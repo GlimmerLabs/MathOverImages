@@ -42,7 +42,7 @@
   			y1: group.y(),
   			connections: []
   		};
-        var child = 0;
+      var child = 0;
   		if (action == 'delete') {
   			// Remember all the outgoing edges we're deleting.
   			for (var i = 0; i < group.attrs.lineOut.length; i++) {
@@ -62,17 +62,17 @@
             var oldGroup = arguments[2]
             obj.oldGroup = oldGroup;
             if (isFunction(group)) {
-                if(group.attrs.maxInputs < oldGroup.children.length - 3) {
-                    var startingIndex = OUTLET_OFFSET + group.attrs.maxInputs;
-                    for (var i = startingIndex; i < oldGroup.children.length; i++) {
-                        var lineIn = oldGroup.children[i].attrs.lineIn;
-                        if (lineIn != null && lineIn != undefined) {
-                            obj['connections'][child++] = actionToObject('delete', lineIn);
-                        } 
-                    }
+              if (group.attrs.maxInputs < oldGroup.children.length - 3) {
+                var startingIndex = OUTLET_OFFSET + group.attrs.maxInputs;
+                for (var i = startingIndex; i < oldGroup.children.length; i++) {
+                  var lineIn = oldGroup.children[i].attrs.lineIn;
+                  if (lineIn != null && lineIn != undefined) {
+                    obj['connections'][child++] = actionToObject('delete', lineIn);
+                  } 
                 }
+              }
             }
-        } // if we're replacing things
+          }   // if we're replacing things
   	} // if it's a function or value
   	// If it's a line
   	else if (isLine(group)) {
@@ -194,11 +194,15 @@
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             oldGroup.moveTo(workLayer);
+            replaceNode (element, oldGroup);
+            var totalNeeded = oldGroup.children.length + actionObj.connections.length;
             for (var i = 0; i < actionObj.connections.length; i++)
             {
-                insertLine(actionObj.connections[i]);
+              if (oldGroup.children.length < totalNeeded) {
+                addOutlet(oldGroup);
+              }
+              insertLine(actionObj.connections[i]);
             }
-            replaceNode (element, oldGroup);
             workLayer.draw();
         } // if node
         else {
@@ -260,7 +264,6 @@
             outletParent = targetLine.attrs.outlet.parent;
             // decrement the sink's inputs
             outletParent.attrs.numInputs--;
-            console.log(outletParent.attrs.name + ": " + outletParent.attrs.numInputs);
             // empty out the sink's outlet
             targetLine.attrs.outlet.attrs.lineIn = null;
             // check and update the rendering of the sink
@@ -326,6 +329,12 @@
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             element.moveTo(workLayer);
             replaceNode (oldGroup, element);
+            
+            for (var i = 0; i < actionObj.connections.length; i++)
+            {
+              insertLine(actionObj.connections[i]);
+            }
+
         } // if node
         else {
           removeLine(elementTable[actionObj.deleteLine.id]);
@@ -358,7 +367,6 @@
     outlet.attrs.lineIn = null;
     // update the sink's number of outlets
     sink.attrs.numInputs--;
-    console.log(sink.attrs.name + ": " + sink.attrs.numInputs);
     // remove the line from the lineLayer
     line.remove();
     // if the sink is the currShape
@@ -407,7 +415,6 @@
     outlet.attrs.lineIn = element;
     // increment numInputs
     actionObj.sink.attrs.numInputs++;
-    console.log(actionObj.sink.attrs.name + ": " + actionObj.sink.attrs.numInputs);
     // assert and update renderability of the sink
     assertRenderable(actionObj.sink);
     // if the currShape is defined
