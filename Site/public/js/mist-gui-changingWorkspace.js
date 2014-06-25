@@ -42,7 +42,7 @@
   			y1: group.y(),
   			connections: []
   		};
-        var child = 0;
+      var child = 0;
   		if (action == 'delete') {
   			// Remember all the outgoing edges we're deleting.
   			for (var i = 0; i < group.attrs.lineOut.length; i++) {
@@ -62,17 +62,17 @@
             var oldGroup = arguments[2]
             obj.oldGroup = oldGroup;
             if (isFunction(group)) {
-                if(group.attrs.maxInputs < oldGroup.children.length - 3) {
-                    var startingIndex = OUTLET_OFFSET + group.attrs.maxInputs;
-                    for (var i = startingIndex; i < oldGroup.children.length; i++) {
-                        var lineIn = oldGroup.children[i].attrs.lineIn;
-                        if (lineIn != null && lineIn != undefined) {
-                            obj['connections'][child++] = actionToObject('delete', lineIn);
-                        } 
-                    }
+              if (group.attrs.maxInputs < oldGroup.children.length - 3) {
+                var startingIndex = OUTLET_OFFSET + group.attrs.maxInputs;
+                for (var i = startingIndex; i < oldGroup.children.length; i++) {
+                  var lineIn = oldGroup.children[i].attrs.lineIn;
+                  if (lineIn != null && lineIn != undefined) {
+                    obj['connections'][child++] = actionToObject('delete', lineIn);
+                  } 
                 }
+              }
             }
-        } // if we're replacing things
+          }   // if we're replacing things
   	} // if it's a function or value
   	// If it's a line
   	else if (isLine(group)) {
@@ -194,11 +194,15 @@
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             oldGroup.moveTo(workLayer);
+            replaceNode (element, oldGroup);
+            var totalNeeded = oldGroup.children.length + actionObj.connections.length;
             for (var i = 0; i < actionObj.connections.length; i++)
             {
-                insertLine(actionObj.connections[i]);
+              if (oldGroup.children.length < totalNeeded) {
+                addOutlet(oldGroup);
+              }
+              insertLine(actionObj.connections[i]);
             }
-            replaceNode (element, oldGroup);
             workLayer.draw();
         } // if node
         else {
@@ -325,6 +329,12 @@
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             element.moveTo(workLayer);
             replaceNode (oldGroup, element);
+            
+            for (var i = 0; i < actionObj.connections.length; i++)
+            {
+              insertLine(actionObj.connections[i]);
+            }
+
         } // if node
         else {
           removeLine(elementTable[actionObj.deleteLine.id]);
