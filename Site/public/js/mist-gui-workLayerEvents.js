@@ -62,20 +62,13 @@ There are 3 different modes:
         else if (isOutlet(shape)) {
       //check if outlet already has an input
       var isReplacement;
+      var oldLine;
       if (shape.attrs.lineIn != null) {
-        //POSSIBLE NEED TO DESTROY LINE ITSELF
         var source = shape.attrs.lineIn.attrs.source;
         var index = shape.attrs.lineIn.attrs.sourceIndex
-        var line = source.attrs.lineOut[index];
-        insertToArray(actionToObject('replace', line, shape.attrs.lineIn));
+        oldLine = source.attrs.lineOut[index];
         isReplacement = true;
-        for (var i = index + 1; i < source.attrs.lineOut.length; i++) {
-          source.attrs.lineOut[i].attrs.sourceIndex--;
-        }
-        source.attrs.lineOut.splice(index, 1);
-        
-        line.remove();
-        shape.attrs.lineIn = null;
+        removeLine(oldLine);
       } 
       else {
         parent.attrs.numInputs++;
@@ -100,8 +93,11 @@ There are 3 different modes:
       }
     }
     insertToTable(currLine);
-    if (!isReplacement){
+    if (!isReplacement) {
       insertToArray(actionToObject('insert', currLine));
+    }
+    else {
+      insertToArray(actionToObject('replace', currLine, oldLine));
     }
     updateForward(parent);
     } // if clicked on self, else clicked on a valid outlet
