@@ -235,6 +235,7 @@
  			while (i < oldNode.children.length - OUTLET_OFFSET) {
  				if(oldNode.children[i+3].attrs.lineIn) {
  					removeLine(oldNode.children[i + 3].attrs.lineIn);
+ 					oldNode.attrs.numInputs--;
  				}
  				i++;
  			}
