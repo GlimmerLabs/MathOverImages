@@ -1,8 +1,17 @@
 Notes for developers
 ====================
 
-Files not in repo
------------------
+These are rough notes for the folks who are developing MIST on things to
+do for setting up and running the server.
+
+One-Time Setup
+--------------
+
+### Load Express and other libraries
+
+	$ npm install
+
+### Add files not in repo
 
 The certs directory and functions/auth.js are intentionally NOT in
 the repo because they store confidential information.  You should 
@@ -11,7 +20,26 @@ setup, that's something like
 
 	$ cd MathOverImages
         $ cd Site
-        $ ln -s /home/glimmer/MathOverImages/Site/certs
+        $ ln -s /home/mist/MathOverImages/Site/certs
         $ cd functions
-        $ ln -s /home/glimmer/MathOverImages/Site/functions/auth.js
+        $ ln -s /home/mist/MathOverImages/Site/functions/auth.js
 
+The file functions/ports.js is also not in the repository.  In this case,
+it's so that we can each set up our own ports without having to deal
+with git complaining that server.js has changed.
+
+	$ cd MathOverImages
+	$ cd Site
+	$ cd functions
+	$ cp /home/mist/MathOverImages/Site/functions/ports.js .
+
+Running the Server
+------------------
+
+Test mode
+
+        $ nodemon server.js
+
+Normal mode
+
+        $ nohup node server.js
