@@ -31,6 +31,10 @@
  * NOTE: this will always recalculate the entire function
  */
  var findRenderFunction = function(group) {
+ 	if(isValue(group)) {
+ 		group.attrs.renderFunction = group.attrs.rep;
+ 		return;
+ 	}
  	var childOfRGB = false;
  	for(var i = 3; i < group.children.length; i++) {
  		if (group.children[i].attrs.lineIn && 
@@ -50,7 +54,7 @@
 	else if (childOfRGB) {
 		// STUB
 		console.log('RGB output is not yet implemented');
-		
+
 	}
 	else {
 		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
