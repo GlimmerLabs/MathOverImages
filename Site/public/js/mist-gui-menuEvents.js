@@ -95,15 +95,19 @@ menuButtonLayer.on('click', function(){
       var group = evt.target.getParent();
       if (isFunction(group)) {
         var newGroup = makeFunctionGroup(group.attrs.name, group.attrs.x, group.attrs.y);
-      } else {
+      } 
+      else {
         var newGroup = makeValueGroup(group.attrs.name, group.attrs.x, group.attrs.y);
-  } // if function / else value
-  newGroup.setAttr('visible', true);
-  dragLayer.add(newGroup);
-  newGroup.startDrag();
-  dragLayer.draw();
-}
-});
+      } // if function / else value
+      newGroup.setAttr('visible', true);
+      dragLayer.add(newGroup);
+      setDragShadow(newGroup);
+      newGroup.startDrag();
+      dragLayer.draw();
+      dragShape = newGroup;
+      currShape = newGroup;
+    }
+  });
 
 // CONTROL MENU EVENTS 
 menuControlLayer.on('mouseover', function(evt) {
