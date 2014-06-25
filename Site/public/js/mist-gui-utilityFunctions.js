@@ -34,11 +34,12 @@
  	var childOfRGB = false;
  	for(var i = 3; i < group.children.length; i++) {
  		if (group.children[i].attrs.lineIn && 
- 			group.children[i].attrs.lineIn.attrs.source.renderFunction instanceof Array) {
+ 			group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction instanceof Array) {
  			childOfRGB = true;
  			break;
  		}
  	}
+ 	console.log(childOfRGB);
  	if (group.attrs.name == 'rgb') {
  		group.attrs.renderFunction = [
 			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
@@ -49,6 +50,7 @@
 	else if (childOfRGB) {
 		// STUB
 		console.log('RGB output is not yet implemented');
+		
 	}
 	else {
 		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
