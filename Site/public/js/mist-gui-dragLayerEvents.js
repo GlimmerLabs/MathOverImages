@@ -63,32 +63,22 @@
     } 
     else {
       currShape = null;
+      insertToArray(actionToObject('delete', group));
       // deal with lines coming in to the node being deleted
       var targetLine;
       for(var i = 3; i < group.children.length; i++) {
         targetLine = group.children[i].attrs.lineIn;
         if(targetLine != null) {
-          targetLine.attrs.outlet = null;
-          targetLine.attrs.source.attrs.lineOut.splice(targetLine.attrs.sourceIndex, 1);
-          targetLine.remove();
+          removeLine(targetLine);          
         }
       }
       // deal with the lines leading out of the node being deleted
-      var outletParent;
       for(var i = 0; i < group.attrs.lineOut.length; i++) {
         targetLine = group.attrs.lineOut[i];
-        if (targetLine.attrs.outlet != null) {
-          outletParent = targetLine.attrs.outlet.getParent();
-          outletParent.attrs.numInputs--;
-          targetLine.attrs.outlet.attrs.lineIn = null;
-          assertRenderable(outletParent);
-          updateForward(outletParent);
-        }
-        targetLine.remove();
+        removeLine(targetLine);
       }
       lineLayer.draw();
       if (inTable(group)){
-        insertToArray(actionToObject('delete', group));
         group.remove();
       }
       else {

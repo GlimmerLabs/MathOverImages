@@ -344,14 +344,13 @@
    * updates funBar text. 
    */
    var removeLine = function(line) {
-    console.log('removing line');
     var outlet = line.attrs.outlet;
     var sink = outlet.parent;
     var index = line.attrs.sourceIndex;
     var source = line.attrs.source;
-      for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
-        source.attrs.lineOut[j].attrs.sourceIndex--;
-      }
+    for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
+      source.attrs.lineOut[j].attrs.sourceIndex--;
+    }
     // remove the sourceIndex'th lineOut from the line's source
     source.attrs.lineOut.splice(line.attrs.sourceIndex, 1);
     // empty out the sink's outlet
@@ -380,7 +379,7 @@
       assertRenderable(sink);
   }
     // update
-    updateForward(outlet.parent);
+    updateForward(sink);
 };
 
   /**

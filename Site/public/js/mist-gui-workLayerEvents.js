@@ -126,27 +126,14 @@ There are 3 different modes:
   var targetLine;
   for(var i = 3; i < parent.children.length; i++) {
     targetLine = parent.children[i].attrs.lineIn;
-    if(targetLine != null) {
-      targetLine.attrs.outlet = null;
-      var index = targetLine.attrs.sourceIndex;
-      var source = targetLine.attrs.source;
-      for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
-        source.attrs.lineOut[j].attrs.sourceIndex--;
-      }
-      targetLine.attrs.source.attrs.lineOut.splice(index, 1);
-      targetLine.remove();
+    if (targetLine){
+      removeLine(targetLine);
     }
   }
   // deal with the lines leading out of the node being deleted
-  var outletParent;
   for(var i = 0; i < parent.attrs.lineOut.length; i++) {
     targetLine = parent.attrs.lineOut[i];
-    outletParent = targetLine.attrs.outlet.getParent();
-    outletParent.attrs.numInputs--;
-    targetLine.attrs.outlet.attrs.lineIn = null;
-    assertRenderable(outletParent);
-    updateForward(outletParent);
-    targetLine.remove();
+    removeLine(targetLine);
   }
   var render = parent.attrs.renderLayer
   if (render != null) {
