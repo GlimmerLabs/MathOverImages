@@ -79,7 +79,7 @@ var functions = {
 	sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin'},
 	cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos'},
 	absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs'},
-	average:   {rep: 'ave', max: 20, min: 2, prefix: 'avg'},
+	average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg'},
 	sign:      {rep: 'sign',max: 1,  min: 1, prefix: 'sign'},
 	wrapsum:   {rep: 'wrap',max: 1,  min: 1, prefix: 'wsum'},
 	rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb'}
