@@ -198,6 +198,11 @@ function readyEditing(stage)
 			if(event.evt != currentEvent){
 				currentEvent = null;
 				if (activeText != null){
+					if (isValue(activeText.parent)) {
+						if (activeText.attrs.text) {
+							updateValueText(activeText);
+						}
+					}
 					activeText.removeFocus();
 				}
 			}
@@ -297,18 +302,8 @@ function readyEditing(stage)
 			}
 			if (keycode == 13) {
 				if (isValue(activeText.parent)) {
-					var value = activeText.parent;
-					var newText = activeText.attrs.text;
-					value.children[1].setAttrs({
-						text: wrapValueText(newText),
-						fontSize: 13
-					});
-					value.setAttrs({
-						rep: newText,
-						renderFunction: newText
-					});
-					for (var i = 3; i < 6; i++) {
-						value.children[i].setAttr('visible', false);
+					if (activeText.attrs.text) {
+						updateValueText(activeText);
 					}
 				}
 				activeText.removeFocus();
@@ -330,3 +325,24 @@ function readyEditing(stage)
 		}
 	}
 }
+/**
+* updateValueText takes a string and puts that string into a value by updating:
+* - visible text box
+* - rep
+* - renderFunction
+*/
+var updateValueText = function(text) {
+	var value = text.parent;
+	var newText = text.attrs.text;
+	value.children[1].setAttrs({
+		text: wrapValueText(newText),
+		fontSize: 13
+	});
+	value.setAttrs({
+		rep: newText,
+		renderFunction: newText
+	});
+	for (var i = 3; i < 6; i++) {
+		value.children[i].setAttr('visible', false);
+	}	
+};
