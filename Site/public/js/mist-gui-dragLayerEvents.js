@@ -90,6 +90,9 @@
   if (group) {
     setSelectedShadow(group);
     currShape = group;
+    if (!group.attrs.dragBoundFunc) {
+      applyDragBounds(group);
+    }
   }
   else {
     currShape = null;
