@@ -35,7 +35,7 @@
     else {
       if (group.attrs.y > menuHeight) {
         group.moveTo(workLayer);
-        group.children[0].setAttr('shadowEnabled', false);
+
         if (isFunction(group) && group.children.length < 4) {
           for (var i = 0; i < functions[group.attrs.name].min; i++) {
             addOutlet(group);
@@ -86,6 +86,14 @@
       }
     }
   }
+  if (group) {
+    setSelectedShadow(group);
+    currShape = group;
+  }
+  else {
+    currShape = null;
+  }
+  updateFunBar();
   dragShape = null;
   menuLayer.draw();
   menuButtonLayer.draw();
