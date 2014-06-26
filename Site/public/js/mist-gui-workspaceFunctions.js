@@ -18,7 +18,23 @@
  	return wArray;
  };
 
-
+/**
+ * arrayToWorkspace takes an array of objects and inserts them to a workspace
+ */
+ var arrayToWorkspace = function(array) {
+ 	for (var i = 0; i < array.length; i++) {
+ 		var object = array[i];
+ 		if (isLine(object)) {
+ 			object.moveTo(lineLayer);
+ 		}
+ 		else {
+ 			object.moveTo(workLayer);
+ 			object.setAttr('visible', true);
+ 		}
+ 	}
+ 	workLayer.draw();
+ 	lineLayer.draw();
+ };
 
 /**
  * resetWorkspace removes all elements from the active workspace,
