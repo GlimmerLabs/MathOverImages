@@ -139,3 +139,7 @@ menuControlLayer.on('mouseup', function(evt){
   shape.setAttr('shadowEnabled', false);
   menuControlLayer.draw();
 });
+
+resetButton.on('mouseup', function(){
+  resetWorkspace();
+});
