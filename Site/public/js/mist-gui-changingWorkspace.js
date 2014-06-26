@@ -190,7 +190,6 @@
       } // if move
       // if the action in question is a replacement
       else {
-        // ***** currently in progress *******
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             oldGroup.moveTo(workLayer);
