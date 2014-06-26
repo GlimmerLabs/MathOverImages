@@ -160,12 +160,15 @@ lineLayer.draw();
     if (workToolOn) {
       if (!isImageBox(evt.target)) {
         var group = evt.target.getParent();
+        if (isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
+          return;
+        }
         group.moveTo(dragLayer);
         setDragShadow(group);
         if (currShape != undefined) {
          currShape.children[0].setAttr('shadowEnabled', false);
        }
-       currShape = group
+       currShape = group;
        updateFunBar();
        insertToArray(actionToObject('move', group));
        group.startDrag();
