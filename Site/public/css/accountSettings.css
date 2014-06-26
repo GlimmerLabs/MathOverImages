@@ -1,4 +1,6 @@
-img.editButton {
+@import url("/css/styles");
+
+img editButton {
  width: 20px;
  height: 20px;
  decoration: none;
@@ -71,7 +73,7 @@ input[type='submit'] {
     clear: left;
     margin: 50px;
     color: #FFF;
-    background-color: #D8D8D8;
+    background-color: #979797;
     border:1px solid white;
     font-size: 1.5em;
     font-weight: 800;
@@ -79,7 +81,7 @@ input[type='submit'] {
 }
 
 input[type='submit']:hover {
-    color: #D8D8D8;
+    color: #979797;
     background-color: #FFF;
     cursor: pointer;
 }
@@ -100,11 +102,19 @@ input[type='submit']:hover {
     color: #D8D8D8;
     background-color: #FFF;
     cursor: pointer;797;
-
 }
 
-#changeInfo {
-    position: relative;
-    top: -100px;
-    text-align: center;
+td #edit-username {
+width: 25px;
+height: 25px;
+}
+
+td #edit-password{
+width: 25px;
+height: 25px;
+}
+
+td #edit-email {
+width: 25px;
+height: 25px;
 }

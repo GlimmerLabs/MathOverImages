@@ -22,12 +22,13 @@ block stylesheets
 block content
 	div(id='main')
 		div(id='albumPageTitle')
-				h1 album
+				h1= user.username
+				h2= albumContents[0].name
 		div(id='subviews')
-			a(href='#' class='subview') about
-			a(href='#' class='subview') badges
-			a(href='#' class='subview') albums
-			a(href='#' class='subview') challenges
+			a(href='/me' class='subview') about
+			a(href='/badges' class='subview') badges
+			a(href='/albums' class='subview' id= 'selected') albums
+			a(href='/challenges' class='subview') challenges
 		div(id='images')
 			- for (var i = 0; i < albumContents.length; i++)
 				figure
