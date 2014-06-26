@@ -26,7 +26,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 
 var auth = require('./functions/auth.js');
-//var ports = require('./functions/ports.js');
+var ports = require('./functions/ports.js');
 
 //==================== configuration ====================
 
@@ -58,4 +58,3 @@ http.createServer(app).listen(ports.http);
 https.createServer(httpsOptions, app).listen(ports.https);
 console.log('HTTP operating on port ' + ports.http);
 console.log('HTTPS operating on port ' + ports.https);
-
