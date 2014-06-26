@@ -146,8 +146,10 @@
           // re-call the function on the line in question's deletion
           undoAction(connections[i]);
         } // go through each of the old line connections
+        removeShadow(currShape);
         currShape = element;
-        currShape.children[0].setAttrs({shadowColor: 'darkblue'});
+        setSelectedShadow(currShape);
+        updateFunBar();        
       } // if node
       // if working with a line
       else {
@@ -187,10 +189,10 @@
       }
         //collapseCanvas(element);
         currShape = element;
+        updateFunBar();
       } // if move
       // if the action in question is a replacement
       else {
-        // ***** currently in progress *******
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             oldGroup.moveTo(workLayer);
@@ -274,10 +276,9 @@
         } 
           // remove text from funBar
           if (currShape == element) {
-            currShape = undefined;
-            funBarText.setAttr('text', '');
-            funBarLayer.draw();
-        }
+            currShape = null;
+            updateFunBar();
+          }
           // remove the element form the workLayer
           element.remove();
         } // if node
@@ -320,11 +321,13 @@
           renderCanvas(element);
       }
         // update the currShape
+        removeShadow(currShape);
         currShape = element;
+        setSelectedShadow(currShape);
+        updateFunBar();
       } // if move
       // else replace
       else {
-        // ******** currently in progress ******
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             element.moveTo(workLayer);
@@ -378,8 +381,6 @@
       // if sink un-renderable
       else {
         // update currShape's identification and the funBarText
-        currShape.children[0].setAttr('shadowEnabled', false);
-        currShape = undefined;
         funBarText.setAttr('text', ''); 
       } // if un-renderable
       funBarLayer.draw();
