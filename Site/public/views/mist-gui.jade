@@ -3,6 +3,23 @@ block title
   title= "MIST Workspace"
 block extraMetas
 block extraLinks
+  script(type='text/javascript' src='http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js')
+  script(type='text/javascript' src='/js/mist-gui-globalVariables.js')
+  script(type='text/javascript' src='/js/mist-gui-utilityFunctions.js')
+  script(type='text/javascript' src='/js/mist-gui-predicates.js')
+  script(type='text/javascript' src='/js/mist-gui-menuTweens.js')
+  script(type='text/javascript' src='/js/mist-gui-constructors.js')
+  script(type='text/javascript' src='/js/mist-gui-EditableText.js')
+  script(type='text/javascript' src='/js/mist-gui-makeMenu.js')
+  script(type='text/javascript' src='/js/mist-gui-makeToolbox.js')
+  script(type='text/javascript' src='/js/mist-gui-makeFunctionBar.js')
+  script(type='text/javascript' src='/js/mist-gui-workLayerEvents.js')
+  script(type='text/javascript' src='/js/mist-gui-menuEvents.js')
+  script(type='text/javascript' src='/js/mist-gui-dragLayerEvents.js')
+  script(type='text/javascript' src='/js/mist-gui-lineLayerEvents.js')
+  script(type='text/javascript' src='/js/mist-gui-toolboxEvents.js')
+  script(type='text/javascript' src='/js/mist-gui-changingWorkspace.js')  
+
   script(type='text/javascript' src='/js/mist-utils.js')
   script(type='text/javascript' src='/js/mist-functions.js')
   script(type='text/javascript' src='/js/mist-layout.js')
@@ -16,13 +33,7 @@ block extraLinks
   script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
   script(type='text/javascript' src='/js/imagepage.js')
 
-  script(type='text/javascript' src='http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js')
-  script(type='text/javascript' src='/js/mist-gui-globalVariables.js')
-  script(type='text/javascript' src='/js/mist-gui-utilityFunctions.js')
-  script(type='text/javascript' src='/js/mist-gui-predicates.js')
-  script(type='text/javascript' src='/js/mist-gui-menuTweens.js')
-  script(type='text/javascript' src='/js/mist-gui-constructors.js')
-  script(type='text/javascript' src='/js/mist-gui-EditableText.js')
+
   
 
 block stylesheets
@@ -31,14 +42,5 @@ block content
   div(id='main')
     div(id='container')
     script(type='text/javascript' src='/js/mist-gui-initializeStage.js')
-    script(type='text/javascript' src='/js/mist-gui-makeMenu.js')
-    script(type='text/javascript' src='/js/mist-gui-makeToolbox.js')
-    script(type='text/javascript' src='/js/mist-gui-makeFunctionBar.js')
-    script(type='text/javascript' src='/js/mist-gui-workLayerEvents.js')
-    script(type='text/javascript' src='/js/mist-gui-menuEvents.js')
-    script(type='text/javascript' src='/js/mist-gui-dragLayerEvents.js')
-    script(type='text/javascript' src='/js/mist-gui-lineLayerEvents.js')
-    script(type='text/javascript' src='/js/mist-gui-toolboxEvents.js')
-    script(type='text/javascript' src='/js/mist-gui-changingWorkspace.js')
     script.
       stage.draw()
