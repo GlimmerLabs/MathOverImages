@@ -91,6 +91,7 @@
 			lineOut: [],
 			visible: false,
 			renderFunction: values[valName].rep,
+			rep: values[valName].rep,
 			renderLayer: null
 		});
 		/* create diamond shape. */
@@ -293,7 +294,7 @@ var addVal = function(valName, x, y) {
   workLayer.draw();
 };
 
-var createEditableText = function (group) {
+var createEditableText = function (group) {	
 	var backgroundBox = new Kinetic.Rect({
 		x: -4,
 		y: functionTotalSideLength + 5,

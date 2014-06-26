@@ -32,4 +32,5 @@ block content
 				figure
 					a(href='/albums/' + albums[i].albumid)
 							h1= albums[i].name
-							img(src = '/samples/color2.jpg')
+							canvas(id='canvas'+i width='180' height='180')
+							input(type='hidden' id='code'+i value=albums[i].code)

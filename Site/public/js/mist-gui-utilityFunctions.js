@@ -49,33 +49,29 @@
  * updateFunBar changes the text in the funBar according to the currShape.
  */
  var updateFunBar = function() {
- 	currText = currShape.attrs.renderFunction;
- 	if (currShape.attrs.renderFunction instanceof Array) {
- 		// NEEDS UPDATE FOR RGB OUTPUTS
- 		currText = 'rgb(' + currText + ')';
- 	} 
- 	if (currText != null) {
- 		currShape.children[0].setAttrs({
- 			shadowColor: 'darkblue',
- 			shadowOpacity: 1,
- 			shadowEnabled: true
- 		});
- 		var currFontSize;
- 		if (currText.length <= 50) {
- 			currFontSize = funBarDisplayFontSize;
- 		} 
- 		else if (currText.length >= 110) {
- 			currFontSize = 10;
+ 	if (currShape && isRenderable(currShape)) {
+ 		currText = currShape.attrs.renderFunction;
+ 		if (currText != null) {
+ 			var currFontSize;
+ 			if (currText.length <= 50) {
+ 				currFontSize = funBarDisplayFontSize;
+ 			} 
+ 			else if (currText.length >= 110) {
+ 				currFontSize = 10;
+ 			}
+ 			else {
+ 				currFontSize = 1100 / currText.length;
+ 			}
+ 			funBarText.setAttrs({
+ 				text: currText,
+ 				fontSize: currFontSize
+ 			});
  		}
- 		else {
- 			currFontSize = 1100 / currText.length;
- 		}
- 		funBarText.setAttrs({
- 			text: currText,
- 			fontSize: currFontSize
- 		});
- 		funBarLayer.draw();
  	}
+ 	else {
+ 		funBarText.setAttr('text', '');
+ 	}
+ 	funBarLayer.draw();
  };
 
 /**
@@ -151,33 +147,36 @@
  	toolboxLayer.draw();
  };
 
-/**
- * workspaceToArray takes all the nodes in the workLayer and all the lines in the 
- * lineLayer and puts them into an array.
- */
- var workspaceToArray = function() {
- 	var wArray = [];
- 	var workChildren = workLayer.getChildren();
- 	var lineChildren = lineLayer.getChildren();
- 	var i = 0;
- 	for (i; i < workChildren.length; i++) {
- 		wArray[i] = workChildren[i]; 
- 	}
- 	for (var j = 0; j < lineChildren.length; j++, i++) {
- 		wArray[i] = lineChildren[j];
- 	}
- 	return wArray;
- };
+
 
 /**
  * setDragShadow takes a function or value group and activates drag shadow
  */
  var setDragShadow = function(group) {
  	group.children[0].setAttrs({
- 		shadowColor: 'black',
+ 		shadowColor: dragShadowColor,
  		shadowEnabled: true
  	});
  };
+
+/**
+ * setSelectedShadow takes a function or value group and activates a shadow to signify it's selected
+ */
+ var setSelectedShadow = function(group) {
+ 	group.children[0].setAttrs({
+ 		shadowColor: selectedShadowColor,
+ 		shadowEnabled: true
+ 	});
+ };
+
+ /*
+  * removeShadow takes a function or value group and removes the shadow
+  */
+var removeShadow = function(group) {
+	if (group){
+		group.children[0].setAttr('shadowEnabled', false);
+	}
+};
 
 /**
  * replaceNode takes an old node and a new node and replaces the old node with
@@ -187,7 +186,7 @@
  	var tempOut = oldNode.attrs.lineOut;
  	collapseCanvas(oldNode);
  	oldNode.remove();
- 	if (newNode.attrs.name == 'constant') {
+ 	if (newNode.attrs.name == 'constant' && !newNode.children[3]) {
         createEditableText(newNode);
     }
  	for(var i = 0; i < tempOut.length; i++) {
@@ -236,6 +235,14 @@
  		}
  		resetNode(oldNode); 
  	}
+ 	else if (newNode.attrs.name == 'constant') {
+ 		if (isRenderable(newNode)) {
+ 			for (var i = 3; i < 5; i++) {
+ 				newNode.children[i].setAttr('visible', false);
+ 				workLayer.draw();
+ 			}
+ 		}
+ 	}
  	assertRenderable(newNode);
  	updateForward(newNode);
  	lineLayer.draw();
@@ -257,7 +264,6 @@
  	node.attrs.lineOut = [];
  	if (isFunction(node)) {
  		// destroy the outlets of the oldNode
-
  		for (var i = node.children.length - 1; i > 2; i--) {
  			node.children[i].destroy();
  		}
