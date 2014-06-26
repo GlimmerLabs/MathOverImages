@@ -91,6 +91,7 @@
 			lineOut: [],
 			visible: false,
 			renderFunction: values[valName].rep,
+			rep: values[valName].rep,
 			renderLayer: null
 		});
 		/* create diamond shape. */
