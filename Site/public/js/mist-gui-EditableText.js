@@ -342,7 +342,7 @@ var updateValueText = function(text) {
 		rep: newText,
 		renderFunction: newText
 	});
-	for (var i = 3; i < 6; i++) {
+	for (var i = 3; i < 5; i++) {
 		value.children[i].setAttr('visible', false);
 	}
 	assertRenderable(value);

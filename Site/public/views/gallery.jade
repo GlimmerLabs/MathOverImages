@@ -15,7 +15,6 @@ block extraLinks
  script(type='text/javascript' src='/js/mistui-animator.js')
  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
  script(type='text/javascript' src='/js/gallery.js')
- script(type='text/javascript' src='nextPrevious.js')
 
 block stylesheets
  link(rel='stylesheet', href='/css/gallery')
@@ -37,11 +36,10 @@ block content
        input(type='hidden' id='code'+i value=images[i].code)
      figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
      figcaption(class='left')= "★" + images[i].rating
-  a(href='/gallery/recent/2') next
-  a(href='/gallery/random/' + currentPage + 1) previous
-  a(href='/gallery/random/' + ++currentPage) next
-  div(id='previousNext')    table(width='400')
-    table(width='400px')
-      tr
-        td(align='center'): a(href='#' onClick='prev();') «
-        td(align='center'): a(href='#' onClick-'next();') »
+ if (currentPage==1 && !(type == "random"))
+  a(href='/gallery/' + type + '/' + ++currentPage) next »
+ else if !(type == "random") && !(currentPage==1) && (images.length>=currentPage*9)
+  a(href='/gallery/' + type + '/' + --currentPage class='page') « previous   
+  a(href='/gallery/' + type + '/' + (currentPage+2) class='page') next »
+ else if !(type == "random")
+  a(href='/gallery/' + type + '/' + --currentPage class='page') « previous   

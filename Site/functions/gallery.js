@@ -87,7 +87,9 @@ module.exports.buildTopRatedPage = function(req, res, database) {
 	res.render('../public/views/gallery.jade',{
 	    loggedIn: req.session.loggedIn,
 	    user: req.session.user,
-	    images: images
+	    images: images,
+	    currentPage: req.params.pageNumber,
+	    type: "toprated"
 	});
     });
 };
