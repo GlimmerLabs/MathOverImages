@@ -63,7 +63,6 @@ function setup(i) {
   images[i].start();    // Maybe .frame()
 
   // Add event handlers to the element for animating and stopping animation
-  console.log("Adding handlers to canvas " + i);
   canvas.onmouseover = function(evt) {
     images[i].start();
   } // canvas.mouseenter
