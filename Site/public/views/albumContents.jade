@@ -1,40 +1,40 @@
 extends ./partials/framework
 block title
-	title= albumContents.name + " on MIST"
+  title= albumContents.name + " on MIST"
 block extraMetas
 block extraLinks
-	script(type='text/javascript' src='/js/mist-utils.js')
-	script(type='text/javascript' src='/js/mist-functions.js')
-	script(type='text/javascript' src='/js/mist-layout.js')
-	script(type='text/javascript' src='/js/mist-functions-layout.js')
-	script(type='text/javascript' src='/js/mist-functions-builtin.js')
-	script(type='text/javascript' src='/js/mist-render.js')
-	script(type='text/javascript' src='/js/mistui-dialogs.js')
-	script(type='text/javascript' src='/js/mistui-help.js')
-	script(type='text/javascript' src='/js/mistui-menus.js')
-	script(type='text/javascript' src='/js/mistui-animation.js')
-	script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
-	script(type='text/javascript' src='/js/gallery.js')
+  script(type='text/javascript' src='/js/mist-utils.js')
+  script(type='text/javascript' src='/js/mist-functions.js')
+  script(type='text/javascript' src='/js/mist-layout.js')
+  script(type='text/javascript' src='/js/mist-functions-layout.js')
+  script(type='text/javascript' src='/js/mist-functions-builtin.js')
+  script(type='text/javascript' src='/js/mist-render.js')
+  script(type='text/javascript' src='/js/mistui-dialogs.js')
+  script(type='text/javascript' src='/js/mistui-help.js')
+  script(type='text/javascript' src='/js/mistui-menus.js')
+  script(type='text/javascript' src='/js/mistui-animation.js')
+  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+  script(type='text/javascript' src='/js/gallery.js')
 
 block stylesheets
-	link(rel='stylesheet' href='/css/gallery')
+  link(rel='stylesheet' href='/css/gallery')
 
 block content
-	div(id='main')
-		div(id='albumPageTitle')
-				h1= user.username
-				h2= albumContents[0].name
-		div(id='subviews')
-			a(href='/me' class='subview') about
-			a(href='/badges' class='subview') badges
-			a(href='/albums' class='subview' id= 'selected') albums
-			a(href='/challenges' class='subview') challenges
-		div(id='images')
-			- for (var i = 0; i < albumContents.length; i++)
-				figure
-					a(href='/image/' + albumContents[i].imageid)
-								figcaption(class='center')= albumContents[i].title
-								canvas(id='canvas'+i width='180' height='180')
-								input(type='hidden' id='code'+i value=albumContents[i].code)
-					a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
-					figcaption(class='left')= "★" + albumContents[i].rating
+  div(id='main')
+    div(id='albumPageTitle')
+        h1 albums
+        h2= albumContents[0].name
+    div(id='subviews')
+      a(href='/me' class='subview') about
+      a(href='/badges' class='subview') badges
+      a(href='/albums' class='subview' id= 'selected') albums
+      a(href='/challenges' class='subview') challenges
+    div(id='images')
+      - for (var i = 0; i < albumContents.length; i++)
+        figure
+          a(href='/image/' + albumContents[i].imageid)
+                figcaption(class='center')= albumContents[i].title
+                canvas(id='canvas'+i width='180' height='180')
+                input(type='hidden' id='code'+i value=albumContents[i].code)
+          a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
+          figcaption(class='left')= "★" + albumContents[i].rating
