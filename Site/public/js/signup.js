@@ -1,17 +1,20 @@
+/**
+ * signup.js
+ *   Validate things during signup.
+ */
 $(document).ready(function(){ 
-    $('#sign up').change(function(){
+    $('#sign up').change(function() {
 	var validated = true;
-	if($('#input').length===0) || $(("#password").value !== ("#repassword").value) {
+	if (($('#input').length == 0) ||
+		($("#password").value !== ("#repassword").value)) {
 	    validated = false;
 	}
 
+        console.log("Triggering stuff!");
 	$('input[type="submit"]').trigger();
+    } )
 
-    } 
-			 
-
-});
-    var checkUsername= (function(username){
+    var checkUsername = (function(username){
 	var parameters = { funct: "checkAvailability", value: username};
 	$.post('/api', parameters, function(available){
 	    if(available === "true")
@@ -20,7 +23,8 @@ $(document).ready(function(){
 		$("#usernamevalid").html("<p>Not available.</p>");
 	});
     });
-    var checkEmail= (function(email){
+
+    var checkEmail = (function(email){
 	var parameters = { funct: "checkAvailability", value: email};
 	$.post('/api', parameters, function(available){
 	    if(available === "true")
