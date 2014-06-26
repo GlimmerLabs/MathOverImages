@@ -111,13 +111,14 @@ width: 25px;
 height: 25px;
 }
 
-figcaption {
-margin: 50px;
+#bibliography {
+margin: 25px 20px;
 }
 
 #bio-form {
-margin: 40px 50px 0px 75px;
+margin: 40px 0px 0px 75px;
 }
 
 #submit {
-margin-left: 25px;
+margin: 50px;
+}
