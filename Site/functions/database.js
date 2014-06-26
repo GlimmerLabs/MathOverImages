@@ -24,7 +24,7 @@ var pool = mysql.createPool({
   Parameters: 
   passwordtohash, a plaintext version of a password to hash
   callback(hashedPassword, error), a function describing what to do with the result
-  Produces: 
+U  Produces: 
   hashedPassword, the hashed password
   error, an error if there is one
   Pre-conditions: 
@@ -579,7 +579,7 @@ module.exports.imageInfo=(function(imageid, callback) {
 
 module.exports.albumsInfo=(function(userid, callback) {
     userid=sanitize(userid);
-    module.exports.query("SELECT users.username, albums.name, albums.albumid, albums.caption, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated desc;" , function (rows, error){
+    module.exports.query("SELECT users.username, albums.name, albums.albumid, albums.caption, albums.dateCreated FROM albums, users, WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated desc;" , function (rows, error){
 	if (error)
 	    callback(null, error);
 	else if (!rows[0])
