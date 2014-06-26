@@ -33,6 +33,15 @@ var MAX_IMAGES = 16;
 // var context = getContext();
 var context = {};
 
+// +---------+---------------------------------------------------------
+// | Globals |
+// +---------+
+
+/**
+ * The animators for all of the images.
+ */
+images = [];
+
 // +-----------+-------------------------------------------------------
 // | Functions |
 // +-----------+
@@ -49,39 +58,23 @@ function setup(i) {
     return;
   } // if
 
-  // Show the image once (by starting and stopping animation)
-  startAnimation(i);
-  stopAnimation(i);
+  // Show the image
+  images[i] = new MIST.ui.Animator(code.value, [], context, canvas);
+  images[i].start();    // Maybe .frame()
 
   // Add event handlers to the element for animating and stopping animation
   console.log("Adding handlers to canvas " + i);
   canvas.onmouseover = function(evt) {
-    startAnimation(i);
+    images[i].start();
   } // canvas.mouseenter
 
   canvas.onmouseout = function(evt) {
-    stopAnimation(i);
+    images[i].stop();
   } // canvas.mouseleave
 
   // Add event handlers for the x and y coordinate
   // Forthcoming
 } // setup
-
-/**
- * Start animation on the ith canvas.
- */
-function startAnimation(i) {
-  var code = document.getElementById('code' + i).value;
-  var canvas = document.getElementById('canvas' + i);
-  MIST.ui.startAnimation(code, [], context, canvas, function() { });
-} // startAnimation
-
-/**
- * Stop animation on the ith canvas.
- */
-function stopAnimation(i) {
-  MIST.ui.stopAnimation();
-} // stopAnimation
 
 // +------------------+------------------------------------------------
 // | Final Page Setup |
