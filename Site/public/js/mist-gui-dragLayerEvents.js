@@ -83,6 +83,7 @@
       }
       else {
         group.destroy();
+        group = null;
       }
     }
   }
