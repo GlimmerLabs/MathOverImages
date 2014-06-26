@@ -39,7 +39,7 @@ block content
  if (currentPage==1 && !(type == "random"))
   a(href='/gallery/' + type + '/' + ++currentPage) next »
  else if !(type == "random") && !(currentPage==1) && (images.length>=currentPage*9)
-  a(href='/gallery/' + type + '/' + --currentPage class='page') « previous   
-  a(href='/gallery/' + type + '/' + (currentPage+2) class='page') next »
+  a(href='/gallery/' + type + '/' + --currentPage id='page') « previous   
+  a(href='/gallery/' + type + '/' + (currentPage+2) id='page') next »
  else if !(type == "random")
-  a(href='/gallery/' + type + '/' + --currentPage class='page') « previous   
+  a(href='/gallery/' + type + '/' + --currentPage id='page') « previous   
