@@ -1,0 +1,8 @@
+@import url("/css/styles");
+
+#container {
+    background-color: rgb(241, 248, 255);
+    width: 900px;
+    height: 600px;
+    border: 3px solid black;
+}

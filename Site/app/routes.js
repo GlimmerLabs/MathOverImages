@@ -126,7 +126,10 @@ module.exports = function(app,passport,database) {
   //   Page for creating (something)
   /* create page */
   app.get('/create', function(req,res) {
-
+    res.render('../public/views/mist-gui.jade',{
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
   });
 
   // --------------------------------------------------

@@ -102,6 +102,7 @@ menuButtonLayer.on('click', function(){
       newGroup.setAttr('visible', true);
       dragLayer.add(newGroup);
       setDragShadow(newGroup);
+      removeShadow(currShape);
       newGroup.startDrag();
       dragLayer.draw();
       dragShape = newGroup;

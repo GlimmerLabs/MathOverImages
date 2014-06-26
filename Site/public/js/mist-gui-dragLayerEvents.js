@@ -27,9 +27,7 @@
       group.setAttr('x', scaledObj.attrs.x);
       group.setAttr('y', scaledObj.attrs.y);
       insertToTable(group);
-      
       insertToArray(actionToObject('replace', group, scaledObj));
-
       replaceNode(scaledObj, group);
       scaledObj = null;
       group.moveTo(workLayer);
@@ -37,15 +35,16 @@
     else {
       if (group.attrs.y > menuHeight) {
         group.moveTo(workLayer);
-        group.children[0].setAttr('shadowEnabled', false);
+
         if (isFunction(group) && group.children.length < 4) {
           for (var i = 0; i < functions[group.attrs.name].min; i++) {
             addOutlet(group);
           } // for
         } // if new function 
         else if (isValue(group)) {
-          group.children[2].setAttr('visible', true);
-
+          if (isRenderable(group)) {
+            group.children[2].setAttr('visible', true);
+          }
         }
         if (group.children[2].attrs.expanded) {
           renderCanvas(group);
@@ -55,7 +54,7 @@
         actionArray[currIndex - 1].y2 = group.y();
       }
       else {
-        if (group.attrs.name == 'constant') {
+        if (group.attrs.name == 'constant' && !group.children[3]) {
           createEditableText(group);
         }
         insertToTable(group);
@@ -87,6 +86,14 @@
       }
     }
   }
+  if (group) {
+    setSelectedShadow(group);
+    currShape = group;
+  }
+  else {
+    currShape = null;
+  }
+  updateFunBar();
   dragShape = null;
   menuLayer.draw();
   menuButtonLayer.draw();
@@ -128,12 +135,6 @@
             scaleX: 1.2,
             scaleY: 1.2
           });
-        /*
-          group.children[2].setAttrs({
-            scaleX: .8,
-            scaleY: .8
-          });
-          */
           if (group.children[2].attrs.expanded) {
             renderCanvas(group);
           }

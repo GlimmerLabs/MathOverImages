@@ -461,10 +461,16 @@ MIST.Collection.prototype.clear = function() {
 } // MIST.Collection.prototype.clear
 
 /**
- * Add an object.  (We assume all objects have names.)
+ * Add an object, which we will then index by name (we assume that all
+ * objects have a .name field).  
+ *
+ * If there's a .display field, also index the object by that value
  */
 MIST.Collection.prototype.add = function(obj) {
   this.values[obj.name] = obj;
+  if (obj.display) {
+    this.values[obj.display] = obj;
+  }
 } // MIST.Collection.prototype.add
 
 /**

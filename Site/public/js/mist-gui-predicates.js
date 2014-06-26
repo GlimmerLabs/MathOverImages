@@ -85,7 +85,12 @@ var isUndoTool = function(target) {
  */
  var isRenderable = function(group) {
  	if (isValue(group)) {
- 		return true;
+ 		if (group.attrs.renderFunction) {
+ 			return true;
+ 		}
+ 		else {
+ 			return false;
+ 		}
  	} else {
  		var validInputs = 0;
  		for(var i = 3; i < group.children.length; i++) {
