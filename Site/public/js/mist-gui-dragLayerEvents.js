@@ -44,8 +44,9 @@
           } // for
         } // if new function 
         else if (isValue(group)) {
-          group.children[2].setAttr('visible', true);
-
+          if (isRenderable(group)) {
+            group.children[2].setAttr('visible', true);
+          }
         }
         if (group.children[2].attrs.expanded) {
           renderCanvas(group);
