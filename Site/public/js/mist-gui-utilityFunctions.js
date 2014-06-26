@@ -187,7 +187,7 @@
  	var tempOut = oldNode.attrs.lineOut;
  	collapseCanvas(oldNode);
  	oldNode.remove();
- 	if (newNode.attrs.name == 'constant') {
+ 	if (newNode.attrs.name == 'constant' && !newNode.children[3]) {
         createEditableText(newNode);
     }
  	for(var i = 0; i < tempOut.length; i++) {
@@ -236,6 +236,14 @@
  		}
  		resetNode(oldNode); 
  	}
+ 	else if (newNode.attrs.name == 'constant') {
+ 		if (isRenderable(newNode)) {
+ 			for (var i = 3; i < 5; i++) {
+ 				newNode.children[i].setAttr('visible', false);
+ 				workLayer.draw();
+ 			}
+ 		}
+ 	}
  	assertRenderable(newNode);
  	updateForward(newNode);
  	lineLayer.draw();
@@ -257,7 +265,6 @@
  	node.attrs.lineOut = [];
  	if (isFunction(node)) {
  		// destroy the outlets of the oldNode
-
  		for (var i = node.children.length - 1; i > 2; i--) {
  			node.children[i].destroy();
  		}
