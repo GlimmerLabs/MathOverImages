@@ -130,11 +130,11 @@ var borderLine = new Kinetic.Line({
   newGroup.add(newText);
 return newGroup;
 };
-var openNewButton = makeMenuButton('New Workspace', menuOffset, menuOffset);
+var resetButton = makeMenuButton('Reset Workspace', menuOffset, menuOffset);
 var openButton = makeMenuButton('Open Workspace', menuOffset, (2*menuOffset) + menuControlHeight);
 var saveButton = makeMenuButton('Save Workspace', menuOffset, (3*menuOffset) + 
   (2*menuControlHeight));
 
-menuControlLayer.add(openNewButton);
+menuControlLayer.add(resetButton);
 menuControlLayer.add(openButton);
 menuControlLayer.add(saveButton);
