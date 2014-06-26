@@ -147,23 +147,7 @@
  	toolboxLayer.draw();
  };
 
-/**
- * workspaceToArray takes all the nodes in the workLayer and all the lines in the 
- * lineLayer and puts them into an array.
- */
- var workspaceToArray = function() {
- 	var wArray = [];
- 	var workChildren = workLayer.getChildren();
- 	var lineChildren = lineLayer.getChildren();
- 	var i = 0;
- 	for (i; i < workChildren.length; i++) {
- 		wArray[i] = workChildren[i]; 
- 	}
- 	for (var j = 0; j < lineChildren.length; j++, i++) {
- 		wArray[i] = lineChildren[j];
- 	}
- 	return wArray;
- };
+
 
 /**
  * setDragShadow takes a function or value group and activates drag shadow
