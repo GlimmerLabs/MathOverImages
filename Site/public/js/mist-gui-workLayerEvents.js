@@ -83,9 +83,7 @@ There are 3 different modes:
       shape.scale({ x: 1, y: 1 });
       assertRenderable(parent);
       // if there is a currShape, update the text in funBar
-      if (currShape != undefined){
-       updateFunBar();
-      }
+      updateFunBar();
       if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
         parent.attrs.numInputs < parent.attrs.maxInputs) {
         addOutlet(parent);
@@ -141,9 +139,8 @@ There are 3 different modes:
     render.destroy();
   }
   if (currShape == parent) {
-    currShape = undefined;
-    funBarText.setAttr('text', '');
-    funBarLayer.draw();
+    currShape = null;
+    updateFunBar();
   }
   
   parent.remove();
@@ -163,24 +160,21 @@ lineLayer.draw();
         if (isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
           return;
         }
+        removeShadow(currShape);
         group.moveTo(dragLayer);
+        currShape = group;
+        insertToArray(actionToObject('move', group));
+        group.startDrag();
         setDragShadow(group);
-        if (currShape != undefined) {
-         currShape.children[0].setAttr('shadowEnabled', false);
-       }
-       currShape = group;
-       updateFunBar();
-       insertToArray(actionToObject('move', group));
-       group.startDrag();
-       workLayer.draw();
-       dragLayer.draw();
+        workLayer.draw();
+        dragLayer.draw();
 
-       if (group.attrs.renderLayer != null) {
-        group.attrs.renderLayer.draw();
+        if (group.attrs.renderLayer != null) {
+          group.attrs.renderLayer.draw();
+        }
       }
-    }
-  } 
-});
+    } 
+  });
 
   /*
   while you are drawing a line, make it move with the cursor.
@@ -258,12 +252,10 @@ workLayer.on('mouseover', function(evt) {
       else if (deleteToolOn) {
         if (isFunction(parent) || isValue(parent)) {
           if (parent == currShape){
-            parent.children[0].setAttr('shadowColor', 'darkblue');
+            setSelectedShadow(parent);
           } 
           else {
-            parent.children[0].setAttrs({
-              shadowEnabled: false
-            });
+            removeShadow(parent);
           }
         }
         workLayer.draw();

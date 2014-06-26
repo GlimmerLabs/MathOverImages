@@ -27,6 +27,9 @@ var outletColor =  '#FFC440';
 
 var lineStrokeWidth = 2;
 
+var dragShadowColor = 'black';
+var selectedShadowColor = 'blue';
+
 //SLIDING MENU
 var menuHeight = width / 9; 
 var menuCornerWidth = width / 6;

@@ -49,33 +49,29 @@
  * updateFunBar changes the text in the funBar according to the currShape.
  */
  var updateFunBar = function() {
- 	currText = currShape.attrs.renderFunction;
- 	if (currShape.attrs.renderFunction instanceof Array) {
- 		// NEEDS UPDATE FOR RGB OUTPUTS
- 		currText = 'rgb(' + currText + ')';
- 	} 
- 	if (currText != null) {
- 		currShape.children[0].setAttrs({
- 			shadowColor: 'darkblue',
- 			shadowOpacity: 1,
- 			shadowEnabled: true
- 		});
- 		var currFontSize;
- 		if (currText.length <= 50) {
- 			currFontSize = funBarDisplayFontSize;
- 		} 
- 		else if (currText.length >= 110) {
- 			currFontSize = 10;
+ 	if (currShape && isRenderable(currShape)) {
+ 		currText = currShape.attrs.renderFunction;
+ 		if (currText != null) {
+ 			var currFontSize;
+ 			if (currText.length <= 50) {
+ 				currFontSize = funBarDisplayFontSize;
+ 			} 
+ 			else if (currText.length >= 110) {
+ 				currFontSize = 10;
+ 			}
+ 			else {
+ 				currFontSize = 1100 / currText.length;
+ 			}
+ 			funBarText.setAttrs({
+ 				text: currText,
+ 				fontSize: currFontSize
+ 			});
  		}
- 		else {
- 			currFontSize = 1100 / currText.length;
- 		}
- 		funBarText.setAttrs({
- 			text: currText,
- 			fontSize: currFontSize
- 		});
- 		funBarLayer.draw();
  	}
+ 	else {
+ 		funBarText.setAttr('text', '');
+ 	}
+ 	funBarLayer.draw();
  };
 
 /**
@@ -174,10 +170,29 @@
  */
  var setDragShadow = function(group) {
  	group.children[0].setAttrs({
- 		shadowColor: 'black',
+ 		shadowColor: dragShadowColor,
  		shadowEnabled: true
  	});
  };
+
+/**
+ * setSelectedShadow takes a function or value group and activates a shadow to signify it's selected
+ */
+ var setSelectedShadow = function(group) {
+ 	group.children[0].setAttrs({
+ 		shadowColor: selectedShadowColor,
+ 		shadowEnabled: true
+ 	});
+ };
+
+ /*
+  * removeShadow takes a function or value group and removes the shadow
+  */
+var removeShadow = function(group) {
+	if (group){
+		group.children[0].setAttr('shadowEnabled', false);
+	}
+};
 
 /**
  * replaceNode takes an old node and a new node and replaces the old node with
