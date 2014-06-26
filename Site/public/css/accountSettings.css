@@ -58,6 +58,7 @@ form {
 table {
     color:#979797;
     margin:40px;
+}
 
 td {
 padding: 10px;
@@ -98,6 +99,8 @@ input[type='submit']:hover {
 form p {
     display: inline;
     color: #979
+}
+
 input[type='submit']:hover {
     color: #D8D8D8;
     background-color: #FFF;
