@@ -60,7 +60,7 @@ function setup(i) {
 
   // Show the image
   images[i] = new MIST.ui.Animator(code.value, [], context, canvas);
-  images[i].start();    // Maybe .frame()
+  images[i].frame();    // Or .start() if you want all of the images animated
 
   // Add event handlers to the element for animating and stopping animation
   canvas.onmouseover = function(evt) {
