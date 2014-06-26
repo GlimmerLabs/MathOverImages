@@ -1,6 +1,6 @@
 extends ./partials/framework
 block title
-	title= user.username + "'s albums on MIST"
+	title= profileBeingViewed + "'s albums on MIST"
 
 block extraMetas
 block extraLinks
@@ -16,20 +16,16 @@ block extraLinks
 	script(type='text/javascript' src='/js/mistui-animation.js')
 	script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
 	script(type='text/javascript' src='/js/gallery.js')
-
 block stylesheets
-
 	link(rel='stylesheet', href='/css/albums')
-
-
 block content
 	div(id='main')
 		div(id = 'pageTitle')
-			h1= user.username
+			h1= profileBeingViewed
 		div(id = 'subviews')
-			a(href='/me' class='subview') about
+			a(href='/user/'+ profileBeingViewed class='subview') about
 			a(href='/badges' class='subview') badges
-			a(href='/albums' class='subview' id='selected') albums
+			a(href='' class='subview' id='selected') albums
 			a(href='/challenges' class='subview') challenges
 		div(id = 'albums')
 			- for(var i=0; i < albums.length; i++)

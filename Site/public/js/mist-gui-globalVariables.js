@@ -11,7 +11,7 @@ var functionColor = '#508C37';
 var valueSideLength = functionTotalSideLength / 1.414;
 var valueXYColor = 'gray';
 var valueTimeColor = 'gold';
-var valueConstantColor = 'purple';
+var valueConstantColor = '#CD8ADA';
 
 var imageBoxSideLength = width / 80;
 var imageBoxColor = 'white';
@@ -73,26 +73,26 @@ var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
 var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
 var functions = {
-	add:       {rep: '+',   max: 20, min: 2, prefix: 'sum'},
-	multiply:  {rep: '*',   max: 20, min: 2, prefix: 'mult'},
-	negate:    {rep: '-',   max: 1,  min: 1, prefix: '-'},
+	add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum'},
+	multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult'},
+	negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg'},
 	sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin'},
 	cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos'},
 	absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs'},
-	average:   {rep: 'ave', max: 20, min: 2, prefix: 'ave'},
-	sign: 	   {rep: 'sign',max: 1,  min: 1, prefix: 'sign'},
+	average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg'},
+	sign:      {rep: 'sign',max: 1,  min: 1, prefix: 'sign'},
 	wrapsum:   {rep: 'wrap',max: 1,  min: 1, prefix: 'wsum'},
-	rgb: 			{rep: 'rgb', max: 3,  min: 3, prefix: 'rgb'}
+	rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb'}
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 var values = {
-	x: 				{rep: 'x', 	 max: 20, min: 2, color: valueXYColor},
-	y: 				{rep: 'y', 	 max: 20, min: 2, color: valueXYColor},
-	second: 	{rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
-	minute:		{rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
-	hour: 		{rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
-	day: 			{rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-	constant:	{rep: '', 	 max: 20, min: 2, color: valueConstantColor}
+	x:        {rep: 'x',   max: 20, min: 2, color: valueXYColor},
+	y:        {rep: 'y',   max: 20, min: 2, color: valueXYColor},
+	second:   {rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
+	minute:   {rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
+	hour:     {rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
+	day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
+	constant: {rep: '',    max: 20, min: 2, color: valueConstantColor}
 }
 
 // TOOLBOX BOOLEANS

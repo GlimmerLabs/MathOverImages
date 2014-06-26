@@ -30,3 +30,8 @@ figure h1:hover {
 	width: 70%;
 	margin: 0 auto;
 }
+
+form input[type='image']{
+    width: 20px;
+    height: 20px;
+}

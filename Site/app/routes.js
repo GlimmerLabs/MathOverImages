@@ -24,7 +24,7 @@
 // +--------------------------------+--------------------------------
 // | Application-Specific Libraries |
 // +--------------------------------+
-
+var index = require("../functions/index.js");
 var gallery = require("../functions/gallery.js");
 var albums = require("../functions/albums.js");
 var albumContents = require("../functions/albumContents.js");
@@ -66,10 +66,11 @@ module.exports = function(app,passport,database) {
   // Path:  /
   //   HOME PAGE
   app.get('/', function(req, res) {
-    res.render('../public/views/index.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
+    index.buildRandomPage(req, res, database);
+//    res.render('../public/views/index.jade',{
+//      loggedIn: req.session.loggedIn,
+//      user: req.session.user
+//    });
   });
 
   // --------------------------------------------------
@@ -102,7 +103,8 @@ module.exports = function(app,passport,database) {
   // Path:  /albums
   //   Albums page
   app.get('/albums', function(req,res) {
-    res.redirect('/user/' + req.session.user.username + '/albums');
+  albums.buildPage(req, res, database);
+//res.redirect('/user/' + req.session.user.username + '/albums');
   });
   app.get('/albums/:albumid', function(req,res) {
     albumContents.buildPage(req, res, database);
@@ -269,7 +271,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/user/:username', function(req,res) {
-  if ((req.session.user != null) && 
+  if ((req.session.user != null) &&
     (req.session.user.username === req.params.username)) {
     if(req.body.aboutSubmit != null) {
       username.changeAboutSection(req, res);
@@ -280,8 +282,9 @@ module.exports = function(app,passport,database) {
   // Path:  /user/*/albums
   //    User albums page
   app.get('/user/:username/albums', function(req,res) {
-    console.log(req.params.userid);
-    console.log(req.session.user.username);
+    console.log(req.params.username)
+      console.log(req.params.userid);;
+//    console.log(req.session.user.username);
     albums.buildPage(req, res, database);
   });
 
@@ -299,5 +302,4 @@ module.exports = function(app,passport,database) {
     // TODO: VERIFY user
     res.redirect('/login');
   });
-
 };

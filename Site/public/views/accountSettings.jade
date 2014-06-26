@@ -6,7 +6,6 @@ block extraLinks
   script(type='text/javascript' src='js/accountSettings')
   script(type='text/javascript' src='js/signup')
 block stylesheets
-  link(rel='stylesheet', href='/css/styles')
   link(rel='stylesheet', href='/css/accountSettings')
 block content
   div(id='main')
@@ -20,7 +19,7 @@ block content
           tr
             td(id='headers') username
             td(id='content')= user.username
-            td: button(type='button' id='edit-username'): img(src='/icons/edit_button.png' class='editButton')
+            td: input(type='image' id='edit-username' src='/icons/edit_button.png' value='submit' width='20px' height='20px')
         tbody(id='username-form')
           tr(id='item')
             td(id='headers') change username:
@@ -41,7 +40,7 @@ block content
           tr
             td(id ='headers') password
             td(id='content')
-            td: button(type='button' id='edit-password'): img(src='/icons/edit_button.png' class='editButton')
+            td: input(type='image' id='edit-password' src='/icons/edit_button.png' value='submit' width='20px' height='20px')
         tbody(id='password-form')
           tr(id='item')
             td(id ='headers') new password:
@@ -64,7 +63,7 @@ block content
           tr
             td(id='headers') email
             td(id='content')=  user.email
-            td: button(type='button' id='edit-email'): img(src='/icons/edit_button.png' class='editButton')
+            td: input(type='image' id='edit-email' src='/icons/edit_button.png' value='submit' width='20px' height='20px')
         tbody(id='email-form')
           tr(id='item')
             td(id ='headers') new primary email:

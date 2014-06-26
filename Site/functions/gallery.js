@@ -51,7 +51,6 @@ module.exports.getRandomImages= (function(count, callback) {
   filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY RAND() LIMIT " + count + ";", function(rows, error){
     callback(rows, error);
   });
-
 });
 
 /**
