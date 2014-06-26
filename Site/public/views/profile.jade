@@ -30,11 +30,13 @@ block content
       a(href='/accountSettings' class='settings'): account account settings
       div(id='bio')
         input(type='image' id='edit-bio' src='/icons/edit_button.png' value='submit')
-        figcaption= viewing.about
-          form(method='POST' id='bio-form')
-            textarea(name='aboutSection' cols='40' rows='10')= viewing.about
-            input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
+        div(id='bibliography')
+          figcaption= viewing.about
+            form(method='POST' id='bio-form')
+              textarea(name='aboutSection' cols='40' rows='10')= viewing.about
+              input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
     else
       div(id='bio')
-        figcaption= viewing.about
-        form(action='#' method='POST')
+        div(id='bibliography')
+          figcaption= viewing.about
+          form(action='#' method='POST')
