@@ -12,6 +12,9 @@ if (!MISTgui.OUTLET_OFFSET) { MISTgui.OUTLET_OFFSET = OUTLET_OFFSET; }
 // +-----------------+
 
 MISTgui.outletIndex = function(outlet) {
+  if (outlet.attrs.outletIndex) {
+    return outlet.attrs.outletIndex;
+  }
   var outlets = outlet.parent.children;
   for (var i = MISTgui.OUTLET_OFFSET; i < outlets.length; i++) {
     if (outlet === outlets[i]) {
