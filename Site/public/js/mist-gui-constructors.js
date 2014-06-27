@@ -259,30 +259,39 @@ var makeMenuTween = function(target, xEnd, visibility) {
  * @pre
  *   sink.children[outletIndex + 3] is an unused outlet
  */
- var addLine = function(source, sink, outletIndex) {
- 	var line = makeLine(source);
- 	var outlet = sink.children[outletIndex + 3];
- 	source.attrs.lineOut[source.attrs.lineOut.length] = line;
- 	outlet.attrs.lineIn = line;
- 	line.attrs.outlet = outlet;
- 	assertRenderable(sink);
- 	if (sink.attrs.numInputs == sink.children.length - 3 &&
- 		sink.attrs.numInputs < sink.attrs.maxInputs) {
- 		addOutlet(sink);
- }
- updateForward(sink);
- lineLayer.add(line);
- workLayer.draw();
- lineLayer.draw();
+var addLine = function(source, sink, outletIndex) {
+  var line = makeLine(source);
+  while (!sink.children[outletIndex + OUTLET_OFFSET]) {
+    addOutlet(sink);
+  } // If there aren't enough outlets add a new one
+  var outlet = sink.children[outletIndex + OUTLET_OFFSET];
+  source.attrs.lineOut[source.attrs.lineOut.length] = line;
+  outlet.attrs.lineIn = line;
+  line.attrs.outlet = outlet;
+  assertRenderable(sink);
+  if (sink.attrs.numInputs == sink.children.length - OUTLET_OFFSET &&
+       sink.attrs.numInputs < sink.attrs.maxInputs) {
+    addOutlet(sink);
+  } // if it's an appropriate number
+  updateForward(sink);
+  lineLayer.add(line);
+  // line.setAttr("visible",true);
+  workLayer.draw();
+  lineLayer.draw();
 };
+
 /**
  * addOp adds a function object to the workLayer at x, y, with the corresponding attributes given 
  * by the funName key.
  */
 var addOp = function(funName, x, y) {
   var op = makeFunctionGroup(funName, x, y);
+  op.setAttr("visible",true);
+  addOutlet(op);
+  addOutlet(op);
   workLayer.add(op);
   workLayer.draw();
+  return op;
 };
 /**
  * addVal adds a value object to the workLayer at x, y, with the corresponding attributes given 
@@ -290,8 +299,10 @@ var addOp = function(funName, x, y) {
  */
 var addVal = function(valName, x, y) {
   var val = makeValueGroup(valName, x, y);
+  val.setAttr("visible",true);
   workLayer.add(val);
   workLayer.draw();
+  return val;
 };
 
 var createEditableText = function (group) {	
