@@ -31,7 +31,9 @@
 			separator: functions[funName].separator,
 			renderFunction: null,
 			visible: false,
-			renderLayer: null
+			renderLayer: null,
+                        scaleX: 1,
+                        scaleY: 1
 		});
 		/* create rectangle shape */
 		var newRect = new Kinetic.Rect({
@@ -92,7 +94,9 @@
 			visible: false,
 			renderFunction: values[valName].rep,
 			rep: values[valName].rep,
-			renderLayer: null
+			renderLayer: null,
+                        scaleX: 1,
+                        scaleY: 1
 		});
 		/* create diamond shape. */
 		var newRect = new Kinetic.Rect({
@@ -260,6 +264,9 @@ var makeMenuTween = function(target, xEnd, visibility) {
  *   sink.children[outletIndex + 3] is an unused outlet
  */
 var addLine = function(source, sink, outletIndex) {
+  if (outletIndex == undefined) {
+    throw "addLine requires an outlet index";
+  }
   var line = makeLine(source);
   while (!sink.children[outletIndex + OUTLET_OFFSET]) {
     addOutlet(sink);
@@ -274,10 +281,11 @@ var addLine = function(source, sink, outletIndex) {
     addOutlet(sink);
   } // if it's an appropriate number
   updateForward(sink);
+  line.setAttr("visible",true);
   lineLayer.add(line);
-  // line.setAttr("visible",true);
   workLayer.draw();
   lineLayer.draw();
+  dragLayer.draw();
 };
 
 /**
@@ -299,6 +307,7 @@ var addOp = function(funName, x, y) {
  */
 var addVal = function(valName, x, y) {
   var val = makeValueGroup(valName, x, y);
+  assertRenderable(val);
   val.setAttr("visible",true);
   workLayer.add(val);
   workLayer.draw();
