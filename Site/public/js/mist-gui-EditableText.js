@@ -297,7 +297,7 @@ function readyEditing(stage)
 				activeText.cursor.position++;
 			}
 			if(keycode == 189 || keycode == 109){ // 189 and 109 are the - keys: normal, numpad respectively
-				var key = ".";
+				var key = "-";
 				addedKey = true;
 			}
 			if (keycode == 13) {
