@@ -295,7 +295,7 @@ var addLine = function(source, sink, outletIndex) {
  * by the funName key.
  */
 var addOp = function(funName, x, y) {
-  var op = makeFunctionGroup(funName, x, y);
+  var op = makeFunctionGroup(funName, x + functionHalfStrokeWidth, y);
   op.setAttr("visible",true);
   addOutlet(op);
   addOutlet(op);
