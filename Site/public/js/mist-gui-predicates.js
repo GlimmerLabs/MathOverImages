@@ -93,7 +93,7 @@ var isUndoTool = function(target) {
  		}
  	} else {
  		var validInputs = 0;
- 		for(var i = 3; i < group.children.length; i++) {
+ 		for(var i = OUTLET_OFFSET; i < group.children.length; i++) {
  			lineIn = group.children[i].attrs.lineIn;
  			if (lineIn != null && isRenderable(lineIn.attrs.source)) {
  				validInputs++;

@@ -31,7 +31,9 @@
 			separator: functions[funName].separator,
 			renderFunction: null,
 			visible: false,
-			renderLayer: null
+			renderLayer: null,
+                        scaleX: 1,
+                        scaleY: 1
 		});
 		/* create rectangle shape */
 		var newRect = new Kinetic.Rect({
@@ -92,7 +94,9 @@
 			visible: false,
 			renderFunction: values[valName].rep,
 			rep: values[valName].rep,
-			renderLayer: null
+			renderLayer: null,
+                        scaleX: 1,
+                        scaleY: 1
 		});
 		/* create diamond shape. */
 		var newRect = new Kinetic.Rect({
@@ -206,7 +210,7 @@
 				context.closePath();
 				context.fillStrokeShape(this);
 			},
-			name: 'outlet' + (functGroup.children.length - 3),
+			name: 'outlet' + (functGroup.children.length - OUTLET_OFFSET),
 			x:functGroup.children[0].x() + outletXOffset,
 			y:functGroup.children[0].y() + (functGroup.children.length - 3) * 
 				outletYOffset + functionHalfStrokeWidth,
@@ -259,30 +263,45 @@ var makeMenuTween = function(target, xEnd, visibility) {
  * @pre
  *   sink.children[outletIndex + 3] is an unused outlet
  */
- var addLine = function(source, sink, outletIndex) {
- 	var line = makeLine(source);
- 	var outlet = sink.children[outletIndex + 3];
- 	source.attrs.lineOut[source.attrs.lineOut.length] = line;
- 	outlet.attrs.lineIn = line;
- 	line.attrs.outlet = outlet;
- 	assertRenderable(sink);
- 	if (sink.attrs.numInputs == sink.children.length - 3 &&
- 		sink.attrs.numInputs < sink.attrs.maxInputs) {
- 		addOutlet(sink);
- }
- updateForward(sink);
- lineLayer.add(line);
- workLayer.draw();
- lineLayer.draw();
+var addLine = function(source, sink, outletIndex) {
+  if (outletIndex == undefined) {
+    throw "addLine requires an outlet index";
+  }
+  var line = makeLine(source);
+  while (!sink.children[outletIndex + OUTLET_OFFSET]) {
+    addOutlet(sink);
+  } // If there aren't enough outlets add a new one
+  var outlet = sink.children[outletIndex + OUTLET_OFFSET];
+  source.attrs.lineOut[source.attrs.lineOut.length] = line;
+  outlet.attrs.lineIn = line;
+  line.attrs.outlet = outlet;
+  line.points()[2] = sink.x();
+  line.points()[3] = sink.y() + sink.children[outletIndex].y();
+  assertRenderable(sink);
+  if (sink.attrs.numInputs == sink.children.length - OUTLET_OFFSET &&
+       sink.attrs.numInputs < sink.attrs.maxInputs) {
+    addOutlet(sink);
+  } // if it's an appropriate number
+  updateForward(sink);
+  line.setAttr("visible",true);
+  lineLayer.add(line);
+  workLayer.draw();
+  lineLayer.draw();
+  dragLayer.draw();
 };
+
 /**
  * addOp adds a function object to the workLayer at x, y, with the corresponding attributes given 
  * by the funName key.
  */
 var addOp = function(funName, x, y) {
-  var op = makeFunctionGroup(funName, x, y);
+  var op = makeFunctionGroup(funName, x + functionHalfStrokeWidth, y);
+  op.setAttr("visible",true);
+  addOutlet(op);
+  addOutlet(op);
   workLayer.add(op);
   workLayer.draw();
+  return op;
 };
 /**
  * addVal adds a value object to the workLayer at x, y, with the corresponding attributes given 
@@ -290,8 +309,11 @@ var addOp = function(funName, x, y) {
  */
 var addVal = function(valName, x, y) {
   var val = makeValueGroup(valName, x, y);
+  assertRenderable(val);
+  val.setAttr("visible",true);
   workLayer.add(val);
   workLayer.draw();
+  return val;
 };
 
 var createEditableText = function (group) {	
@@ -312,7 +334,7 @@ var createEditableText = function (group) {
 		width: functionTotalSideLength,
 		height: 20,
 		align: "center",
-		fontFamily: 'Open Sans',
+		fontFamily: functionFont,
 		fill: 'black'
 	});
 	group.add(backgroundBox);
