@@ -28,6 +28,9 @@ var flash = require('connect-flash');
 var auth = require('./functions/auth.js');
 var ports = require('./functions/ports.js');
 
+var http_port = ports.http;
+var https_port = ports.https;
+
 //==================== configuration ====================
 
 // Database
