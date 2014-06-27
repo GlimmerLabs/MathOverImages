@@ -1,5 +1,25 @@
 /* workspace functions */
 
+// +-------+---------------------------------------------------------
+// | Setup |
+// +-------+
+
+try { MISTgui; } catch (err) { MISTgui = {}; }
+if (!MISTgui.OUTLET_OFFSET) { MISTgui.OUTLET_OFFSET = OUTLET_OFFSET; }
+
+// +-----------------+-----------------------------------------------
+// | Local Utilities |
+// +-----------------+
+
+MISTgui.outletIndex = function(outlet) {
+  var outlets = outlet.parent.children;
+  for (var i = MISTgui.OUTLET_OFFSET; i < outlets.length; i++) {
+    if (outlet === outlets[i]) {
+      return i - MISTgui.OUTLET_OFFSET;
+    } // if
+  } // for
+} // MISTgui.getIndex
+
 /**
  * workspaceToArray takes all the nodes in the workLayer and all the lines in the 
  * lineLayer and puts them into an array.
@@ -17,6 +37,41 @@
  	}
  	return wArray;
  };
+
+var workspaceToJSON = function() {
+  // Extract information from the workspace.
+  var nodes = workLayer.getChildren();
+  var edges = lineLayer.getChildren();
+
+  // Set up information to turn to JSON
+  var info = new MIST.Layout();
+  var nodeInfo = {};
+  var lineInfo = {};
+
+  // Gather information on each node.
+  for (var i = 0; i < nodes.length; i++) {
+    var node = nodes[i];
+    if (isValue(node)) {
+      nodeInfo[node._id] = 
+          info.addVal(node.attrs.name, node.x(), node.y());
+    } // if it's a value
+    else if (isFunction(node)) { 
+      nodeInfo[node._id] = 
+          info.addOp(node.attrs.name, node.x(), node.y());
+    } // if it's a function
+  } // for each node
+
+  // Gather information on each edge
+  for (var i = 0; i < edges.length; i++) {
+    var edge = edges[i];
+    info.addEdge(nodeInfo[edge.attrs.source._id], 
+        nodeInfo[edge.attrs.outlet.parent._id],
+        MISTgui.outletIndex(edge.attrs.outlet));
+  } // for
+
+  // And we're done
+  return JSON.stringify(info);
+} // workspaceToJSON
 
 /**
  * arrayToWorkspace takes an array of objects and inserts them to a workspace
