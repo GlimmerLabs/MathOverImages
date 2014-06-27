@@ -331,7 +331,7 @@ function readyEditing(stage)
 * - renderFunction
 */
 var updateValueText = function(text) {
-	var validNumber = /^-?[0-9]+\.(?=[0-9])[0-9]*$/
+	var validNumber = /^-?[0-9]+(\.(?=[0-9])[0-9]*)?$/
 	if(validNumber.test(text.text()))
 	{
 		var value = text.parent;
