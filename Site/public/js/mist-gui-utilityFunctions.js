@@ -9,7 +9,7 @@
 	*/
 	var addOutlet = function(funGroup) {
 		if(funGroup.children.length - OUTLET_OFFSET < funGroup.attrs.maxInputs) {
-			if(funGroup.children.length - OUTLETOFFSET > 2) {
+			if(funGroup.children.length - OUTLET_OFFSET > 2) {
 				funGroup.children[0].setAttr('height',
 					funGroup.children[0].attrs.height + outletYOffset);
 				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
@@ -51,25 +51,25 @@
  var updateFunBar = function() {
  	if (currShape && isRenderable(currShape)) {
  		currText = currShape.attrs.renderFunction;
- 		if (currText != null) {
- 			var currFontSize;
- 			if (currText.length <= 50) {
- 				currFontSize = funBarDisplayFontSize;
- 			} 
- 			else if (currText.length >= 110) {
- 				currFontSize = 10;
- 			}
- 			else {
- 				currFontSize = 1100 / currText.length;
- 			}
- 			funBarText.setAttrs({
- 				text: currText,
- 				fontSize: currFontSize
- 			});
+ 		var currFontSize;
+ 		if (currText.length <= 50) {
+ 			currFontSize = funBarDisplayFontSize;
+ 		} 
+ 		else if (currText.length >= 110) {
+ 			currFontSize = 10;
  		}
+ 		else {
+ 			currFontSize = 1100 / currText.length;
+ 		}
+ 		funBarText.setAttrs({
+ 			text: currText,
+ 			fontSize: currFontSize
+ 		});
+ 		funBarSaveIm.setAttr('opacity', 1);
  	}
  	else {
  		funBarText.setAttr('text', '');
+ 		funBarSaveIm.setAttr('opacity', .3);
  	}
  	funBarLayer.draw();
  };
