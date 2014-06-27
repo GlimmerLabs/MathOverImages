@@ -210,7 +210,7 @@
 				context.closePath();
 				context.fillStrokeShape(this);
 			},
-			name: 'outlet' + (functGroup.children.length - 3),
+			name: 'outlet' + (functGroup.children.length - OUTLET_OFFSET),
 			x:functGroup.children[0].x() + outletXOffset,
 			y:functGroup.children[0].y() + (functGroup.children.length - 3) * 
 				outletYOffset + functionHalfStrokeWidth,
@@ -275,6 +275,8 @@ var addLine = function(source, sink, outletIndex) {
   source.attrs.lineOut[source.attrs.lineOut.length] = line;
   outlet.attrs.lineIn = line;
   line.attrs.outlet = outlet;
+  line.points()[2] = sink.x();
+  line.points()[3] = sink.y() + sink.children[outletIndex].y();
   assertRenderable(sink);
   if (sink.attrs.numInputs == sink.children.length - OUTLET_OFFSET &&
        sink.attrs.numInputs < sink.attrs.maxInputs) {
