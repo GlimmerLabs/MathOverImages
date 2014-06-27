@@ -209,12 +209,12 @@ popCancelButtonGroup.add(popCancelButtonText);
 
 var renderLayer = new Kinetic.Layer();
 stage.add(renderLayer);
-var renderCanvas = renderLayer.canvas._canvas;
+var rCanvas = renderLayer.canvas._canvas;
 
 
 var renderPopCanvas = function (renderFunction) {
 	var mistObj = MIST.parse(renderFunction);
-	MIST.render(mistObj, {}, renderCanvas, 200, 200, 
+	MIST.render(mistObj, {}, rCanvas, 200, 200, 
 		popCanvasShiftX, popCanvasShiftY, 
 		popCanvasSide, popCanvasSide);	
 };
