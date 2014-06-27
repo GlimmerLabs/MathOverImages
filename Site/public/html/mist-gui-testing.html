@@ -45,17 +45,9 @@
   <script src="../js/mist-gui-workspaceFunctions.js"></script>
 
   <script src="../js/mist-gui-saveScreen.js"></script>
-
+  <script src="../js/mist-gui-funBarEvents.js"></script>
   <script>
   stage.draw();
-  animation = true;
-  var frame = function() {
-   renderPopCanvas("rgb(sum(x,y), sin(x), y)");
-   if (animation) {
-    setTimeout(frame, 50);
-  }
-}
-frame();
   </script>
 </body>
 <html>

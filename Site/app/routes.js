@@ -15,9 +15,7 @@
 
   2. What is /samples?
 
-  3. What is /api?
-
-  4. Requires touch the filesystem.  Would it make more sense to
+  3. Requires touch the filesystem.  Would it make more sense to
      do the requires only in the code that uses them?
  */
 
@@ -34,6 +32,7 @@ var username = require("../functions/username.js");
 var image = require("../functions/image.js");
 var login = require("../functions/login.js");
 var signup = require("../functions/signup.js");
+var api = require("../functions/api.js");
 
 // +-----------+-----------------------------------------------------
 // | Utilities |
@@ -113,13 +112,8 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path:  /api
   //   Dynamic content distribution - return raw data through AJAX
-  app.post('/api', function(req,res) {
-    if (req.body.funct === "checkAvailability") {
-      database.userExists(req.body.value, function(exists, error) {
-        res.end((!exists).toString());
-      });
-    }
-  });
+  app.post('/api', function(req,res) { api.run(req.body, req, res); });
+  app.get('/api', function(req,res) { api.run(req.query, req, res); });
 
   // --------------------------------------------------
   // Path:  /create

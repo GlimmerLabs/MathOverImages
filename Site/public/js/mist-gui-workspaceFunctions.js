@@ -12,6 +12,9 @@ if (!MISTgui.OUTLET_OFFSET) { MISTgui.OUTLET_OFFSET = OUTLET_OFFSET; }
 // +-----------------+
 
 MISTgui.outletIndex = function(outlet) {
+  if (outlet.attrs.outletIndex) {
+    return outlet.attrs.outletIndex;
+  }
   var outlets = outlet.parent.children;
   for (var i = MISTgui.OUTLET_OFFSET; i < outlets.length; i++) {
     if (outlet === outlets[i]) {
@@ -44,6 +47,7 @@ MISTgui.outletIndex = function(outlet) {
 var jsonToWorkspace = function(json) {
   var layout = JSON.parse(json);
   restore(layout);
+  console.log("layout", layout);
   MIST.displayLayout(layout, { addVal:addVal, addOp:addOp, addEdge:addLine });
 } // JSONtoWorkspace
 
@@ -128,16 +132,33 @@ var resetWorkspace = function() {
 };
 
 /**
- * saveWorkspace saves the active workspace to the server.
+ * Save the workspace with a particular name.  
  */
 var saveWorkspace = function() {
 	// STUB
 }
 
 /**
- * loadWorkspace loads a given workspace from the server onto the screen.
+ * Given a workspace name, loads a given workspace from the server onto 
+ * the screen.
  */
-var loadWorkspace = function(workspace) {
-	// STUB
-}
+var loadWorkspace = function(wsname) {
+  var url = "/api?action=getws&name=" + wsname;
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function() {
+    if (request.status == 404) {
+      alert("Could not load workspace");
+    }
+    else if (request.readyState != 4) {
+      return;
+    }
+    else {
+      console.log(request.responseText);
+      resetWorkspace();
+      jsonToWorkspace(request.responseText);
+    }
+  }; // onReadyState
+  request.open("GET",url,true);
+  request.send();
+} // loadWorkspace
 
