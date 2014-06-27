@@ -20,6 +20,7 @@ var httpsOptions = {
 
 var http = require('http');
 var app = express();
+
 var mysql = require('mysql');
 var passport = require('passport');
 var flash = require('connect-flash');

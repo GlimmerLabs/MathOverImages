@@ -236,6 +236,7 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
         else
             bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(error,result) {
 		if (!error){
+		    console.log("NO error");
 		    callback(result,null);
 		}
 		else
@@ -312,25 +313,35 @@ module.exports.changePassword = (function (userid, oldPassword, newPassword, cal
     oldPassword = sanitize(oldPassword);
     newPassword = sanitize(newPassword);
     userid = sanitize(userid);
-    module.exports.verifyPassword(userid, oldPassword, function(verified, error){
+    module.exports.query("SELECT hashedPassword from users WHERE userid= '" + userid + "';", function (response, error){
 	if (error)
 	    callback(false, error);
-	else if (!verified)
-	    callback(false, "Invalid Credentials: password");
+
+	else if (!response[0])
+	    callback(false, "Invalid Credentials");
+
 	else
-	    hashPassword(newPassword, function (newHash, error) {
+	    module.exports.verifyPassword(userid, oldPassword, function(verified, error){
 		if (error)
 		    callback(false, error);
+		else if (!verified)
+		    callback(false, "Invalid Credentials: password");
 		else
-		    module.exports.query("UPDATE users SET hashedPassword='" + newHash +"' WHERE userid = '" + userid + "';", function (rows, error){
+		    hashPassword(newPassword, function (newHash, error) {
 			if (error)
 			    callback(false, error);
 			else
-			    callback(true, null);
+			    module.exports.query("UPDATE users SET hashedPassword='" + newHash +"' WHERE userid = '" + userid + "';", function (rows, error){
+				if (error)
+				    callback(false, error);
+				else
+				    callback(true, null);
+			    });
 		    });
 	    });
     });
 }); // database.changePassword(user, oldPassword, newPassword, callback(success, error));
+
 /*
   Procedure:
   database.changeEmail(userid, newEmail, Callback(success, error));
@@ -448,7 +459,7 @@ module.exports.logIn = (function (user, password, callback) {
 		if (error)
 		    callback(null,error);
 		else if (!rows[0]) // user is also not a username, and therefore is not in the database
-		    callback(null, "Invalid Username");
+		    callback(null, "Invalid Credentials");
 		else
 		    module.exports.verifyPassword(rows[0].userid, password, function (success, error){
 			if (error)
@@ -579,7 +590,7 @@ module.exports.imageInfo=(function(imageid, callback) {
 
 module.exports.albumsInfo=(function(userid, callback) {
     userid=sanitize(userid);
-    module.exports.query("SELECT users.username, albums.name, albums.albumid, albums.caption, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated desc;" , function (rows, error){
+    module.exports.query("SELECT users.username, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated desc;" , function (rows, error){
 	if (error)
 	    callback(null, error);
 	else if (!rows[0])
@@ -589,14 +600,11 @@ module.exports.albumsInfo=(function(userid, callback) {
     });
 });
 
-
-
-
 //albumContents query shortcode
 
 module.exports.albumContentsInfo=(function(albumid, callback) {
     albumid=sanitize(albumid);
-    module.exports.query("SELECT images.imageid, images.title,images.code, users.username, images.rating from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded asc;" , function (rows, error){
+    module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded asc;" , function (rows, error){
 	if (error)
 	    callback(null, error);
 	else if (!rows[0])

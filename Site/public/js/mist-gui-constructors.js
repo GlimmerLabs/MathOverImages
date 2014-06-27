@@ -91,6 +91,7 @@
 			lineOut: [],
 			visible: false,
 			renderFunction: values[valName].rep,
+			rep: values[valName].rep,
 			renderLayer: null
 		});
 		/* create diamond shape. */
@@ -107,7 +108,7 @@
 		/* create text to be displayed on diamond. */
 		var newText = new Kinetic.Text({
 			text: values[valName].rep,
-			fontFamily: 'OpenSans',
+			fontFamily: globalFont,
 			fill: 'black',
 			fontSize: 16,
 			x: 0,
@@ -293,7 +294,7 @@ var addVal = function(valName, x, y) {
   workLayer.draw();
 };
 
-var createEditableText = function (group) {
+var createEditableText = function (group) {	
 	var backgroundBox = new Kinetic.Rect({
 		x: -4,
 		y: functionTotalSideLength + 5,

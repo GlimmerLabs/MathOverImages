@@ -94,14 +94,31 @@ figcaption {
 input[type='submit'] {
     margin: 20px 0px;
     color: #FFF;
-    background-color: #D8D8D8;
+    background-color: #979797;
     border:1px solid white;
     font-size: 1em;
     font-weight: 800;
 }
 
 input[type='submit']:hover {
-    color: #D8D8D8;
+    color: #979797;
     background-color: #FFF;
     cursor: pointer;
+}
+
+#edit-bio {
+width: 25px;
+height: 25px;
+}
+
+#bibliography {
+margin: 25px 20px;
+}
+
+#bio-form {
+margin: 40px 0px 0px 75px;
+}
+
+#submit {
+margin: 50px;
 }

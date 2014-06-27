@@ -102,6 +102,7 @@ menuButtonLayer.on('click', function(){
       newGroup.setAttr('visible', true);
       dragLayer.add(newGroup);
       setDragShadow(newGroup);
+      removeShadow(currShape);
       newGroup.startDrag();
       dragLayer.draw();
       dragShape = newGroup;
@@ -137,4 +138,8 @@ menuControlLayer.on('mouseup', function(evt){
   var shape = parent.children[0];
   shape.setAttr('shadowEnabled', false);
   menuControlLayer.draw();
+});
+
+resetButton.on('mouseup', function(){
+  resetWorkspace();
 });
