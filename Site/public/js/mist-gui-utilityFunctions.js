@@ -91,13 +91,13 @@
 		var box = group.children[2];
 		currLayer.draw();
 		canvas = currLayer.canvas._canvas;
-			var groupScale = group.attrs.scaleX;
-			var canvasX = group.x() + (groupScale * box.x());
-			var canvasY = group.y() + (groupScale * box.y());
-			var canvasWidth = groupScale * box.width();
-			var canvasHeight = groupScale * box.height();
-			var mistObj = MIST.parse(group.attrs.renderFunction);
-			MIST.render(mistObj, {}, canvas, canvasWidth, canvasHeight, canvasX, canvasY, canvasWidth, canvasHeight);
+		var groupScale = group.attrs.scaleX;
+		var canvasX = group.x() + (groupScale * box.x());
+		var canvasY = group.y() + (groupScale * box.y());
+		var canvasWidth = groupScale * box.width();
+		var canvasHeight = groupScale * box.height();
+		var mistObj = MIST.parse(group.attrs.renderFunction);
+		MIST.render(mistObj, {}, canvas, canvasWidth, canvasHeight, canvasX, canvasY, canvasWidth, canvasHeight);
 	};
 
 	var collapseCanvas = function(group){
@@ -297,7 +297,7 @@ var wrapValueText = function(text) {
  */
 var applyDragBounds = function(group) {
 	group.setAttr('dragBoundFunc', function(pos) {
-      var newY = pos.y < menuHeight ? menuHeight: pos.y > height - functionTotalSideLength - funBarHeight ? height - functionTotalSideLength - funBarHeight : pos.y;
+      var newY = pos.y <= menuHeight ? menuHeight + 1: pos.y > height - functionTotalSideLength - funBarHeight ? height - functionTotalSideLength - funBarHeight : pos.y;
       var newX = pos.x < 0 ? 0 : pos.x > (width - functionTotalSideLength) ? (width - functionTotalSideLength) : pos.x;
       return {
         x: newX,
