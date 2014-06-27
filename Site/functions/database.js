@@ -60,6 +60,7 @@ var sanitize = (function (string) {
     return validate.escape(string);
 
 }); // sanitize(string);
+module.exports.sanitize = sanitize;
 
 /*
   Procedure: 
