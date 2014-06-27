@@ -297,7 +297,7 @@ var wrapValueText = function(text) {
  */
 var applyDragBounds = function(group) {
 	group.setAttr('dragBoundFunc', function(pos) {
-      var newY = pos.y < menuHeight ? menuHeight: pos.y > height - functionTotalSideLength - funBarHeight ? height - functionTotalSideLength - funBarHeight : pos.y;
+      var newY = pos.y <= menuHeight ? menuHeight + 1: pos.y > height - functionTotalSideLength - funBarHeight ? height - functionTotalSideLength - funBarHeight : pos.y;
       var newX = pos.x < 0 ? 0 : pos.x > (width - functionTotalSideLength) ? (width - functionTotalSideLength) : pos.x;
       return {
         x: newX,
