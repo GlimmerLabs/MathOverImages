@@ -285,6 +285,7 @@ var addLine = function(source, sink, outletIndex) {
   updateForward(sink);
   line.setAttr("visible",true);
   lineLayer.add(line);
+  insertToTable(line);
   workLayer.draw();
   lineLayer.draw();
   dragLayer.draw();
@@ -301,6 +302,7 @@ var addOp = function(funName, x, y) {
   addOutlet(op);
   applyDragBounds(op);
   workLayer.add(op);
+  insertToTable(op);
   workLayer.draw();
   return op;
 };
@@ -314,6 +316,7 @@ var addVal = function(valName, x, y) {
   val.setAttr("visible",true);
   applyDragBounds(val);
   workLayer.add(val);
+  insertToTable(val);
   workLayer.draw();
   return val;
 };
