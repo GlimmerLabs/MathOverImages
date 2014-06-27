@@ -21,15 +21,15 @@ var httpsOptions = {
 var http = require('http');
 var app = express();
 
-var http_port = 8000;
-var https_port = 4000;
-
 var mysql = require('mysql');
 var passport = require('passport');
 var flash = require('connect-flash');
 
 var auth = require('./functions/auth.js');
-//var ports = require('./functions/ports.js');
+var ports = require('./functions/ports.js');
+
+var http_port = ports.http;
+var https_port = ports.https;
 
 //==================== configuration ====================
 
