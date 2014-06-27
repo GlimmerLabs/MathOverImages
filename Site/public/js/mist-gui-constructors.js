@@ -319,6 +319,7 @@ var createEditableText = function (group) {
 	group.add(editableTextBox);
 	editableTextBox.setEditable(true);
 	editableTextBox.aligned = "center";
+	editableTextBox.matchingCharacters = /^-?[0-9]+\.?[0-9]*$/;
 	editableTextBox.defaultText = 'Enter a Value';
 	editableTextBox.drawMethod = function(){
 		workLayer.draw()
