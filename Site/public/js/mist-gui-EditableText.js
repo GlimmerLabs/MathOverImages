@@ -311,7 +311,7 @@ function readyEditing(stage)
 				if(activeText.capitalized){
 					key = key.toUpperCase();
 				}
-				if(activeText.matchingCharacters.test(key)){
+				if(activeText.matchingCharacters.test(textPreCursor + key + textPostCursor)){
 					activeText.setText(textPreCursor + key + textPostCursor);
 					activeText.cursor.position++;
 				}
