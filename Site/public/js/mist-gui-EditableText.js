@@ -24,7 +24,6 @@
 // +----------------------------+------------------------------------
 // | Extensions to Kinetic.Text |
 // +----------------------------+
-// To do: fix for centered text
 
 Kinetic.Text.prototype.isEditable = false;
 Kinetic.Text.prototype.isActive = false;
@@ -297,7 +296,7 @@ function readyEditing(stage)
 				activeText.cursor.position++;
 			}
 			if(keycode == 189 || keycode == 109){ // 189 and 109 are the - keys: normal, numpad respectively
-				var key = ".";
+				var key = "-";
 				addedKey = true;
 			}
 			if (keycode == 13) {
