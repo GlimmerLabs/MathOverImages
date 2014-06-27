@@ -24,7 +24,8 @@ var nameTextShift = 50;
 
 var popButtonWidth = popCanvasSide / 3.4;
 var popButtonHeight = popTextHeight / 1.25;
-var popButtonShiftX = (popCanvasSide - (3 * popButtonWidth)) / 2;//popTextShiftX * 1.5;
+var popButtonShiftX = (popCanvasSide - (3 * popButtonWidth)) / 2;
+var popButtonColor = '#A0A3A3';
 
 
 var cover = new Kinetic.Rect({
@@ -89,64 +90,121 @@ var nameRect = new Kinetic.Rect ({
 	strokeWidth: 1
 });
 popSaveGroup.add(nameRect);
-// Still need Editable Text for naming...
+
+var nameEditText = new Kinetic.Text({
+	x: popTextShiftX + (nameTextShift * 1.1),
+	y: popTextShiftY + (popTextHeight * 1.4),
+	text: 'Enter a Name',
+	fontSize: 14,
+	width: popCanvasSide - nameTextShift,
+	height: popTextHeight / 1.5,
+	fontFamily: globalFont,
+	fill: 'black'
+});
+popSaveGroup.add(nameEditText);
+nameEditText.setEditable(true);
+nameEditText.matchingCharacters = /[a-zA-Z0-9]/;
+nameEditText.defaultText = 'Enter a Name';
+nameEditText.drawMethod = function(){
+	screenLayer.draw()
+};
+
+
+var popSaveButtonGroup = new Kinetic.Group({
+	x: popTextShiftX,
+	y: popRectHeight - (popTextHeight * 1.25)
+});
+popSaveGroup.add(popSaveButtonGroup);
 
 var popSaveButton = new Kinetic.Rect ({
-	x: popTextShiftX,
-	y: popRectHeight - (popTextHeight * 1.25),
+	x: 0,
+	y: 0,
 	width: popButtonWidth,
 	height: popButtonHeight,
-	fill: 'white',
+	fill: popButtonColor,
 	stroke: 'black',
 	strokeWidth: 1
 });
-popSaveGroup.add(popSaveButton);
+popSaveButtonGroup.add(popSaveButton);
 
 var popSaveButtonText = new Kinetic.Text({
-
+	text: "Save",
+	x: 0,
+	y: (popButtonHeight - 16) / 2,
+	width: popButtonWidth,
+	fill: 'black',
+	fontSize: 16,
+	fontFamily: globalFont,
+	align: 'center'
 });
-//popSaveGroup.add(popSaveButtonText);
+popSaveButtonGroup.add(popSaveButtonText);
 
-var popDownloadButton = new Kinetic.Rect ({
+var popDownloadButtonGroup = new Kinetic.Group({
 	x: popTextShiftX + popButtonShiftX + popButtonWidth,
 	y: popRectHeight - (popTextHeight * 1.25),
+});
+popSaveGroup.add(popDownloadButtonGroup);
+
+var popDownloadButton = new Kinetic.Rect ({
+	x: 0,
+	y: 0,
 	width: popButtonWidth,
 	height: popButtonHeight,
-	fill: 'white',
+	fill: popButtonColor,
 	stroke: 'black',
 	strokeWidth: 1
 });
-popSaveGroup.add(popDownloadButton);
+popDownloadButtonGroup.add(popDownloadButton);
 
 var popDownloadButtonText = new Kinetic.Text({
-
+	text: "Download",
+	x: 0,
+	y: (popButtonHeight - 16) / 2,
+	width: popButtonWidth,
+	fill: 'black',
+	fontSize: 16,
+	fontFamily: globalFont,
+	align: 'center'
 });
-//popSaveGroup.add(popDownloadButtonText);
+popDownloadButtonGroup.add(popDownloadButtonText);
 
-var popCancelButton = new Kinetic.Rect ({
+var popCancelButtonGroup = new Kinetic.Group({
 	x: popTextShiftX + (2 * popButtonShiftX) + (2 * popButtonWidth),
 	y: popRectHeight - (popTextHeight * 1.25),
+});
+popSaveGroup.add(popCancelButtonGroup);
+
+var popCancelButton = new Kinetic.Rect ({
+	x: 0,
+	y: 0,
 	width: popButtonWidth,
 	height: popButtonHeight,
-	fill: 'white',
+	fill: popButtonColor,
 	stroke: 'black',
 	strokeWidth: 1
 });
-popSaveGroup.add(popCancelButton);
+popCancelButtonGroup.add(popCancelButton);
 
 var popCancelButtonText = new Kinetic.Text({
-
+	text: "Cancel",
+	x: 0,
+	y: (popButtonHeight - 16) / 2,
+	width: popButtonWidth,
+	fill: 'black',
+	fontSize: 16,
+	fontFamily: globalFont,
+	align: 'center'
 });
-//popSaveGroup.add(popCancelButtonText);
+popCancelButtonGroup.add(popCancelButtonText);
+
+var renderLayer = new Kinetic.Layer();
+stage.add(renderLayer);
+var renderCanvas = renderLayer.canvas._canvas;
 
 
 var renderPopCanvas = function (renderFunction) {
-	var currLayer = new Kinetic.Layer();
-	stage.add(currLayer);
-	currLayer.draw();
-	canvas = currLayer.canvas._canvas;
 	var mistObj = MIST.parse(renderFunction);
-	MIST.render(mistObj, {}, canvas, popCanvasSide, popCanvasSide, 
+	MIST.render(mistObj, {}, renderCanvas, 200, 200, 
 		popCanvasShiftX, popCanvasShiftY, 
 		popCanvasSide, popCanvasSide);	
 };
@@ -160,7 +218,7 @@ var updatePopText = function(renderFunction) {
 	}
 	renderPopText.setAttr('text', text);
 };
-updatePopText("sum(x,y)123456789123456789123456789123456789123456789123456789123456789123456789");
+updatePopText("rgb(sum(x,y), x, y)");
 
 
 screenLayer.draw();
