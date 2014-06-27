@@ -62,6 +62,7 @@ var sanitize = (function (string) {
     // escaped = escaped.replace("&amp;", "&");
     return escaped;
 }); // sanitize(string);
+module.exports.sanitize = sanitize;
 
 /*
   Procedure: 

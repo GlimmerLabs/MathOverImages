@@ -8,8 +8,8 @@
 	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
 	*/
 	var addOutlet = function(funGroup) {
-		if(funGroup.children.length - 3 < funGroup.attrs.maxInputs) {
-			if(funGroup.children.length - 3 > 2) {
+		if(funGroup.children.length - OUTLET_OFFSET < funGroup.attrs.maxInputs) {
+			if(funGroup.children.length - OUTLET_OFFSET > 2) {
 				funGroup.children[0].setAttr('height',
 					funGroup.children[0].attrs.height + outletYOffset);
 				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
@@ -36,11 +36,11 @@
  		return;
  	}
  	group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
- 		for(var i = 3; i < group.children.length; i++) {
- 			if(group.children[i].attrs.lineIn != null) {
- 				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
- 				group.attrs.renderFunction += ',';
- 			}
+ 	for(var i = 3; i < group.children.length; i++) {
+ 		if(group.children[i].attrs.lineIn != null) {
+ 			group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
+ 			group.attrs.renderFunction += ',';
+ 		}
 	} // add each element to the equation
 	group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
 };
@@ -51,25 +51,25 @@
  var updateFunBar = function() {
  	if (currShape && isRenderable(currShape)) {
  		currText = currShape.attrs.renderFunction;
- 		if (currText != null) {
- 			var currFontSize;
- 			if (currText.length <= 50) {
- 				currFontSize = funBarDisplayFontSize;
- 			} 
- 			else if (currText.length >= 110) {
- 				currFontSize = 10;
- 			}
- 			else {
- 				currFontSize = 1100 / currText.length;
- 			}
- 			funBarText.setAttrs({
- 				text: currText,
- 				fontSize: currFontSize
- 			});
+ 		var currFontSize;
+ 		if (currText.length <= 50) {
+ 			currFontSize = funBarDisplayFontSize;
+ 		} 
+ 		else if (currText.length >= 110) {
+ 			currFontSize = 10;
  		}
+ 		else {
+ 			currFontSize = 1100 / currText.length;
+ 		}
+ 		funBarText.setAttrs({
+ 			text: currText,
+ 			fontSize: currFontSize
+ 		});
+ 		funBarSaveIm.setAttr('opacity', 1);
  	}
  	else {
  		funBarText.setAttr('text', '');
+ 		funBarSaveIm.setAttr('opacity', .3);
  	}
  	funBarLayer.draw();
  };
@@ -83,34 +83,36 @@
  		currLayer = new Kinetic.Layer();
  		group.setAttr('renderLayer', currLayer);
  		stage.add(currLayer);
-		} // if 
-		group.children[2].setAttrs({
-			width: renderSideLength,
-			height: renderSideLength
-		});
-		var box = group.children[2];
-		currLayer.draw();
-		canvas = currLayer.canvas._canvas;
-		var groupScale = group.attrs.scaleX;
-		var canvasX = group.x() + (groupScale * box.x());
-		var canvasY = group.y() + (groupScale * box.y());
-		var canvasWidth = groupScale * box.width();
-		var canvasHeight = groupScale * box.height();
-		var mistObj = MIST.parse(group.attrs.renderFunction);
-		MIST.render(mistObj, {}, canvas, canvasWidth, canvasHeight, canvasX, canvasY, canvasWidth, canvasHeight);
-	};
+	} // if 
+	group.children[2].setAttrs({
+		width: renderSideLength,
+		height: renderSideLength
+	});
+	var box = group.children[2];
+	currLayer.draw();
+	canvas = currLayer.canvas._canvas;
+	var groupScale = group.attrs.scaleX;
+	var canvasX = group.x() + (groupScale * box.x());
+	var canvasY = group.y() + (groupScale * box.y());
+	var canvasWidth = groupScale * box.width();
+	var canvasHeight = groupScale * box.height();
+	var mistObj = MIST.parse(group.attrs.renderFunction);
+	MIST.render(mistObj, {}, canvas, canvasWidth, canvasHeight, 
+		canvasX, canvasY, 
+		canvasWidth, canvasHeight);
+};
 
-	var collapseCanvas = function(group){
-		if (group.attrs.renderLayer != null) {
-			group.attrs.renderLayer.destroy();
-			group.attrs.renderLayer = null;
-			group.children[2].setAttrs({
-				width: imageBoxSideLength,
-				height: imageBoxSideLength,
-				expanded: false
-			});	
-		}
-	};
+var collapseCanvas = function(group){
+	if (group.attrs.renderLayer != null) {
+		group.attrs.renderLayer.destroy();
+		group.attrs.renderLayer = null;
+		group.children[2].setAttrs({
+			width: imageBoxSideLength,
+			height: imageBoxSideLength,
+			expanded: false
+		});	
+	}
+};
 /**
  * updateForward takes a group and makes sure all groups for which it is a source are
  * accurate. To be used whenever a function's inputs are changed, or when a node is

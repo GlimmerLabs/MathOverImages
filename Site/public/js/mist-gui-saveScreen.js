@@ -26,6 +26,7 @@ var popButtonWidth = popCanvasSide / 3.4;
 var popButtonHeight = popTextHeight / 1.25;
 var popButtonShiftX = (popCanvasSide - (3 * popButtonWidth)) / 2;
 var popButtonColor = '#A0A3A3';
+var popButtonSelectedColor = '#B6BABA'
 
 
 var cover = new Kinetic.Rect({
@@ -35,14 +36,14 @@ var cover = new Kinetic.Rect({
 	height: height,
 	fill: 'black',
 	opacity: .6,
-	visible: true
+	visible: false
 });
 screenLayer.add(cover);
 
 var popSaveGroup = new Kinetic.Group({
 	x: popSaveGroupX, 
 	y: popSaveGroupY,
-	visible: true
+	visible: false
 });
 screenLayer.add(popSaveGroup);
 
@@ -112,7 +113,8 @@ nameEditText.drawMethod = function(){
 
 var popSaveButtonGroup = new Kinetic.Group({
 	x: popTextShiftX,
-	y: popRectHeight - (popTextHeight * 1.25)
+	y: popRectHeight - (popTextHeight * 1.25),
+	name: 'save'
 });
 popSaveGroup.add(popSaveButtonGroup);
 
@@ -123,7 +125,9 @@ var popSaveButton = new Kinetic.Rect ({
 	height: popButtonHeight,
 	fill: popButtonColor,
 	stroke: 'black',
-	strokeWidth: 1
+	strokeWidth: 1,
+	shadowColor: 'black',
+	shadowEnabled: false
 });
 popSaveButtonGroup.add(popSaveButton);
 
@@ -142,6 +146,7 @@ popSaveButtonGroup.add(popSaveButtonText);
 var popDownloadButtonGroup = new Kinetic.Group({
 	x: popTextShiftX + popButtonShiftX + popButtonWidth,
 	y: popRectHeight - (popTextHeight * 1.25),
+	name: 'download'
 });
 popSaveGroup.add(popDownloadButtonGroup);
 
@@ -152,7 +157,9 @@ var popDownloadButton = new Kinetic.Rect ({
 	height: popButtonHeight,
 	fill: popButtonColor,
 	stroke: 'black',
-	strokeWidth: 1
+	strokeWidth: 1,
+	shadowColor: 'black',
+	shadowEnabled: false
 });
 popDownloadButtonGroup.add(popDownloadButton);
 
@@ -171,6 +178,7 @@ popDownloadButtonGroup.add(popDownloadButtonText);
 var popCancelButtonGroup = new Kinetic.Group({
 	x: popTextShiftX + (2 * popButtonShiftX) + (2 * popButtonWidth),
 	y: popRectHeight - (popTextHeight * 1.25),
+	name: 'cancel'
 });
 popSaveGroup.add(popCancelButtonGroup);
 
@@ -181,7 +189,9 @@ var popCancelButton = new Kinetic.Rect ({
 	height: popButtonHeight,
 	fill: popButtonColor,
 	stroke: 'black',
-	strokeWidth: 1
+	strokeWidth: 1,
+	shadowColor: 'black',
+	shadowEnabled: false
 });
 popCancelButtonGroup.add(popCancelButton);
 
@@ -199,12 +209,12 @@ popCancelButtonGroup.add(popCancelButtonText);
 
 var renderLayer = new Kinetic.Layer();
 stage.add(renderLayer);
-var renderCanvas = renderLayer.canvas._canvas;
+var rCanvas = renderLayer.canvas._canvas;
 
 
 var renderPopCanvas = function (renderFunction) {
 	var mistObj = MIST.parse(renderFunction);
-	MIST.render(mistObj, {}, renderCanvas, 200, 200, 
+	MIST.render(mistObj, {}, rCanvas, 200, 200, 
 		popCanvasShiftX, popCanvasShiftY, 
 		popCanvasSide, popCanvasSide);	
 };
@@ -220,6 +230,65 @@ var updatePopText = function(renderFunction) {
 };
 updatePopText("rgb(sum(x,y), x, y)");
 
+screenLayer.on('mouseover', function(evt) {
+var group = evt.target.parent;
+if (group.attrs.name) {
+	group.children[0].setAttr('fill', popButtonSelectedColor);
+  	screenLayer.draw();
+}
+});
 
-screenLayer.draw();
+screenLayer.on('mouseout', function(evt) {
+var group = evt.target.parent;
+if (group.attrs.name) {
+	group.children[0].setAttrs({
+		fill: popButtonColor,
+		shadowEnabled: false
+	});
+  	screenLayer.draw();
+}
+});
 
+screenLayer.on('mousedown', function(evt) {
+var group = evt.target.parent;
+if (group.attrs.name) {
+	group.children[0].setAttr('shadowEnabled', true);
+  	screenLayer.draw();
+}
+});
+
+screenLayer.on('mouseup', function(evt) {
+var group = evt.target.parent;
+var name = group.attrs.name
+if (name) {
+	group.children[0].setAttr('shadowEnabled', false);
+  	screenLayer.draw();
+}
+if (name == 'cancel') {
+	cover.setAttr('visible', false);
+	popSaveGroup.setAttr('visible', false);
+	animation = false;
+	setTimeout(function(){
+		renderLayer.draw();
+	}, 50);
+	screenLayer.draw();
+}
+});
+/**
+ * openSavePopUp sets the cover and popSaveGroup to visible and begin animation.
+ */
+var openSavePopUp = function() {
+	cover.setAttr('visible', true);
+	popSaveGroup.setAttr('visible', true);
+	var renderFunction = currShape.attrs.renderFunction;
+	updatePopText(renderFunction);
+	animation = true;
+	screenLayer.draw();
+	var frame = function() {
+		renderPopCanvas(renderFunction);
+		if (animation) {
+			setTimeout(frame, 50);
+		}
+	}
+	frame();
+};
