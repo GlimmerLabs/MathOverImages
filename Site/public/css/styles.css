@@ -71,8 +71,8 @@ header nav li:hover {
 /* End of Header */
 
 #pageTitle {
-	height:140px;
-	min-width:600px;
+	height:100px;
+	min-width:400px;
 	margin: 0px -110px;
 	float: left;
 	background-color: #EFDC5C;
@@ -83,15 +83,15 @@ header nav li:hover {
 	margin: 15px;
 	color: #FFF;
 	display: inline-block;
-	font-weight: 800;
-	font-size: 4em;
+	font-weight: 600;
+	font-size: 2em;
 	padding: 5px;
 	clear: left;
 }
 
 #pageTitleGeneral {
-	height:140px;
-	min-width:600px;
+	height:100px;
+	min-width:400px;
 	margin: 0px -110px;
 	float: left;
 	background-color: #3FAAA0;
@@ -102,8 +102,8 @@ header nav li:hover {
 	margin: 15px;
 	color: #FFF;
 	display: inline-block;
-	font-weight: 800;
-	font-size: 4em;
+	font-weight: 600;
+	font-size: 2em;
 	padding: 5px;
 	clear: left;
 }
@@ -129,21 +129,21 @@ form input[type='submit'] {
 #subviews {
 	float: right;
 	width: 450px;
-	margin: -21px 0px;
+	margin: -10px 0px;
 }
 
 .subview {
 
 	text-decoration: none;
 	color: #FFF;
-	background-color: #D8D8D8;
+	background-color: #C8C8C8;
 	display: inline-block;
-	height: 50px;
-	width: 42%;
+	height: 40px;
+	width: 37%;
 	text-align: center;
-	font-size: 2em;
+	font-size: 1.7em;
 	float: left;
-	margin: 20px 2%;
+	margin: 10px 2%;
 }
 
 .subview:hover, #selected {
