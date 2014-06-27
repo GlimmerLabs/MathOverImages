@@ -38,6 +38,19 @@ MISTgui.outletIndex = function(outlet) {
  	return wArray;
  };
 
+/**
+ * Convert a JSON string created by workspaceToJSON back to a workspace.
+ */
+var jsonToWorkspace = function(json) {
+  var layout = JSON.parse(json);
+  restore(layout);
+  MIST.displayLayout(layout, { addVal:addVal, addOp:addOp, addEdge:addLine });
+} // JSONtoWorkspace
+
+/**
+ * Convert the workspace to JSON that we can then store in a file
+ * or on the server.
+ */
 var workspaceToJSON = function() {
   // Extract information from the workspace.
   var nodes = workLayer.getChildren();
