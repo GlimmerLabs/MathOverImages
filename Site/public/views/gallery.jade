@@ -12,7 +12,7 @@ block extraLinks
  script(type='text/javascript' src='/js/mistui-dialogs.js')
  script(type='text/javascript' src='/js/mistui-help.js')
  script(type='text/javascript' src='/js/mistui-menus.js')
- script(type='text/javascript' src='/js/mistui-animation.js')
+ script(type='text/javascript' src='/js/mistui-animator.js')
  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
  script(type='text/javascript' src='/js/gallery.js')
 
@@ -28,13 +28,19 @@ block content
    a(href='/gallery/recent' class='subview') recent
    a(href='/gallery/toprated' class='subview') top rated
    a(href='#recent' class='subview') featured
+  div(id='pageNumber')
+    if (currentPage==1 && !(type == "random"))
+      a(href='/gallery/' + type + '/' + ++currentPage) next »
+    else if !(type == "random") && !(currentPage==1) && (images.length>=9)
+      a(href='/gallery/' + type + '/' + --currentPage) « previous
+      a(href='/gallery/' + type + '/' + (currentPage+2)) next »
+    else if !(type == "random")
+      a(href='/gallery/' + type + '/' + --currentPage) « previous
   div(id='images')
    - for (var i=0; i < images.length; i++)
     figure
      a(href='/image/' + images[i].imageid)
        canvas(id='canvas'+i width='180' height='180')
        input(type='hidden' id='code'+i value=images[i].code)
-     figcaption(class='right')= images[i].username
+     figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
      figcaption(class='left')= "★" + images[i].rating
-  a(href='/gallery/random/' + currentPage + 1) previous
-  a(href='/gallery/random/' + ++currentPage) next

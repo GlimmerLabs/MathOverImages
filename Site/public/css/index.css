@@ -8,11 +8,13 @@
 	height: 425px;
 }
 
-#create, #tutorials {
-	height:80px;
+#homeButtons {
+	padding: 40px;
+ }
+
+#homeButtons #create, #homeButtons #tutorials {
 	width: 290px;
 	margin: 80px 20px;
-	float: left;
 	background-color: #979797;
 	font-weight:bold;
 	color: #FFF;
@@ -20,30 +22,37 @@
 	text-transform:lowercase;
 	text-decoration:none;
 }
-#create:hover, #tutorials:hover{
+
+#homeButtons #create:hover,#homeButtons #tutorials:hover{
 	background-color: #FFF;
 	color: #979797;
-
 }
 
-#tutorials {
+#homeButtons #tutorials {
 	float: right;
 	background-color: #3FAAA0;
 }
 
-#tutorials:hover {
+#homeButtons #tutorials:hover {
 	color: #3FAAA0;
 }
 
-#tutorials, #create, #tutorials:hover, #create:hover{
+#homeButtons #tutorials, #homeButtons #create, #homeButtons #tutorials:hover, #homeButtons #create:hover{
 	font-size: 4em;
-	margin:-5px;
-	padding:0;
+	margin: 0px;
+}
+
+#galleryImages {
+	width: 70%;
+	margin: 0 auto;
+	clear: both;
+	text-align:center;
 }
 
 #galleryImages figure {
-	display:inline-block;
-	margin: 10px;
+	width:150px;
+	float: left;
+	margin: 8px;
 }
 
 #galleryImages figure img{
@@ -51,9 +60,9 @@
 	width: 140px;
 }
 
-#galleryImages h1 {
+#gallery h1 {
 	font-size:1.5em;
-	text-align:center;
+	text-align:right;
 }
 
 #galleryImages a {

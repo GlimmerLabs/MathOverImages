@@ -198,6 +198,11 @@ function readyEditing(stage)
 			if(event.evt != currentEvent){
 				currentEvent = null;
 				if (activeText != null){
+					if (isValue(activeText.parent)) {
+						if (activeText.attrs.text) {
+							updateValueText(activeText);
+						}
+					}
 					activeText.removeFocus();
 				}
 			}
@@ -205,38 +210,40 @@ function readyEditing(stage)
 	stage.on("click", 
 		function(event)
 		{
+			if (workToolOn) {
 			// Check if target object has text method(if it does than it is a text object)
 			if (event.target.text != null) {
 				if (event.target.isEditable){
-						if(event.target != activeText){
-							if (activeText != null){
-								activeText.removeFocus();
-							}
-							activeText = event.target;
-							var moveCursorToClosest = true;
-							if (activeText.text() == activeText.defaultText){
+					if(event.target != activeText){
+						if (activeText != null){
+							activeText.removeFocus();
+						}
+						activeText = event.target;
+						var moveCursorToClosest = true;
+						if (activeText.text() == activeText.defaultText){
 
-								activeText.text("");
-								var moveCursorToClosest = false;
-							}
-							var textX = activeText.x();
-							activeText.addCursor(moveCursorToClosest, stage.getPointerPosition());
-							activeText.isActive = true;
+							activeText.text("");
+							var moveCursorToClosest = false;
 						}
-						else{
-							var cursor = activeText.cursor;
-							var mouseX = stage.getPointerPosition().x;
-							var textX = activeText.x();
-							var mouseY = stage.getPointerPosition().y;
-							var textY = activeText.y();
-							var mouseRelativeX = mouseX - textX + cursor.offsetX();
-							var mouseRelativeY = mouseY - textY + cursor.offsetY();
-							cursor.moveToClosestPosition(mouseRelativeX, mouseRelativeY);
-						}
-						currentEvent = event.evt;
+						var textX = activeText.x();
+						activeText.addCursor(moveCursorToClosest, stage.getPointerPosition());
+						activeText.isActive = true;
 					}
+					else{
+						var cursor = activeText.cursor;
+						var mouseX = stage.getPointerPosition().x;
+						var textX = activeText.x();
+						var mouseY = stage.getPointerPosition().y;
+						var textY = activeText.y();
+						var mouseRelativeX = mouseX - textX + cursor.offsetX();
+						var mouseRelativeY = mouseY - textY + cursor.offsetY();
+						cursor.moveToClosestPosition(mouseRelativeX, mouseRelativeY);
+					}
+					currentEvent = event.evt;
+				}
 			}
-		});
+		}
+	});
 	document.body.onkeyup = function(e){
 		var keycode = e.which || e.keyCode;
 		if(keycode == 16 && activeText != null){
@@ -283,9 +290,6 @@ function readyEditing(stage)
 				activeText.cursor.position--;
 				e.preventDefault(); // Prevents backspace from moving back a page
 			}
-			if(keycode == 13){
-				activeText.removeFocus();
-			}
 			if(keycode == 37){ // 37 is the left arrow key
 				activeText.cursor.position--;
 			}
@@ -295,6 +299,14 @@ function readyEditing(stage)
 			if(keycode == 189 || keycode == 109){ // 189 and 109 are the - keys: normal, numpad respectively
 				var key = ".";
 				addedKey = true;
+			}
+			if (keycode == 13) {
+				if (isValue(activeText.parent)) {
+					if (activeText.attrs.text) {
+						updateValueText(activeText);
+					}
+				}
+				activeText.removeFocus();
 			}
 			if(addedKey){
 				if(activeText.capitalized){
@@ -313,3 +325,26 @@ function readyEditing(stage)
 		}
 	}
 }
+/**
+* updateValueText takes a string and puts that string into a value by updating:
+* - visible text box
+* - rep
+* - renderFunction
+*/
+var updateValueText = function(text) {
+	var value = text.parent;
+	var newText = text.attrs.text;
+	value.children[1].setAttrs({
+		text: wrapValueText(newText),
+		fontSize: 13
+	});
+	value.setAttrs({
+		rep: newText,
+		renderFunction: newText
+	});
+	for (var i = 3; i < 5; i++) {
+		value.children[i].setAttr('visible', false);
+	}
+	assertRenderable(value);
+	updateForward(value);	
+};

@@ -31,69 +31,47 @@
  * NOTE: this will always recalculate the entire function
  */
  var findRenderFunction = function(group) {
- 	var childOfRGB = false;
- 	for(var i = 3; i < group.children.length; i++) {
- 		if (group.children[i].attrs.lineIn && 
- 			group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction instanceof Array) {
- 			childOfRGB = true;
- 			break;
- 		}
+ 	if(isValue(group)) {
+ 		group.attrs.renderFunction = group.attrs.rep;
+ 		return;
  	}
- 	console.log(childOfRGB);
- 	if (group.attrs.name == 'rgb') {
- 		group.attrs.renderFunction = [
-			group.children[3].attrs.lineIn.attrs.source.attrs.renderFunction,
-			group.children[4].attrs.lineIn.attrs.source.attrs.renderFunction,
-			group.children[5].attrs.lineIn.attrs.source.attrs.renderFunction
-		];
-	} // if we are dealing with RGB rendering
-	else if (childOfRGB) {
-		// STUB
-		console.log('RGB output is not yet implemented');
-		
-	}
-	else {
-		group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
+ 	group.attrs.renderFunction = functions[group.attrs.name].prefix + '(';
  		for(var i = 3; i < group.children.length; i++) {
  			if(group.children[i].attrs.lineIn != null) {
-				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
+ 				group.attrs.renderFunction += group.children[i].attrs.lineIn.attrs.source.attrs.renderFunction;
  				group.attrs.renderFunction += ',';
  			}
-		} // add each element to the equation
-		group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';}
+	} // add each element to the equation
+	group.attrs.renderFunction = group.attrs.renderFunction.substring(0, group.attrs.renderFunction.length - 1) + ')';
 };
 
 /**
  * updateFunBar changes the text in the funBar according to the currShape.
  */
  var updateFunBar = function() {
- 	currText = currShape.attrs.renderFunction;
- 	if (currShape.attrs.renderFunction instanceof Array) {
- 		// NEEDS UPDATE FOR RGB OUTPUTS
- 		currText = 'rgb(' + currText + ')';
- 	} 
- 	if (currText != null) {
- 		currShape.children[0].setAttrs({
- 			shadowColor: 'darkblue',
- 			shadowOpacity: 1,
- 			shadowEnabled: true
- 		});
- 		var currFontSize;
- 		if (currText.length <= 50) {
- 			currFontSize = funBarDisplayFontSize;
- 		} 
- 		else if (currText.length >= 110) {
- 			currFontSize = 10;
+ 	if (currShape && isRenderable(currShape)) {
+ 		currText = currShape.attrs.renderFunction;
+ 		if (currText != null) {
+ 			var currFontSize;
+ 			if (currText.length <= 50) {
+ 				currFontSize = funBarDisplayFontSize;
+ 			} 
+ 			else if (currText.length >= 110) {
+ 				currFontSize = 10;
+ 			}
+ 			else {
+ 				currFontSize = 1100 / currText.length;
+ 			}
+ 			funBarText.setAttrs({
+ 				text: currText,
+ 				fontSize: currFontSize
+ 			});
  		}
- 		else {
- 			currFontSize = 1100 / currText.length;
- 		}
- 		funBarText.setAttrs({
- 			text: currText,
- 			fontSize: currFontSize
- 		});
- 		funBarLayer.draw();
  	}
+ 	else {
+ 		funBarText.setAttr('text', '');
+ 	}
+ 	funBarLayer.draw();
  };
 
 /**
@@ -118,15 +96,8 @@
 			var canvasY = group.y() + (groupScale * box.y());
 			var canvasWidth = groupScale * box.width();
 			var canvasHeight = groupScale * box.height();
-		if (group.attrs.renderFunction instanceof Array) {
-			rfun = MOIbody2fun(group.attrs.renderFunction[0]);
-			gfun = MOIbody2fun(group.attrs.renderFunction[1]);
-			bfun = MOIbody2fun(group.attrs.renderFunction[2]);
-			renderRGB(rfun, gfun, bfun, canvas, canvasX, canvasY, canvasWidth, canvasHeight);
-		} 
-		else {
-			renderFun(MOIbody2fun(group.attrs.renderFunction), canvas, canvasX, canvasY, canvasWidth, canvasHeight);
-		}
+			var mistObj = MIST.parse(group.attrs.renderFunction);
+			MIST.render(mistObj, {}, canvas, canvasWidth, canvasHeight, canvasX, canvasY, canvasWidth, canvasHeight);
 	};
 
 	var collapseCanvas = function(group){
@@ -176,33 +147,36 @@
  	toolboxLayer.draw();
  };
 
-/**
- * workspaceToArray takes all the nodes in the workLayer and all the lines in the 
- * lineLayer and puts them into an array.
- */
- var workspaceToArray = function() {
- 	var wArray = [];
- 	var workChildren = workLayer.getChildren();
- 	var lineChildren = lineLayer.getChildren();
- 	var i = 0;
- 	for (i; i < workChildren.length; i++) {
- 		wArray[i] = workChildren[i]; 
- 	}
- 	for (var j = 0; j < lineChildren.length; j++, i++) {
- 		wArray[i] = lineChildren[j];
- 	}
- 	return wArray;
- };
+
 
 /**
  * setDragShadow takes a function or value group and activates drag shadow
  */
  var setDragShadow = function(group) {
  	group.children[0].setAttrs({
- 		shadowColor: 'black',
+ 		shadowColor: dragShadowColor,
  		shadowEnabled: true
  	});
  };
+
+/**
+ * setSelectedShadow takes a function or value group and activates a shadow to signify it's selected
+ */
+ var setSelectedShadow = function(group) {
+ 	group.children[0].setAttrs({
+ 		shadowColor: selectedShadowColor,
+ 		shadowEnabled: true
+ 	});
+ };
+
+ /*
+  * removeShadow takes a function or value group and removes the shadow
+  */
+var removeShadow = function(group) {
+	if (group){
+		group.children[0].setAttr('shadowEnabled', false);
+	}
+};
 
 /**
  * replaceNode takes an old node and a new node and replaces the old node with
@@ -212,6 +186,9 @@
  	var tempOut = oldNode.attrs.lineOut;
  	collapseCanvas(oldNode);
  	oldNode.remove();
+ 	if (newNode.attrs.name == 'constant' && !newNode.children[3]) {
+        createEditableText(newNode);
+    }
  	for(var i = 0; i < tempOut.length; i++) {
  		tempOut[i].attrs.source = newNode;
  	}
@@ -256,9 +233,17 @@
  		while (newNode.children.length - 3 < newNode.attrs.minInputs) {
  			addOutlet(newNode);
  		}
- 		assertRenderable(newNode);
  		resetNode(oldNode); 
  	}
+ 	else if (newNode.attrs.name == 'constant') {
+ 		if (isRenderable(newNode)) {
+ 			for (var i = 3; i < 5; i++) {
+ 				newNode.children[i].setAttr('visible', false);
+ 				workLayer.draw();
+ 			}
+ 		}
+ 	}
+ 	assertRenderable(newNode);
  	updateForward(newNode);
  	lineLayer.draw();
  	workLayer.draw();
@@ -279,7 +264,6 @@
  	node.attrs.lineOut = [];
  	if (isFunction(node)) {
  		// destroy the outlets of the oldNode
-
  		for (var i = node.children.length - 1; i > 2; i--) {
  			node.children[i].destroy();
  		}
@@ -294,6 +278,32 @@
  	}
  };
 
+/**
+ * wrapValueText takes a string and trucates after 4 characters and adds "..." to the end
+ * used for constant values.
+ */
+var wrapValueText = function(text) {
+	if (text.length > 4) {
+		return text.substring(0,4) + "\n...";
+	}
+	else {
+		return text;
+	}
+};
 
+/**
+ * applyDragBounds takes a function or value group and allows it to only be dragged 
+ * in the workspace below the menu
+ */
+var applyDragBounds = function(group) {
+	group.setAttr('dragBoundFunc', function(pos) {
+      var newY = pos.y < menuHeight ? menuHeight: pos.y > height - functionTotalSideLength - funBarHeight ? height - functionTotalSideLength - funBarHeight : pos.y;
+      var newX = pos.x < 0 ? 0 : pos.x > (width - functionTotalSideLength) ? (width - functionTotalSideLength) : pos.x;
+      return {
+        x: newX,
+        y: newY
+      };
+	});
+};
 
 

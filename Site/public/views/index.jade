@@ -1,44 +1,39 @@
 extends ./partials/framework
 block title
-	title MIST by Glimmer
+  title MIST by Glimmer
 block extraMetas
 block extraLinks
+  script(type='text/javascript' src='/js/mist-utils.js')
+  script(type='text/javascript' src='/js/mist-functions.js')
+  script(type='text/javascript' src='/js/mist-layout.js')
+  script(type='text/javascript' src='/js/mist-functions-layout.js')
+  script(type='text/javascript' src='/js/mist-functions-builtin.js')
+  script(type='text/javascript' src='/js/mist-render.js')
+  script(type='text/javascript' src='/js/mistui-dialogs.js')
+  script(type='text/javascript' src='/js/mistui-help.js')
+  script(type='text/javascript' src='/js/mistui-menus.js')
+  script(type='text/javascript' src='/js/mistui-animation.js')
+  script(type='text/javascript' src='/js/mistui-animator.js')
+  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+  script(type='text/javascript' src='/js/gallery.js')
 
 block stylesheets
-	link(rel='stylesheet', href='/css/index')
+  link(rel='stylesheet', href='/css/index')
+
 block content
-	div(id='main')
-		div(id='featuredImage')
-			img(src='/logos/featured.png')
-		div(id='homeButtons')
-			a(href='/default' id='create')
-					='create'
-			a(href='/default' id='tutorials')
-					='tutorials'
-		div(id='galleryImages')
-			div(id='figset')
-				figure
-					a(href='/image/1'): img(src='samples/bw0.jpg' alt='An example black and white image by user darkchocolate59')
-					figcaption
-						a(href='/user/darkchocolate59') darkchocolate59
-				figure
-					a(href='/image/2'): img(src='samples/bw1.jpg' alt='An example black and white image by user pinkxglasses')
-					figcaption
-						a(href='/user/pinkxglasses') pinkxglasses
-				figure
-					a(href='/image/3'): img(src='samples/bw2.jpg' alt='An example black and white image by user qt314')
-					figcaption
-						a(href='/user/qt314') qt314
-				figure
-					a(href='/image/4'): img(src='samples/color0.jpg' alt='An example black and white image by user cutiexoxo13')
-					figcaption
-						a(href='/user/cutiexoxo13') cutiexoxo13
-				figure
-					a(href='/image/5'): img(src='samples/color1.jpg' alt='An example black and white image by user cutechick23')
-					figcaption
-						a(href='/user/cutechick23') cutechick23
-				figure
-					a(href='/image/6'): img(src='samples/color2.jpg' alt='An example black and white image by user dinoboykidney')
-					figcaption
-						a(href='/user/dinoboykidney') dinoboykidney
-			h1: a(href='/gallery') See more in gallery
+  div(id='main')
+    div(id='featuredImage')
+      img(src='/logos/featured.png')
+    div(id='homeButtons')
+      a(href='/create' id='create')
+         ='create'
+      a(href='/default' id='tutorials')
+         ='tutorials'
+    div(id='galleryImages')
+      - for (var i=0; i < images.length; i++)
+        figure
+          a(href='/image/' + images[i].imageid)
+            canvas(id='canvas'+i width='150' height='150')
+            input(type='hidden' id='code'+i value=images[i].code)
+          figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
+      h1: a(href='/gallery') See more in gallery

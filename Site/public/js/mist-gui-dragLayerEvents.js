@@ -2,6 +2,7 @@
 /*
 - on mouseup
 - on draw
+- on dragmove
 */
 /* workaround to make sure intersections work while dragging
    KineticJS's getIntersection doesn't work when using the 'mousedown' event
@@ -26,9 +27,7 @@
       group.setAttr('x', scaledObj.attrs.x);
       group.setAttr('y', scaledObj.attrs.y);
       insertToTable(group);
-      
       insertToArray(actionToObject('replace', group, scaledObj));
-
       replaceNode(scaledObj, group);
       scaledObj = null;
       group.moveTo(workLayer);
@@ -36,15 +35,16 @@
     else {
       if (group.attrs.y > menuHeight) {
         group.moveTo(workLayer);
-        group.children[0].setAttr('shadowEnabled', false);
+
         if (isFunction(group) && group.children.length < 4) {
           for (var i = 0; i < functions[group.attrs.name].min; i++) {
             addOutlet(group);
           } // for
         } // if new function 
         else if (isValue(group)) {
-          group.children[2].setAttr('visible', true);
-
+          if (isRenderable(group)) {
+            group.children[2].setAttr('visible', true);
+          }
         }
         if (group.children[2].attrs.expanded) {
           renderCanvas(group);
@@ -54,7 +54,7 @@
         actionArray[currIndex - 1].y2 = group.y();
       }
       else {
-        if (group.attrs.name == 'constant') {
+        if (group.attrs.name == 'constant' && !group.children[3]) {
           createEditableText(group);
         }
         insertToTable(group);
@@ -83,9 +83,21 @@
       }
       else {
         group.destroy();
+        group = null;
       }
     }
   }
+  if (group) {
+    setSelectedShadow(group);
+    currShape = group;
+    if (!group.attrs.dragBoundFunc) {
+      applyDragBounds(group);
+    }
+  }
+  else {
+    currShape = null;
+  }
+  updateFunBar();
   dragShape = null;
   menuLayer.draw();
   menuButtonLayer.draw();
@@ -114,3 +126,35 @@
     lineLayer.draw();
   }
 });
+
+ dragLayer.on('dragmove', function() {
+    if (dragShape != null) {
+      var pos = stage.getPointerPosition();
+      var node = workLayer.getIntersection(pos);
+      if (node) {
+        var group = node.getParent();
+        if ((isValue(group) && isValue(dragShape)) ||
+            (isFunction(group) && isFunction(dragShape))) {
+          group.setAttrs({
+            scaleX: 1.2,
+            scaleY: 1.2
+          });
+          if (group.children[2].attrs.expanded) {
+            renderCanvas(group);
+          }
+          scaledObj = group;
+        }
+      }
+      else if (scaledObj != null) {
+        scaledObj.setAttrs({
+          scaleX: 1,
+          scaleY: 1
+        });
+        if (scaledObj.children[2].attrs.expanded) {
+            renderCanvas(scaledObj);
+          }
+        scaledObj = null;
+      }
+      workLayer.draw();
+    }
+  });

@@ -9,6 +9,7 @@ database.albumContentsInfo(req.params.albumid, function(albumContents, error){
 		res.render('../public/views/albumContents.jade', {
 		    loggedIn: req.session.loggedIn,
 		    user: req.session.user,
+		    viewing:req.params.userid,
 		    albumContents: albumContents
 		});
 	});
