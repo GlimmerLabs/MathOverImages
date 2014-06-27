@@ -8,8 +8,8 @@
 	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
 	*/
 	var addOutlet = function(funGroup) {
-		if(funGroup.children.length - 3 < funGroup.attrs.maxInputs) {
-			if(funGroup.children.length - 3 > 2) {
+		if(funGroup.children.length - OUTLET_OFFSET < funGroup.attrs.maxInputs) {
+			if(funGroup.children.length - OUTLETOFFSET > 2) {
 				funGroup.children[0].setAttr('height',
 					funGroup.children[0].attrs.height + outletYOffset);
 				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
@@ -201,26 +201,26 @@ var removeShadow = function(group) {
  			while (newNode.children.length < newNode.attrs.maxInputs + 3) {
  				addOutlet(newNode);
  			}
- 			var outletIndex = 3; // which outlet we are applying the next input to
- 			for(var i = 0; i < newNode.attrs.maxInputs; i++) {
- 				if (oldNode.children[i+3].attrs.lineIn) {
- 					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i+3].attrs.lineIn;
+ 			var outletIndex = OUTLET_OFFSET; // which outlet we are applying the next input to
+ 			for(var i = OUTLET_OFFSET; i < newNode.attrs.maxInputs - OUTLET_OFFSET; i++) {
+ 				if (oldNode.children[i].attrs.lineIn) {
+ 					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
  					newNode.attrs.numInputs++;
  					newNode.children[outletIndex].attrs.lineIn.attrs.outlet = newNode.children[outletIndex];
  					outletIndex++;
  				}
  			}
  			while (i < oldNode.children.length - OUTLET_OFFSET) {
- 				if(oldNode.children[i+3].attrs.lineIn) {
- 					removeLine(oldNode.children[i + 3].attrs.lineIn);
+ 				if(oldNode.children[i].attrs.lineIn) {
+ 					removeLine(oldNode.children[i].attrs.lineIn);
  				}
  				i++;
  			}
  		} 
  		else {
  			addOutlet(newNode);
- 			var outletIndex = 3;
- 			for (var i = 3; i < oldNode.children.length; i++) {
+ 			var outletIndex = OUTLET_OFFSET;
+ 			for (var i = OUTLET_OFFSET; i < oldNode.children.length; i++) {
  				if (oldNode.children[i].attrs.lineIn) { 
  					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
  					newNode.attrs.numInputs++;
@@ -230,7 +230,7 @@ var removeShadow = function(group) {
  				}
  			} 
  		}
- 		while (newNode.children.length - 3 < newNode.attrs.minInputs) {
+ 		while (newNode.children.length - OUTLET_OFFSET < newNode.attrs.minInputs) {
  			addOutlet(newNode);
  		}
  		resetNode(oldNode); 

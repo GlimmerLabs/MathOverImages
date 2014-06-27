@@ -64,9 +64,6 @@ input:hover {
 	height: 25px;
 }
 
-figcaption {
-	display: inline;
-}
 #link {
 	text-decoration: none;
 	text-color: #979797;
@@ -76,14 +73,14 @@ figcaption {
 .settings {
 	display: inline-block;
 	height: 50px;
-	width: 280px;
+	width: 24.2%;
 	text-align: center;
-	font-size: 2em;
+	font-size: 1.7em;
 	color: #FFFFFF;
 	text-decoration: none;
 	float: right;
 	background-color: #EFDC5C;
-	margin: 0px 3%;
+	margin: 0px 6%;
 }
 
 .settings:hover {
@@ -112,8 +109,16 @@ height: 25px;
 float: left;
 }
 
-#bibliography {
-float: right;
+figcaption.bio-view {
+  white-space: pre-wrap;
+  position: relative;
+  margin: 0px 50px;
+  width: 500px;
+  word-wrap: break-word;
+  -moz-hyphens:auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens:auto;
+  hyphens: auto;
 }
 
 #bio-form {

@@ -210,15 +210,15 @@
 				context.closePath();
 				context.fillStrokeShape(this);
 			},
-			name: 'outlet' + (functGroup.children.length - 3),
+			name: 'outlet' + (functGroup.children.length - OUTLET_OFFSET),
 			x:functGroup.children[0].x() + outletXOffset,
-			y:functGroup.children[0].y() + (functGroup.children.length - 3) * 
+			y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
 				outletYOffset + functionHalfStrokeWidth,
 			fill: '#FFC440',
 			stroke: 'black',
 			strokeWidth: 1,
 			lineIn: null,
-			outletIndex: functGroup.children.length - 3
+			outletIndex: functGroup.children.length - OUTLET_OFFSET
 		});
 		return outlet;
 	};
@@ -275,6 +275,8 @@ var addLine = function(source, sink, outletIndex) {
   source.attrs.lineOut[source.attrs.lineOut.length] = line;
   outlet.attrs.lineIn = line;
   line.attrs.outlet = outlet;
+  line.points()[2] = sink.x();
+  line.points()[3] = sink.y() + sink.children[outletIndex + OUTLET_OFFSET].y();
   assertRenderable(sink);
   if (sink.attrs.numInputs == sink.children.length - OUTLET_OFFSET &&
        sink.attrs.numInputs < sink.attrs.maxInputs) {
@@ -283,6 +285,7 @@ var addLine = function(source, sink, outletIndex) {
   updateForward(sink);
   line.setAttr("visible",true);
   lineLayer.add(line);
+  insertToTable(line);
   workLayer.draw();
   lineLayer.draw();
   dragLayer.draw();
@@ -293,11 +296,13 @@ var addLine = function(source, sink, outletIndex) {
  * by the funName key.
  */
 var addOp = function(funName, x, y) {
-  var op = makeFunctionGroup(funName, x, y);
+  var op = makeFunctionGroup(funName, x + functionHalfStrokeWidth, y);
   op.setAttr("visible",true);
   addOutlet(op);
   addOutlet(op);
+  applyDragBounds(op);
   workLayer.add(op);
+  insertToTable(op);
   workLayer.draw();
   return op;
 };
@@ -309,7 +314,9 @@ var addVal = function(valName, x, y) {
   var val = makeValueGroup(valName, x, y);
   assertRenderable(val);
   val.setAttr("visible",true);
+  applyDragBounds(val);
   workLayer.add(val);
+  insertToTable(val);
   workLayer.draw();
   return val;
 };
@@ -332,7 +339,7 @@ var createEditableText = function (group) {
 		width: functionTotalSideLength,
 		height: 20,
 		align: "center",
-		fontFamily: 'Open Sans',
+		fontFamily: functionFont,
 		fill: 'black'
 	});
 	group.add(backgroundBox);
