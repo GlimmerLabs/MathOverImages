@@ -109,10 +109,11 @@ input[type='submit']:hover {
 #edit-bio {
 width: 25px;
 height: 25px;
+float: left;
 }
 
 #bibliography {
-margin: 25px 20px;
+float: right;
 }
 
 #bio-form {

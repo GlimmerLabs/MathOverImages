@@ -4,7 +4,7 @@
 	margin:100px;
 }
 
-#pageTitle {
+#pageTitleGeneral {
 	background-color: #3FAAA0;
 }
 
@@ -37,7 +37,6 @@
 	width:180px;
 	float: left;
 	margin: 50px;
-
 }
 
 #images figure img{
@@ -86,4 +85,7 @@ float: right;
 
 a{
 color: #979797;
+}
+
+.nextPrevious {
 }

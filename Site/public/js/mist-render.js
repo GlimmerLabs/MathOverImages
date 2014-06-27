@@ -240,6 +240,10 @@ MIST.renderAt = function(t, exp, context, canvas,
   if (renderWidth > imgWidth) { renderWidth = imgWidth; }
   if (renderHeight > imgHeight) { renderHeight = imgHeight; }
 
+  // Make sure that the rendering width and height are whole numbers
+  renderWidth = Math.round(renderWidth);
+  renderHeight = Math.round(renderHeight);
+
   // Grab the canvas buffer.
   var buffer = document.getElementById("canvas-buffer");
   if (!buffer ) {
