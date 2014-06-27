@@ -274,7 +274,9 @@ if (name == 'cancel') {
 	screenLayer.draw();
 }
 });
-
+/**
+ * openSavePopUp sets the cover and popSaveGroup to visible and begin animation.
+ */
 var openSavePopUp = function() {
 	cover.setAttr('visible', true);
 	popSaveGroup.setAttr('visible', true);

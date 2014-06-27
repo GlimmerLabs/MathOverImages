@@ -61,7 +61,8 @@ var funBarSaveFun = new Kinetic.Rect({
   fill: functionColor,
   stroke: functionColor,
   strokeWidth: 10,
-  lineJoin: 'round'
+  lineJoin: 'round',
+  opacity: .5
 })
 funBarSaveFunGroup.add(funBarSaveFun);
 
@@ -90,6 +91,7 @@ var funBarSaveIm = new Kinetic.Rect({
   fill: 'darkblue',
   stroke: 'darkblue',
   strokeWidth: 10,
+  opacity: .3
   //lineJoin: 'round'
 })
 funBarSaveImGroup.add(funBarSaveIm);
