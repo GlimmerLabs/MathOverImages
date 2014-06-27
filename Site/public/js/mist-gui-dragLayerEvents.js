@@ -7,19 +7,55 @@
 /* workaround to make sure intersections work while dragging
    KineticJS's getIntersection doesn't work when using the 'mousedown' event
     to startDrag */
-    dragLayer.on('dragstart', function() {
+    dragLayer.on('dragstart mousedown', function(evt) {
       if (dragShape) {
         dragShape.stopDrag();
         dragShape.startDrag();
         dragLayer.draw();
       }
     });
+
+    dragLayer.on('mousedown', function(evt) {
+      var group = evt.target.getParent();
+        group.stopDrag();
+        group.startDrag();
+        dragLayer.draw();
+    })
 /*
   when an object being dragged is released:
   1. check that it isnt in the menu area
   --if it is a new object, add the appropriate number of outlets to it
   2. if its in the menu area destroy it and all lines attached to it
   */
+  var initToWorkLayer = function(group) {
+    group.moveTo(workLayer);
+
+    if (isFunction(group) && group.children.length < 4) {
+      for (var i = 0; i < functions[group.attrs.name].min; i++) {
+        addOutlet(group);
+        } // for
+    } // if new function 
+    else if (isValue(group)) {
+      if (isRenderable(group)) {
+        group.children[2].setAttr('visible', true);
+      }
+    }
+    if (group.children[2].attrs.expanded) {
+      renderCanvas(group);
+    } // if 
+    if (inTable(group)) {
+      actionArray[currIndex - 1].x2 = group.x();
+      actionArray[currIndex - 1].y2 = group.y();
+    }
+    else {
+      if (group.attrs.name == 'constant' && !group.children[3]) {
+        createEditableText(group);
+      }
+      insertToTable(group);
+      insertToArray(actionToObject('insert', group));
+    }
+  };
+
   dragLayer.on('mouseup', function(evt) {
     var group = evt.target.getParent();
     if (scaledObj) {
@@ -34,32 +70,7 @@
     }
     else {
       if (group.attrs.y > menuHeight) {
-        group.moveTo(workLayer);
-
-        if (isFunction(group) && group.children.length < 4) {
-          for (var i = 0; i < functions[group.attrs.name].min; i++) {
-            addOutlet(group);
-          } // for
-        } // if new function 
-        else if (isValue(group)) {
-          if (isRenderable(group)) {
-            group.children[2].setAttr('visible', true);
-          }
-        }
-        if (group.children[2].attrs.expanded) {
-          renderCanvas(group);
-      } // if 
-      if (inTable(group)) {
-        actionArray[currIndex - 1].x2 = group.x();
-        actionArray[currIndex - 1].y2 = group.y();
-      }
-      else {
-        if (group.attrs.name == 'constant' && !group.children[3]) {
-          createEditableText(group);
-        }
-        insertToTable(group);
-        insertToArray(actionToObject('insert', group));
-      }
+        initToWorkLayer(group);
     } 
     else {
       currShape = null;
