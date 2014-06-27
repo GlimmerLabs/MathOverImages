@@ -22,15 +22,15 @@ block content
             td: input(type='button' id='edit-username' class='editButton')
         tbody(id='username-form')
           tr(id='item')
+            td(id ='headers') current password:
+            td(id='content')
+              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
+          tr(id='item')
             td(id='headers') change username:
             td(id='content'): input(type='username' name='newUsername' placeholder='username' class='signupField' id='newUsername')
           tr(id='item')
             td(id='headers') confirm username:
             td(id='content'): input(type='username' name='newUsername2' placeholder='re-enter username' class='signupField' id='newUsername2')
-          tr(id='item')
-            td(id ='headers') current password:
-            td(id='content')
-              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
           tr(id='item')
             td
             td(id='changeInfo'): input(type='submit' name='usernameSubmit' value ='submit')
@@ -44,6 +44,10 @@ block content
               input(type='button' id='edit-password' class='editButton')
         tbody(id='password-form')
           tr(id='item')
+            td(id ='headers') current password:
+            td(id='content')
+              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
+          tr(id='item')
             td(id ='headers') new password:
             td(id='content')
               input(type='password' name='newPassword'  placeholder='password' class='signupField' )
@@ -51,10 +55,6 @@ block content
             td(id ='headers') confirm password:
             td(id='content')
               input(type='password' name='newPassword2'  placeholder='re-enter password' class='signupField')
-          tr(id='item')
-            td(id ='headers') current password:
-            td(id='content')
-              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
           tr(id='item')
             td
             td(id='changeInfo'): input(type='submit' name='passwordSubmit' value ='submit')
@@ -67,6 +67,10 @@ block content
             td: input(type='button' id='edit-email' class='editButton')
         tbody(id='email-form')
           tr(id='item')
+            td(id ='headers') current password:
+            td(id='content')
+              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
+          tr(id='item')
             td(id ='headers') new primary email:
             td(id='content')
               input(type='email' name='newEmail'  placeholder='new email' class='signupField' id='newEmail1')
@@ -74,10 +78,6 @@ block content
             td(id ='headers') confirm new email:
             td(id='content')
               input(type='email' name='newEmail2'  placeholder='re-enter email' class='signupField' id='newEmail2')
-          tr(id='item')
-            td(id ='headers') current password:
-            td(id='content')
-              input(type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword')
           tr(id='item')
             td
             td(id='changeInfo'): input(type='submit' name='emailSubmit' value ='submit')

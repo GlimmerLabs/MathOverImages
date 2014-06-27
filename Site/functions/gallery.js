@@ -17,11 +17,12 @@ module.exports.buildRandomPage = (function(req, res, database) {
 
 module.exports.buildRecentsPage = function(req, res, database) {
   filedatabase=database;
-  module.exports.getRecentImages(10, req.params.pageNumber, function(images, error) {
+  module.exports.getRecentImages(9, req.params.pageNumber, function(images, nextPage,  error) {
     res.render('../public/views/gallery.jade',{
       loggedIn: req.session.loggedIn,
       user: req.session.user,
       images: images,
+      nextPage: nextPage,
       currentPage: req.params.pageNumber,
       type: "recent"
     });
@@ -75,19 +76,23 @@ module.exports.getRandomImages= (function(count, callback) {
 module.exports.getRecentImages= (function(count, page, callback) {
 
   var start = (page-1)*count;
-  var end = (start+9);
-//  var end = (page*count)-1;
-  filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT " + start +","+ end + ";", function(rows, error){
-    callback(rows, error);
+  filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT " + start +","+ (count+1) + ";", function(rows, error){
+  if(rows.length <=9){
+    callback(rows.slice(0, count), false, error)
+  }
+  else{
+    callback(rows.slice(0, count),true,  error);
+  }
   });
 });
 
 module.exports.buildTopRatedPage = function(req, res, database) {
     filedatabase=database;
-    module.exports.getTopRated(10, req.params.pageNumber, function(images, error) {
+    module.exports.getTopRated(9, req.params.pageNumber, function(images, nextPage, error) {
 	res.render('../public/views/gallery.jade',{
 	    loggedIn: req.session.loggedIn,
 	    user: req.session.user,
+	    nextPage:nextPage,
 	    images: images,
 	    currentPage: req.params.pageNumber,
 	    type: "toprated"
@@ -98,9 +103,12 @@ module.exports.buildTopRatedPage = function(req, res, database) {
 module.exports.getTopRated= (function(count, page, callback) {
 
     var start = (page-1)*count;
-    var end = (start+9);
-//(page*count)-1;
-    filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY rating DESC LIMIT " + start +","+ end + ";", function(rows, error){
-	callback(rows, error);
-    });
+    filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY rating DESC LIMIT " + start +","+ (count+1) + ";", function(rows, error){
+  if(rows.length <=9){
+    callback(rows.slice(0, count), false, error)
+  }
+  else{
+    callback(rows.slice(0, count),true,  error);
+  }
+  });
 });
