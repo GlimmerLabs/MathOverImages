@@ -80,6 +80,10 @@ vertical-align: bottom;
 height: 50px;
 }
 
+#pageNumber{
+float: right;
+}
+
 a{
 color: #979797;
 }

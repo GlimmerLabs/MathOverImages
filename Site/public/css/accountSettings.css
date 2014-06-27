@@ -10,6 +10,13 @@ img editButton {
   height: 20px;
   decoration: none;
 }
+.editButton{
+  width: 20px;
+  height: 20px;
+  border: none;
+  background-image:url(/icons/edit_button.png);
+  background-size: 100% 100%;
+}
 #content {
 text-align: center;
   width: 250px;

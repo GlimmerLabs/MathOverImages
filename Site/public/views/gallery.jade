@@ -28,6 +28,14 @@ block content
    a(href='/gallery/recent' class='subview') recent
    a(href='/gallery/toprated' class='subview') top rated
    a(href='#recent' class='subview') featured
+  div(id='pageNumber')
+    if (currentPage==1 && !(type == "random"))
+      a(href='/gallery/' + type + '/' + ++currentPage) next »
+    else if !(type == "random") && !(currentPage==1) && (images.length>=9)
+      a(href='/gallery/' + type + '/' + --currentPage) « previous
+      a(href='/gallery/' + type + '/' + (currentPage+2)) next »
+    else if !(type == "random")
+      a(href='/gallery/' + type + '/' + --currentPage) « previous
   div(id='images')
    - for (var i=0; i < images.length; i++)
     figure
@@ -36,10 +44,3 @@ block content
        input(type='hidden' id='code'+i value=images[i].code)
      figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
      figcaption(class='left')= "★" + images[i].rating
- if (currentPage==1 && !(type == "random"))
-  a(href='/gallery/' + type + '/' + ++currentPage) next »
- else if !(type == "random") && !(currentPage==1) && (images.length>=currentPage*9)
-  a(href='/gallery/' + type + '/' + --currentPage class='page') « previous   
-  a(href='/gallery/' + type + '/' + (currentPage+2) class='page') next »
- else if !(type == "random")
-  a(href='/gallery/' + type + '/' + --currentPage class='page') « previous   

@@ -112,7 +112,7 @@ module.exports = function(app,passport,database) {
 
   // --------------------------------------------------
   // Path:  /api
-  //   Dynamic content distribution
+  //   Dynamic content distribution - return raw data through AJAX
   app.post('/api', function(req,res) {
     if (req.body.funct === "checkAvailability") {
       database.userExists(req.body.value, function(exists, error) {
