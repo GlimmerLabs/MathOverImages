@@ -153,7 +153,7 @@ function MISTbody2fun(body)
  * Convert a MIST expression to something that returns an RGB
  * list.
  */
-MIST.expToRGB = function(exp,context) {
+MIST.expToRGB = function(name,exp,context) {
   var type = MIST.expType(exp, context);
   var tmp = [];
    // Contexts as objects
@@ -188,7 +188,7 @@ MIST.expToRGB = function(exp,context) {
     return eval(code);
   }
   else {
-    throw "Can not handle expressions of type " + type;
+    throw "Cannot handle expressions of type " + type;
   }
 } // MIST.expToRGB
 
@@ -240,6 +240,10 @@ MIST.renderAt = function(t, exp, context, canvas,
   if (renderWidth > imgWidth) { renderWidth = imgWidth; }
   if (renderHeight > imgHeight) { renderHeight = imgHeight; }
 
+  // Make sure that the rendering width and height are whole numbers
+  renderWidth = Math.round(renderWidth);
+  renderHeight = Math.round(renderHeight);
+
   // Grab the canvas buffer.
   var buffer = document.getElementById("canvas-buffer");
   if (!buffer ) {
@@ -275,7 +279,7 @@ MIST.renderAt = function(t, exp, context, canvas,
   };
 
   // Build the function
-  var fun = MIST.expToRGB(exp, context);
+  var fun = MIST.expToRGB("untitled image", exp, context);
 
   // Set up our main variables
   var x = -1;
