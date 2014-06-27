@@ -212,13 +212,13 @@
 			},
 			name: 'outlet' + (functGroup.children.length - OUTLET_OFFSET),
 			x:functGroup.children[0].x() + outletXOffset,
-			y:functGroup.children[0].y() + (functGroup.children.length - 3) * 
+			y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
 				outletYOffset + functionHalfStrokeWidth,
 			fill: '#FFC440',
 			stroke: 'black',
 			strokeWidth: 1,
 			lineIn: null,
-			outletIndex: functGroup.children.length - 3
+			outletIndex: functGroup.children.length - OUTLET_OFFSET
 		});
 		return outlet;
 	};
