@@ -16,11 +16,13 @@
     });
 
     dragLayer.on('mousedown', function(evt) {
+      removeShadow(currShape);
       var group = evt.target.getParent();
-        group.stopDrag();
-        group.startDrag();
-        dragLayer.draw();
-    })
+      group.stopDrag();
+      group.startDrag();
+      dragLayer.draw();
+      workLayer.draw();
+    });
 /*
   when an object being dragged is released:
   1. check that it isnt in the menu area
@@ -71,51 +73,28 @@
     else {
       if (group.attrs.y > menuHeight) {
         initToWorkLayer(group);
-    } 
-    else {
-      currShape = null;
-      insertToArray(actionToObject('delete', group));
-      // deal with lines coming in to the node being deleted
-      var targetLine;
-      for(var i = 3; i < group.children.length; i++) {
-        targetLine = group.children[i].attrs.lineIn;
-        if(targetLine != null) {
-          removeLine(targetLine);          
-        }
-      }
-      // deal with the lines leading out of the node being deleted
-      for(var i = 0; i < group.attrs.lineOut.length; i++) {
-        targetLine = group.attrs.lineOut[i];
-        removeLine(targetLine);
-      }
-      lineLayer.draw();
-      if (inTable(group)){
-        group.remove();
-      }
+      } 
       else {
+        currShape = null;
         group.destroy();
         group = null;
       }
     }
-  }
-  if (group) {
-    setSelectedShadow(group);
-    currShape = group;
-    if (!group.attrs.dragBoundFunc) {
-      applyDragBounds(group);
+    if (group) {
+      setSelectedShadow(group);
+      currShape = group;
+      if (!group.attrs.dragBoundFunc) {
+        applyDragBounds(group);
+      }
     }
-  }
-  else {
-    currShape = null;
-  }
-  updateFunBar();
-  dragShape = null;
-  menuLayer.draw();
-  menuButtonLayer.draw();
-  dragLayer.draw();
-  workLayer.draw();
-  lineLayer.draw();
-}); 
+    updateFunBar();
+    dragShape = null;
+    menuLayer.draw();
+    menuButtonLayer.draw();
+    dragLayer.draw();
+    workLayer.draw();
+    lineLayer.draw();
+  }); 
 /*
  * While an object is being dragged, move all lines connected to it with it.
  */
