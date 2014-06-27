@@ -24,7 +24,6 @@
 // +----------------------------+------------------------------------
 // | Extensions to Kinetic.Text |
 // +----------------------------+
-// To do: fix for centered text
 
 Kinetic.Text.prototype.isEditable = false;
 Kinetic.Text.prototype.isActive = false;
