@@ -1,32 +1,16 @@
 @import url("/css/styles");
 
-#pageTitle {
-    background-color:3FAAA0;
-    color: #FFF;
-    margin: 0 0 15px -110px;
-}
 
-#pageTitle h1 {
-    float: left;
-    font-family: 'Open Sans';
-    border: 10px solid white;
-    font-weight: 800;
-    display: inline-block;
-    margin: 15px 0 10px 10px;
-    padding: 1px 60px;
-    font-size: 4em;
-
-}
 
 #flashZone {
     clear:left;
     background-color: #E1E1E1;
     display:block;
     text-align: left;
-    border: 2px solid white;
+    border: 10px solid white;
     color: #7B7B7B;
     border-radius: 15px;
-    margin: 0 -100px;
+    margin:0 -110px;
 }
 
 #flashZone h1 {
@@ -41,11 +25,11 @@ form {
 
 table {
     color:#979797;
-    margin:40px;
+    margin:0px auto;
 }
 
 td {
-padding: 10px;
+padding: 20px;
 }
 
 tr {
@@ -54,9 +38,8 @@ padding: 50px;
 
 input[type='submit'] {
     display:block;
-    float: right;
     clear: left;
-    margin: 50px;
+    margin: 0px auto;
     color: #FFF;
     background-color:#979797;
     border:1px solid white;
