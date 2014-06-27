@@ -334,7 +334,7 @@ var createEditableText = function (group) {
 		width: functionTotalSideLength,
 		height: 20,
 		align: "center",
-		fontFamily: 'Open Sans',
+		fontFamily: functionFont,
 		fill: 'black'
 	});
 	group.add(backgroundBox);
