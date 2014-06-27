@@ -123,7 +123,7 @@ There are 3 different modes:
   insertToArray(actionToObject('delete', parent));
   // deal with lines coming in to the node being deleted
   var targetLine;
-  for(var i = 3; i < parent.children.length; i++) {
+  for(var i = OUTLET_OFFSET; i < parent.children.length; i++) {
     targetLine = parent.children[i].attrs.lineIn;
     if (targetLine){
       removeLine(targetLine);
