@@ -42,23 +42,25 @@ var hashPassword = (function (passwordtohash, callback) {
 
 /*
   Procedure: 
-  sanitize(string);
+    sanitize(string);
   Purpose: 
-  Sanitizes a string for MySQL insertion without risking injection
+    Sanitizes a string for MySQL insertion without risking injection
   Parameters: 
-  string, the string to sanitize
+    string, the string to sanitize
   Produces: 
-  sanitizedString, a string - returned
+    sanitizedString, a string - returned
   Pre-conditions: 
-  None
+    None
   Post-conditions: 
-  sanitizedString will be safe to insert into a MySQL
+    sanitizedString will be safe to insert into a MySQL
   Preferences: 
-  This function is not available outside of this document.
+    This function is not available outside of this document.
 */
 var sanitize = (function (string) {
-    return validate.escape(string);
-
+    var escaped = validate.escape(string);
+    // Restore ampersands (and other things?)
+    // escaped = escaped.replace("&amp;", "&");
+    return escaped;
 }); // sanitize(string);
 module.exports.sanitize = sanitize;
 
@@ -615,3 +617,16 @@ module.exports.albumContentsInfo=(function(albumid, callback) {
     });
 });
 
+//Get Commenter Information
+
+module.exports.commentInfo=(function(imageid, callback) {
+    imageid=sanitize(imageid);
+    module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE images.imageid='"+imageid+"' and comments.postedBy= users.userid; ORDER BY comments.postedAt asc;" , function (rows, error){
+	if (error)
+	    callback(null, error);
+	else if (!rows[0])
+	    callback(null, "Comments do not exist");
+	else
+	    callback(rows, null);
+    });
+});
