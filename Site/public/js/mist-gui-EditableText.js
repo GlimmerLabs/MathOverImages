@@ -331,19 +331,34 @@ function readyEditing(stage)
 * - renderFunction
 */
 var updateValueText = function(text) {
-	var value = text.parent;
-	var newText = text.attrs.text;
-	value.children[1].setAttrs({
-		text: wrapValueText(newText),
-		fontSize: 13
-	});
-	value.setAttrs({
-		rep: newText,
-		renderFunction: newText
-	});
-	for (var i = 3; i < 5; i++) {
-		value.children[i].setAttr('visible', false);
+	var validNumber = /^-?[0-9]+\.(?=[0-9])[0-9]*$/
+	if(validNumber.test(text.text()))
+	{
+		var value = text.parent;
+		var newText = text.attrs.text;
+		value.children[1].setAttrs({
+			text: wrapValueText(newText),
+			fontSize: 13
+		});
+		value.setAttrs({
+			rep: newText,
+			renderFunction: newText
+		});
+		for (var i = 3; i < 5; i++) {
+			value.children[i].setAttr('visible', false);
+		}
+		assertRenderable(value);
+		updateForward(value);
 	}
-	assertRenderable(value);
-	updateForward(value);	
+	else
+	{
+		if(activeText != null)
+		{
+			activeText.removeFocus();
+		}
+		activeText = text;
+		text.isActive = true;
+		if (text.text() == text.defaultText){text.text("");}
+		text.addCursor(false);
+	}
 };
