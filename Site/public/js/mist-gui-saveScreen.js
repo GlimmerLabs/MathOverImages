@@ -36,14 +36,14 @@ var cover = new Kinetic.Rect({
 	height: height,
 	fill: 'black',
 	opacity: .6,
-	visible: true
+	visible: false
 });
 screenLayer.add(cover);
 
 var popSaveGroup = new Kinetic.Group({
 	x: popSaveGroupX, 
 	y: popSaveGroupY,
-	visible: true
+	visible: false
 });
 screenLayer.add(popSaveGroup);
 
@@ -241,7 +241,10 @@ if (group.attrs.name) {
 screenLayer.on('mouseout', function(evt) {
 var group = evt.target.parent;
 if (group.attrs.name) {
-	group.children[0].setAttr('fill', popButtonColor);
+	group.children[0].setAttrs({
+		fill: popButtonColor,
+		shadowEnabled: false
+	});
   	screenLayer.draw();
 }
 });
@@ -271,3 +274,19 @@ if (name == 'cancel') {
 	screenLayer.draw();
 }
 });
+
+var openSavePopUp = function() {
+	cover.setAttr('visible', true);
+	popSaveGroup.setAttr('visible', true);
+	var renderFunction = currShape.attrs.renderFunction;
+	updatePopText(renderFunction);
+	animation = true;
+	screenLayer.draw();
+	var frame = function() {
+		renderPopCanvas(renderFunction);
+		if (animation) {
+			setTimeout(frame, 50);
+		}
+	}
+	frame();
+};

@@ -48,14 +48,6 @@
 
   <script>
   stage.draw();
-  animation = true;
-  var frame = function() {
-   renderPopCanvas("rgb(sum(x,y), sin(x), y)");
-   if (animation) {
-    setTimeout(frame, 50);
-  }
-}
-frame();
   </script>
 </body>
 <html>
