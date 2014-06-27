@@ -8,8 +8,8 @@
 	addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
 	*/
 	var addOutlet = function(funGroup) {
-		if(funGroup.children.length - 3 < funGroup.attrs.maxInputs) {
-			if(funGroup.children.length - 3 > 2) {
+		if(funGroup.children.length - OUTLET_OFFSET < funGroup.attrs.maxInputs) {
+			if(funGroup.children.length - OUTLETOFFSET > 2) {
 				funGroup.children[0].setAttr('height',
 					funGroup.children[0].attrs.height + outletYOffset);
 				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
