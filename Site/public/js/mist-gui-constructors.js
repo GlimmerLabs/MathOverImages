@@ -299,6 +299,7 @@ var addOp = function(funName, x, y) {
   op.setAttr("visible",true);
   addOutlet(op);
   addOutlet(op);
+  applyDragBounds(op);
   workLayer.add(op);
   workLayer.draw();
   return op;
@@ -311,6 +312,7 @@ var addVal = function(valName, x, y) {
   var val = makeValueGroup(valName, x, y);
   assertRenderable(val);
   val.setAttr("visible",true);
+  applyDragBounds(val);
   workLayer.add(val);
   workLayer.draw();
   return val;
