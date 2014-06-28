@@ -51,7 +51,7 @@ module.exports.run = function(info, req, res) {
 
 fail = function(res, message) {
   console.log("FAILED!", message);
-  res.send(404, message);
+  res.send(400, message);       // "Bad request"
 } // fail
  
 // +------------------------------------------------------------------
