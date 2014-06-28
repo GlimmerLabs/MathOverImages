@@ -3,6 +3,23 @@
  *   Functions for handling requests to the API.
  */
 
+// +-------+-----------------------------------------------------------
+// | Notes |
+// +-------+
+
+/*
+   The API looks for actions specified by "funct" or "action" in
+   either GET or POST requests.  You should pass along the appropriate
+   object (body or whatever) to the run method, along with the request
+   and the response objects.  (Yes, the method needs a better name 
+   than "run".)
+
+   In most cases, the handlers for the actions are found in 
+   handlers.action (see the section about Handlers).  That way,
+   we can add another action to the API just by adding another
+   handler.
+ */
+
 // +--------------------+--------------------------------------------
 // | Required Libraries |
 // +--------------------+
@@ -33,30 +50,38 @@ module.exports.run = function(info, req, res) {
     });
   } // checkAvailability
 
-  // getws - Get a workspace by id or name
-  else if (action == "getws") {
-    getws(info, req, res);
-  }
+  // Deal with actions with a handler.
+  if (handlers[action]) {
+    handlers[action](info, req, res);
+  } // if (handlers[action])
 
-  else if (action == "savews"){
-    savews(info, req, res);
-  }
   // Everything else is undefined
   else {
     fail(res, "Invalid action: " + action);
   } // invalid action
 } // run
 
-// +------------------------------------------------------------------
+// +-----------+-------------------------------------------------------
+// | Utilities |
+// +-----------+
 
 fail = function(res, message) {
   console.log("FAILED!", message);
   res.send(400, message);       // "Bad request"
 } // fail
  
-// +------------------------------------------------------------------
+// +----------+--------------------------------------------------------
+// | Handlers |
+// +----------+
 
-getws = function(info,req,res) {
+var handlers = {};
+
+/**
+ * Get a workspace
+ *   action: getws
+ *   name: string naming the workspace
+ */
+handlers.getws = function(info,req,res) {
   if (!req.session.loggedIn) {
     res.send(404,"You must be logged in to retrieve a workspace.");
   } // if they are not logged in
@@ -65,7 +90,8 @@ getws = function(info,req,res) {
   }
   else if (info.name) {
     var query = "SELECT data FROM workspaces WHERE userid=" + 
-        req.session.user.userid + " and name='"  + database.sanitize(info.name) + "'";
+        req.session.user.userid + " and name='"  + 
+        database.sanitize(info.name) + "'";
     // console.log(query);
     database.query(query, function(rows, error) {
       if (error) {
@@ -84,30 +110,38 @@ getws = function(info,req,res) {
   else {
     fail(res, "Insufficient info for getting the workspace");
   }
-} // getws
-savews = function(info, req, res) {
-  if(!req.session.loggedIn) {
+} // handlers.getws
+
+/**
+ * Save a workspace.
+ *   action: savews
+ *   name: the name of the workspace
+ *   data: The information about the workspace
+ *   replace: true or false [optional]
+ */
+handlers.savews = function(info, req, res) {
+  if (!req.session.loggedIn) {
     fail(res, "Could not save workspace because you're not logged in");
   }
-  else if(!info.name) {
+  else if (!info.name) {
     fail(res, "Could not save workspace because you didn't title it");
   }
   else {
     var query = "SELECT id FROM workspaces WHERE name='"+
         database.sanitize(info.name)+"' AND userid="+req.session.user.userid;
     database.query(query, function(rows, error) {
-      if(error) {
+      if (error) {
         fail(res, "Error: "+error);
       }
-      else if(rows[0]) {
-        if(!info.replace) {
+      else if (rows[0]) {
+        if (!info.replace) {
           fail(res, info.name + " already exists!");
 	}
 	else {
 	  var newQuery = "UPDATE workspaces SET data='"+
 	      database.sanitize(info.data)+"' WHERE id="+rows[0].id; 
           database.query(newQuery, function(rows, error) {
-	    if(error) {
+	    if (error) {
 	      fail(res, "Error: "+error);
 	    }
 	    else {
@@ -121,7 +155,7 @@ savews = function(info, req, res) {
 	    req.session.user.userid + ",'" + database.sanitize(info.name) +
 	    "','" + database.sanitize(info.data) +"')";
 	database.query(newQuery, function(rows, error) {
-	  if(error) {
+	  if (error) {
 	    fail(res, "Error: "+error);
 	  }
 	  else {
@@ -131,4 +165,4 @@ savews = function(info, req, res) {
       } // If name is not in table
     });
   }
-}
+} // handlers.savews
