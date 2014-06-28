@@ -134,8 +134,15 @@ var resetWorkspace = function() {
 /**
  * Save the workspace with a particular name.  
  */
-var saveWorkspace = function() {
-	// STUB
+var saveWorkspace = function(name, replace) {
+  var request = new XMLHttpRequest();
+  var name = encodeURIComponent(name);
+  var workspace = encodeURIComponent(workspaceToJSON());
+  var data = "action=savews&name="+name+"&data="+workspace + 
+      ((replace) ? "&replace=true" : "");
+  request.open("POST", "/api", true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
 }
 
 /**
@@ -153,9 +160,10 @@ var loadWorkspace = function(wsname) {
       return;
     }
     else {
-      console.log(request.responseText);
+      var json = request.responseText.replace(/\&quot;/g, '"');
+      console.log(json);
       resetWorkspace();
-      jsonToWorkspace(request.responseText);
+      jsonToWorkspace(json);
     }
   }; // onReadyState
   request.open("GET",url,true);
