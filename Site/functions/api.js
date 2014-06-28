@@ -112,6 +112,31 @@ handlers.getws = function(info,req,res) {
   }
 } // handlers.getws
 
+/** 
+ * List the workspaces.
+ */
+handlers.listws = function(info, req, res) {
+  if (!req.session.loggedIn) {
+    fail(res, "Could not list workspaces because you're not logged in");
+  }
+  else {
+    var query = "SELECT name FROM workspaces WHERE userid=" + 
+        req.session.user.userid;
+    database.query(query, function(rows, error) {
+      if (error) {
+        fail(res, "Error: "+error);
+      } // if error
+      else {
+        var result = [];
+        for (var i = 0; i < rows.length; i++) {
+          result.push(rows[i].name);
+        } // for
+        res.send(result);
+      } // if success
+    }); // query
+  } // if logged in
+} // handlers.listws
+
 /**
  * Save a workspace.
  *   action: savews
