@@ -146,6 +146,31 @@ var saveWorkspace = function(name, replace) {
 }
 
 /**
+ * List all of the available workspaces.  The callback should be
+ * of the form "function(workspaces, error)".  If there's no error,
+ * workspaces should be an array of strings and error should be
+ * undefined.  If there's an error, workspaces should be undefined
+ * and error should contain the error string.
+ */
+var listWorkspaces = function(callback) {
+  var url = "/api?action=listws";
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function() {
+    if (request.readyState != 4) {
+      return;
+    } // if it's not ready
+    if (request.status >= 400) {
+      callback(undefined,request.responseText);
+    }
+    else {
+      callback(JSON.parse(request.responseText),undefined);
+    }
+  } // request.onreadystatechange
+  request.open("GET",url,true);
+  request.send();
+} // listWorkspaces
+
+/**
  * Given a workspace name, loads a given workspace from the server onto 
  * the screen.
  */
@@ -153,7 +178,7 @@ var loadWorkspace = function(wsname) {
   var url = "/api?action=getws&name=" + wsname;
   var request = new XMLHttpRequest();
   request.onreadystatechange = function() {
-    if (request.status == 404) {
+    if (request.status >= 400) {
       alert("Could not load workspace");
     }
     else if (request.readyState != 4) {
