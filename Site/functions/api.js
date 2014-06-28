@@ -77,13 +77,48 @@ fail = function(res, message) {
 var handlers = {};
 
 /**
+ * Delete a workspace by name
+ *  action: deletews
+ *  name: string naming the workspace
+ */
+handlers.deletews = function(info, req, res) {
+  // Make sure that they are logged in.
+  if (!req.session.loggedIn) {
+    fail(res,"You must be logged in to delete a workspace.");
+    return;
+  } // if they are not logged in
+
+  // Make sure that we have a name
+  if (!info.name) {
+    fail(res, "Could not delete workspace because no workspace name specified");
+    return;
+  }
+
+  // Grab the name
+  var name = database.sanitize(info.name);
+
+  // Build the query
+  var query = "DELETE FROM workspaces WHERE userid=" + 
+        req.session.user.userid + " and name='" + name + "'";
+
+  // Send the query
+  database.query(query, function(rows, error) {
+    if (error) {
+      fail(res, "Could not delete " + name + " because " + error);
+      return;
+    }
+    res.send("Deleted " + name);
+  }) // send the query
+} // handlers.deletews
+
+/**
  * Get a workspace
  *   action: getws
  *   name: string naming the workspace
  */
-handlers.getws = function(info,req,res) {
+handlers.getws = function(info, req, res) {
   if (!req.session.loggedIn) {
-    res.send(404,"You must be logged in to retrieve a workspace.");
+    fail(res, "You must be logged in to retrieve a workspace.");
   } // if they are not logged in
   else if (info.id) {
     fail(res, "We currently do not support getting workspace by id");
