@@ -228,12 +228,14 @@ handlers.savews = function(info, req, res) {
 } // handlers.savews
 
 /*
-  title
-  code
-  codeVisible
-  license
-  public
-  replace
+  Save an image
+  action: saveimage
+  title: The title of the image
+  code: the code of the image for display
+  codeVisible: BOOL
+  license: A
+  public: BOOL
+  replace: BOOL [optional]
 */
 handlers.saveimage = function(info, req, res){
   if (!req.session.loggedIn) {
@@ -269,7 +271,9 @@ handlers.saveimage = function(info, req, res){
       else {
         var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public) VALUES (" +
       req.session.user.userid + ",'" + database.sanitize(info.title) +
-      "','" + database.sanitize(info.code) +"')";
+      "','" + database.sanitize(info.code) + ",'" + database.sanitize(info.codeVisible) +
+       ",'" + database.sanitize(info.license) ",'" + database.sanitize(info.public) +"')";
+
   database.query(newQuery, function(rows, error) {
     if (error) {
       fail(res, "Error: "+error);
@@ -281,4 +285,4 @@ handlers.saveimage = function(info, req, res){
       } // If name is not in table
     });
   }
-}
+}// handlers.saveimage
