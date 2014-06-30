@@ -127,6 +127,18 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path:  /tutorial
+  //   Page for creating (something)
+  /* create page */
+
+  app.get('/tutorial', function(req, res) {
+    res.render('../public/views/tutorialHome.jade', {
+    loggedIn: req.session.loggedIn,
+    user: req.session.user
+   });
+});
+
+  // --------------------------------------------------
   // Path:  /css
   //   Distribute CSS files
   app.get('/css/:file', function(req,res) {
@@ -191,6 +203,11 @@ module.exports = function(app,passport,database) {
     image.buildPage(req, res, database);
   });
 
+  app.post('/image/:imageid', function(req,res) {
+    if(req.body.commentSubmit != null) {
+      image.saveComment(req, res, database);
+    };
+  });
   // --------------------------------------------------
   // Path:  /js
   //   Distribute client-side Javascript files
@@ -294,9 +311,6 @@ module.exports = function(app,passport,database) {
   // Path:  /user/*/albums
   //    User albums page
   app.get('/user/:username/albums', function(req,res) {
-    console.log(req.params.username)
-      console.log(req.params.userid);;
-//    console.log(req.session.user.username);
     albums.buildPage(req, res, database);
   });
 
