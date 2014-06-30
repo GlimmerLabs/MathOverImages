@@ -11,10 +11,10 @@
    The API looks for actions specified by "funct" or "action" in
    either GET or POST requests.  You should pass along the appropriate
    object (body or whatever) to the run method, along with the request
-   and the response objects.  (Yes, the method needs a better name 
+   and the response objects.  (Yes, the method needs a better name
    than "run".)
 
-   In most cases, the handlers for the actions are found in 
+   In most cases, the handlers for the actions are found in
    handlers.action (see the section about Handlers).  That way,
    we can add another action to the API just by adding another
    handler.
@@ -36,7 +36,7 @@ var database = require('./database.js');
 module.exports.run = function(info, req, res) {
   // Support both Sam's and Alex's model of specifying what to do
   var action = info.action || info.funct;
- 
+
   // Make sure that there's an action
   if (!action) {
     fail(res, "No action specified.");
@@ -69,7 +69,7 @@ fail = function(res, message) {
   console.log("FAILED!", message);
   res.send(400, message);       // "Bad request"
 } // fail
- 
+
 // +----------+--------------------------------------------------------
 // | Handlers |
 // +----------+
@@ -98,7 +98,7 @@ handlers.deletews = function(info, req, res) {
   var name = database.sanitize(info.name);
 
   // Build the query
-  var query = "DELETE FROM workspaces WHERE userid=" + 
+  var query = "DELETE FROM workspaces WHERE userid=" +
         req.session.user.userid + " and name='" + name + "'";
 
   // Send the query
@@ -124,8 +124,8 @@ handlers.getws = function(info, req, res) {
     fail(res, "We currently do not support getting workspace by id");
   }
   else if (info.name) {
-    var query = "SELECT data FROM workspaces WHERE userid=" + 
-        req.session.user.userid + " and name='"  + 
+    var query = "SELECT data FROM workspaces WHERE userid=" +
+        req.session.user.userid + " and name='"  +
         database.sanitize(info.name) + "'";
     // console.log(query);
     database.query(query, function(rows, error) {
@@ -147,7 +147,7 @@ handlers.getws = function(info, req, res) {
   }
 } // handlers.getws
 
-/** 
+/**
  * List the workspaces.
  */
 handlers.listws = function(info, req, res) {
@@ -155,7 +155,7 @@ handlers.listws = function(info, req, res) {
     fail(res, "Could not list workspaces because you're not logged in");
   }
   else {
-    var query = "SELECT name FROM workspaces WHERE userid=" + 
+    var query = "SELECT name FROM workspaces WHERE userid=" +
         req.session.user.userid;
     database.query(query, function(rows, error) {
       if (error) {
@@ -199,7 +199,7 @@ handlers.savews = function(info, req, res) {
 	}
 	else {
 	  var newQuery = "UPDATE workspaces SET data='"+
-	      database.sanitize(info.data)+"' WHERE id="+rows[0].id; 
+	      database.sanitize(info.data)+"' WHERE id="+rows[0].id;
           database.query(newQuery, function(rows, error) {
 	    if (error) {
 	      fail(res, "Error: "+error);
@@ -226,3 +226,59 @@ handlers.savews = function(info, req, res) {
     });
   }
 } // handlers.savews
+
+/*
+  title
+  code
+  codeVisible
+  license
+  public
+  replace
+*/
+handlers.saveimage = function(info, req, res){
+  if (!req.session.loggedIn) {
+    fail(res, "Could not save image because you're not logged in");
+  }
+  else if (!info.title) {
+    fail(res, "Could not save image because you didn't title it");
+  }
+  else {
+    var query = "SELECT id FROM images WHERE title='"+
+        database.sanitize(info.title)+"' AND userid="+req.session.user.userid;
+    database.query(query, function(rows, error) {
+      if (error) {
+        fail(res, "Error: "+error);
+      }
+      else if (rows[0]) {
+        if (!info.replace) {
+          fail(res, info.title + " already exists!");
+  }
+  else {
+    var newQuery = "UPDATE images SET code='"+
+        database.sanitize(info.code)+"' WHERE id="+rows[0].id;
+          database.query(newQuery, function(rows, error) {
+      if (error) {
+        fail(res, "Error: "+error);
+      }
+      else {
+        res.end();
+      }
+    });
+  } // If info.replace
+      } // If rows[0]
+      else {
+        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public) VALUES (" +
+      req.session.user.userid + ",'" + database.sanitize(info.title) +
+      "','" + database.sanitize(info.code) +"')";
+  database.query(newQuery, function(rows, error) {
+    if (error) {
+      fail(res, "Error: "+error);
+    }
+    else {
+      res.end();
+    }
+  });
+      } // If name is not in table
+    });
+  }
+}
