@@ -228,7 +228,6 @@ var updatePopText = function(renderFunction) {
 	}
 	renderPopText.setAttr('text', text);
 };
-updatePopText("rgb(sum(x,y), x, y)");
 
 screenLayer.on('mouseover', function(evt) {
 var group = evt.target.parent;
@@ -258,13 +257,15 @@ if (group.attrs.name) {
 });
 
 screenLayer.on('mouseup', function(evt) {
-var group = evt.target.parent;
-var name = group.attrs.name
-if (name) {
-	group.children[0].setAttr('shadowEnabled', false);
-  	screenLayer.draw();
-}
-if (name == 'cancel') {
+	var group = evt.target.parent;
+	var name = group.attrs.name
+	if (name) {
+		group.children[0].setAttr('shadowEnabled', false);
+		screenLayer.draw();
+	}
+});
+
+popCancelButton.on('mouseup', function(){
 	cover.setAttr('visible', false);
 	popSaveGroup.setAttr('visible', false);
 	animation = false;
@@ -272,8 +273,21 @@ if (name == 'cancel') {
 		renderLayer.draw();
 	}, 50);
 	screenLayer.draw();
-}
 });
+
+popSaveButtonGroup.on('mouseup', function(){
+	var newName = nameEditText.attrs.text;
+	var renderFunction = currShape.attrs.renderFunction;
+	saveImage(newName, renderFunction, true, true, true);
+	cover.setAttr('visible', false);
+	popSaveGroup.setAttr('visible', false);
+	animation = false;
+	setTimeout(function(){
+		renderLayer.draw();
+	}, 50);
+	screenLayer.draw();
+});
+
 /**
  * openSavePopUp sets the cover and popSaveGroup to visible and begin animation.
  */
