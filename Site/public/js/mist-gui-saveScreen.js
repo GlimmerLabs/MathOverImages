@@ -265,7 +265,7 @@ screenLayer.on('mouseup', function(evt) {
 	}
 });
 
-popCancelButton.on('mouseup', function(){
+popCancelButtonGroup.on('mouseup', function(){
 	cover.setAttr('visible', false);
 	popSaveGroup.setAttr('visible', false);
 	animation = false;
