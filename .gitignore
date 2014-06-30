@@ -10,3 +10,4 @@ Site/certs/*
 Site/certs
 mist_backup_*
 Site/functions/ports.js
+npm-test.log
