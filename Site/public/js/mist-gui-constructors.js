@@ -278,6 +278,7 @@ var addLine = function(source, sink, outletIndex) {
   line.points()[2] = sink.x();
   line.points()[3] = sink.y() + sink.children[outletIndex + OUTLET_OFFSET].y();
   assertRenderable(sink);
+  sink.attrs.numInputs++;
   if (sink.attrs.numInputs == sink.children.length - OUTLET_OFFSET &&
        sink.attrs.numInputs < sink.attrs.maxInputs) {
     addOutlet(sink);
