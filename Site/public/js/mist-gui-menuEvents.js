@@ -145,3 +145,7 @@ menuControlLayer.on('mouseup', function(evt){
 resetButton.on('mouseup', function(){
   resetWorkspace();
 });
+
+saveButton.on('mouseup', function(){
+  openSaveWsPopUp();
+});
