@@ -38,9 +38,9 @@ block content
      figcaption(class='left')= "★" + images[i].rating
   div(id='pageNumber')
     if (currentPage==1 && !(type == "random") && nextPage)
-      a(class='nextPrevious' href='/gallery/' + type + '/' + ++currentPage) next »
+      a(href='/gallery/' + type + '/' + ++currentPage)    next »
     else if !(type == "random") && !(currentPage==1) &&  nextPage
-      a(class='nextPrevious' href='/gallery/' + type + '/' + --currentPage) « previous
-      a(class='nextPrevious' href='/gallery/' + type + '/' + (currentPage+2)) next »
+      a(href='/gallery/' + type + '/' + --currentPage) « previous    
+      a(href='/gallery/' + type + '/' + (currentPage+2))    next »
     else if !(type == "random" && (images.length<=9))
-      a(class='nextPrevious' href='/gallery/' + type + '/' + --currentPage) « previous
+      a(href='/gallery/' + type + '/' + --currentPage) « previous    

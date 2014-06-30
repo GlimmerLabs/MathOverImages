@@ -579,7 +579,7 @@ module.exports.getIDforUsername = (function (username, callback) {
 
 module.exports.imageInfo=(function(imageid, callback) {
     imageid=sanitize(imageid);
-    module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
+    module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid  FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
 	if (error)
 	    callback(null, error);
 	else if (!rows[0])
@@ -624,8 +624,6 @@ module.exports.commentInfo=(function(imageid, callback) {
     module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE images.imageid='"+imageid+"' and comments.postedBy= users.userid; ORDER BY comments.postedAt asc;" , function (rows, error){
 	if (error)
 	    callback(null, error);
-	else if (!rows[0])
-	    callback(null, "Comments do not exist");
 	else
 	    callback(rows, null);
     });

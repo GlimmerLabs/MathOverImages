@@ -243,6 +243,21 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path:  /user
+  //   User profile pages
+  app.get('/user/:username', function(req, res) {
+    username.buildPage(req, res, database);
+  });
+
+  app.post('/user/:username', function(req,res) {
+  if ((req.session.user != null) &&
+    (req.session.user.username === req.params.username)) {
+    if(req.body.aboutSubmit != null) {
+      username.changeAboutSection(req, res);
+    }}
+  });
+
+  // --------------------------------------------------
   // Path:  /sample
   //   Sample images (?)
   app.get('/samples/:image', function(req,res) {
