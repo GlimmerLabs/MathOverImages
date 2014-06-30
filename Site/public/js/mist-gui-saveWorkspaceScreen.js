@@ -136,7 +136,7 @@ popWsCancelButtonGroup.on('mouseup', function(){
 	screenLayer.draw();
 });
 
-popSaveWsButton.on('mouseup', function(){
+popSaveWsButtonGroup.on('mouseup', function(){
 	var newName = nameWsEditText.text;
 	saveWorkspace(newName, true);
 	cover.setAttr('visible', false);
