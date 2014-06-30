@@ -60,7 +60,7 @@ var nameWsEditText = new Kinetic.Text({
 });
 saveWsGroup.add(nameWsEditText);
 nameWsEditText.setEditable(true);
-nameWsEditText.matchingCharacters = /[a-zA-Z0-9]/;
+nameWsEditText.matchingCharacters = /[a-zA-Z0-9\-]/;
 nameWsEditText.defaultText = 'Enter a Name';
 nameWsEditText.drawMethod = function(){
 	screenLayer.draw()

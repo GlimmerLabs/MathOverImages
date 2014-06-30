@@ -104,7 +104,7 @@ var nameEditText = new Kinetic.Text({
 });
 popSaveGroup.add(nameEditText);
 nameEditText.setEditable(true);
-nameEditText.matchingCharacters = /[a-zA-Z0-9]/;
+nameEditText.matchingCharacters = /[a-zA-Z0-9 \-]/;
 nameEditText.defaultText = 'Enter a Name';
 nameEditText.drawMethod = function(){
 	screenLayer.draw()
