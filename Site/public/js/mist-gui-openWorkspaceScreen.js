@@ -132,6 +132,7 @@ popOpenWsButtonGroup.add(popOpenWsButtonText);
 popOpenWsCancelButtonGroup.on('mouseup', function(){
 	cover.setAttr('visible', false);
 	openWsGroup.setAttr('visible', false);
+	showThumbnails();
 	screenLayer.draw();
 });
 
@@ -141,10 +142,12 @@ popOpenWsButtonGroup.on('mouseup', function(){
 	currentWorkspace = openText;
 	cover.setAttr('visible', false);
 	openWsGroup.setAttr('visible', false);
+	showThumbnails();
 	screenLayer.draw();
 });
 
 var openOpenWsPopUp = function() {
+	hideThumbnails();
 	cover.setAttr('visible', true);
 	openWsGroup.setAttr('visible', true);
 	screenLayer.draw();
