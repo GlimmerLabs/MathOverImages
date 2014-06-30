@@ -5,7 +5,7 @@ var screenLayer = new Kinetic.Layer();
 stage.add(screenLayer);
 
 var popRectColor = '#e8e8e8'
-var popRectWidth = width * .45;
+var popRectWidth = width * .4;
 var popRectHeight = height * .85;
 var popSaveGroupX = (width - popRectWidth) / 2;
 var popSaveGroupY = (height - popRectHeight) / 2;
