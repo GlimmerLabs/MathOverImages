@@ -3,6 +3,8 @@ var height = 2 * width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';
 
+var currentWorkspace;
+
 var functionStrokeWidth = width / 90;
 var functionHalfStrokeWidth = functionStrokeWidth / 2;
 var functionTotalSideLength = width / 20;
