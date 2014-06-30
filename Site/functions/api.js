@@ -271,8 +271,8 @@ handlers.saveimage = function(info, req, res){
       else {
         var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public) VALUES (" +
       req.session.user.userid + ",'" + database.sanitize(info.title) +
-      "','" + database.sanitize(info.code) + ",'" + database.sanitize(info.codeVisible) +
-       ",'" + database.sanitize(info.license) + ",'" + database.sanitize(info.public) +"')";
+      "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) +
+       "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) +"')";
 
   database.query(newQuery, function(rows, error) {
     if (error) {
