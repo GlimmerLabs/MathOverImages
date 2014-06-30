@@ -130,8 +130,9 @@ There are 3 different modes:
     }
   }
   // deal with the lines leading out of the node being deleted
-  for(var i = 0; i < parent.attrs.lineOut.length; i++) {
-    targetLine = parent.attrs.lineOut[i];
+  var lineOutLength = parent.attrs.lineOut.length;
+  for(var i = 0; i < lineOutLength; i++) {
+    targetLine = parent.attrs.lineOut[0];
     removeLine(targetLine);
   }
   var render = parent.attrs.renderLayer
