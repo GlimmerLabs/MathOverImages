@@ -1,24 +1,24 @@
 /**
- * api.js
- *   Functions for handling requests to the API.
- */
+* api.js
+*   Functions for handling requests to the API.
+*/
 
 // +-------+-----------------------------------------------------------
 // | Notes |
 // +-------+
 
 /*
-   The API looks for actions specified by "funct" or "action" in
-   either GET or POST requests.  You should pass along the appropriate
-   object (body or whatever) to the run method, along with the request
-   and the response objects.  (Yes, the method needs a better name
-   than "run".)
+The API looks for actions specified by "funct" or "action" in
+either GET or POST requests.  You should pass along the appropriate
+object (body or whatever) to the run method, along with the request
+and the response objects.  (Yes, the method needs a better name
+than "run".)
 
-   In most cases, the handlers for the actions are found in
-   handlers.action (see the section about Handlers).  That way,
-   we can add another action to the API just by adding another
-   handler.
- */
+In most cases, the handlers for the actions are found in
+handlers.action (see the section about Handlers).  That way,
+we can add another action to the API just by adding another
+handler.
+*/
 
 // +--------------------+--------------------------------------------
 // | Required Libraries |
@@ -31,8 +31,8 @@ var database = require('./database.js');
 // +--------------------+
 
 /**
- * Run the API.
- */
+* Run the API.
+*/
 module.exports.run = function(info, req, res) {
   // Support both Sam's and Alex's model of specifying what to do
   var action = info.action || info.funct;
@@ -77,10 +77,10 @@ fail = function(res, message) {
 var handlers = {};
 
 /**
- * Delete a workspace by name
- *  action: deletews
- *  name: string naming the workspace
- */
+* Delete a workspace by name
+*  action: deletews
+*  name: string naming the workspace
+*/
 handlers.deletews = function(info, req, res) {
   // Make sure that they are logged in.
   if (!req.session.loggedIn) {
@@ -99,7 +99,7 @@ handlers.deletews = function(info, req, res) {
 
   // Build the query
   var query = "DELETE FROM workspaces WHERE userid=" +
-        req.session.user.userid + " and name='" + name + "'";
+  req.session.user.userid + " and name='" + name + "'";
 
   // Send the query
   database.query(query, function(rows, error) {
@@ -112,10 +112,10 @@ handlers.deletews = function(info, req, res) {
 } // handlers.deletews
 
 /**
- * Get a workspace
- *   action: getws
- *   name: string naming the workspace
- */
+* Get a workspace
+*   action: getws
+*   name: string naming the workspace
+*/
 handlers.getws = function(info, req, res) {
   if (!req.session.loggedIn) {
     fail(res, "You must be logged in to retrieve a workspace.");
@@ -125,8 +125,8 @@ handlers.getws = function(info, req, res) {
   }
   else if (info.name) {
     var query = "SELECT data FROM workspaces WHERE userid=" +
-        req.session.user.userid + " and name='"  +
-        database.sanitize(info.name) + "'";
+    req.session.user.userid + " and name='"  +
+    database.sanitize(info.name) + "'";
     // console.log(query);
     database.query(query, function(rows, error) {
       if (error) {
@@ -148,15 +148,15 @@ handlers.getws = function(info, req, res) {
 } // handlers.getws
 
 /**
- * List the workspaces.
- */
+* List the workspaces.
+*/
 handlers.listws = function(info, req, res) {
   if (!req.session.loggedIn) {
     fail(res, "Could not list workspaces because you're not logged in");
   }
   else {
     var query = "SELECT name FROM workspaces WHERE userid=" +
-        req.session.user.userid;
+    req.session.user.userid;
     database.query(query, function(rows, error) {
       if (error) {
         fail(res, "Error: "+error);
@@ -173,12 +173,12 @@ handlers.listws = function(info, req, res) {
 } // handlers.listws
 
 /**
- * Save a workspace.
- *   action: savews
- *   name: the name of the workspace
- *   data: The information about the workspace
- *   replace: true or false [optional]
- */
+* Save a workspace.
+*   action: savews
+*   name: the name of the workspace
+*   data: The information about the workspace
+*   replace: true or false [optional]
+*/
 handlers.savews = function(info, req, res) {
   if (!req.session.loggedIn) {
     fail(res, "Could not save workspace because you're not logged in");
@@ -188,7 +188,7 @@ handlers.savews = function(info, req, res) {
   }
   else {
     var query = "SELECT id FROM workspaces WHERE name='"+
-        database.sanitize(info.name)+"' AND userid="+req.session.user.userid;
+    database.sanitize(info.name)+"' AND userid="+req.session.user.userid;
     database.query(query, function(rows, error) {
       if (error) {
         fail(res, "Error: "+error);
@@ -196,46 +196,46 @@ handlers.savews = function(info, req, res) {
       else if (rows[0]) {
         if (!info.replace) {
           fail(res, info.name + " already exists!");
-	}
-	else {
-	  var newQuery = "UPDATE workspaces SET data='"+
-	      database.sanitize(info.data)+"' WHERE id="+rows[0].id;
+        }
+        else {
+          var newQuery = "UPDATE workspaces SET data='"+
+          database.sanitize(info.data)+"' WHERE id="+rows[0].id;
           database.query(newQuery, function(rows, error) {
-	    if (error) {
-	      fail(res, "Error: "+error);
-	    }
-	    else {
-	      res.end();
-	    }
-	  });
-	} // If info.replace
+            if (error) {
+              fail(res, "Error: "+error);
+            }
+            else {
+              res.end();
+            }
+          });
+        } // If info.replace
       } // If rows[0]
       else {
         var newQuery = "INSERT INTO workspaces (userid, name, data) VALUES (" +
-	    req.session.user.userid + ",'" + database.sanitize(info.name) +
-	    "','" + database.sanitize(info.data) +"')";
-	database.query(newQuery, function(rows, error) {
-	  if (error) {
-	    fail(res, "Error: "+error);
-	  }
-	  else {
-	    res.end();
-	  }
-	});
+        req.session.user.userid + ",'" + database.sanitize(info.name) +
+        "','" + database.sanitize(info.data) +"')";
+        database.query(newQuery, function(rows, error) {
+          if (error) {
+            fail(res, "Error: "+error);
+          }
+          else {
+            res.end();
+          }
+        });
       } // If name is not in table
     });
   }
 } // handlers.savews
 
 /*
-  Save an image
-  action: saveimage
-  title: The title of the image
-  code: the code of the image for display
-  codeVisible: BOOL
-  license: A license string
-  public: BOOL
-  replace: BOOL [optional]
+Save an image
+action: saveimage
+title: The title of the image
+code: the code of the image for display
+codeVisible: BOOL
+license: A license string
+public: BOOL
+replace: BOOL [optional]
 */
 handlers.saveimage = function(info, req, res){
   if (!req.session.loggedIn) {
@@ -246,7 +246,7 @@ handlers.saveimage = function(info, req, res){
   }
   else {
     var query = "SELECT imageid FROM images WHERE title='"+
-        database.sanitize(info.title)+"' AND userid="+req.session.user.userid;
+    database.sanitize(info.title)+"' AND userid="+req.session.user.userid;
     database.query(query, function(rows, error) {
       if (error) {
         fail(res, "Error: "+error);
@@ -254,34 +254,32 @@ handlers.saveimage = function(info, req, res){
       else if (rows[0]) {
         if (!info.replace) {
           fail(res, info.title + " already exists!");
-  }
-  else {
-    var newQuery = "UPDATE images SET code='"+
-        database.sanitize(info.code)+"' WHERE imageid="+rows[0].imageid;
+        }
+        else {
+          var newQuery = "UPDATE images SET code='"+
+          database.sanitize(info.code)+"', modifiedAt='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE imageid="+rows[0].imageid;
           database.query(newQuery, function(rows, error) {
-      if (error) {
-        fail(res, "Error: "+error);
-      }
-      else {
-        res.end();
-      }
-    });
-  } // If info.replace
+            if (error) {
+              fail(res, "Error: "+error);
+            }
+            else {
+              res.end();
+            }
+          });
+        } // If info.replace
       } // If rows[0]
       else {
-        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public) VALUES (" +
-      req.session.user.userid + ",'" + database.sanitize(info.title) +
-      "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) +
-       "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) +"')";
+        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public, modifiedAt, createdAt) VALUES (" + req.session.user.userid + ",'" + database.sanitize(info.title) + "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) + "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') + "')";
+        console.log(newQuery);
 
-  database.query(newQuery, function(rows, error) {
-    if (error) {
-      fail(res, "Error: "+error);
-    }
-    else {
-      res.end();
-    }
-  });
+        database.query(newQuery, function(rows, error) {
+          if (error) {
+            fail(res, "Error: "+error);
+          }
+          else {
+            res.end();
+          }
+        });
       } // If name is not in table
     });
   }
