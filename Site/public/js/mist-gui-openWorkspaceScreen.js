@@ -147,8 +147,7 @@ popOpenWsButtonGroup.on('mouseup', function(){
 var openOpenWsPopUp = function() {
 	cover.setAttr('visible', true);
 	openWsGroup.setAttr('visible', true);
-	if (currentWorkspace) {
-		nameOpenWsEditText.setAttr('text', currentWorkspace);
-	}
+	openText = nameOpenWsEditText.attrs.text;
+	loadWorkspace(openText);
 	screenLayer.draw();
 };
