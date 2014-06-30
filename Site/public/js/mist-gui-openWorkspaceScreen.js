@@ -136,8 +136,8 @@ popOpenWsCancelButtonGroup.on('mouseup', function(){
 });
 
 popOpenWsButtonGroup.on('mouseup', function(){
-	var newName = nameOpenWsEditText.attrs.text;
-	//loadWorkspace(newName, true);
+	var openText = nameOpenWsEditText.attrs.text;
+	loadWorkspace(openText);
 	cover.setAttr('visible', false);
 	openWsGroup.setAttr('visible', false);
 	screenLayer.draw();
@@ -147,7 +147,5 @@ popOpenWsButtonGroup.on('mouseup', function(){
 var openOpenWsPopUp = function() {
 	cover.setAttr('visible', true);
 	openWsGroup.setAttr('visible', true);
-	openText = nameOpenWsEditText.attrs.text;
-	loadWorkspace(openText);
 	screenLayer.draw();
 };
