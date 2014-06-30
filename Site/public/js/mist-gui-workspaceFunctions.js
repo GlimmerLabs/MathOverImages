@@ -134,9 +134,41 @@ var resetWorkspace = function() {
 /**
  * Save the workspace with a particular name.  
  */
-var saveWorkspace = function() {
-	// STUB
+var saveWorkspace = function(name, replace) {
+  var request = new XMLHttpRequest();
+  var name = encodeURIComponent(name);
+  var workspace = encodeURIComponent(workspaceToJSON());
+  var data = "action=savews&name="+name+"&data="+workspace + 
+      ((replace) ? "&replace=true" : "");
+  request.open("POST", "/api", true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
 }
+
+/**
+ * List all of the available workspaces.  The callback should be
+ * of the form "function(workspaces, error)".  If there's no error,
+ * workspaces should be an array of strings and error should be
+ * undefined.  If there's an error, workspaces should be undefined
+ * and error should contain the error string.
+ */
+var listWorkspaces = function(callback) {
+  var url = "/api?action=listws";
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function() {
+    if (request.readyState != 4) {
+      return;
+    } // if it's not ready
+    if (request.status >= 400) {
+      callback(undefined,request.responseText);
+    }
+    else {
+      callback(JSON.parse(request.responseText),undefined);
+    }
+  } // request.onreadystatechange
+  request.open("GET",url,true);
+  request.send();
+} // listWorkspaces
 
 /**
  * Given a workspace name, loads a given workspace from the server onto 
@@ -146,19 +178,33 @@ var loadWorkspace = function(wsname) {
   var url = "/api?action=getws&name=" + wsname;
   var request = new XMLHttpRequest();
   request.onreadystatechange = function() {
-    if (request.status == 404) {
+    if (request.status >= 400) {
       alert("Could not load workspace");
     }
     else if (request.readyState != 4) {
       return;
     }
     else {
-      console.log(request.responseText);
+      var json = request.responseText.replace(/\&quot;/g, '"');
+      console.log(json);
       resetWorkspace();
-      jsonToWorkspace(request.responseText);
+      jsonToWorkspace(json);
     }
   }; // onReadyState
   request.open("GET",url,true);
   request.send();
 } // loadWorkspace
 
+/**
+ * Saves an image to the database.
+ */
+var saveImage = function(title, code, isPublic, codeVisible, replace) {
+  var request = new XMLHttpRequest();
+  var title = encodeURIComponent(title);
+  var data = "action=saveimage&title="+title+"&code="+code+ 
+      "&public="+isPublic+"&codeVisible="+codeVisible+
+      "&license=GPL"+((replace) ? "&replace=true" : "");
+  request.open("POST", "/api", true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
+}

@@ -295,7 +295,7 @@ function readyEditing(stage)
 			if(keycode == 39){ // 39 is the right arrow key
 				activeText.cursor.position++;
 			}
-			if(keycode == 189 || keycode == 109){ // 189 and 109 are the - keys: normal, numpad respectively
+			if(keycode == 189 || keycode == 109 || keycode == 173){ // 189 and 109 are the - keys: normal, numpad respectively
 				var key = "-";
 				addedKey = true;
 			}
@@ -306,6 +306,11 @@ function readyEditing(stage)
 					}
 				}
 				activeText.removeFocus();
+			}
+			if (keycode == 32) {
+				var key = " "
+				addedKey = true;
+				e.preventDefault();
 			}
 			if(addedKey){
 				if(activeText.capitalized){
