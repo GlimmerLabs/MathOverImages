@@ -149,3 +149,7 @@ resetButton.on('mouseup', function(){
 saveButton.on('mouseup', function(){
   openSaveWsPopUp();
 });
+
+openButton.on('mouseup', function(){
+  openOpenWsPopUp();
+});
