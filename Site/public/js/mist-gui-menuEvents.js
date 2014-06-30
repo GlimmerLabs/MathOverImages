@@ -144,6 +144,7 @@ menuControlLayer.on('mouseup', function(evt){
 
 resetButton.on('mouseup', function(){
   resetWorkspace();
+  currentWorkSpace = null;
 });
 
 saveButton.on('mouseup', function(){
