@@ -5,7 +5,7 @@ var screenLayer = new Kinetic.Layer();
 stage.add(screenLayer);
 
 var popRectColor = '#e8e8e8'
-var popRectWidth = width * .45;
+var popRectWidth = width * .4;
 var popRectHeight = height * .85;
 var popSaveGroupX = (width - popRectWidth) / 2;
 var popSaveGroupY = (height - popRectHeight) / 2;
@@ -104,7 +104,7 @@ var nameEditText = new Kinetic.Text({
 });
 popSaveGroup.add(nameEditText);
 nameEditText.setEditable(true);
-nameEditText.matchingCharacters = /[a-zA-Z0-9]/;
+nameEditText.matchingCharacters = /[a-zA-Z0-9 \-]/;
 nameEditText.defaultText = 'Enter a Name';
 nameEditText.drawMethod = function(){
 	screenLayer.draw()
@@ -156,7 +156,7 @@ var popDownloadButton = new Kinetic.Rect ({
 	width: popButtonWidth,
 	height: popButtonHeight,
 	fill: popButtonColor,
-	stroke: 'black',
+	stroke: 'grey', //'black',
 	strokeWidth: 1,
 	shadowColor: 'black',
 	shadowEnabled: false
@@ -168,7 +168,7 @@ var popDownloadButtonText = new Kinetic.Text({
 	x: 0,
 	y: (popButtonHeight - 16) / 2,
 	width: popButtonWidth,
-	fill: 'black',
+	fill: 'grey',//'black',
 	fontSize: 16,
 	fontFamily: globalFont,
 	align: 'center'
@@ -228,14 +228,13 @@ var updatePopText = function(renderFunction) {
 	}
 	renderPopText.setAttr('text', text);
 };
-updatePopText("rgb(sum(x,y), x, y)");
 
 screenLayer.on('mouseover', function(evt) {
-var group = evt.target.parent;
-if (group.attrs.name) {
-	group.children[0].setAttr('fill', popButtonSelectedColor);
-  	screenLayer.draw();
-}
+	var group = evt.target.parent;
+	if (group.attrs.name && group.attrs.name != 'download') {
+		group.children[0].setAttr('fill', popButtonSelectedColor);
+		screenLayer.draw();
+	}
 });
 
 screenLayer.on('mouseout', function(evt) {
@@ -251,33 +250,51 @@ if (group.attrs.name) {
 
 screenLayer.on('mousedown', function(evt) {
 var group = evt.target.parent;
-if (group.attrs.name) {
+if (group.attrs.name && group.attrs.name != 'download') {
 	group.children[0].setAttr('shadowEnabled', true);
   	screenLayer.draw();
 }
 });
 
 screenLayer.on('mouseup', function(evt) {
-var group = evt.target.parent;
-var name = group.attrs.name
-if (name) {
-	group.children[0].setAttr('shadowEnabled', false);
-  	screenLayer.draw();
-}
-if (name == 'cancel') {
+	var group = evt.target.parent;
+	var name = group.attrs.name
+	if (name) {
+		group.children[0].setAttr('shadowEnabled', false);
+		screenLayer.draw();
+	}
+});
+
+popCancelButtonGroup.on('mouseup', function(){
 	cover.setAttr('visible', false);
 	popSaveGroup.setAttr('visible', false);
+	animation = false;
+	showThumbnails();
+	setTimeout(function(){
+		renderLayer.draw();
+	}, 50);
+	screenLayer.draw();
+});
+
+popSaveButtonGroup.on('mouseup', function(){
+	var newName = nameEditText.attrs.text;
+	var renderFunction = currShape.attrs.renderFunction;
+	saveImage(newName, renderFunction, true, true, true);
+	cover.setAttr('visible', false);
+	popSaveGroup.setAttr('visible', false);
+	showThumbnails();
 	animation = false;
 	setTimeout(function(){
 		renderLayer.draw();
 	}, 50);
 	screenLayer.draw();
-}
 });
+
 /**
  * openSavePopUp sets the cover and popSaveGroup to visible and begin animation.
  */
 var openSavePopUp = function() {
+	hideThumbnails();
 	cover.setAttr('visible', true);
 	popSaveGroup.setAttr('visible', true);
 	var renderFunction = currShape.attrs.renderFunction;
@@ -292,3 +309,28 @@ var openSavePopUp = function() {
 	}
 	frame();
 };
+
+// go through all the nodes on the workLayer and draw their renderLayer
+var hideThumbnails = function() {
+	var nodes = workLayer.children;
+	for (var i = 0; i < nodes.length; i++) {
+		var node = nodes[i];
+		if (node.children[2].attrs.expanded) {
+			node.attrs.renderLayer.draw();
+		}
+	}
+};
+
+// go through all the nodes on the workLayer and, if they're expanded, render their canvas
+var showThumbnails = function() {
+	var nodes = workLayer.children;
+	for (var i = 0; i < nodes.length; i++) {
+		var node = nodes[i];
+		if (node.children[2].attrs.expanded) {
+			renderCanvas(node);
+		}
+	}
+};
+
+
+
