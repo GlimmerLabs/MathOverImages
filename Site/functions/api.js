@@ -245,7 +245,7 @@ handlers.saveimage = function(info, req, res){
     fail(res, "Could not save image because you didn't title it");
   }
   else {
-    var query = "SELECT id FROM images WHERE title='"+
+    var query = "SELECT imageid FROM images WHERE title='"+
         database.sanitize(info.title)+"' AND userid="+req.session.user.userid;
     database.query(query, function(rows, error) {
       if (error) {
@@ -257,7 +257,7 @@ handlers.saveimage = function(info, req, res){
   }
   else {
     var newQuery = "UPDATE images SET code='"+
-        database.sanitize(info.code)+"' WHERE id="+rows[0].id;
+        database.sanitize(info.code)+"' WHERE imageid="+rows[0].imageid;
           database.query(newQuery, function(rows, error) {
       if (error) {
         fail(res, "Error: "+error);
