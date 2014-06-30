@@ -291,4 +291,12 @@ module.exports = function(app,passport,database) {
     // TODO: VERIFY user
     res.redirect('/login');
   });
+
+  // Route does not exist
+app.use(function(req, res, next){
+  res.redirect("/");
+});
+
+
+
 };
