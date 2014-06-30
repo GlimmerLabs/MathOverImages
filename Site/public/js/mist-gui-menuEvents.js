@@ -148,9 +148,11 @@ resetButton.on('mouseup', function(){
 });
 
 saveButton.on('mouseup', function(){
+  enableWorkTool();
   openSaveWsPopUp();
 });
 
 openButton.on('mouseup', function(){
+  enableWorkTool();
   openOpenWsPopUp();
 });

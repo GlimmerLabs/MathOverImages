@@ -144,7 +144,6 @@ popOpenWsButtonGroup.on('mouseup', function(){
 	screenLayer.draw();
 });
 
-
 var openOpenWsPopUp = function() {
 	cover.setAttr('visible', true);
 	openWsGroup.setAttr('visible', true);
