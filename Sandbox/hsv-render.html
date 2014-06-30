@@ -1,8 +1,13 @@
-<html>
+<!DOCTYPE html>
+<html >
 <head>
 <title>Sample MOI HSV Rendering Using Javascript</title>
-<script src="render.js"></script>
+<script type="text/javascript" src="render.js"></script>
+
 <script>
+//ng-app="saveImage2Disk"
+//script ="text/javascript"="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"/script>
+
 var animation = true;
 
 function stopAnimation()
@@ -19,16 +24,20 @@ function startAnimation()
 var saveFile = function(strData)
 {
 document.location.href = strData;
-}
+} 
 
 function saveJPEG()
 {
 var canvas1 = document.getElementById("gui");
 var strData = canvas1.toDataURL("image/jpeg");
+console.log (strData);
 //saveFile(strData.replace("image/jpeg", "image/octet-stream"));
-window.win = open (strData);
-setTimeout('win.document.execCommand("SaveAs")', 500);
-}
+//window.win = open (strData);
+//setTimeout('win.document.execCommand("SaveAs")', 500);
+var filename = prompt("Name your creation! (automatic .jpeg)", "myImage")+".jpeg";
+//$http.post(strData, filename).success();
+//$http.get(strData).success();
+} 
 
 function frame()
 {
@@ -42,11 +51,46 @@ console.log (line2); //eventually send to server instead of print
 renderHSV(hfun, sfun, vfun, canvas, 0, 0, 550, 550);
 if (animation)
 setTimeout(frame, 50);
-} // frame
+} 
+
+function ajax_post()
+{
+var canvas1 = document.getElementById("gui"); 
+console.log("canvas check");
+var strData = canvas1.toDataURL("image/jpeg");
+console.log("strData check");
+//strData.replace("image/jpeg", "image/octet-stream")
+var hr = new XMLHttpRequest();
+
+//var url = base64_decode(strData); 
+//var url = strData;
+//var url = document.URL;
+var url = "save.php";
+//var filename= prompt("Name your file:", "myname")+".jpeg"; 
+var filename= "bye.jpg"; 
+console.log(filename); 
+var vars = "filename="+filename+"&strData="+strData; 
+console.log(vars); 
+
+hr.open("POST", url, true); 
+hr.setRequestHeader("Content-type", "image/jpeg");
+//hr.setRequestHeader("Content-Disposition", "attachment; filename=\"filename\"");
+hr.onreadystatechange = function() 
+{ if(hr.readyState == 4 && hr.status == 200) 
+{ var return_data = hr.responseText; 
+document.getElementById("status").innerHTML = return_data; 
+} } 
+var a = hr.send();
+console.log (a);
+
+document.getElementById("status").innerHTML = "processing..."; 
+} 
+
 
 </script>
 </head>
 <body>
+
 <h1>Sample MOI HSV Rendering</h1>
 <p>
 <a href="">Sample
@@ -70,8 +114,9 @@ gui.onmouseclick  = function(evt)
                                 evt.clientY - rect.top);
                      };
 gui.onmousedown = gui.onmouseclick;
+//div =imageSaver as image
 </script>
-<form>
+
 <h4>Functional Imaging using X & Y using HSV values</h4>
 <table>
   <tr>
@@ -89,7 +134,8 @@ gui.onmousedown = gui.onmouseclick;
 </table>
 <input type="button" value="Go!" onclick="startAnimation()">
 <input type="button" value="Stop" onclick="stopAnimation()">
-<input type="button" value="Download" onclick="saveJPEG()">
-</form>
+<input type="button" value="Download1" onclick="ajax_post()">
+</div>
+<div id="status"></div>
 </body>
 </html>
