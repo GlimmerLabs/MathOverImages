@@ -195,3 +195,16 @@ var loadWorkspace = function(wsname) {
   request.send();
 } // loadWorkspace
 
+/**
+ * Saves an image to the database.
+ */
+var saveImage = function(title, code, isPublic, codeVisible, replace) {
+  var request = new XMLHttpRequest();
+  var title = encodeURIComponent(title);
+  var data = "action=saveimage&title="+title+"&code="+code+ 
+      "&public="+isPublic+"&codeVisible="+codeVisible+
+      "&license=GPL"+((replace) ? "&replace=true" : "");
+  request.open("POST", "/api", true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
+}
