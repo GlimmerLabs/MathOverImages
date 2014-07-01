@@ -42,9 +42,9 @@
 			y: functionHalfStrokeWidth,
 			width: functionRectSideLength,
 			height: functionRectSideLength,
-			fill: functionColor,
+			fill: functions[funName].color,
 			lineJoin: 'round',
-			stroke: functionColor,
+			stroke: functions[funName].color,
 			strokeWidth: functionStrokeWidth
 		});
 		newGroup.add(newRect);
@@ -214,7 +214,7 @@
 			x:functGroup.children[0].x() + outletXOffset,
 			y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
 				outletYOffset + functionHalfStrokeWidth,
-			fill: '#FFC440',
+			fill: outletColor,
 			stroke: 'black',
 			strokeWidth: 1,
 			lineIn: null,
