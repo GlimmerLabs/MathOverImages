@@ -30,6 +30,8 @@ block content
       a(href='' class='subview' id='selected') albums
       a(href='/challenges' class='subview') challenges
     div(id = 'albums')
+      a(href='/'+ profileBeingViewed + '/images/')
+          h1 All my Images >
       - for(var i=0; i < albums.length; i++)
         figure
           a(href='/albums/' + albums[i].albumid)
