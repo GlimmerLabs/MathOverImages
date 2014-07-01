@@ -71,20 +71,19 @@ There are 3 different modes:
         removeLine(oldLine);
       } 
       else {
-        parent.attrs.numInputs++;
+        
         isReplacement = false;
       } // check if theres already a line going in to the outlet
       shape.attrs.lineIn = currLine;
       currLine.points()[2] = parent.x();
       currLine.points()[3] = parent.y() + shape.y();
       currLine.attrs.outlet = shape;
+      parent.attrs.numInputs++;
       makingLine = false;
       shape.scale({ x: 1, y: 1 });
       assertRenderable(parent);
       // if there is a currShape, update the text in funBar
-      if (currShape != undefined){
-       updateFunBar();
-      }
+      updateFunBar();
       if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
         parent.attrs.numInputs < parent.attrs.maxInputs) {
         addOutlet(parent);
@@ -124,15 +123,16 @@ There are 3 different modes:
   insertToArray(actionToObject('delete', parent));
   // deal with lines coming in to the node being deleted
   var targetLine;
-  for(var i = 3; i < parent.children.length; i++) {
+  for(var i = OUTLET_OFFSET; i < parent.children.length; i++) {
     targetLine = parent.children[i].attrs.lineIn;
     if (targetLine){
       removeLine(targetLine);
     }
   }
   // deal with the lines leading out of the node being deleted
-  for(var i = 0; i < parent.attrs.lineOut.length; i++) {
-    targetLine = parent.attrs.lineOut[i];
+  var lineOutLength = parent.attrs.lineOut.length;
+  for(var i = 0; i < lineOutLength; i++) {
+    targetLine = parent.attrs.lineOut[0];
     removeLine(targetLine);
   }
   var render = parent.attrs.renderLayer
@@ -140,9 +140,8 @@ There are 3 different modes:
     render.destroy();
   }
   if (currShape == parent) {
-    currShape = undefined;
-    funBarText.setAttr('text', '');
-    funBarLayer.draw();
+    currShape = null;
+    updateFunBar();
   }
   
   parent.remove();
@@ -159,24 +158,24 @@ lineLayer.draw();
     if (workToolOn) {
       if (!isImageBox(evt.target)) {
         var group = evt.target.getParent();
+        if (isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
+          return;
+        }
+        removeShadow(currShape);
         group.moveTo(dragLayer);
+        currShape = group;
+        insertToArray(actionToObject('move', group));
+        group.startDrag();
         setDragShadow(group);
-        if (currShape != undefined) {
-         currShape.children[0].setAttr('shadowEnabled', false);
-       }
-       currShape = group
-       updateFunBar();
-       insertToArray(actionToObject('move', group));
-       group.startDrag();
-       workLayer.draw();
-       dragLayer.draw();
+        workLayer.draw();
+        dragLayer.draw();
 
-       if (group.attrs.renderLayer != null) {
-        group.attrs.renderLayer.draw();
+        if (group.attrs.renderLayer != null) {
+          group.attrs.renderLayer.draw();
+        }
       }
-    }
-  } 
-});
+    } 
+  });
 
   /*
   while you are drawing a line, make it move with the cursor.
@@ -189,44 +188,7 @@ lineLayer.draw();
     }
   });
 
-  dragLayer.on('dragmove', function() {
-    if (dragShape != null) {
-      var pos = stage.getPointerPosition();
-      var node = workLayer.getIntersection(pos);
-      if (node) {
-        var group = node.getParent();
-        if ((isValue(group) && isValue(dragShape)) ||
-            (isFunction(group) && isFunction(dragShape))) {
-          group.setAttrs({
-            scaleX: 1.2,
-            scaleY: 1.2
-          });
-        /*
-          group.children[2].setAttrs({
-            scaleX: .8,
-            scaleY: .8
-          });
-          */
-          if (group.children[2].attrs.expanded) {
-            renderCanvas(group);
-          }
-          scaledObj = group;
-        }
-      }
-      else if (scaledObj != null) {
-        scaledObj.setAttrs({
-          scaleX: 1,
-          scaleY: 1
-        });
-        if (scaledObj.children[2].attrs.expanded) {
-            renderCanvas(scaledObj);
-          }
-        scaledObj = null;
-      }
-      workLayer.draw();
-    }
-  });
-
+  
   /*
   while making a line, make outlets grow when they are moused over to signify that they
   are valid connections
@@ -291,12 +253,10 @@ workLayer.on('mouseover', function(evt) {
       else if (deleteToolOn) {
         if (isFunction(parent) || isValue(parent)) {
           if (parent == currShape){
-            parent.children[0].setAttr('shadowColor', 'darkblue');
+            setSelectedShadow(parent);
           } 
           else {
-            parent.children[0].setAttrs({
-              shadowEnabled: false
-            });
+            removeShadow(parent);
           }
         }
         workLayer.draw();

@@ -1,52 +1,55 @@
 doctype html
 
 html(lang='en')
-	head
-		block title
-		meta(http-equiv='content-type', content='text/html; charset=utf-8')
-		block extraMetas
-		block stylesheets
+  head
+    block title
+    meta(http-equiv='content-type', content='text/html; charset=utf-8')
 
-		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
-		script(type='text/javascript' src="/js/main")
-		block extraLinks
-	body
-		header
-			div(id='headerLogo')
-				a(href='/')
-					img(src='/logos/header.svg')
-			nav
-				ul
-					span(class='main')
-						li: a(href='#') create
-						li: a(href='#') challenges
-						li: a(href='/gallery') gallery
-						li: a(href='/about') about
-						if loggedIn
-							li: a(href='/me') my account
-						else
-							li(id='slider') login/signup
-					form(method='POST' action='/login' class='hidden')
-						input(type='text' placeholder='username' name='username' required ='required')
-						input(type='password' placeholder='password' name='password' require = 'required')
-						li(id='login') login
-						li: a(href='/signup') signup
-						li(id='cancel') cancel
+    block extraMetas
+    block stylesheets
 
-		block content
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
+    script(type='text/javascript' src="/js/main")
+    link(rel="shortcut icon" href="/logos/favicon.ico")
+    block extraLinks
+  body
+    header
+      div(id='headerLogo')
+        a(href='/')
+          img(src='/logos/header.png')
+      nav
+        ul
+          span(class='main')
+            li: a(href='/create') create
+            li: a(href='/challenges') challenges
+            li: a(href='/gallery') gallery
+            li: a(href='/about') about
+            if loggedIn
+              li: a(href='/me')= user.username
+              li: a(href='/logout') log out
+            else
+              li(id='slider') login/signup
+          form(method='POST' action='/login' class='hidden')
+            input(type='text' placeholder='username' name='username' required ='required')
+            input(type='password' placeholder='password' name='password' require = 'required')
+            li(id='login') login
+            li: a(href='/signup') signup
+            li(id='cancel') cancel
 
-		footer
-			p ©2014 Glimmer Labs
-			nav
-				ul
-					li: a(href='#') create
-					li: a(href='#') challenges
-					li: a(href='#') gallery
-					li: a(href='#') about
-					if loggedIn
-						li: a(href='#') my account
-					else
-						li: a(href='/login') login
-						li: a(href='/signup') signup
-					li: a(href='#') license
-					li: a(href='#') privacy policy
+    block content
+
+    footer
+      p ©2014 Glimmer Labs
+      nav
+        ul
+          li: a(href='/create') create
+          li: a(href='/challenges') challenges
+          li: a(href='/gallery') gallery
+          li: a(href='/about') about
+          if loggedIn
+            li: a(href='#') my account
+          else
+            li: a(href='/login') login
+            li: a(href='/signup') signup
+            li: a(href='/license') license
+            li: a(href='/privacypolicy') privacy policy

@@ -1,5 +1,5 @@
 /**
- * Functions
+ * Functions for User's Function page
  */
 module.exports.buildPage = (function(req, res, database) {
     database.getIDforUsername(req.params.username, function(userid,error){

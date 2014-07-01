@@ -42,7 +42,7 @@
   			y1: group.y(),
   			connections: []
   		};
-        var child = 0;
+      var child = 0;
   		if (action == 'delete') {
   			// Remember all the outgoing edges we're deleting.
   			for (var i = 0; i < group.attrs.lineOut.length; i++) {
@@ -62,17 +62,17 @@
             var oldGroup = arguments[2]
             obj.oldGroup = oldGroup;
             if (isFunction(group)) {
-                if(group.attrs.maxInputs < oldGroup.children.length - 3) {
-                    var startingIndex = OUTLET_OFFSET + group.attrs.maxInputs;
-                    for (var i = startingIndex; i < oldGroup.children.length; i++) {
-                        var lineIn = oldGroup.children[i].attrs.lineIn;
-                        if (lineIn != null && lineIn != undefined) {
-                            obj['connections'][child++] = actionToObject('delete', lineIn);
-                        } 
-                    }
+              if (group.attrs.maxInputs < oldGroup.children.length - 3) {
+                var startingIndex = OUTLET_OFFSET + group.attrs.maxInputs;
+                for (var i = startingIndex; i < oldGroup.children.length; i++) {
+                  var lineIn = oldGroup.children[i].attrs.lineIn;
+                  if (lineIn != null && lineIn != undefined) {
+                    obj['connections'][child++] = actionToObject('delete', lineIn);
+                  } 
                 }
+              }
             }
-        } // if we're replacing things
+          }   // if we're replacing things
   	} // if it's a function or value
   	// If it's a line
   	else if (isLine(group)) {
@@ -146,8 +146,10 @@
           // re-call the function on the line in question's deletion
           undoAction(connections[i]);
         } // go through each of the old line connections
+        removeShadow(currShape);
         currShape = element;
-        currShape.children[0].setAttrs({shadowColor: 'darkblue'});
+        setSelectedShadow(currShape);
+        updateFunBar();        
       } // if node
       // if working with a line
       else {
@@ -187,18 +189,22 @@
       }
         //collapseCanvas(element);
         currShape = element;
+        updateFunBar();
       } // if move
       // if the action in question is a replacement
       else {
-        // ***** currently in progress *******
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             oldGroup.moveTo(workLayer);
+            replaceNode (element, oldGroup);
+            var totalNeeded = oldGroup.children.length + actionObj.connections.length;
             for (var i = 0; i < actionObj.connections.length; i++)
             {
-                insertLine(actionObj.connections[i]);
+              if (oldGroup.children.length < totalNeeded) {
+                addOutlet(oldGroup);
+              }
+              insertLine(actionObj.connections[i]);
             }
-            replaceNode (element, oldGroup);
             workLayer.draw();
         } // if node
         else {
@@ -270,10 +276,9 @@
         } 
           // remove text from funBar
           if (currShape == element) {
-            currShape = undefined;
-            funBarText.setAttr('text', '');
-            funBarLayer.draw();
-        }
+            currShape = null;
+            updateFunBar();
+          }
           // remove the element form the workLayer
           element.remove();
         } // if node
@@ -316,15 +321,23 @@
           renderCanvas(element);
       }
         // update the currShape
+        removeShadow(currShape);
         currShape = element;
+        setSelectedShadow(currShape);
+        updateFunBar();
       } // if move
       // else replace
       else {
-        // ******** currently in progress ******
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             element.moveTo(workLayer);
             replaceNode (oldGroup, element);
+            
+            for (var i = 0; i < actionObj.connections.length; i++)
+            {
+              insertLine(actionObj.connections[i]);
+            }
+
         } // if node
         else {
           removeLine(elementTable[actionObj.deleteLine.id]);
@@ -368,8 +381,6 @@
       // if sink un-renderable
       else {
         // update currShape's identification and the funBarText
-        currShape.children[0].setAttr('shadowEnabled', false);
-        currShape = undefined;
         funBarText.setAttr('text', ''); 
       } // if un-renderable
       funBarLayer.draw();

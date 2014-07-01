@@ -1,44 +1,40 @@
 extends ./partials/framework
 block title
-	title= viewing.username + " on MIST"
+  title= viewing.username + " on MIST"
+
 block extraMetas
 block extraLinks
-
+  script(type='text/javascript' src='/js/profile.js')
 block stylesheets
 
-	link(rel='stylesheet', href='/css/profile')
+  link(rel='stylesheet', href='/css/profile')
+
 
 block content
-	div(id='main')
-		div(id = 'pageTitle')
-			h1= viewing.username
-		div(id = 'subviews')
-			a(href='/challenges' class='subview' id='selected') about
-			a(href='/badges' class='subview') badges
-			a(href='/albums' class='subview') albums
-			a(href='/challenges' class='subview') challenges
-		div(id='subTitle')
-			= "member since " + viewing.signupTime
-		div(id='featuredImage')
-			figure
-				a(href='singleImage.html')
-					img(src='/samples/bw1.jpg' alt='Untitled by username')
-					p
-						figcaption= "Untitled by " +  viewing.username
-		if isLoggedIn
-			a(href='/accountSettings' id='link') Account Settings
-			div(id='bio')
-				a(href='/changeContent')
-					img(src='/icons/edit_button.png' id='editButton')
-				figcaption    My name is Alex and I am cool.
-				p= viewing.about
-				form(action='#' method='POST')
-					textarea(name='styled-textarea' id='styled' cols='40' rows='10') here is where we will put a mailbox
-					input(type='submit' id='submit' name='submit')
-		else
-			div(id='bio')
-				p My name is Alex and I am cool.
-				p= viewing.about
-				form(action='#' method='POST')
-					textarea(name='styled-textarea' id='styled' cols='40' rows='10') send a message
-					input(type='submit' id='submit' name='submit')
+  div(id='main')
+    div(id = 'pageTitle')
+      h1= viewing.username
+    div(id = 'subviews')
+      a(href='/user/'+ viewing.username class='subview' id='selected') profile
+      a(href='/badges' class='subview') badges
+      a(href='/user/'+ viewing.username +'/albums' class='subview') albums
+      a(href='/challenges' class='subview') challenges
+    div(id='subTitle')
+      p= "member since " + viewing.signupTime.toLocaleDateString()
+    div(id='featuredImage')
+      figure
+          img(src='/samples/bw1.jpg' alt='Untitled by username')
+          p
+            figcaption= "Untitled by " +  viewing.username
+    if viewingSelf
+      a(href='/accountSettings' class='settings'): account account settings
+      div(id='bio')
+        input(type='image' id='edit-bio' src='/icons/edit_button.png' value='submit')
+        figcaption(class='bio-view')= viewing.about
+          form(method='POST' id='bio-form')
+            textarea(name='aboutSection' cols='40' rows='10')= viewing.about
+            input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
+    else
+      div(id='bio')
+        figcaption(class='bio-view')= viewing.about
+        form(action='#' method='POST')

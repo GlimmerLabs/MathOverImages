@@ -1,29 +1,5 @@
 @import url("/css/styles");
 
-#subviews {
-	float: right;
-	width: 450px;
-	margin: -21px 0px;
-}
-
-.subview {
-
-	text-decoration: none;
-	color: white;
-	background-color: #D8D8D8;
-	display: inline-block;
-	height: 50px;
-	width: 42%;
-	text-align: center;
-	font-size: 2em;
-	float: left;
-	margin: 20px 2%;
-}
-
-.subview:hover, #selected {
-	background-color: #979797;
-}
-
 #bio {
 	padding: 2%;
 	width: 50%;
@@ -42,21 +18,25 @@
 	height: 380px;
 }
 
-#featuredImage figcaption{
-	text-align:right;
-	color: #979797;
-}
-
 #contactUser {
 	float: left;
 	padding: 20px;
 }
 
+textarea{
+    resize: none;
+    color: #111111;
+    border-radius: 3px;
+    border: 1px solid #979797;
+    -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+    box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+}
+
 #contactUser textarea {
 	border-radius: 3px;
 	border: 1px solid #979797;
-	-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.50);
-	box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+	-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+	box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
 	width: 500px;
 	height: 50px;
 	color: #BBBBBB;
@@ -79,16 +59,72 @@ input:hover {
 	cursor: pointer;
 }
 
-#editButton {
+#changeBio img {
 	width: 25px;
 	height: 25px;
 }
 
-figcaption {
-	display: inline;
-}
 #link {
 	text-decoration: none;
 	text-color: #979797;
 	float: right;
+}
+
+.settings {
+	display: inline-block;
+	height: 40px;
+	width: 250px;
+	text-align: center;
+	font-size: 1.7em;
+	color: #FFFFFF;
+	text-decoration: none;
+	float: right;
+	background-color: #EFDC5C;
+	margin: 0px 6%;
+}
+
+.settings:hover {
+    color: #EFDC5C;
+    background-color: #FFFFFF;
+}
+
+input[type='submit'] {
+    margin: 20px 0px;
+    color: #FFF;
+    background-color: #979797;
+    border:1px solid white;
+    font-size: 1em;
+    font-weight: 800;
+}
+
+input[type='submit']:hover {
+    color: #979797;
+    background-color: #FFF;
+    cursor: pointer;
+}
+
+#edit-bio {
+width: 25px;
+height: 25px;
+float: left;
+}
+
+figcaption.bio-view {
+  white-space: pre-wrap;
+  position: relative;
+  margin: 0px 50px;
+  width: 500px;
+  word-wrap: break-word;
+  -moz-hyphens:auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens:auto;
+  hyphens: auto;
+}
+
+#bio-form {
+margin: 40px 0px 0px 75px;
+}
+
+#submit {
+margin: 50px;
 }

@@ -49,19 +49,24 @@ MIST.ui.stopAnimation = function() {
 MIST.ui.startAnimation = function(exp,params,context,canvas,log)
 {
   // Set up a hash for the parameters
-  var tmp = params.split(",");
   MIST.ui.animator.params = {};
-  for (var i = 0; i < tmp.length; i++) {
-    MIST.ui.animator.params[tmp[i]] = -1;
-  } // for
+  if (params != "") {
+    var tmp = params.split(",");
+    for (var i = 0; i < tmp.length; i++) {
+      if (params[i] != "") {
+        MIST.ui.animator.params[tmp[i]] = -1;
+      } // if
+    } // for
+  } // if (
 
+  MIST.parse(exp);
   // Get the remaining info
   try {
     MIST.ui.animator.exp = MIST.parse(exp);
+    MIST.ui.animator.on = exp.indexOf("t.") > -1;       // HACK!
     MIST.ui.animator.context = context;
     MIST.ui.animator.canvas = canvas;
     MIST.ui.animator.log = log;
-    MIST.ui.animator.on = true;
     MIST.ui.animator.frame();
   }
   catch (err) {
@@ -88,8 +93,14 @@ MIST.ui.animator.frame = function() {
   // Inform the user
   MIST.ui.animator.log(paramInfo);
   // Make the frame
-  MIST.ui.animator.time = MIST.render(MIST.ui.animator.exp, context,
-      MIST.ui.animator.canvas)
+  if (MIST.ui.animator.on) {
+    MIST.ui.animator.time = MIST.render(MIST.ui.animator.exp, context,
+        MIST.ui.animator.canvas, 200, 200);
+  }
+  else {
+    MIST.ui.animator.time = MIST.render(MIST.ui.animator.exp, context,
+        MIST.ui.animator.canvas);
+  }
   // And schedule the next frame
   if (MIST.ui.animator.on) {
     setTimeout(MIST.ui.animator.frame, 1000/MIST.ui.animator.fps);

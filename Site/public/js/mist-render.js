@@ -153,7 +153,7 @@ function MISTbody2fun(body)
  * Convert a MIST expression to something that returns an RGB
  * list.
  */
-MIST.expToRGB = function(exp,context) {
+MIST.expToRGB = function(name,exp,context) {
   var type = MIST.expType(exp, context);
   var tmp = [];
    // Contexts as objects
@@ -188,7 +188,7 @@ MIST.expToRGB = function(exp,context) {
     return eval(code);
   }
   else {
-    throw "Can not handle expressions of type " + type;
+    throw "Cannot handle expressions of type " + type;
   }
 } // MIST.expToRGB
 
@@ -210,7 +210,8 @@ MIST.expToRGB = function(exp,context) {
  * Render an expression on the specified region of the canvas.
  * (If no region is specified, uses the whole canvas.)
  */
-MIST.render = function(exp, context, canvas, rleft, rtop, rwidth, rheight) {
+MIST.render = function(exp, context, canvas, renderWidth, renderHeight,
+    imgLeft, imgTop, imgWidth, imgHeight) {
   // Get the time.
   var d = new Date();
   var t = {
@@ -218,7 +219,8 @@ MIST.render = function(exp, context, canvas, rleft, rtop, rwidth, rheight) {
     m: (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1
   };
   // Use the core function
-  MIST.renderAt(t, exp, context, canvas, rleft, rtop, rwidth, rheight);
+  MIST.renderAt(t, exp, context, canvas, renderWidth, renderHeight,
+      imgLeft, imgTop, imgWidth, imgHeight);
   // Return the time (for use elsewhere)
   return t;
 } // MIST.render
@@ -227,20 +229,46 @@ MIST.render = function(exp, context, canvas, rleft, rtop, rwidth, rheight) {
  * Render an expression at a particular time.
  */
 MIST.renderAt = function(t, exp, context, canvas, 
-    rleft, rtop, rwidth, rheight) {
+    renderWidth, renderHeight, imgLeft, imgTop, imgWidth, imgHeight) {
   // Make sure that we have bounds.
-  if (!rleft) { rleft = 0; }
-  if (!rtop) { rtop = 0; }
-  if (!rwidth) { rwidth = canvas.width - rleft; }
-  if (!rheight) { rheight = canvas.height - rtop; }
+  if (!imgLeft) { imgLeft = 0; }
+  if (!imgTop) { imgTop = 0; }
+  if (!imgWidth) { imgWidth = canvas.width - imgLeft; }
+  if (!imgHeight) { imgHeight = canvas.height - imgTop; }
+  if (!renderWidth) { renderWidth = imgWidth; }
+  if (!renderHeight) { renderHeight = imgHeight; }
+  if (renderWidth > imgWidth) { renderWidth = imgWidth; }
+  if (renderHeight > imgHeight) { renderHeight = imgHeight; }
+
+  // Make sure that the rendering width and height are whole numbers
+  renderWidth = Math.round(renderWidth);
+  renderHeight = Math.round(renderHeight);
+
+  // Grab the canvas buffer.
+  var buffer = document.getElementById("canvas-buffer");
+  if (!buffer ) {
+    buffer = document.createElement("canvas");
+    buffer.id = "canvas-buffer";
+    buffer.style.display = "none";
+    document.body.appendChild(buffer);
+  } // if (!buffer)
+  buffer.width = renderWidth;
+  buffer.height = renderHeight;
+
+  // Determine scale factors
+  var hscale = imgWidth/renderWidth;
+  var vscale = imgHeight/renderHeight;
 
   // Set up how much we change x and y each time.
-  var deltaX = 2.0/rwidth;
-  var deltaY = 2.0/rheight;
+  var deltaX = 2.0/renderWidth;
+  var deltaY = 2.0/renderHeight;
 
-  // Get the image data
+  // Get contexts for both canvases
   var canvasContext = canvas.getContext("2d");
-  var region = canvasContext.createImageData(rwidth,rheight);
+  var bufferContext = buffer.getContext("2d");
+
+  // Set up the image data
+  var region = bufferContext.createImageData(renderWidth,renderHeight);
 
   // Set up the mouse (we don't want it changing while rendering).
   var m = {
@@ -251,7 +279,7 @@ MIST.renderAt = function(t, exp, context, canvas,
   };
 
   // Build the function
-  var fun = MIST.expToRGB(exp, context);
+  var fun = MIST.expToRGB("untitled image", exp, context);
 
   // Set up our main variables
   var x = -1;
@@ -261,17 +289,17 @@ MIST.renderAt = function(t, exp, context, canvas,
   for (var i = 0; i < region.data.length; i+= 4)
     {
       // When we reach the end of the row, move on to the next row
-      if ((i % (4*rwidth)) == 0)
+      if ((i % (4*renderWidth)) == 0)
         { 
           x = -1;
           y += deltaY;
-        } // if (i % (4*rwidth)) == 0
+        } // if (i % (4*imgWidth)) == 0
 
       // Evaluate the function
       var rgb = fun(x,y,t,m);
 
       // Exploration
-      // if (i < 4*rwidth) { console.log("i",i, "x",x, "y",y, "rgb",rgb); }
+      // if (i < 4*imgWidth) { console.log("i",i, "x",x, "y",y, "rgb",rgb); }
  
       // Copy the pixels
       region.data[i+0] = rgb[0];
@@ -282,6 +310,13 @@ MIST.renderAt = function(t, exp, context, canvas,
       // And advance to the next pixel
       x += deltaX;
     } // for
-  canvasContext.putImageData(region, rleft, rtop);
+
+  // Random computations
+  var renderLeft = imgLeft*renderWidth/imgWidth;
+  var renderTop = imgTop*renderHeight/imgHeight;
+
+  // Draw and scale
+  bufferContext.putImageData(region, 0, 0);
+  canvasContext.drawImage(buffer, imgLeft, imgTop, imgWidth, imgHeight);
 } // MIST.renderAt
 

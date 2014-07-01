@@ -40,6 +40,11 @@
    5. Many of the MIST functions rely on a MIST object.  We start each
    file with instructions to build that object.
 
+   6. I'm still struggling with type checking.  I had originally assumed
+   that RGB functions could only be applied to numeric values.  However,
+   something like "lambda (a,b) rgb(first(a),b,b) should expect a to be
+   a triplet.  (Of course, I could not allow extracting components of
+   rgb and hsv values, which would restore my assumption.)
  */
 
 // +-------+---------------------------------------------------------
@@ -276,6 +281,78 @@ MIST.sameExp = function(a,b,checkedLoops)
   return false;
 } // MIST.sameExp
 
+/**
+ * Validate an expression: 
+ *   * Make sure that all of the parameters are of appropriate types.
+ *   * Make sure that all of the functions are in the context or are
+ *     standard functions.
+ *   * Identify the type of the expression.
+ *   * Identify whether or not the expression is animated.
+ */
+
+/*
+MIST.validate = function(name, exp, context) {
+  // Validate all of the expressions in the context
+
+  // We'll assume that expressions that already have a type are
+  // already validated.  (Trust your client?)
+  if (exp.type && (exp.animated != undefined))
+    return;
+
+  // Case 1: Applications
+  if (exp instanceof MIST.App) {
+    var opInfo = context[exp.operator] || 
+         MIST.builtins.functions[exp.operator];
+
+    // Make sure that the operator is defined.
+    if (!opInfo) {
+      throw name + " includes unknown operation " + exp.operation;
+    } // if the function is not defined
+
+    // Validate all of the children.  Doing so should also set the
+    // type and animated fields of the children.
+    for (var i = 0; i < exp.operands.length; i++) {
+      MIST.validate(name, exp.operands[i], context);
+    } // for
+
+    // Determine whether or not it's animated
+    exp.animated = false;
+    for (var i = 0; i < exp.operands.length; i++) {
+      exp.animated = exp.animated || exp.operands[i].animated;
+    } // for
+
+    // For RGB functions, make sure that all parameters are numbers.
+    if (opInfo.type == "RGB") {
+      exp.type = MIST.TYPE.RGB;
+      for (var i = 0; i < exp.operands.length; i++) {
+        if (exp.operands[i].type != MIST.TYPE.NUMBER) {
+          throw name ": RGB function " + opInfo.name +
+              " applied to non-numeric value (" +
+              exp.operands[i].toString() + ")";
+        } // if an operand is not a number
+      } // for
+    } // if it's an RGB function
+
+    else if (opInfo.type == "HSV") {
+    } // if it's an HSV function
+
+    else if (opInfo.type == "GENERAL") {
+      for (var i = 0; i < exp.operands.length; i++) {
+      } // for
+    } // if it's a general function
+    else {
+      throw name + " includes unsupported operation " + exp.operation;
+    }
+  } // if it's an application
+
+  else if (exp instanceof MIST.Val) {
+  } // if it's a value
+  else {
+    throw "Could not validate " + name + " (" + exp + ")";
+  } // if it's neither an application nor a value
+} // MIST.validate
+*/
+
 // +-----------------+-----------------------------------------------
 // | Class: MIST.App |
 // +-----------------+
@@ -461,10 +538,16 @@ MIST.Collection.prototype.clear = function() {
 } // MIST.Collection.prototype.clear
 
 /**
- * Add an object.  (We assume all objects have names.)
+ * Add an object, which we will then index by name (we assume that all
+ * objects have a .name field).  
+ *
+ * If there's a .display field, also index the object by that value
  */
 MIST.Collection.prototype.add = function(obj) {
   this.values[obj.name] = obj;
+  if (obj.display) {
+    this.values[obj.display] = obj;
+  }
 } // MIST.Collection.prototype.add
 
 /**
@@ -482,7 +565,8 @@ MIST.Collection.prototype.addUserFun = function(name,display,about,params,code) 
   if (params) {
     numParams = params.split(",").length;
   }
-  this.add(new MIST.FunInfo(name,display,about,params,{code:code}));
+  this.add(new MIST.FunInfo(name,display,about,params,
+      {type:"GENERAL", minarity:numParams, maxArity:numParams, code:code}));
 };
 
 /**

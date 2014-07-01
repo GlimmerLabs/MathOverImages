@@ -1,113 +1,156 @@
 @import url("/css/styles");
 
 #main {
-  margin:100px;
+	margin:100px;
 }
 
-#featuredImage {
-  text-align: center;
+#pageTitleGeneral {
+	background-color: #3FAAA0;
 }
 
-
-#top picks {
-  height:80px;
-  width: 290px;
-  margin: 80px 20px;
-  float: left;
-  background-color: #979797;
-  font-weight:bold;
-  color: #FFF;
-  text-align:center;
-  text-transform:lowercase;
-}
-#top picks:hover {
-    background: #979797;
-    font-size: 36px;
-    color: #E1E1E1;
-    line-height: 49px
-
+#albumPageTitle {
+	height:140px;
+	min-width:600px;
+	margin: 0px -110px;
+	float: left;
+	background-color: #EFDC5C;
 }
 
-#recent {
-  height:80px;
-  width: 290px;
-  margin: 80px 20px;
-  float: right;
-  background-color: #3FAAA0;
-  color: #FFF;
-  text-align:center;
-  font-weight:bold;
+#albumPageTitle h1{
+	border: 7px solid white;
+	margin: 15px;
+	color: #FFF;
+	display: inline-block;
+	font-weight: 800;
+	font-size: 4em;
+	padding: 5px;
+	clear: left;
+}
 
-
+/*
+#images {
+	width: 90%;
+	margin: auto;
+	clear: both;
 
 }
 
+#images figure {
+	width:19%;
+	float: left;
+	margin: 50px;
+}
 
-#recent:hover {
-  background: #D8D8D8;
-font-family: OpenSans;
-font-size: 36px;
-  color: #E1E1E1;
-line-height:49px;
+#images figure img{
+width: 5%
+}
+*/
+figure figcaption.left:first-letter{
+	color: #EFDC5C;
+	font-size: 1em;
+}
+
+figure figcaption.right{
+	color: #979797;
+	font-size: 1em;
+	text-decoration: none;
+	margin: 74% 0% 0% -20%
+}
+
+figure figcaption.center{
+    text-align: center;
+    color: #979797;
+}
+
+h2{
+	color: #979797;
+	text-align: center;
+	width: 60%;
+	margin: 0px auto;
+	font-weight: normal;
 
 }
 
-#recent h1, #top picks h1, #recent h1:hover, #recent h1:hover{
-
-  font-size: 4em;
-  margin:-5px;
-  padding:0;
-
-
-}
-
-#galleryImages {
-  clear:both;
-  margin:0 auto;
-
-
+figcaption.right a:visited {
+    color: inherit;
 }
 
 
-#galleryImages figure {
-  display:inline-block;
-  margin: 10px;
+ul.rig {
+	list-style: none;
+	font-size: 0px;
+	margin-left: -2.5%; /* should match li left margin */
+}
+ul.rig li {
+	display: inline-block;
+	padding: 10px;
+	margin: 0 0 2.5% 2.5%;
+	background: #fff;
+	border: 1px solid #ddd;
+	font-size: 16px;
+	font-size: 1rem;
+	vertical-align: top;
+	box-shadow: 0 0 5px #ddd;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+ul.rig li canvas {
+	max-width: 100%;
+	height: auto;
+	margin: 0 0 10px;
 }
 
-#galleryImages figure img{
-    background: #D8D8D8;
-    height: 140px;
-    width: 140px;
-    border: 1px solid #979797;
-
+/* class for 2 columns */
+ul.rig.columns-2 li {
+	width: 47.5%; /* this value + 2.5 should = 50% */
+}
+/* class for 3 columns */
+ul.rig.columns-3 li {
+	width: 30.83%; /* this value + 2.5 should = 33% */
+}
+/* class for 4 columns */
+ul.rig.columns-4 li {
+	width: 22.5%; /* this value + 2.5 should = 25% */
+}
+ 
+@media (max-width: 480px) {
+	ul.grid-nav li {
+		display: block;
+		margin: 0 0 5px;
+	}
+	ul.grid-nav li a {
+		display: block;
+	}
+	ul.rig {
+		margin-left: 0;
+	}
+	ul.rig li {
+		width: 100% !important; /* over-ride all li styles */
+		margin: 0 0 20px;
+	}
 }
 
-#galleryImages figcaption{
-  text-align:right;
-  color: #979797;
+#pageNumber a{
+vertical-align: bottom;
+text-decoration: none;
+color: #FFFFFF;
+background-color: #C8C8C8;
+display: inline-block;
+height: 40px;
+width: 150px;
+text-align: center;
+font-size: 1.7em;
+float: left;
+margin: 0px auto;
 }
 
-#galleryImages h1 {
-  font-size:1.5em;
-  text-align:left;
-
-
+#pageNumber a:hover{
+background-color: #979797;
 }
 
-#galleryImages a {
-  color: #979797;
-  text-decoration:none;
 
-
-}
-
-#galleryImages a:hover {
-  color: #666;
-}
-
-#figset {
-
-  margin:0 auto;
-  width: 1010px;
-
+canvas {
+ width: 180px;
+ height: 180px;
 }
