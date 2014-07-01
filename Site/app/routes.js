@@ -47,9 +47,9 @@ function sendFileWithSuffix(res,path,suffix) {
       console.log("First response: " + err);
       res.sendfile(path + suffix, function(err) {
         console.log("Second response: " + err);
-	if (err) {
+        if (err) {
           res.send(404,'');
-	}
+        }
       });
     }
   });
@@ -66,10 +66,10 @@ module.exports = function(app,passport,database) {
   //   HOME PAGE
   app.get('/', function(req, res) {
     index.buildRandomPage(req, res, database);
-//    res.render('../public/views/index.jade',{
-//      loggedIn: req.session.loggedIn,
-//      user: req.session.user
-//    });
+    //    res.render('../public/views/index.jade',{
+    //      loggedIn: req.session.loggedIn,
+    //      user: req.session.user
+    //    });
   });
 
   // --------------------------------------------------
@@ -102,8 +102,8 @@ module.exports = function(app,passport,database) {
   // Path:  /albums
   //   Albums page
   app.get('/albums', function(req,res) {
-  albums.buildPage(req, res, database);
-//res.redirect('/user/' + req.session.user.username + '/albums');
+    albums.buildPage(req, res, database);
+    //res.redirect('/user/' + req.session.user.username + '/albums');
   });
   app.get('/albums/:albumid', function(req,res) {
     albumContents.buildPage(req, res, database);
@@ -133,10 +133,10 @@ module.exports = function(app,passport,database) {
 
   app.get('/tutorial', function(req, res) {
     res.render('../public/views/tutorialHome.jade', {
-    loggedIn: req.session.loggedIn,
-    user: req.session.user
-   });
-});
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
 
   // --------------------------------------------------
   // Path:  /css
@@ -267,11 +267,11 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/user/:username', function(req,res) {
-  if ((req.session.user != null) &&
-    (req.session.user.username === req.params.username)) {
-    if(req.body.aboutSubmit != null) {
-      username.changeAboutSection(req, res);
-    }}
+    if ((req.session.user != null) &&
+        (req.session.user.username === req.params.username)) {
+      if(req.body.aboutSubmit != null) {
+        username.changeAboutSection(req, res);
+      }}
   });
 
   // --------------------------------------------------
@@ -300,11 +300,11 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/user/:username', function(req,res) {
-  if ((req.session.user != null) &&
-    (req.session.user.username === req.params.username)) {
-    if(req.body.aboutSubmit != null) {
-      username.changeAboutSection(req, res);
-    }}
+    if ((req.session.user != null) &&
+        (req.session.user.username === req.params.username)) {
+      if(req.body.aboutSubmit != null) {
+        username.changeAboutSection(req, res);
+      }}
   });
 
   // --------------------------------------------------
@@ -327,5 +327,10 @@ module.exports = function(app,passport,database) {
   app.get('/verify', function(req,res) {
     // TODO: VERIFY user
     res.redirect('/login');
+  });
+
+  // Route does not exist
+  app.use(function(req, res, next){
+    res.redirect("/");
   });
 };
