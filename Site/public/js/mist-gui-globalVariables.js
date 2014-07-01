@@ -28,6 +28,10 @@ var functionImageBoxOffset = width / 300;
 var valueImageBoxOffset = width / 31;
 var renderSideLength = width / 18;
 
+var editableTextWidth = width / 15;
+var editableTextHeight = width / 30;
+var editableTextFont = 13;
+
 var variableColor = 'blue';
 
 var outletXOffset = width / 255;
