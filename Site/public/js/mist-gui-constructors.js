@@ -312,10 +312,12 @@ var addOp = function(funName, x, y) {
  * by the valName key.
  */
 var addVal = function(valName, x, y) {
-  if (valName.substring(0, 7) == constant) {
+  if (valName.substring(0, 8) == 'constant') {
+    var constant = valName.substring(8);
     var val = makeValueGroup('constant', x, y);
-    if (valName.substring(7)) {
-      val.setAttrs({ rep: valName.substring(7), text: valName.substring(7) });
+    if (constant) {
+      val.setAttr('rep', constant);
+      val.children[1].setAttr('text', wrapValueText(constant));
     } // if valName is concatenated with a value
   } // if valName is a constant
   else {
