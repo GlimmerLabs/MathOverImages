@@ -198,6 +198,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/:username/images', function(req,res) {
+    var albums = require("../functions/albums.js");
     albums.allImagesinAlbum(req, res, database);
   });
 
@@ -320,6 +321,7 @@ module.exports = function(app,passport,database) {
   // Path:  /user/*/albums
   //    User albums page
   app.get('/user/:username/albums', function(req,res) {
+    var albums = require("../functions/albums.js");
     albums.buildPage(req, res, database);
   });
 
