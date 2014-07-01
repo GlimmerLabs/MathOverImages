@@ -14,25 +14,9 @@
      in /albums?
 
   2. What is /samples?
+     TODO: Remove all .jpg's from site and convert to live images, then delete /samples route
 
-  3. Requires touch the filesystem.  Would it make more sense to
-     do the requires only in the code that uses them?
  */
-
-// +--------------------------------+--------------------------------
-// | Application-Specific Libraries |
-// +--------------------------------+
-var index = require("../functions/index.js");
-var gallery = require("../functions/gallery.js");
-var albums = require("../functions/albums.js");
-var albumContents = require("../functions/albumContents.js");
-var accountSettings =  require ("../functions/accountSettings.js");
-var functions = require("../functions/functions.js");
-var username = require("../functions/username.js");
-var image = require("../functions/image.js");
-var login = require("../functions/login.js");
-var signup = require("../functions/signup.js");
-var api = require("../functions/api.js");
 
 // +-----------+-----------------------------------------------------
 // | Utilities |
@@ -65,6 +49,7 @@ module.exports = function(app,passport,database) {
   // Path:  /
   //   HOME PAGE
   app.get('/', function(req, res) {
+    var index = require("../functions/index.js");
     index.buildRandomPage(req, res, database);
     //    res.render('../public/views/index.jade',{
     //      loggedIn: req.session.loggedIn,
@@ -86,9 +71,11 @@ module.exports = function(app,passport,database) {
   // Path:  /accountSettings
   //   Account settings
   app.get('/accountSettings', function(req,res) {
+    var accountSettings =  require ("../functions/accountSettings.js");
     accountSettings.buildPage(req, res, database);
   });
   app.post('/accountSettings', function(req,res) {
+    var accountSettings =  require ("../functions/accountSettings.js");
     if(req.body.usernameSubmit != null) {
       accountSettings.changeUsername(req, res, database);
     } else if (req.body.passwordSubmit != null) {
@@ -102,16 +89,19 @@ module.exports = function(app,passport,database) {
   // Path:  /albums
   //   Albums page
   app.get('/albums', function(req,res) {
+    var albums = require("../functions/albums.js");
     albums.buildPage(req, res, database);
     //res.redirect('/user/' + req.session.user.username + '/albums');
   });
   app.get('/albums/:albumid', function(req,res) {
+    var albumContents = require("../functions/albumContents.js");
     albumContents.buildPage(req, res, database);
   });
 
   // --------------------------------------------------
   // Path:  /api
   //   Dynamic content distribution - return raw data through AJAX
+  var api = require("../functions/api.js");
   app.post('/api', function(req,res) { api.run(req.body, req, res); });
   app.get('/api', function(req,res) { api.run(req.query, req, res); });
 
@@ -170,6 +160,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/gallery/random', function(req, res) {
+    var gallery = require("../functions/gallery.js");
     gallery.buildRandomPage(req, res, database);
   });
 
@@ -178,6 +169,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/gallery/recent/:pageNumber', function(req, res) {
+    var gallery = require("../functions/gallery.js");
     gallery.buildRecentsPage(req, res, database);
   });
 
@@ -186,6 +178,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/gallery/toprated/:pageNumber', function(req, res) {
+    var gallery = require("../functions/gallery.js");
     gallery.buildTopRatedPage(req, res, database);
   });
 
@@ -200,11 +193,13 @@ module.exports = function(app,passport,database) {
   // Path:  /image
   //   Image page
   app.get('/image/:imageid', function(req,res) {
+    var image = require("../functions/image.js");
     image.buildPage(req, res, database);
   });
 
   app.post('/image/:imageid', function(req,res) {
     if(req.body.commentSubmit != null) {
+      var image = require("../functions/image.js");
       image.saveComment(req, res, database);
     };
   });
@@ -227,6 +222,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/login', function(req,res) {
+    var login = require("../functions/login.js");
     login.buildPage(req, res, database);
   });
 
@@ -250,11 +246,14 @@ module.exports = function(app,passport,database) {
   // Path:  /me
   //   User profile page, current user
   app.get('/me', function(req, res) {
+    var username = require("../functions/username.js");
     username.goToMyProfile(req, res, database);
   });
 
   app.post('/me', function(req,res) {
+
     if(req.body.aboutSubmit != null) {
+      var username = require("../functions/username.js");
       username.changeAboutSection(req, res, database);
     }
   });
@@ -263,6 +262,7 @@ module.exports = function(app,passport,database) {
   // Path:  /user
   //   User profile pages
   app.get('/user/:username', function(req, res) {
+    var username = require("../functions/username.js");
     username.buildPage(req, res, database);
   });
 
@@ -270,6 +270,7 @@ module.exports = function(app,passport,database) {
     if ((req.session.user != null) &&
         (req.session.user.username === req.params.username)) {
       if(req.body.aboutSubmit != null) {
+        var username = require("../functions/username.js");
         username.changeAboutSection(req, res);
       }}
   });
@@ -289,6 +290,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/signup', function(req,res) {
+    var signup = require("../functions/signup.js");
     signup.buildPage(req, res, database);
   });
 
@@ -296,6 +298,7 @@ module.exports = function(app,passport,database) {
   // Path:  /user
   //   User profile pages
   app.get('/user/:username', function(req, res) {
+    var username = require("../functions/username.js");
     username.buildPage(req, res, database);
   });
 
@@ -304,6 +307,7 @@ module.exports = function(app,passport,database) {
   if ((req.session.user != null) &&
     (req.session.user.username === req.params.username)) {
     if(req.body.aboutSubmit != null) {
+      var username = require("../functions/username.js");
       username.changeAboutSection(req, res, database);
     }}
   });
@@ -319,6 +323,7 @@ module.exports = function(app,passport,database) {
   // Path:  /user/*/functions
   //    User functions page
   app.get('/user/:username/functions', function(req,res) {
+    var functions = require("../functions/functions.js");
     functions.buildPage(req, res, database);
   });
 
