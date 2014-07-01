@@ -69,12 +69,17 @@ var workspaceToJSON = function() {
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i];
     if (isValue(node)) {
+      if(node.name() == 'constant') {
+        info.addVal(node.name() + node.attrs.renderFunction, node.x(), node.y());
+      } // if its a constant store its value in the name
+      else {
       nodeInfo[node._id] = 
-          info.addVal(node.attrs.name, node.x(), node.y());
+          info.addVal(node.name(), node.x(), node.y());
+      }
     } // if it's a value
     else if (isFunction(node)) { 
       nodeInfo[node._id] = 
-          info.addOp(node.attrs.name, node.x(), node.y());
+          info.addOp(node.name(), node.x(), node.y());
     } // if it's a function
   } // for each node
 
