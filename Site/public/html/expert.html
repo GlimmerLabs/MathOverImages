@@ -9,26 +9,26 @@
 jquery-ui.css">
 
 <!-- MISTui Style Sheets -->
-<link rel="stylesheet" type="text/css" href="mistui-dialogs.css"></link>
-<link rel="stylesheet" type="text/css" href="mistui-help.css"></link>
-<link rel="stylesheet" type="text/css" href="mistui-menus-black.css">
+<link rel="stylesheet" type="text/css" href="/css/mistui-dialogs.css"></link>
+<link rel="stylesheet" type="text/css" href="/css/mistui-help.css"></link>
+<link rel="stylesheet" type="text/css" href="/css/mistui-menus-black.css">
 
 <!-- Style sheet for this application -->
-<link rel="stylesheet" type="text/css" href="mistui-expert.css"></link>
+<link rel="stylesheet" type="text/css" href="/css/mistui-expert.css"></link>
 
 <!-- MIST Libraries-->
-<script src="mist-utils.js"></script>
-<script src="mist-functions.js"></script>
-<script src="mist-layout.js"></script>
-<script src="mist-functions-layout.js"></script>
-<script src="mist-functions-builtin.js"></script>
-<script src="mist-render.js"></script>
+<script src="/js/mist-utils.js"></script>
+<script src="/js/mist-functions.js"></script>
+<script src="/js/mist-layout.js"></script>
+<script src="/js/mist-functions-layout.js"></script>
+<script src="/js/mist-functions-builtin.js"></script>
+<script src="/js/mist-render.js"></script>
 
 <!-- MISTui Libraries -->
-<script src="mistui-dialogs.js"></script>
-<script src="mistui-help.js"></script>
-<script src="mistui-menus.js"></script>
-<script src="mistui-animation.js"></script>
+<script src="/js/mistui-dialogs.js"></script>
+<script src="/js/mistui-help.js"></script>
+<script src="/js/mistui-menus.js"></script>
+<script src="/js/mistui-animator.js"></script>
 
 <!-- JQuery Libraries -->
 <script src="//code.jquery.com/jquery-1.11.1.js"></script>
@@ -43,24 +43,32 @@ jquery-ui.css">
 /**
  * The current workspace.
  */
+var ws;
 var workspace = {};
 workspace.userfuns = new MIST.Collection("User-defined functions", "Functions defined by the user.");
 workspace.uservals = new MIST.Collection("User-defined values", "Values defined by the user.");
 
 // Simulated population of the workspace
+/*
 workspace.userfuns.addUserFun("fun1", "fun1", "My first function", "i",
   "x+i");
 workspace.userfuns.addUserFun("fun2", "fun2", "My function", "i,j",
   "x*i+y*j");
 workspace.userfuns.addUserFun("myfun", "myfun", "My function", "i,j",
   "x*i+y*j");
+ */
 workspace.uservals.addUserVal("val1", "val1", "x*y", "x*y");
-workspace.uservals.addUserVal("val2", "val2", "Almost as circle", "x*x+y*y");
+workspace.uservals.addUserVal("val2", "val2", "Almost a circle", "x*x+y*y");
 
 /**
  * The list of selected files.
  */
 var selectedFiles;
+
+/**
+ * The active animator.
+ */
+var animator;
 
 // +-----------+-----------------------------------------------------
 // | Functions |
@@ -109,9 +117,10 @@ function updateInsertMenu() {
   var addFunctions = function(collection)  {
     var keys = collection.keys().sort();
     for (var i = 0; i < keys.length; i++) {
-      var fun = collection.get(keys[i]);
-      var txt = fun.name + "(" + fun.params + ")";
-      MISTui.addMenuItem("insert-menu", "insert-" + fun.name, fun.name,
+      var key = keys[i];
+      var fun = collection.get(key);
+      var txt = key + "(" + fun.params + ")";
+      MISTui.addMenuItem("insert-menu", "insert-" + key, key,
         "<b>" + txt + "</b><br/>" + fun.about, makeInserter(txt));
     } // for
   }; // addFunctions
@@ -334,17 +343,25 @@ function saveWorkspace(fname) {
  * Start the animation running.
  */
 function startAnimation() {
-  MIST.ui.startAnimation(document.getElementById("funcode").value,
-      document.getElementById("funparams").value, {},
+  var context = {};
+  /*
+  for (var name in workspace.userfuns.keys()) {
+    context[name] = workspace.userfuns.get[name];
+  } // for
+   */
+  if (animator) { animator.stop(); }
+  animator = new MIST.ui.Animator(document.getElementById("funcode").value,
+      document.getElementById("funparams").value, context,
       document.getElementById("canvas"),
       function(txt) { document.getElementById("message").value = txt; });
+  animator.start();
 } // startAnimation
 
 /**
  * Stop the animation from running.
  */
 function stopAnimation() {
-  MIST.ui.stopAnimation();
+  animator.stop();
 } // stopAnimation
 
 // +------------------+----------------------------------------------
@@ -429,7 +446,7 @@ $(document).ready(function() {
             console.log(evt.target.result);
             var fun;
             try {
-              var fun = JSON.parse(json);
+              var fun = restore(JSON.parse(json));
             }
             catch (err) {
               alert("File does not contain a MIST Function");
@@ -466,10 +483,10 @@ $(document).ready(function() {
           var reader = new FileReader();
           reader.onload = function(evt) {
             var json = evt.target.result;
-            console.log(evt.target.result);
             var fun;
             try {
-              var ws = JSON.parse(json);
+              ws = JSON.parse(json);
+              restore(ws);
             }
             catch (err) {
               alert("File does not contain a workspace.");
@@ -610,8 +627,16 @@ $(document).ready(function() {
     function(evt) {
       // Note which files are selected
       selectedFiles = evt.target.files;
-      // ove the focus
+      // Move the focus
       $(":button:contains('Load')").focus();
+    }
+  );
+  document.getElementById("loadws-filename").addEventListener('change',
+    function(evt) {
+      // Note which files are selected
+      selectedFiles = evt.target.files;
+      // Move the focus
+      $(":button:contains('Open')").focus();
     }
   );
 });
@@ -780,7 +805,7 @@ context.fillRect(0,0,canvas.width,canvas.height);
 <form>
 <fieldset>
   <label for="loadfun-filename">File Name</label>
-  <input type="file" accept="text/json" name="loadfun-filename" id="loadfun-filename">
+  <input type="file" accept="text/json" name="loadws-filename" id="loadws-filename">
 </fieldset>
 </form>
 

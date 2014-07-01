@@ -8,9 +8,9 @@ module.exports.buildPage = (function(req, res, database) {
     });
 });
 
-module.exports.changeInfo= (function(req, res, database){
-    if(req.body.newPassword == req.body.repassword)
-	database.changePassword(req.session.user.userid, req.body.oldpassword, req.body.newPassword , function(success, error){
+module.exports.changeEmail= (function(req, res, database){
+    if(req.body.newEmail == req.body.newEmail2)
+	database.changeEmail(req.session.user.userid, req.body.newEmail, req.body.password1, function(success,error){
 	    if (error)
 	    {
 		console.log(error);
@@ -18,7 +18,46 @@ module.exports.changeInfo= (function(req, res, database){
 	    }
 	    else
 	    {
-		res.redirect('/login');
+		req.session.user.email = req.body.newEmail;
+		console.log(req.session.user.email);
+		res.redirect("/me");
+	    }
+	});
+    else
+	res.end ("new emails don't match, please try again"); // Make error landing page
+});
+
+module.exports.changeUsername= (function(req, res, database){
+    if(req.body.newUsername == req.body.newUsername2)
+	database.changeUsername(req.session.user.userid, req.body.newUsername, req.body.password1, function(success,error) {
+	    if (error)
+	    {
+		console.log(error);
+		res.end ("error"); // Error Landing page
+	    }
+	    else
+	    {
+		req.session.user.username = req.body.newUsername;
+		console.log(req.session.user.username);
+		res.redirect("/me");
+	    }
+	});
+    else
+	res.end ("new usernames don't match, please try again"); // Make error landing page
+});
+
+module.exports.changePassword= (function(req, res, database){
+    console.log(req.body.newPassword);
+    if(req.body.newPassword == req.body.newPassword2)
+	database.changePassword(req.session.user.userid, req.body.password1, req.body.newPassword , function(success, error){
+	    if (error)
+	    {
+		console.log(error);
+		res.end ("error"); // Error Landing page
+	    }
+	    else
+	    {
+		res.redirect("/me");
 	    }
 	});
     else

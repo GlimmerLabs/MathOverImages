@@ -85,10 +85,15 @@ var isUndoTool = function(target) {
  */
  var isRenderable = function(group) {
  	if (isValue(group)) {
- 		return true;
+ 		if (group.attrs.rep != '') {
+ 			return true;
+ 		}
+ 		else {
+ 			return false;
+ 		}
  	} else {
  		var validInputs = 0;
- 		for(var i = 3; i < group.children.length; i++) {
+ 		for(var i = OUTLET_OFFSET; i < group.children.length; i++) {
  			lineIn = group.children[i].attrs.lineIn;
  			if (lineIn != null && isRenderable(lineIn.attrs.source)) {
  				validInputs++;
@@ -99,7 +104,6 @@ var isUndoTool = function(target) {
  };
 
  var isCycle = function(sourceGroup, outletGroup) {
-
  	var lineOut = outletGroup.attrs.lineOut;
  	if (lineOut.length === 0) {
  		return false;

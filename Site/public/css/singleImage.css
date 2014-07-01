@@ -7,6 +7,7 @@ h1 {
 	color: #4A4A4A;
 	font-size: 2em;
 	margin: 0 auto;
+	font-weight: normal;
 }
 
 h2 {
@@ -14,6 +15,7 @@ h2 {
 	font-size: 1em;
 	margin: 0 auto;
 	padding: 0;
+	font-weight: normal;
 }
 
 figure{
@@ -27,22 +29,11 @@ figure img {
 	width: 400px;
 }
 
-
-figure figcaption.left {
-	float: left;
-	text-align: left;
-	color: #979797;
-}
 figure figcaption.left:first-letter{
 	color: #EFDC5C;
 	font-size: 1em;
 }
 
-figure figcaption.right {
-	text-align: right;
-	float: right;
-	color: #979797;
-}
 #comments {
 	width:50%;
 	margin: 0 auto;
@@ -64,6 +55,8 @@ figure figcaption.right {
 
 .comment p {
 	float: left;
+	margin: 0px 100px;
+	text-align: left;
 }
 
 .comment h1.op a{
@@ -72,11 +65,27 @@ figure figcaption.right {
 
 #leaveComment form {
 	float: left;
+	padding: 0px 100px;
 }
 
 #leaveComment form textarea{
-	width: 300px;
+	width: 450px;
 	height: 40px;
 	margin: 10px;
 	resize: none;
+}
+
+input[type='submit'] {
+    margin: 20px 0px;
+    color: #FFF;
+    background-color: #D8D8D8;
+    border:1px solid white;
+    font-size: 1.5em;
+    font-weight: 800;
+}
+
+input[type='submit']:hover {
+    color: #D8D8D8;
+    background-color: #FFF;
+    cursor: pointer;
 }

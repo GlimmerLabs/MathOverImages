@@ -4,4 +4,16 @@
 #text {
   font-family: 'Open Sans', sans-serif;
   color: 9B9B9B;
+  padding: 50px;
+  width: 600px;
+}
+
+#display {
+width: 150px;
+height: 150px;
+}
+table{
+margin: 50px 300px 50px 100px;
+float: left;
+padding: 30px;
 }

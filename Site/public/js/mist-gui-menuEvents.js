@@ -102,6 +102,7 @@ menuButtonLayer.on('click', function(){
       newGroup.setAttr('visible', true);
       dragLayer.add(newGroup);
       setDragShadow(newGroup);
+      removeShadow(currShape);
       newGroup.startDrag();
       dragLayer.draw();
       dragShape = newGroup;
@@ -120,8 +121,10 @@ menuControlLayer.on('mouseover', function(evt) {
 menuControlLayer.on('mouseout', function(evt){
   var parent = evt.target.getParent();
   var shape = parent.children[0];
-  shape.setAttr('fill', menuControlColor);
-  shape.setAttr('shadowEnabled', false);
+  shape.setAttrs({
+    fill: menuControlColor,
+    shadowEnabled: false
+  });
   menuControlLayer.draw();
 });
 
@@ -137,4 +140,19 @@ menuControlLayer.on('mouseup', function(evt){
   var shape = parent.children[0];
   shape.setAttr('shadowEnabled', false);
   menuControlLayer.draw();
+});
+
+resetButton.on('mouseup', function(){
+  resetWorkspace();
+  currentWorkSpace = null;
+});
+
+saveButton.on('mouseup', function(){
+  enableWorkTool();
+  openSaveWsPopUp();
+});
+
+openButton.on('mouseup', function(){
+  enableWorkTool();
+  openOpenWsPopUp();
 });

@@ -1,45 +1,37 @@
 @import url("/css/styles");
 
-#albumTitle {
-color: #979797;
-border: 2px solid #3FAAA0;
-text-align: center;
-width: 181px;
-font-size: 20px;
-margin: 0px 50px;
+figure{
+	width: 180px;
+	float: left;
 }
 
-#albumTitle:hover {
-color: #4A4A4A;
+figure img {
+	width:180px;
 }
 
-#albumTitles {
-margin: 0px 37px;
-float: left;
+figure h1 {
+	color: #979797;
+	border: 2px solid #3FAAA0;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+
 }
 
-#currentAlbum {
-font-family: 'Open-Sans', sans-serif;
-color: #979797;
-font-size: 36px;
+figure h1:hover {
+	color: #4A4A4A;
 }
 
-img {
-width: 250px;
-height: 250px;
-padding: 20px;
+#albums {
+	clear: both;
+	width: 70%;
+	margin: 0 auto;
 }
 
-.album {
-float: left;
-margin: 0px auto;
-padding: 20px;
-}
-
-p {
-font-family: 'Open-Sans', sans-serif;
-color: #4A4A4A;
-width: 300px;
-word-wrap: break-word;
-text-align: center;
+form input[type='image']{
+    width: 20px;
+    height: 20px;
 }

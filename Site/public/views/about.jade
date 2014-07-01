@@ -1,0 +1,29 @@
+extends ./partials/framework
+block title
+  title About
+
+block extraMetas
+block extraLinks
+
+block stylesheets
+
+  link(rel='stylesheet', href='/css/styles')
+  link(rel='stylesheet', href='/css/about')
+
+block content
+  div(id='main')
+    div(id = 'pageTitleGeneral')
+      h1 about
+    div(id = 'subviews')
+      a(href='#' class='subview' id='selected') about
+      a(href='#' class='subview') references
+    div(id='galleryImages')
+      table
+        tr
+          td: img(src='/samples/bw2.jpg' id='display')
+          td(rowspan='3' id='text')
+            MIST MIST (Mathematical Image Synthesizing Tool) isn’t just about the pretty pictures. By using the MIST application, it is our intention that users will explore functional problem solving and computational thinking by creating non-representational images. Computational thinking is an essential part of computer science, and MIST allows anyone to develop this skill. Anyone can use MIST because it does not require any prior experience in computer science. Users have the option of creating images from scratch, or completing tutorials and challenges that encourage problem solving and computational thinking through image building. MIST also encourages interactions between users. Create an account to see, share, and modify the work of other users. Our goal is to develop a community where users enjoy learning computational thinking by associating mathematical functions with interesting images.<br /><br />If you have any questions or comments, contact Sam Rebelsky at rebelsky@grinnell.edu.
+        tr
+          td: img(src='/samples/color2.jpg' id='display')
+        tr
+          td: img(src='/samples/color1.jpg' id='display')
