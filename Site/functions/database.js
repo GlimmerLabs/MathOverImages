@@ -670,7 +670,18 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
 
 module.exports.getAllImagesforUser=(function (userid, callback) {
     userid=sanitize(userid);
-    module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt ASC;", function (rows, error){
+    module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else
+	    callback(rows, null);
+});
+}); 
+
+
+module.exports.getAllImagesforUser=(function (userid, callback) {
+    userid=sanitize(userid);
+    module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){
 	if (error)
 	    callback(null, error);
 	else
