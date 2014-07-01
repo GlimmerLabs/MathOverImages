@@ -16,7 +16,7 @@ lineLayer.on('mouseover', function(evt) {
   if (deleteToolOn) {
     var shape = evt.target;
     shape.setAttrs({
-      scale: 3,
+      strokeWidth: 3,
       shadowColor: deleteColor,
       shadowEnabled: true
     });
@@ -28,7 +28,7 @@ lineLayer.on('mouseout', function(evt) {
   if (deleteToolOn) {
     var shape = evt.target;
     shape.setAttrs({
-      scale: 1,
+      strokeWidth: lineStrokeWidth,
       shadowEnabled: false
     });
     lineLayer.draw();

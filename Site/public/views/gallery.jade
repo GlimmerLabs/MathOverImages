@@ -43,5 +43,5 @@ block content
     else if !(type == "random") && !(currentPage==1) &&  nextPage
       a(href='/gallery/' + type + '/' + --currentPage) « previous    
       a(href='/gallery/' + type + '/' + (currentPage+2))    next »
-    else if !(type == "random" && (images.length<=9))
+    else if !(type == "random") && (images.length<=9) && !(currentPage== null)
       a(href='/gallery/' + type + '/' + --currentPage) « previous    
