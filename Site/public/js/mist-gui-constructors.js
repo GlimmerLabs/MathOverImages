@@ -95,8 +95,8 @@
       renderFunction: values[valName].rep,
       rep: values[valName].rep,
       renderLayer: null,
-                        scaleX: 1,
-                        scaleY: 1
+      scaleX: 1,
+      scaleY: 1
     });
     /* create diamond shape. */
     var newRect = new Kinetic.Rect({
@@ -335,21 +335,21 @@ var addVal = function(valName, x, y) {
 
 var createEditableText = function (group) { 
   var backgroundBox = new Kinetic.Rect({
-    x: -4,
+    x: -((editableTextWidth - functionTotalSideLength) / 2) - 4,
     y: functionTotalSideLength + 5,
-    width: functionTotalSideLength,
-    height: 20,
+    width: editableTextWidth,
+    height: editableTextHeight,
     fill: 'white',
     stroke: 'black',
     strokeWidth: .5
   });
   var editableTextBox = new Kinetic.Text({
-    x: -4,
+    x: -((editableTextWidth - functionTotalSideLength) / 2) -4,
     y: functionTotalSideLength + 5,
     text: 'Enter a Value',
-    fontSize: 10,
-    width: functionTotalSideLength,
-    height: 20,
+    fontSize: editableTextFont,
+    width: editableTextWidth,
+    height: editableTextHeight,
     align: "center",
     fontFamily: functionFont,
     fill: 'black'

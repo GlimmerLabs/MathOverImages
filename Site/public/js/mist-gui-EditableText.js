@@ -354,6 +354,7 @@ var updateValueText = function(text) {
 		}
 		assertRenderable(value);
 		updateForward(value);
+		updateFunBar();
 	}
 	else
 	{
