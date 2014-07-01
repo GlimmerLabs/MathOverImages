@@ -203,6 +203,10 @@ module.exports = function(app,passport,database) {
     image.buildPage(req, res, database);
   });
 
+  app.get('/:username/images', function(req,res) {
+    albums.allImagesinAlbum(req, res, database);
+  });
+
   app.post('/image/:imageid', function(req,res) {
     if(req.body.commentSubmit != null) {
       image.saveComment(req, res, database);
