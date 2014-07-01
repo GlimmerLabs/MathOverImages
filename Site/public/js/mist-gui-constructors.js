@@ -317,7 +317,8 @@ var addVal = function(valName, x, y) {
     var val = makeValueGroup('constant', x, y);
     if (constant) {
       val.setAttr('rep', constant);
-      val.children[1].setAttr('text', wrapValueText(constant));
+
+      val.children[1].setAttrs({text: wrapValueText(constant), fontSize: 13});
     } // if valName is concatenated with a value
   } // if valName is a constant
   else {
