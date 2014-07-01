@@ -48,61 +48,61 @@ var funBarComment = new Kinetic.Text ({
 funBar.add(funBarComment);
 
 var funBarSaveFunGroup = new Kinetic.Group ({
-  x: funBarTextAreaWidth + funBarComment.width() + funBarIconOffset,
-  y: 1.5*funBarOffset
+  x: funBarTextAreaWidth + funBarComment.width() + (5 * funBarOffset),
+  y: funBarOffset
 });
 funBar.add(funBarSaveFunGroup);
 
-var funBarSaveFun = new Kinetic.Rect({
+var funBarSaveFunCover = new Kinetic.Rect ({
   x: 0,
   y: 0,
-  width: funBarIconSideLength,
-  height: funBarIconSideLength,
+  width: funBarIconTextWidth,
+  height: funBarTextAreaHeight,
   fill: functionColor,
-  stroke: functionColor,
-  strokeWidth: 10,
-  lineJoin: 'round',
-  opacity: .5
-})
-funBarSaveFunGroup.add(funBarSaveFun);
+  stroke: 'black',
+  strokeWidth: 1
+});
+funBarSaveFunGroup.add(funBarSaveFunCover);
 
 var funBarSaveFunText = new Kinetic.Text ({
   text: 'function',
-  x: - ((funBarIconTextWidth / 2) - (funBarIconSideLength / 2)),
-  y: 1.6 * funBarIconSideLength,
+  x: 0,
+  y: funBarOffset,
   width: funBarIconTextWidth,
+  height: funBarTextAreaHeight,
   align: 'center',
   fill: 'black',
-  fontSize: 10
+  fontSize: funBarFontSize
 });
 funBarSaveFunGroup.add(funBarSaveFunText);
 
 var funBarSaveImGroup = new Kinetic.Group ({
-  x: funBarSaveFunGroup.x() + funBarIconSideLength + funBarIconOffset,
-  y: 1.5 * funBarOffset,
+  x: funBarSaveFunGroup.x() + funBarIconTextWidth + (2 * funBarOffset),
+  y: funBarOffset,
 });
 funBar.add(funBarSaveImGroup);
 
-var funBarSaveIm = new Kinetic.Rect({
+var funBarSaveImCover = new Kinetic.Rect ({
   x: 0,
   y: 0,
-  width: funBarIconSideLength,
-  height: funBarIconSideLength,
-  fill: 'darkblue',
-  stroke: 'darkblue',
-  strokeWidth: 10,
-  opacity: .3
-  //lineJoin: 'round'
-})
-funBarSaveImGroup.add(funBarSaveIm);
+  width: funBarIconTextWidth,
+  height: funBarTextAreaHeight,
+  fill: valueMenuColor,
+  stroke: 'black',
+  strokeWidth: 1
+});
+funBarSaveImGroup.add(funBarSaveImCover);
 
 var funBarSaveImText = new Kinetic.Text ({
   text: 'image',
-  x: - ((funBarIconTextWidth / 2) - (funBarIconSideLength / 2)),
-  y: 1.6 * funBarIconSideLength,
+  x: 0,
+  y: funBarOffset,
   width: funBarIconTextWidth,
   align: 'center',
   fill: 'black',
-  fontSize: 10
+  fontSize: funBarFontSize
 });
 funBarSaveImGroup.add(funBarSaveImText);
+
+
+
