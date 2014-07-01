@@ -593,7 +593,7 @@ module.exports.imageInfo=(function(imageid, callback) {
 
 module.exports.albumsInfo=(function(userid, callback) {
     userid=sanitize(userid);
-    module.exports.query("SELECT users.username, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated desc;" , function (rows, error){
+    module.exports.query("SELECT users.username, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
 	if (error)
 	    callback(null, error);
 	else if (!rows[0])
@@ -603,11 +603,23 @@ module.exports.albumsInfo=(function(userid, callback) {
     });
 });
 
+//Get First Image of Album to Display
+
+module.exports.firstImageofAlbum=(function(albumid, callback){
+    albumid=sanitize(albumid);
+    module.exports.query("SELECT images.code from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid LIMIT 1;" , function (rows, error){
+        if (error)
+	    callback(null, error);
+	else
+	    callback(rows, null);
+    });
+});
+
 //albumContents query shortcode
 
 module.exports.albumContentsInfo=(function(albumid, callback) {
     albumid=sanitize(albumid);
-    module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded asc;" , function (rows, error){
+    module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
 	if (error)
 	    callback(null, error);
 	else if (!rows[0])
@@ -617,14 +629,43 @@ module.exports.albumContentsInfo=(function(albumid, callback) {
     });
 });
 
-//Get Commenter Information
+// Get owner of albums in albumContents
+
+module.exports.albumOwnerInfo=(function(albumid, callback) {
+    albumid=sanitize(albumid);
+    module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and albums.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+	if (error)
+	    callback(null, error);
+	else if (!rows[0])
+	    callback(null, "Owner does not exist");
+	else
+	    callback(rows, null);
+    });
+});
+
+//Get Commenter Information for single image
 
 module.exports.commentInfo=(function(imageid, callback) {
     imageid=sanitize(imageid);
-    module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE images.imageid='"+imageid+"' and comments.postedBy= users.userid; ORDER BY comments.postedAt asc;" , function (rows, error){
+    module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
 	if (error)
 	    callback(null, error);
 	else
 	    callback(rows, null);
     });
+});
+
+
+// To comment
+
+module.exports.saveComment=(function(userid, imageid, newComment, callback) {
+    userid=sanitize(userid);
+    imageid=sanitize(imageid);
+    newComment=sanitize(newComment);
+    module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "', new Date().toISOString().slice(0,19).replace('T', ' ') +"');", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else
+	    callback(rows, null);
+});
 });
