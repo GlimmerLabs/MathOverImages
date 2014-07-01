@@ -300,11 +300,12 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/user/:username', function(req,res) {
-    if ((req.session.user != null) &&
-        (req.session.user.username === req.params.username)) {
-      if(req.body.aboutSubmit != null) {
-        username.changeAboutSection(req, res);
-      }}
+
+  if ((req.session.user != null) &&
+    (req.session.user.username === req.params.username)) {
+    if(req.body.aboutSubmit != null) {
+      username.changeAboutSection(req, res, database);
+    }}
   });
 
   // --------------------------------------------------
