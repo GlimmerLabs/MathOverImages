@@ -1,0 +1,34 @@
+extends ./partials/framework
+block title
+	title MIST by Glimmer
+block extraMetas
+block extraLinks
+	script(type='text/javascript' src='/js/mist-utils.js')
+	script(type='text/javascript' src='/js/mist-functions.js')
+	script(type='text/javascript' src='/js/mist-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-builtin.js')
+	script(type='text/javascript' src='/js/mist-render.js')
+	script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+	script(type='text/javascript' src='/js/gallery.js')
+
+block stylesheets
+	link(rel='stylesheet', href='/css/index')
+
+block content
+	div(id='main')
+	div(id='featuredImage')
+		img(src='/logos/featured.png')
+	div(id='homeButtons')
+		a(href='/create' id='create')
+		='create'
+		a(href='/tutorial' id='tutorials')
+		='tutorials'
+	div(id='galleryImages')
+		- for (var i=0; i < images.length; i++)
+		figure
+			a(href='/image/' + images[i].imageid)
+			canvas(id='canvas'+i width='150' height='150')
+			input(type='hidden' id='code'+i value=images[i].code)
+			figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
+		h1: a(href='/gallery') See more in gallery
