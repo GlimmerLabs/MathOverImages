@@ -304,12 +304,12 @@ module.exports = function(app,passport,database) {
 
   app.post('/user/:username', function(req,res) {
 
-  if ((req.session.user != null) &&
-    (req.session.user.username === req.params.username)) {
-    if(req.body.aboutSubmit != null) {
-      var username = require("../functions/username.js");
-      username.changeAboutSection(req, res, database);
-    }}
+    if ((req.session.user != null) &&
+        (req.session.user.username === req.params.username)) {
+      if(req.body.aboutSubmit != null) {
+        var username = require("../functions/username.js");
+        username.changeAboutSection(req, res, database);
+      }}
   });
 
   // --------------------------------------------------
@@ -337,6 +337,6 @@ module.exports = function(app,passport,database) {
 
   // Route does not exist
   app.use(function(req, res, next){
-    res.redirect("/");
+
   });
 };
