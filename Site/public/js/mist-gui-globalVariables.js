@@ -9,11 +9,11 @@ var functionStrokeWidth = width / 90;
 var functionHalfStrokeWidth = functionStrokeWidth / 2;
 var functionTotalSideLength = width / 20;
 var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
-var functionColor = '#4F98C9';
-var functionColorLight = '#CDE8FA';
-var functionSingleColor = '#9BDD6F';
-var functionRGBcolor = '#4CD6C6';
-var functionMultColor = '#B196F5';
+var functionColor = '#3FAAA0';
+var functionColorLight = '#C6F1ED';
+var functionMultColor = '#5EC783';
+var functionSingleColor = '#77C9E2';
+var functionRGBcolor = '#AE88D6';
 
 var valueSideLength = functionTotalSideLength / 1.414;
 var valueMenuColor = '#F2937C';
@@ -54,8 +54,8 @@ var menuAnimDuration = 1;
 //CORNER BUTTONS
 var menuOffset = 10;
 var menuControlHeight = menuHeight / 5;
-var menuControlColor = '#3FAAA0';
-var menuControlSelect = '#8EE8E0'; 
+var menuControlColor = '#7FA7E7';
+var menuControlSelect = '#9EBDF0'; 
 var menuControlTextColor = 'black';
 var menuTextOffset = menuControlHeight / 5;
 
@@ -69,7 +69,7 @@ var deleteColor = '#A30F0F';
 //FUNCTIONBAR
 var funBarWidth = width;
 var funBarHeight = height / 15;
-var funBarBackgroundColor = '#3FAAA0';
+var funBarBackgroundColor = menuControlColor;
 var funBarOffset = funBarHeight * .17;
 var funBarTextAreaWidth = funBarWidth * .75;
 var funBarTextAreaHeight = funBarHeight * .66;
@@ -78,7 +78,7 @@ var funBarDisplayFontSize = 22;
 var funBarFontSize = 12;
 var funBarIconOffset = funBarWidth / 16;
 var funBarIconSideLength = funBarHeight / 4;
-var funBarIconTextWidth = funBarWidth * (2/45);
+var funBarIconTextWidth = width / 18;
 var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
 
@@ -104,7 +104,7 @@ var values = {
 	minute:   {rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
 	hour:     {rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
 	day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-	constant: {rep: '',    max: 20, min: 2, color: valueConstantColor}
+	constant: {rep: '#',    max: 20, min: 2, color: valueConstantColor}
 }
 
 // TOOLBOX BOOLEANS

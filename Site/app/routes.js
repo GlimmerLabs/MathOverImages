@@ -197,6 +197,11 @@ module.exports = function(app,passport,database) {
     image.buildPage(req, res, database);
   });
 
+  app.get('/:username/images', function(req,res) {
+    var albums = require("../functions/albums.js");
+    albums.allImagesinAlbum(req, res, database);
+  });
+
   app.post('/image/:imageid', function(req,res) {
     if(req.body.commentSubmit != null) {
       var image = require("../functions/image.js");
@@ -316,6 +321,7 @@ module.exports = function(app,passport,database) {
   // Path:  /user/*/albums
   //    User albums page
   app.get('/user/:username/albums', function(req,res) {
+    var albums = require("../functions/albums.js");
     albums.buildPage(req, res, database);
   });
 
