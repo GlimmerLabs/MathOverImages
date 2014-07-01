@@ -58,9 +58,11 @@ var funBarSaveFunCover = new Kinetic.Rect ({
   y: 0,
   width: funBarIconTextWidth,
   height: funBarTextAreaHeight,
-  fill: functionColor,
-  stroke: 'black',
-  strokeWidth: 1
+  fill: functionColorLight,
+  stroke: 'grey',
+  strokeWidth: 1,
+  shadowColor: 'black',
+  shadowEnabled: false
 });
 funBarSaveFunGroup.add(funBarSaveFunCover);
 
@@ -71,7 +73,7 @@ var funBarSaveFunText = new Kinetic.Text ({
   width: funBarIconTextWidth,
   height: funBarTextAreaHeight,
   align: 'center',
-  fill: 'black',
+  fill: 'grey',
   fontSize: funBarFontSize
 });
 funBarSaveFunGroup.add(funBarSaveFunText);
@@ -87,9 +89,11 @@ var funBarSaveImCover = new Kinetic.Rect ({
   y: 0,
   width: funBarIconTextWidth,
   height: funBarTextAreaHeight,
-  fill: valueMenuColor,
-  stroke: 'black',
-  strokeWidth: 1
+  fill: valueMenuColorLight,
+  stroke: 'grey',
+  strokeWidth: 1,
+  shadowColor: 'black',
+  shadowEnabled: false
 });
 funBarSaveImGroup.add(funBarSaveImCover);
 
@@ -99,7 +103,7 @@ var funBarSaveImText = new Kinetic.Text ({
   y: funBarOffset,
   width: funBarIconTextWidth,
   align: 'center',
-  fill: 'black',
+  fill: 'grey',
   fontSize: funBarFontSize
 });
 funBarSaveImGroup.add(funBarSaveImText);
