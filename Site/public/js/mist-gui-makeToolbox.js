@@ -179,7 +179,7 @@
     width: toolboxButtonSize,
     height: toolboxButtonSize,
     name: 'delete',
-    fill: deleteColor,
+    fill: 'white',
     stroke: 'black',
     strokeWidth: .3,
     lineJoin: 'round',
@@ -198,8 +198,8 @@
     y: toolboxButtonSize * (7/30),
     width: 0,
     height: .8 * toolboxButtonSize,
-    stroke: 'black',
-    fill: 'black',
+    stroke: deleteColor,
+    fill: deleteColor,
     rotation: -45, 
     strokeWidth: 3
     //lineCap: 'round'
@@ -212,8 +212,8 @@
     width: 0,
     height: .8 * toolboxButtonSize,
     strokeWidth: 3,
-    stroke: 'black',
-    fill: 'black',
+    stroke: deleteColor,
+    fill: deleteColor,
     //scaleX: - 1,
     rotation: 45
   });

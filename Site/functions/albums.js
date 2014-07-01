@@ -31,3 +31,23 @@ module.exports.query("SELECT images.imageid, images.title, images.code, users.us
 //});
 };
 
+module.exports.allImagesinAlbum = function(req, res, database) {
+database.getIDforUsername(req.params.username,
+	function(userid, error) {
+	    if(error)
+		res.end (error);
+	    else
+	database.getAllImagesforUser(userid, function(images, error){
+	    if(error)
+		res.end(error)
+	    else
+		res.render('../public/views/gallery.jade', {
+		    loggedIn: req.session.loggedIn,
+		    user:req.session.user,
+		    profileBeingViewed: req.params.username,
+		    images:images
+		});
+	});
+});
+};
+

@@ -65,11 +65,11 @@
  			text: currText,
  			fontSize: currFontSize
  		});
- 		funBarSaveIm.setAttr('opacity', 1);
+ 		enableSaveImage();
  	}
  	else {
  		funBarText.setAttr('text', '');
- 		funBarSaveIm.setAttr('opacity', .3);
+ 		disableSaveImage();
  	}
  	funBarLayer.draw();
  };
@@ -308,4 +308,34 @@ var applyDragBounds = function(group) {
 	});
 };
 
+var enableSaveImage = function() {
+	funBarSaveImCover.setAttrs({
+		stroke: 'black',
+		fill: valueMenuColor
+	});
+	funBarSaveImText.setAttr('fill', 'black');
+};
 
+var disableSaveImage = function() {
+	funBarSaveImCover.setAttrs({
+		stroke: 'grey',
+		fill: valueMenuColorLight
+	});
+	funBarSaveImText.setAttr('fill', 'grey');
+};
+
+var enableSaveFunction = function() {
+	funBarSaveImCover.setAttrs({
+		stroke: 'black',
+		fill: functionColor
+	});
+	funBarSaveImText.setAttr('fill', 'black');
+};
+
+var disableSaveFunction = function() {
+	funBarSaveImCover.setAttrs({
+		stroke: 'grey',
+		fill: functionColorLight
+	});
+	funBarSaveImText.setAttr('fill', 'grey');
+};

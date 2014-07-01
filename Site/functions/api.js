@@ -269,7 +269,7 @@ handlers.saveimage = function(info, req, res){
         } // If info.replace
       } // If rows[0]
       else {
-        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public, modifiedAt, createdAt) VALUES (" + req.session.user.userid + ",'" + database.sanitize(info.title) + "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) + "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) + "', UTC_TIMESTAMP, UTC_TIMESTAMP')";
+        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public, modifiedAt, createdAt) VALUES (" + req.session.user.userid + ",'" + database.sanitize(info.title) + "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) + "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) + "', UTC_TIMESTAMP, UTC_TIMESTAMP)";
         console.log(newQuery);
 
         database.query(newQuery, function(rows, error) {
