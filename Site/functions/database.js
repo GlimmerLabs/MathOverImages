@@ -17,21 +17,21 @@ var pool = mysql.createPool({
 
 
 /*
-  Procedure: 
+  Procedure:
   hashPassword(passwordtohash, callback(hashedPassword));
-  Purpose: 
+  Purpose:
   Hashes a password with Blowfish Algorithm
-  Parameters: 
+  Parameters:
   passwordtohash, a plaintext version of a password to hash
   callback(hashedPassword, error), a function describing what to do with the result
-  Produces: 
+  Produces:
   hashedPassword, the hashed password
   error, an error if there is one
-  Pre-conditions: 
+  Pre-conditions:
   None
-  Post-conditions: 
+  Post-conditions:
   The password will be hashed with Blowfish Crypt
-  Preferences: 
+  Preferences:
   This function is not available outside of this document.
 */
 var hashPassword = (function (passwordtohash, callback) {
@@ -41,19 +41,19 @@ var hashPassword = (function (passwordtohash, callback) {
 });// hashPassword(passwordtohash, callback(hashedPassword));
 
 /*
-  Procedure: 
+  Procedure:
     sanitize(string);
-  Purpose: 
+  Purpose:
     Sanitizes a string for MySQL insertion without risking injection
-  Parameters: 
+  Parameters:
     string, the string to sanitize
-  Produces: 
+  Produces:
     sanitizedString, a string - returned
-  Pre-conditions: 
+  Pre-conditions:
     None
-  Post-conditions: 
+  Post-conditions:
     sanitizedString will be safe to insert into a MySQL
-  Preferences: 
+  Preferences:
     This function is not available outside of this document.
 */
 var sanitize = (function (string) {
@@ -65,21 +65,21 @@ var sanitize = (function (string) {
 module.exports.sanitize = sanitize;
 
 /*
-  Procedure: 
+  Procedure:
   database.query(query, callback(rows, error));
-  Purpose: 
+  Purpose:
   Make a query on the current database
-  Parameters: 
+  Parameters:
   query, a SQL formatted string
   callback(rows, error), a function describing what to do with the result
-  Produces: 
+  Produces:
   rows, an array of database rows which may be accessed with dot syntax
   error, the error produced by the mysql-nodejs library
-  Pre-conditions: 
+  Pre-conditions:
   None
-  Post-conditions: 
+  Post-conditions:
   The MySQL database will be altered as requested
-  Preferences: 
+  Preferences:
   SANITIZE YOUR INPUT
 */
 
@@ -98,20 +98,20 @@ module.exports.query = (function (query, callback){
 }); // database.query(query, callback(rows, error));
 
 /*
-  Procedure: 
+  Procedure:
   database.userExists(checkString, callback(exists));
-  Purpose: 
+  Purpose:
   Checks to see if a username or email is already in the database
-  Parameters: 
+  Parameters:
   checkstring, a string containing either a username or email address
   callback(exists), a function describing what to do with the result
-  Produces: 
+  Produces:
   exists, a BOOLEAN result
-  Pre-conditions: 
+  Pre-conditions:
   None
-  Post-conditions: 
+  Post-conditions:
   None
-  Preferences: 
+  Preferences:
   This function will automatically be called when using the addUser() function, so this is designed to be used while the client is typing on the client side
 */
 module.exports.userExists = (function(checkString, callback){
@@ -138,23 +138,23 @@ module.exports.userExists = (function(checkString, callback){
 /*
   Procedure:
   database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
-  Purpose: 
+  Purpose:
   Adds a user to the database
-  Parameters: 
+  Parameters:
   forename, a string
   surname, a string
   password, a plaintext string (this will be crypted before being sent to the database)
   email, a string
   username, a string
   callback(success, error), a function describing what to do with the result
-  Produces: 
+  Produces:
   success, A BOOLEAN value representing if the insertion was successful
   error, if there was an error, it will be returned here.
-  Pre-conditions: 
+  Pre-conditions:
   None
-  Post-conditions: 
+  Post-conditions:
   The database will be appended with the new user, all data will be sanitized, and the password will be hashed.
-  Preferences: 
+  Preferences:
   This procedure automatically sanitizes and validates user input, as well as hashes the password. This is the preferred way to interact with the server.
   However, client-side validation is always a good first-defense.
 */
@@ -193,7 +193,7 @@ module.exports.addUser =(function (forename, surname, password, email, username,
 			hashPassword(password, function (hashedPassword, err) {
 			    // add user to database
 			    if (!err){
-				module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, username, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + username + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') +"');", function(results, error){
+				module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, username, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + username + "', UTC_TIMESTAMP);", function(results, error){
 				    if (results) {
 					callback(true,error);
 				    }
@@ -212,21 +212,21 @@ module.exports.addUser =(function (forename, surname, password, email, username,
 }); // database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
 
 /*
-  Procedure: 
+  Procedure:
   database.verifyPassword(userid, passwordToTest, callback(verified, error ));
-  Purpose: 
+  Purpose:
   Checks to see if a password is correct
-  Parameters: 
+  Parameters:
   user, a string that is either the username or the email address
   passwordToTest, a plaintext version of a password to test
   callback(verified, error), a function describing what to do with the result
-  Produces: 
+  Produces:
   verified, A BOOLEAN value representing if the password was correct && the user exists
-  Pre-conditions: 
+  Pre-conditions:
   None
-  Post-conditions: 
+  Post-conditions:
   None
-  Preferences: 
+  Preferences:
   This procedure automatically sanitizes user input. This will also return false if the user does not exist. The client should never be told if a user exists.
 */
 module.exports.verifyPassword = (function (userid, passwordToTest, callback){
@@ -292,24 +292,24 @@ module.exports.changeUsername = (function (userid, newUsername, password, callba
 }); // database.changeUsername(user, newUsername, callback(success, error));
 
 /*
-  Procedure: 
+  Procedure:
   database.changePassword(userid, oldPassword, newPassword, Callback(success, error));
-  Purpose: 
+  Purpose:
   To allow a user to change their password, given they remember their old one.
-  Parameters: 
+  Parameters:
   userid, the userid of the use who wants to change their password
   oldPassword, the old password of the user
 
   newPassword, what they want to change their password to
   callback, a function describing what to do with the response
-  Produces: 
+  Produces:
   success, a boolean success indicator
   error, any error occurred along the way
-  Pre-conditions: 
+  Pre-conditions:
   user has logged in, and therefore has access to their userid
-  Post-conditions: 
+  Post-conditions:
   password will be changed if old one is correct
-  Preferences: 
+  Preferences:
   None
 */
 module.exports.changePassword = (function (userid, oldPassword, newPassword, callback){
@@ -470,7 +470,7 @@ module.exports.logIn = (function (user, password, callback) {
 			else if (!success)
 			    callback(null, "Invalid Credentials");
 			else{
-			    module.exports.query("UPDATE users SET lastLoginTime='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE userid='" +rows[0].userid +"';", function(response,error){
+			    module.exports.query("UPDATE users SET lastLoginTime= UTC_TIMESTAMP WHERE userid='" +rows[0].userid +"';", function(response,error){
 				console.log(rows[0].username + " has logged in.");
 			    });
 			    callback(rows[0], null);
@@ -484,7 +484,7 @@ module.exports.logIn = (function (user, password, callback) {
 		else if (!success)
 		    callback(null, "Invalid Credentials");
 		else{
-		    module.exports.query("UPDATE users SET lastLoginTime='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE userid='" +rows[0].userid +"';", function(response,error){
+		    module.exports.query("UPDATE users SET lastLoginTime= UTC_TIMESTAMP WHERE userid='" +rows[0].userid +"';", function(response,error){
 			console.log(rows[0].username + " has logged in.");
 		    });
 		    callback(rows[0], null);

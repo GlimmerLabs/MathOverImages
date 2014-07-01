@@ -257,7 +257,7 @@ handlers.saveimage = function(info, req, res){
         }
         else {
           var newQuery = "UPDATE images SET code='"+
-          database.sanitize(info.code)+"', modifiedAt='" + new Date().toISOString().slice(0,19).replace('T', ' ') +"' WHERE imageid="+rows[0].imageid;
+          database.sanitize(info.code)+"', modifiedAt= UTC_TIMESTAMP WHERE imageid="+rows[0].imageid;
           database.query(newQuery, function(rows, error) {
             if (error) {
               fail(res, "Error: "+error);
@@ -269,7 +269,7 @@ handlers.saveimage = function(info, req, res){
         } // If info.replace
       } // If rows[0]
       else {
-        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public, modifiedAt, createdAt) VALUES (" + req.session.user.userid + ",'" + database.sanitize(info.title) + "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) + "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') + "')";
+        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public, modifiedAt, createdAt) VALUES (" + req.session.user.userid + ",'" + database.sanitize(info.title) + "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) + "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) + "', UTC_TIMESTAMP, UTC_TIMESTAMP')";
         console.log(newQuery);
 
         database.query(newQuery, function(rows, error) {
