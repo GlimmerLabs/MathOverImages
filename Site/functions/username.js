@@ -34,8 +34,9 @@ module.exports.goToMyProfile = function(req, res, database) {
 			    viewingSelf: true
 			    });
 			});
-				  });
-    } else {
+		});
+	}
+    else {
 	res.redirect("login");
     }
 };

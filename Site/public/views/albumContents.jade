@@ -1,6 +1,6 @@
 extends ./partials/framework
 block title
-  title= albumContents.name + " on MIST"
+  title= albumOwner[0].username + " on MIST"
 block extraMetas
 block extraLinks
   script(type='text/javascript' src='/js/mist-utils.js')
@@ -23,12 +23,12 @@ block stylesheets
 block content
   div(id='main')
     div(id='pageTitle')
-        h1 albums
+        h1= albumOwner[0].username
         h2= albumContents[0].name
     div(id='subviews')
-      a(href='/me' class='subview') about
+      a(href='/user/'+ albumOwner[0].username class='subview') bio
       a(href='/badges' class='subview') badges
-      a(href='/albums' class='subview' id= 'selected') albums
+      a(href='/user/'+ albumOwner[0].username +'/albums' class='subview' id= 'selected') albums
       a(href='/challenges' class='subview') challenges
     div(id='images')
       - for (var i = 0; i < albumContents.length; i++)

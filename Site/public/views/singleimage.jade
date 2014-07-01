@@ -24,7 +24,6 @@ block content
     h2= image.modifiedAt.toLocaleDateString()
     figure
       canvas(id='canvas' width='400' height='400')
-      // img(src='/samples/color1.jpg')
       figcaption(class='left')= "★" + image.rating
       a(href='/user/'+ image.username)
         figcaption(class='right')= image.username
@@ -32,14 +31,12 @@ block content
     div
     div(id='comments')
       div(class='comment')
-        h1(class='op'): a(href='/user/'+ image.username)= image.username
-        p I like the gradation from white to black I achieved in this image.
-      div(class='comment')
-        h1: a(href='/user/qt314') qt314
-        p Great work! Maybe try doing something similar in RGB? Great work! Maybe try doing something similar in RGB? Great Great Great Great Great
+        - for (var i=0; i < comment.length; i++)
+            h1(class='op'): a(href='/user/'+ comment[i].username)= comment[i].username
+            p= comment[i].comment
       if loggedIn
         div(id='leaveComment' class='comment')
           h1: a(href='/user/' + user.username)= user.username
           form(method='POST')
-            textarea(placeholder='leave a comment')
-            input(type='submit' value='submit')
+            textarea(name= 'newComment' placeholder='leave a comment')
+            input(type='submit' value='submit' name='commentSubmit')
