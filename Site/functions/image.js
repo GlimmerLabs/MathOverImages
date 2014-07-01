@@ -26,6 +26,6 @@ module.exports.saveComment= function(req, res, database) {
 	if(!success)
 	    res.end(error)
 	else
-	   res.redirect('/');
+	   res.redirect('/image/'+ req.params.imageid);
    });
 }
