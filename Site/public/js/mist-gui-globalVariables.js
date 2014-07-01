@@ -78,7 +78,7 @@ var funBarDisplayFontSize = 22;
 var funBarFontSize = 12;
 var funBarIconOffset = funBarWidth / 16;
 var funBarIconSideLength = funBarHeight / 4;
-var funBarIconTextWidth = funBarWidth * (2/45);
+var funBarIconTextWidth = width / 18;
 var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
 
@@ -104,7 +104,7 @@ var values = {
 	minute:   {rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
 	hour:     {rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
 	day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-	constant: {rep: '',    max: 20, min: 2, color: valueConstantColor}
+	constant: {rep: '#',    max: 20, min: 2, color: valueConstantColor}
 }
 
 // TOOLBOX BOOLEANS
