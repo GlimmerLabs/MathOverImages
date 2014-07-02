@@ -106,6 +106,7 @@ header nav li:hover {
 	font-size: 2em;
 	padding: 5px;
 	clear: left;
+	float: left;
 }
 
 #subTitle {
@@ -115,6 +116,18 @@ header nav li:hover {
 	margin: -15px -80px;
 	display: block;
 }
+
+#flashZone {
+	clear:left;
+	background-color: #E1E1E1;
+	display:block;
+	text-align: left;
+	border: 10px solid white;
+	color: #7B7B7B;
+	border-radius: 15px;
+	margin:0 -110px;
+}
+
 
 .code {
 	font-family: Courier New, Courier, monospace;
