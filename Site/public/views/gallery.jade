@@ -1,47 +1,59 @@
 extends ./partials/framework
 block title
- title MIST Galleries
+	title MIST Galleries
 block extraMetas
 block extraLinks
- script(type='text/javascript' src='/js/mist-utils.js')
- script(type='text/javascript' src='/js/mist-functions.js')
- script(type='text/javascript' src='/js/mist-layout.js')
- script(type='text/javascript' src='/js/mist-functions-layout.js')
- script(type='text/javascript' src='/js/mist-functions-builtin.js')
- script(type='text/javascript' src='/js/mist-render.js')
- script(type='text/javascript' src='/js/mistui-dialogs.js')
- script(type='text/javascript' src='/js/mistui-help.js')
- script(type='text/javascript' src='/js/mistui-menus.js')
- script(type='text/javascript' src='/js/mistui-animator.js')
- script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
- script(type='text/javascript' src='/js/gallery.js')
+	script(type='text/javascript' src='/js/mist-utils.js')
+	script(type='text/javascript' src='/js/mist-functions.js')
+	script(type='text/javascript' src='/js/mist-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-builtin.js')
+	script(type='text/javascript' src='/js/mist-render.js')
+	script(type='text/javascript' src='/js/mistui-dialogs.js')
+	script(type='text/javascript' src='/js/mistui-help.js')
+	script(type='text/javascript' src='/js/mistui-menus.js')
+	script(type='text/javascript' src='/js/mistui-animator.js')
+	script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+	script(type='text/javascript' src='/js/gallery.js')
 
 block stylesheets
- link(rel='stylesheet', href='/css/gallery')
+	link(rel='stylesheet', href='/css/gallery')
 
 block content
- div(id='main')
-  div(id='pageTitleGeneral')
-    h1 gallery
-  div(id='subviews')
-   a(href='/gallery/random' class='subview' id='selected') random
-   a(href='/gallery/recent' class='subview') recent
-   a(href='/gallery/toprated' class='subview') top rated
-   a(href='#recent' class='subview') featured
-  div(id='images')
-   - for (var i=0; i < images.length; i++)
-    ul(class='rig columns-3')
-      figure
-        a(href='/image/' + images[i].imageid)
-          canvas(id='canvas'+i width='180px' height='180px')
-          input(type='hidden' id='code'+i value=images[i].code)
-      figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
-      figcaption(class='left')= "★" + images[i].rating
-  div(id='pageNumber')
-    if (currentPage==1 && !(type == "random") && nextPage)
-      a(href='/gallery/' + type + '/' + ++currentPage)    next »
-    else if !(type == "random") && !(currentPage==1) &&  nextPage
-      a(href='/gallery/' + type + '/' + --currentPage) « previous    
-      a(href='/gallery/' + type + '/' + (currentPage+2))    next »
-    else if !(type == "random") && (images.length<=9) && !(currentPage== null)
-      a(href='/gallery/' + type + '/' + --currentPage) « previous    
+	div(id='main')
+		div(id='pageTitleGeneral')
+			h1 gallery
+		div(id='subviews')
+			if (type === "random")
+				a(href='/gallery/random' class='subview' id='selected') random
+			else
+				a(href='/gallery/random' class='subview') random
+			if (type === "recent")
+				a(href='/gallery/recent' class='subview' id='selected') recent
+			else
+				a(href='/gallery/recent' class='subview') recent
+			if (type === "toprated")
+				a(href='/gallery/toprated' class='subview' id='selected') top rated
+			else
+				a(href='/gallery/toprated' class='subview') top rated
+			if (type === "featured")
+				a(href='/gallery/featured' class='subview' id='selected') featured
+			else
+				a(href='/gallery/featured' class='subview') featured
+		div(id='images')
+			- for (var i=0; i < images.length; i++)
+				ul(class='rig columns-3')
+						figure
+								a(href='/image/' + images[i].imageid)
+									canvas(id='canvas'+i width='180px' height='180px')
+									input(type='hidden' id='code'+i value=images[i].code)
+						figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
+						figcaption(class='left')= "★" + images[i].rating
+		div(id='pageNumber')
+			if (currentPage==1 && !(type == "random") && nextPage)
+				a(href='/gallery/' + type + '/' + ++currentPage)    next »
+			else if !(type == "random") && !(currentPage==1) &&  nextPage
+					a(href='/gallery/' + type + '/' + --currentPage) « previous
+					a(href='/gallery/' + type + '/' + (currentPage+2))    next »
+			else if !(type == "random") && (images.length<=9) && !(currentPage== null)
+					a(href='/gallery/' + type + '/' + --currentPage) « previous
