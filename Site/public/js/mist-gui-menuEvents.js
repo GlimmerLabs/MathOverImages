@@ -52,7 +52,6 @@ On click of function menu button:
     if (!functionExpanded) {
       if (!valueExpanded) {
         expandFunctionNodes();
-
         functionExpanded = true;
     } // functions and values not expanded
     else {
@@ -109,6 +108,49 @@ menuButtonLayer.on('click', function(){
       currShape = newGroup;
     }
   });
+
+  menuLayer.on('mouseover', function(evt) {
+    var group = evt.target.getParent();
+    if (tagsOn) {
+     if (isFunction(group) || isValue(group)) {
+      openTag = makeLabel(group);
+      labelLayer.add(openTag)
+      labelLayer.draw();
+    } 
+  }
+});
+
+menuLayer.on('mouseout', function(evt) {
+  var group = evt.target.getParent();
+  if (tagsOn) {  
+    if (isFunction(group) || isValue(group)) {
+      openTag.destroy();
+      labelLayer.draw();
+    }
+  }
+});
+
+toggleTag.on('mouseover', function() {
+  toggleTag.children[0].setAttr('fill', 'black');
+  labelLayer.draw();
+});
+
+toggleTag.on('mouseout', function() {
+  toggleTag.children[0].setAttr('fill', '#787878');
+  labelLayer.draw();
+});
+
+toggleTag.on('mouseup', function(){
+  if (tagsOn) {
+    tagsOn = false;
+    toggleTag.children[0].setAttr('text', 'Turn Labels On');
+  }
+  else {
+    tagsOn = true;
+    toggleTag.children[0].setAttr('text', 'Turn Labels Off');
+  }
+  labelLayer.draw();
+});
 
 // CONTROL MENU EVENTS 
 menuControlLayer.on('mouseover', function(evt) {

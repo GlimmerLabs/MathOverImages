@@ -12,7 +12,9 @@
     y: height * .2,
     draggable: false,
     dragBoundFunc: function(pos) {
-      var newY = pos.y < (menuHeight + toolboxShift) ? menuHeight + toolboxShift : pos.y > height - toolboxHeight ? height - toolboxHeight : pos.y;
+      var newY = pos.y < (menuHeight + toolboxShift) ? menuHeight + toolboxShift : 
+        pos.y > height - funBarHeight - toolboxHeight + toolboxShift ?
+        height - funBarHeight - toolboxHeight + toolboxShift: pos.y;
       var newX = pos.x < 0 ? 0 : pos.x > (width - toolboxWidth) ? (width - toolboxWidth) : pos.x;
       return {
         x: newX,
