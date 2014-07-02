@@ -43,7 +43,7 @@ app.use(cookieParser()); // read cookie information (for auth)
 app.use(bodyParser.urlencoded({
   extended: true
 })); // get info from html forms
-app.use(session({secret: auth["session-secret"],
+app.use(expressSession({secret: auth["session-secret"],
                  saveUninitialized: true,
                  resave: true}));
 
