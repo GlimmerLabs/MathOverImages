@@ -6,7 +6,7 @@ module.exports.buildRandomPage = (function(req, res, database) {
   filedatabase=database;
   module.exports.getRandomImages (9, function(images, error){
     res.render('../public/views/gallery.jade',{
-      loggedIn: req.session.loggedIn,
+      loggedIn: req.session.loggedIn,3
       user: req.session.user,
       images: images,
       currentPage: req.params.pageNumber,
