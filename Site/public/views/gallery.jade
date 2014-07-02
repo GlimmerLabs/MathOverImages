@@ -33,7 +33,7 @@ block content
     ul(class='rig columns-3')
       figure
         a(href='/image/' + images[i].imageid)
-          canvas(id='canvas'+i width='180px' height='180px')
+          canvas(id='canvas'+i)
           input(type='hidden' id='code'+i value=images[i].code)
       figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
       figcaption(class='left')= "★" + images[i].rating
