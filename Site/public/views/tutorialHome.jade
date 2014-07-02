@@ -1,0 +1,36 @@
+extends ./partials/framework
+block title
+  title MIST tutorial
+
+block extraMetas
+block extraLinks
+block stylesheets
+
+  link(rel='stylesheet', href='/css/tutorial')
+
+
+block content
+  div(id='main')
+    if(!notFirstTime)
+      h1 Welcome to MIST! Click on the first tutorial to get started.
+    else
+      h1 Welcome back to MIST! Click your course to continue.
+    table
+      tr
+        td: a(href='/tutorial/introductiontomist') What the MIST are these things?!
+        td Not started
+      tr
+        td: a(href='/tutorial/functions') Let's play with FUNctions!
+        td Not Started
+      tr
+        td: a(href='/tutorial/morefunctions') Well, I thought FUNctions were clever.
+        td Not Started <!--a(href='/tutorial/morefunctions'-->
+      tr
+        td: a(href='#') Put them together!
+        td Not started <!--a(href='/tutorial/combiningfunctions')-->
+      tr
+        td: a(href='#') Pretty Pictures
+        td Not started <!--a(href='/tutorial/rgbhsv')-->
+      tr
+        td: a(href='/tutorial/workspace') Every good mother sends their child hurtling towards the ground at some point...
+        td Not started <!-- a(href='/tutorial/workspace')-->
