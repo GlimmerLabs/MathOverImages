@@ -372,6 +372,8 @@
     outlet.attrs.lineIn = null;
     // update the sink's number of outlets
     sink.attrs.numInputs--;
+    // reset the strokeWidth
+    line.setAttr('strokeWidth', lineStrokeWidth);
     // remove the line from the lineLayer
     line.remove();
     // if the sink is the currShape

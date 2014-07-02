@@ -108,10 +108,19 @@
         targetLine.points()[3] = currShape.y() + currShape.children[i+OUTLET_OFFSET].y();
       }
     }
+    if (currShape.attrs.lineOut) {
+      var yOffset;
+      if (isFunction(currShape)) {
+        yOffset = (currShape.children[0].height() + functionStrokeWidth) / 2;
+      }
+      else {
+        yOffset = functionTotalSideLength / 2;
+      }
+    }
     for(var i = 0; i < currShape.attrs.lineOut.length; i++) {
       targetLine = currShape.attrs.lineOut[i];
       targetLine.points()[0] = currShape.x() + functionRectSideLength - OUTLET_OFFSET;
-      targetLine.points()[1] = currShape.y() + functionTotalSideLength / 2;
+      targetLine.points()[1] = currShape.y() + yOffset;
     }
     lineLayer.draw();
   }
