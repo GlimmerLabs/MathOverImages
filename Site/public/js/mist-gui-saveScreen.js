@@ -1,8 +1,6 @@
 /**
 * The save screen is what appears when a user want to save or download an images they create.
 */
-var screenLayer = new Kinetic.Layer();
-stage.add(screenLayer);
 
 var popRectColor = '#e8e8e8'
 var popRectWidth = width * .4;
@@ -207,8 +205,6 @@ var popCancelButtonText = new Kinetic.Text({
 });
 popCancelButtonGroup.add(popCancelButtonText);
 
-var renderLayer = new Kinetic.Layer();
-stage.add(renderLayer);
 var rCanvas = renderLayer.canvas._canvas;
 
 
