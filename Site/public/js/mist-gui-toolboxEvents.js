@@ -118,14 +118,21 @@ toolboxLayer.on('mouseover', function(evt) {
           labelLayer.add(openTag);
           labelLayer.draw();
         } 
-      }, 1000);
+      }, 500);
     } 
   }
   else if (name && tagsOn) {
-
-    openTag = makeToolLabel(group);
-    labelLayer.add(openTag);
-    labelLayer.draw();
+    setTimeout(function(){
+      if (openTag) {
+        openTag.destroy();
+      }
+      var temp = toolboxLayer.getIntersection(stage.getPointerPosition());
+      if (temp && group == temp.getParent()) {
+        openTag = makeToolLabel(group);
+        labelLayer.add(openTag);
+        labelLayer.draw();
+      } 
+    }, 500);
   }
 });
 
