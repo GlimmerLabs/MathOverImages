@@ -38,7 +38,7 @@
 }
 
 #images figure img{
-width: 5%
+ width: 5%
 }
 */
 figure figcaption.left:first-letter{
@@ -75,6 +75,7 @@ figcaption.right a:visited {
 ul.rig {
 	list-style: none;
 	font-size: 0px;
+	color: #979797;
 	margin-left: -2.5%; /* should match li left margin */
 }
 ul.rig {
@@ -85,7 +86,6 @@ ul.rig {
 	border: 1px solid #ddd;
 	font-size: 16px;
 	font-size: 1rem;
-	vertical-align: top;
 	box-shadow: 0 0 5px #ddd;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
