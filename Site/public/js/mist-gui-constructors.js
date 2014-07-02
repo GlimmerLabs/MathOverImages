@@ -227,12 +227,20 @@
   (source) and creates a line that begins at the left edge of source. 
   */
   var makeLine = function(source) {
+    var yOffset;
+    if (isFunction(source)) {
+      yOffset = (source.children[0].height() + functionStrokeWidth) / 2;
+    }
+    else {
+      yOffset = functionTotalSideLength / 2;
+    }
+    //console.log(yOffset);
     var newLine = new Kinetic.Line({
       points: [
       source.x() + functionRectSideLength - 3,
-      source.y() + functionTotalSideLength / 2,
+      source.y() + yOffset,
       source.x() + functionTotalSideLength,
-      source.y() + functionTotalSideLength / 2,
+      source.y() + yOffset,
       ],
       stroke: 'black',
       strokeWidth: lineStrokeWidth,
