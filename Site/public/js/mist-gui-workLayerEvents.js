@@ -51,6 +51,7 @@ There are 3 different modes:
     }
     else if (lineToolOn) {
       if (makingLine) {
+        var outlet;
         if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
           currLine.attrs.source.attrs.lineOut.splice(currLine.attrs.source.attrs.lineOut.length - 1, 1);
           currLine.destroy();
@@ -60,94 +61,112 @@ There are 3 different modes:
           makingLine = false;
         }
         else if (isOutlet(shape)) {
-      //check if outlet already has an input
-      var isReplacement;
-      var oldLine;
-      if (shape.attrs.lineIn != null) {
-        var source = shape.attrs.lineIn.attrs.source;
-        var index = shape.attrs.lineIn.attrs.sourceIndex
-        oldLine = source.attrs.lineOut[index];
-        isReplacement = true;
-        removeLine(oldLine);
+        //check if outlet already has an input
+        outlet = shape;
+        }
+        else if (isFunction(parent)) {
+          // find empty outlet
+          if (parent.attrs.numInputs < parent.attrs.maxInputs) {
+            var i = OUTLET_OFFSET
+            while (parent.children[i].attrs.lineIn) {
+              i++
+            }
+            outlet = parent.children[i];
+          }
+          else if (parent.attrs.maxInputs == 1) {
+            outlet = parent.children[OUTLET_OFFSET];
+          }
+        } // else if function
+        if (outlet) {
+          var isReplacement;
+          var oldLine; 
+          if (outlet.attrs.lineIn != null) {
+            var source = outlet.attrs.lineIn.attrs.source;
+            var index = outlet.attrs.lineIn.attrs.sourceIndex
+            oldLine = source.attrs.lineOut[index];
+            isReplacement = true;
+            removeLine(oldLine);
+          } 
+          else {
+            isReplacement = false;
+          } // check if theres already a line going in to the outlet
+          outlet.attrs.lineIn = currLine;
+          currLine.points()[2] = parent.x();
+          currLine.points()[3] = parent.y() + outlet.y();
+          currLine.attrs.outlet = outlet;
+          parent.attrs.numInputs++;
+          makingLine = false;
+          outlet.scale({ x: 1, y: 1 });
+          assertRenderable(parent);
+          // if there is a currShape, update the text in funBar
+          updateFunBar();
+          if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
+            parent.attrs.numInputs < parent.attrs.maxInputs) {
+            addOutlet(parent);
+            if (parent.children[2].attrs.expanded) {
+              renderCanvas(parent);
+            }
+          }
+          insertToTable(currLine);
+          if (!isReplacement) {
+            insertToArray(actionToObject('insert', currLine));
+          }
+          else {
+            insertToArray(actionToObject('replace', currLine, oldLine));
+          }
+          updateForward(parent);
+        }  
+    } // if makingline
+    else {
+      if (isImageBox(shape)) {
+        if (!shape.attrs.expanded) {
+          renderCanvas(parent);
+          shape.attrs.expanded = true;
+        } 
+        else {
+          shape.attrs.expanded = false;
+          animation = false;
+          setTimeout(function() {collapseCanvas(parent)}, 50);
+        }
+        setTimeout(function() {workLayer.draw()}, 50);
       } 
       else {
-        
-        isReplacement = false;
-      } // check if theres already a line going in to the outlet
-      shape.attrs.lineIn = currLine;
-      currLine.points()[2] = parent.x();
-      currLine.points()[3] = parent.y() + shape.y();
-      currLine.attrs.outlet = shape;
-      parent.attrs.numInputs++;
-      makingLine = false;
-      shape.scale({ x: 1, y: 1 });
-      assertRenderable(parent);
-      // if there is a currShape, update the text in funBar
-      updateFunBar();
-      if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
-        parent.attrs.numInputs < parent.attrs.maxInputs) {
-        addOutlet(parent);
-      if (parent.children[2].attrs.expanded) {
-        renderCanvas(parent);
+        makingLine = true;
+        currLine = makeLine(parent);
+        parent.attrs.lineOut[parent.attrs.lineOut.length] = currLine;
+        lineLayer.add(currLine);
       }
     }
-    insertToTable(currLine);
-    if (!isReplacement) {
-      insertToArray(actionToObject('insert', currLine));
-    }
-    else {
-      insertToArray(actionToObject('replace', currLine, oldLine));
-    }
-    updateForward(parent);
-    } // if clicked on self, else clicked on a valid outlet
-  } // if makingline
-  else {
-    if (isImageBox(shape)) {
-      if (!shape.attrs.expanded) {
-        renderCanvas(parent);
-        shape.attrs.expanded = true;
-      } else {
-        shape.attrs.expanded = false;
-        animation = false;
-        setTimeout(function() {collapseCanvas(parent)}, 50);
+  } 
+  else if (deleteToolOn) {
+    insertToArray(actionToObject('delete', parent));
+    // deal with lines coming in to the node being deleted
+    var targetLine;
+    for(var i = OUTLET_OFFSET; i < parent.children.length; i++) {
+      targetLine = parent.children[i].attrs.lineIn;
+      if (targetLine){
+        removeLine(targetLine);
       }
-      setTimeout(function() {workLayer.draw()}, 50);
-    } else {
-      makingLine = true;
-      currLine = makeLine(parent);
-      parent.attrs.lineOut[parent.attrs.lineOut.length] = currLine;
-      lineLayer.add(currLine);
     }
-  }
-} else if (deleteToolOn) {
-  insertToArray(actionToObject('delete', parent));
-  // deal with lines coming in to the node being deleted
-  var targetLine;
-  for(var i = OUTLET_OFFSET; i < parent.children.length; i++) {
-    targetLine = parent.children[i].attrs.lineIn;
-    if (targetLine){
+    // deal with the lines leading out of the node being deleted
+    var lineOutLength = parent.attrs.lineOut.length;
+    for(var i = 0; i < lineOutLength; i++) {
+      targetLine = parent.attrs.lineOut[0];
       removeLine(targetLine);
     }
+    var render = parent.attrs.renderLayer
+    if (render != null) {
+      render.destroy();
+    }
+    if (currShape == parent) {
+      currShape = null;
+      updateFunBar();
+    }
+
+    parent.remove();
   }
-  // deal with the lines leading out of the node being deleted
-  var lineOutLength = parent.attrs.lineOut.length;
-  for(var i = 0; i < lineOutLength; i++) {
-    targetLine = parent.attrs.lineOut[0];
-    removeLine(targetLine);
-  }
-  var render = parent.attrs.renderLayer
-  if (render != null) {
-    render.destroy();
-  }
-  if (currShape == parent) {
-    currShape = null;
-    updateFunBar();
-  }
-  
-  parent.remove();
-}
-workLayer.draw();
-lineLayer.draw();
+  workLayer.draw();
+  lineLayer.draw();
 });
 
 /*
@@ -208,14 +227,39 @@ workLayer.on('mouseover', function(evt) {
       frame();
     }
     if (makingLine) {
+      var outlet;
       if (isOutlet(shape)) {
-        shape.scale({
+        outlet = shape;
+      }
+      else if (isFunction(parent)) {
+        // find empty outlet
+        if (parent.attrs.numInputs < parent.attrs.maxInputs) {
+          var i = OUTLET_OFFSET
+          while (parent.children[i].attrs.lineIn) {
+            i++
+          }
+          outlet = parent.children[i];
+        }
+        else if (parent.attrs.maxInputs == 1) {
+          outlet = parent.children[OUTLET_OFFSET];
+        }
+      }
+      if (outlet) {
+        outlet.scale({
           x: 1.5,
           y: 1.5
         });
+        line = outlet.attrs.lineIn;
+        if (line) {
+          line.setAttrs({
+            shadowColor: deleteColor,
+            shadowEnabled: true
+          });
+          lineLayer.draw();
+        }
         workLayer.draw();
-        } // if outlet
-      } 
+      } // if outlet
+    } // if makingLine
     } 
     else if (deleteToolOn) {
       if (isFunction(parent) || isValue(parent)) {
@@ -228,7 +272,6 @@ workLayer.on('mouseover', function(evt) {
         var lineOut = parent.attrs.lineOut;
         for (var i = 0; i < lineOut.length; i++) {
           lineOut[i].setAttrs({
-            //strokeWidth: 3,
             shadowColor: deleteColor,
             shadowEnabled: true
           });
@@ -239,7 +282,6 @@ workLayer.on('mouseover', function(evt) {
           line = children[i].attrs.lineIn;
           if (line) {
             line.setAttrs({
-              //strokeWidth: 3,
               shadowColor: deleteColor,
               shadowEnabled: true
             });
@@ -263,40 +305,56 @@ workLayer.on('mouseover', function(evt) {
         animation = false;
       }
       if (makingLine) {
+        var outlet;
         if (isOutlet(shape)) {
-          shape.scale({
+          outlet = shape;
+        }
+        else if (isFunction(parent)) {
+          // find empty outlet
+          if (parent.attrs.numInputs < parent.attrs.maxInputs) {
+            var i = OUTLET_OFFSET
+            while (parent.children[i].attrs.lineIn) {
+              i++
+            }
+            outlet = parent.children[i];
+          }
+          else if (parent.attrs.maxInputs == 1) {
+            outlet = parent.children[OUTLET_OFFSET];
+          }
+        }
+        if (outlet) {
+          outlet.scale({
             x: 1,
             y: 1
           });
-          workLayer.draw();
-          } //if outlet
-        } //if makingLine
-      } 
-      else if (deleteToolOn) {
-        if (isFunction(parent) || isValue(parent)) {
-          if (parent == currShape){
-            setSelectedShadow(parent);
-          } 
-          else {
-            removeShadow(parent);
+          line = outlet.attrs.lineIn;
+          if (line) {
+            line.setAttr('shadowEnabled', false);
+            lineLayer.draw();
           }
-          // for all lines going out
+          workLayer.draw();
+        } // if outlet
+      }
+    } 
+    else if (deleteToolOn) {
+      if (isFunction(parent) || isValue(parent)) {
+        if (parent == currShape){
+          setSelectedShadow(parent);
+        } 
+        else {
+          removeShadow(parent);
+        }
+        // for all lines going out
         var lineOut = parent.attrs.lineOut;
         for (var i = 0; i < lineOut.length; i++) {
-          lineOut[i].setAttrs({
-            //strokeWidth: lineStrokeWidth,
-            shadowEnabled: false
-          });
+          lineOut[i].setAttr('shadowEnabled', false);
         } // for lineOut
         //for all lines coming in
         var children = parent.children;
         for (var i = OUTLET_OFFSET; i < children.length; i++) {
           line = children[i].attrs.lineIn;
           if (line) {
-            line.setAttrs({
-              //strokeWidth: lineStrokeWidth,
-              shadowEnabled: false
-            });
+            line.setAttr('shadowEnabled', false);
           } // if line
         } // for incoming lines
         }
