@@ -1,31 +1,51 @@
 @import url("/css/styles");
 
-tr, td{
+.introTR, .introTD{
 border: 2px solid black;
 }
-td{
+.introTD{
 padding: 50px;
 text-align: center;
 background-color: #C0C0C0;
 }
 
-table {
+#introTable {
 margin: 0 auto;
 border-collapse: collapse;
 }
 
 body
 {
-background-image:url('https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpf1/v/t34.0-12/10425831_10204551456533055_218047225_n.jpg?oh=c954017e2ebba4bbb7d7cafbdcff3550&oe=53B4E6A4&__gda__=1404369680_ad834d7aa26711933cc4dc954669074f');
+background-image:url('https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpa1/v/t35.0-12/10516297_10204571330109882_1262746675_o.jpg?oh=9904e17ab9a85202b414f3e19307a37f&oe=53B655D3&__gda__=1404461822_68aa81e4ddc86be7619244b151e26239');
 background-image-size: 100%;
-background-color:#cccccc;
-background-size: cover;
+  background-color:#cccccc;
+  background-size: cover;
 }
 
 h1 {
-text-align: center;
+  text-align: center;
 }
 
 a {
-    color: black;
+  color: black;
+}
+
+p {
+  color: black;
+}
+
+#instructions{
+  padding: 50px;
+  background-color: #4A4A4A;
+  height: 100%;
+  width: 30%;
+  float: right;
+}
+
+#instructText{
+  width:100%;
+}
+
+#workspace {
+margin: auto 0px;
 }

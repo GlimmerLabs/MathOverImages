@@ -127,6 +127,20 @@ module.exports = function(app,passport,database) {
     });
   });
 
+  app.get('/tutorial/introToMIST', function(req, res) {
+      res.render('../public/views/tutorialIntro1.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  app.get('/tutorial/workspace', function(req, res) {
+      res.render('../public/views/tutorialWorkspace.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
   // --------------------------------------------------
   // Path:  /css
   //   Distribute CSS files
