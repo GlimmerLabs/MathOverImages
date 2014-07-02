@@ -9,12 +9,18 @@ var functionStrokeWidth = width / 90;
 var functionHalfStrokeWidth = functionStrokeWidth / 2;
 var functionTotalSideLength = width / 20;
 var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
-var functionColor = '#508C37';
+var functionColor = '#3FAAA0';
+var functionColorLight = '#C6F1ED';
+var functionMultColor = '#5EC783';
+var functionSingleColor = '#77C9E2';
+var functionRGBcolor = '#AE88D6';
 
 var valueSideLength = functionTotalSideLength / 1.414;
-var valueXYColor = 'gray';
-var valueTimeColor = 'gold';
-var valueConstantColor = '#CD8ADA';
+var valueMenuColor = '#F2937C';
+var valueMenuColorLight = '#FDE6DD';
+var valueXYColor = '#EFDC5C';
+var valueTimeColor = '#FD9E54';
+var valueConstantColor = '#F17C9D';
 
 var imageBoxSideLength = width / 80;
 var imageBoxColor = 'white';
@@ -22,11 +28,15 @@ var functionImageBoxOffset = width / 300;
 var valueImageBoxOffset = width / 31;
 var renderSideLength = width / 18;
 
+var editableTextWidth = width / 15;
+var editableTextHeight = width / 30;
+var editableTextFont = 13;
+
 var variableColor = 'blue';
 
 var outletXOffset = width / 255;
 var outletYOffset = functionRectSideLength / 3;
-var outletColor =  '#FFC440';
+var outletColor =  '#F2F2F2';
 
 var lineStrokeWidth = 2;
 
@@ -48,8 +58,8 @@ var menuAnimDuration = 1;
 //CORNER BUTTONS
 var menuOffset = 10;
 var menuControlHeight = menuHeight / 5;
-var menuControlColor = 'lightblue';
-var menuControlSelect = '#BEEDFA'; 
+var menuControlColor = '#7FA7E7';
+var menuControlSelect = '#9EBDF0'; 
 var menuControlTextColor = 'black';
 var menuTextOffset = menuControlHeight / 5;
 
@@ -63,7 +73,7 @@ var deleteColor = '#A30F0F';
 //FUNCTIONBAR
 var funBarWidth = width;
 var funBarHeight = height / 15;
-var funBarBackgroundColor = 'lightblue';
+var funBarBackgroundColor = menuControlColor;
 var funBarOffset = funBarHeight * .17;
 var funBarTextAreaWidth = funBarWidth * .75;
 var funBarTextAreaHeight = funBarHeight * .66;
@@ -72,23 +82,23 @@ var funBarDisplayFontSize = 22;
 var funBarFontSize = 12;
 var funBarIconOffset = funBarWidth / 16;
 var funBarIconSideLength = funBarHeight / 4;
-var funBarIconTextWidth = funBarWidth * (2/45);
+var funBarIconTextWidth = width / 18;
 var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
 
 
-var funNames = ['add', 'multiply', 'negate', 'sine', 'cosine', 'absolute', 'average', 'sign', 'rgb'];
+var funNames = ['add', 'multiply', 'average', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'rgb'];
 var functions = {
-	add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum'},
-	multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult'},
-	negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg'},
-	sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin'},
-	cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos'},
-	absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs'},
-	average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg'},
-	sign:      {rep: 'sign',max: 1,  min: 1, prefix: 'sign'},
-	wrapsum:   {rep: 'wrap',max: 1,  min: 1, prefix: 'wsum'},
-	rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb'}
+	add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionMultColor},
+	multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionMultColor},
+	negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg', color: functionSingleColor},
+	sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin', color: functionSingleColor},
+	cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos', color: functionSingleColor},
+	absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs', color: functionSingleColor},
+	average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg', color: functionMultColor},
+	sign:      {rep: 'sign',max: 1,  min: 1, prefix: 'sign', color: functionSingleColor},
+	wrapsum:   {rep: 'wrap',max: 1,  min: 1, prefix: 'wsum', color: functionSingleColor},
+	rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor}
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 var values = {
@@ -98,7 +108,7 @@ var values = {
 	minute:   {rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
 	hour:     {rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
 	day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-	constant: {rep: '',    max: 20, min: 2, color: valueConstantColor}
+	constant: {rep: '#',    max: 20, min: 2, color: valueConstantColor}
 }
 
 // TOOLBOX BOOLEANS

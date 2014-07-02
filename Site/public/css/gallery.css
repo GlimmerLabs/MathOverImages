@@ -1,10 +1,6 @@
 @import url("/css/styles");
 
-#main {
-	margin:100px;
-}
-
-#pageTitleGeneral {
+#top,pageTitleGeneral {
 	background-color: #3FAAA0;
 }
 
@@ -50,7 +46,7 @@ figure figcaption.left:first-letter{
 	font-size: 1em;
 }
 
-figure figcaption.right{
+figure figcaption.right a{
 	color: #979797;
 	font-size: 1em;
 	text-decoration: none;
@@ -81,7 +77,7 @@ ul.rig {
 	font-size: 0px;
 	margin-left: -2.5%; /* should match li left margin */
 }
-ul.rig li {
+ul.rig {
 	display: inline-block;
 	padding: 10px;
 	margin: 0 0 2.5% 2.5%;
@@ -95,37 +91,37 @@ ul.rig li {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 }
-ul.rig li canvas {
+ul.rig ul canvas{
 	max-width: 100%;
 	height: auto;
 	margin: 0 0 10px;
 }
 
 /* class for 2 columns */
-ul.rig.columns-2 li {
+ul.rig.columns-2 ul {
 	width: 47.5%; /* this value + 2.5 should = 50% */
 }
 /* class for 3 columns */
-ul.rig.columns-3 li {
+ul.rig.columns-3 ul {
 	width: 30.83%; /* this value + 2.5 should = 33% */
 }
 /* class for 4 columns */
-ul.rig.columns-4 li {
+ul.rig.columns-4 ul {
 	width: 22.5%; /* this value + 2.5 should = 25% */
 }
  
 @media (max-width: 480px) {
-	ul.grid-nav li {
+	ul.grid-nav ul {
 		display: block;
 		margin: 0 0 5px;
 	}
-	ul.grid-nav li a {
+	ul.grid-nav ul a {
 		display: block;
 	}
 	ul.rig {
 		margin-left: 0;
 	}
-	ul.rig li {
+	ul.rig ul {
 		width: 100% !important; /* over-ride all li styles */
 		margin: 0 0 20px;
 	}

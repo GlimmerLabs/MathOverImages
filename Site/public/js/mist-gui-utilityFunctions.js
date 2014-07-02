@@ -23,7 +23,32 @@
 			}
 		}
 	};
-
+/*
+	removeOutlet takes a function node (funGroup) and deletes the last outlet
+	 - checks if there are above the minimum number of outlets.
+	 - the outlet is removed
+	 - the function node is scaled properly
+*/
+var removeOutlet = function(funGroup) {
+	// destroy outlet if number of remaning outlets would still be above minimum
+	if (funGroup.attrs.minInputs < funGroup.children.length - OUTLET_OFFSET) {
+		var outletIndex = funGroup.children.length - 1;
+		var outlet = funGroup.children[outletIndex];
+		if (outlet.attrs.lineIn == null) {
+			outlet.destroy();
+			if(funGroup.children.length - OUTLET_OFFSET > 2) {
+				funGroup.children[0].setAttr('height',
+					funGroup.children[0].attrs.height - outletYOffset);
+				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y - (outletYOffset / 2));
+				funGroup.children[2].setAttr('y', funGroup.children[2].attrs.y - outletYOffset);
+			}
+			workLayer.draw();
+			if (funGroup.attrs.renderLayer != null){
+				funGroup.attrs.renderLayer.draw();
+			}
+		}
+	} // if above minumum number of outlets
+};
 
 /**
  * findRenderFunction takes a group and, if the group has sufficient inputs, finds the 
@@ -65,11 +90,11 @@
  			text: currText,
  			fontSize: currFontSize
  		});
- 		funBarSaveIm.setAttr('opacity', 1);
+ 		enableSaveImage();
  	}
  	else {
  		funBarText.setAttr('text', '');
- 		funBarSaveIm.setAttr('opacity', .3);
+ 		disableSaveImage();
  	}
  	funBarLayer.draw();
  };
@@ -308,4 +333,34 @@ var applyDragBounds = function(group) {
 	});
 };
 
+var enableSaveImage = function() {
+	funBarSaveImCover.setAttrs({
+		stroke: 'black',
+		fill: valueMenuColor
+	});
+	funBarSaveImText.setAttr('fill', 'black');
+};
 
+var disableSaveImage = function() {
+	funBarSaveImCover.setAttrs({
+		stroke: 'grey',
+		fill: valueMenuColorLight
+	});
+	funBarSaveImText.setAttr('fill', 'grey');
+};
+
+var enableSaveFunction = function() {
+	funBarSaveImCover.setAttrs({
+		stroke: 'black',
+		fill: functionColor
+	});
+	funBarSaveImText.setAttr('fill', 'black');
+};
+
+var disableSaveFunction = function() {
+	funBarSaveImCover.setAttrs({
+		stroke: 'grey',
+		fill: functionColorLight
+	});
+	funBarSaveImText.setAttr('fill', 'grey');
+};

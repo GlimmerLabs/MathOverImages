@@ -19,7 +19,7 @@ var borderLine = new Kinetic.Line({
   y:0,
   width: buttonWidth,
   height: menuHeight,
-  fill: 'lavender',
+  fill: valueMenuColorLight,
   stroke: 'black',
   strokeWidth: 2
  });
@@ -30,7 +30,7 @@ var borderLine = new Kinetic.Line({
   y: menuHeight / 4,
   width: valueSideLength,
   height: valueSideLength,
-  fill: 'purple',
+  fill: valueMenuColor,
   rotation: 45,
  });
  valuesButton.add(valuesButtonRect);
@@ -56,7 +56,7 @@ var borderLine = new Kinetic.Line({
   y:0,
   width: buttonWidth,
   height: menuHeight,
-  fill: '#D7EBCF',
+  fill: functionColorLight,
   stroke: 'black',
   strokeWidth: 2
  });

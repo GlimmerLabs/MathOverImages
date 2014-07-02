@@ -22,10 +22,10 @@
     "passport-twitter": "^1.0.2",
     "validator": "^3.14.1"
   },
-  "devDependencies": {},
+
   "scripts": {
     "test": "nodemon server.js",
-    "start": "nohup node server.js"
+    "start": "nohup node server.js &"
   },
   "repository": {
     "type": "git",
@@ -37,5 +37,6 @@
     "Labs"
   ],
   "author": "Glimmer Labs",
-  "license": "GNU LESSER GENERAL PUBLIC LICENSE"
+  "license": "GNU LESSER GENERAL PUBLIC LICENSE",
+  "readme" :"DEVELOPERS"
 }

@@ -1,7 +1,6 @@
 /**
- * Functions related to the album contents.
+ * Functions related to the album content.
  */
-
 module.exports.buildPage = function(req, res, database) {
 filedatabase=database;
 database.albumContentsInfo(req.params.albumid, function(albumContents, error){
@@ -19,4 +18,3 @@ database.albumOwnerInfo(req.params.albumid, function(albumOwner, error){
 		});
    });
 };
-

@@ -1,0 +1,36 @@
+extends ./partials/framework
+block title
+	title MIST by Glimmer
+block extraMetas
+block extraLinks
+	script(type='text/javascript' src='/js/mist-utils.js')
+	script(type='text/javascript' src='/js/mist-functions.js')
+	script(type='text/javascript' src='/js/mist-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-builtin.js')
+	script(type='text/javascript' src='/js/mist-render.js')
+	script(type='text/javascript' src='/js/mistui-dialogs.js')
+	script(type='text/javascript' src='/js/mistui-help.js')
+	script(type='text/javascript' src='/js/mistui-menus.js')
+	script(type='text/javascript' src='/js/mistui-animator.js')
+	script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+	script(type='text/javascript' src='/js/imagepage.js')
+
+block stylesheets
+	link(rel='stylesheet', href='/css/index')
+	link(rel='stylesheet', href='/css/singleImage')
+
+block content
+	div(id='main')
+		div(id='pageTitleGeneral')
+			h1 404
+		div(id='flashZone')
+			h1 That page does not exist, but here’s a random image.
+		h1= image.title
+		a(href='/image/'+image.imageid): figure
+			canvas(id='canvas' width='400' height='400')
+			figcaption(class='left')= "★" + image.rating
+			a(href='/user/'+ image.username)
+				figcaption(class='right')= image.username
+		p(id='code' class='code')= image.code
+

@@ -43,16 +43,16 @@ module.exports.goToMyProfile = function(req, res, database) {
 
 module.exports.changeAboutSection = function(req, res, database) {
     database.getIDforUsername(req.session.user.username,
-			      function(userid, error) {
-				  if(error)
-				      res.end (error);
-				  else
-				      database.changeAboutSection(req.session.user.userid, req.body.aboutSection,
-			function(success, error) {
-  if(!success)
-      res.end(error)
-  else
-      res.redirect('/me');
-	  });
-   });
+	function(userid, error) {
+	    if(error)
+		res.end (error);
+	    else
+		database.changeAboutSection(req.session.user.userid, req.body.aboutSection,
+					   function(success, error) {
+					       if(!success)
+						   res.end(error)
+					       else
+						   res.redirect('/me');
+					   });
+    });
 }
