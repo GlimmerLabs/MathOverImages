@@ -22,20 +22,24 @@ block stylesheets
 
 block content
   div(id='main')
-    div(id='pageTitle')
-        h1= albumOwner[0].username
-        h2= albumContents[0].name
-    div(id='subviews')
-      a(href='/user/'+ albumOwner[0].username class='subview') bio
-      a(href='/badges' class='subview') badges
-      a(href='/user/'+ albumOwner[0].username +'/albums' class='subview' id= 'selected') albums
-      a(href='/challenges' class='subview') challenges
-    div(id='images')
-      - for (var i = 0; i < albumContents.length; i++)
-        figure
-          a(href='/image/' + albumContents[i].imageid)
-              figcaption(class='center')= albumContents[i].title
-              canvas(id='canvas'+i width='180' height='180')
-              input(type='hidden' id='code'+i value=albumContents[i].code)
-          a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
-          figcaption(class='left')= "★" + albumContents[i].rating
+    div(id='top')
+      div(id='pageTitle')
+          h1= albumOwner[0].username
+          h2= albumContents[0].name
+      div(id='subviews')
+        a(href='/user/'+ albumOwner[0].username class='subview') bio
+        a(href='/badges' class='subview') badges
+        a(href='/user/'+ albumOwner[0].username +'/albums' class='subview' id= 'selected') albums
+        a(href='/challenges' class='subview') challenges
+    div(id='gallery')
+      div(id='images')
+        ul(class='rig columns-3')
+          - for (var i = 0; i < albumContents.length; i++)
+            li
+              figure
+                a(href='/image/' + albumContents[i].imageid)
+                  figcaption(class='center')= albumContents[i].title
+                  canvas(id='canvas'+i width='180' height='180')
+                  input(type='hidden' id='code'+i value=albumContents[i].code)
+                a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
+              figcaption(class='left')= "★" + albumContents[i].rating
