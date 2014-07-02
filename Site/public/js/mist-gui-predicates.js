@@ -85,7 +85,7 @@ var isUndoTool = function(target) {
  */
  var isRenderable = function(group) {
  	if (isValue(group)) {
- 		if (group.attrs.rep != '') {
+ 		if (group.attrs.rep != '#') {
  			return true;
  		}
  		else {

@@ -596,6 +596,8 @@ module.exports.albumsInfo=(function(userid, callback) {
     module.exports.query("SELECT users.username, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
 	if (error)
 	    callback(null, error);
+	else if (!rows[0])
+	    callback(null, "User does not have any albums");
 	else
 	    callback(rows, null);
     });
@@ -668,23 +670,3 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
 });
 }); 
 
-module.exports.getAllImagesforUser=(function (userid, callback) {
-    userid=sanitize(userid);
-    module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
-});
-}); 
-
-
-module.exports.getAllImagesforUser=(function (userid, callback) {
-    userid=sanitize(userid);
-    module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
-});
-}); 

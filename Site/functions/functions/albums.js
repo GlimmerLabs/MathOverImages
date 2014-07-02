@@ -17,35 +17,17 @@ database.getIDforUsername(req.params.username,
 		for (i= 0; i< albums.length; i++){
 		    albumId[i]=albums[i];
 		}
+module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and albums.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;"
 	    database.firstImageofAlbum(albumId[0], function(imageShown, error){
 */		res.render('../public/views/albums.jade', {
 		    loggedIn: req.session.loggedIn,
 		    user:req.session.user,
 		    profileBeingViewed: req.params.username,
-                    albums:albums
+    albums:albums
 //		    imageShown:imageShown
 		});
 	});
 });
 //});
-};
-
-module.exports.allImagesinAlbum = function(req, res, database) {
-database.getIDforUsername(req.params.username,
-	function(userid, error) {
-	    if(error)
-		res.end (error);
-	    else
-	database.getAllImagesforUser(userid, function(images, error){
-	    if(error)
-		res.end(error)
-	    else
-		res.render('../public/views/imagesCompilation.jade', {
-		    loggedIn: req.session.loggedIn,
-		    user:req.session.user,
-		    images:images
-		});
-	});
-});
 };
 
