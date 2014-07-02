@@ -224,8 +224,30 @@ workLayer.on('mouseover', function(evt) {
           shadowOpacity: 1,
           shadowEnabled: true
         });
+        // for all lines going out
+        var lineOut = parent.attrs.lineOut;
+        for (var i = 0; i < lineOut.length; i++) {
+          lineOut[i].setAttrs({
+            //strokeWidth: 3,
+            shadowColor: deleteColor,
+            shadowEnabled: true
+          });
+        } // for lineOut
+        //for all lines coming in
+        var children = parent.children;
+        for (var i = OUTLET_OFFSET; i < children.length; i++) {
+          line = children[i].attrs.lineIn;
+          if (line) {
+            line.setAttrs({
+              //strokeWidth: 3,
+              shadowColor: deleteColor,
+              shadowEnabled: true
+            });
+          } // if line
+        } // for incoming lines
       }
       workLayer.draw();
+      lineLayer.draw();
     }
   });
 
@@ -258,7 +280,27 @@ workLayer.on('mouseover', function(evt) {
           else {
             removeShadow(parent);
           }
+          // for all lines going out
+        var lineOut = parent.attrs.lineOut;
+        for (var i = 0; i < lineOut.length; i++) {
+          lineOut[i].setAttrs({
+            //strokeWidth: lineStrokeWidth,
+            shadowEnabled: false
+          });
+        } // for lineOut
+        //for all lines coming in
+        var children = parent.children;
+        for (var i = OUTLET_OFFSET; i < children.length; i++) {
+          line = children[i].attrs.lineIn;
+          if (line) {
+            line.setAttrs({
+              //strokeWidth: lineStrokeWidth,
+              shadowEnabled: false
+            });
+          } // if line
+        } // for incoming lines
         }
         workLayer.draw();
+        lineLayer.draw();
       }
     });
