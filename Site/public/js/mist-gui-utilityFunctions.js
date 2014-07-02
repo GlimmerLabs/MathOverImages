@@ -14,6 +14,11 @@
 					funGroup.children[0].attrs.height + outletYOffset);
 				funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
 				funGroup.children[2].setAttr('y', funGroup.children[2].attrs.y + outletYOffset);
+				var lineOut = funGroup.attrs.lineOut
+				for (var i = 0; i < lineOut.length; i++) {
+					var line = lineOut[i];
+					line.points()[1] = funGroup.y() + (funGroup.children[0].height() + functionStrokeWidth) / 2;
+				}
 			}
 			var newOutlet = makeOutlet(funGroup);
 			funGroup.add(newOutlet);
