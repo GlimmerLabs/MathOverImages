@@ -244,7 +244,7 @@ workLayer.on('mouseover', function(evt) {
           outlet = parent.children[OUTLET_OFFSET];
         }
       }
-      if (outlet) {
+      if (outlet && outlet.parent != currLine.attrs.source) {
         outlet.scale({
           x: 1.5,
           y: 1.5
@@ -322,7 +322,7 @@ workLayer.on('mouseover', function(evt) {
             outlet = parent.children[OUTLET_OFFSET];
           }
         }
-        if (outlet) {
+        if (outlet && outlet.parent != currLine.attrs.source) {
           outlet.scale({
             x: 1,
             y: 1
