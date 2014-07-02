@@ -86,6 +86,24 @@ var borderLine = new Kinetic.Line({
  functionsButton.add(functionsButtonText);
  menuButtonLayer.draw();
 
+ /**
+  * toggle labels text
+  */
+  var toggleTag = new Kinetic.Group ({
+    x: (width / 90),
+    y: menuHeight + (width / 90)
+  });
+  labelLayer.add(toggleTag);
+
+  toggleTag.add(new Kinetic.Text({
+    x:0,
+    y:0,
+    text: 'Turn Labels Off',
+    fontFamily: globalFont,
+    fontSize: 12,
+    fill: '#787878'
+  }));
+
  /* add functions to menu */
  var menuFunctions = [];
  for (var i = 0; i < funNames.length; i++) {

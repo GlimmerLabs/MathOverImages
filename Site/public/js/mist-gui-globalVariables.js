@@ -119,12 +119,14 @@ var values = {
 //MENU BOOLEANS
 var valueExpanded = false;
 var functionExpanded = false;
+var tagsOn = true;
 
 /* variables to globally reference the most recently used object/line and current state */
 var currShape;
 var currLine;
 var dragShape = null;
 var scaledObj = null;
+var openTag;
 
 //OTHER BOOLEANS
 var makingLine = false;
@@ -137,3 +139,37 @@ var animation = false;
  * The offset in an operation node to the set of offsets.
  */
 var OUTLET_OFFSET = 3;
+
+
+/**
+ * Layers of the workspace:
+ * 1. The line layer holds connecting lines between nodes in the work area.
+ * 2. The menu layer holds the buttons that users can click on to drag a new node into
+ *    the work area.
+ * 3. The menuButton layer holds the super buttons that are used to expand the menus.
+ * 4. The menuControlLayer contains the buttons to save/open/reset the workspace
+ * 5. The toolboxLayer holds the draggable toolbox
+ * 6. The work layer holds all active nodes that are either connected or available to
+ *    be connected.
+ * 7. The border layer stores static elements of the page such as dividing lines.
+ * 8. The funBar layer contains the elements of the funBar at the bottom of the screen.
+ * 9. The drag layer holds nodes while they are being moved about the workspace.
+ * 10. The text layer hold the editabe text boxes for constant values and funtion text.
+ * 11. The labelLayer contains informative labels that appear on mouseover
+ * 12. The screenLayer contains pop-up windows for meta events
+ * 13. The renderLayer contains the large rendered canvas when saving an image.
+ */
+
+ var lineLayer = new Kinetic.Layer();
+ var menuLayer = new Kinetic.Layer();
+ var menuButtonLayer = new Kinetic.Layer();
+ var menuControlLayer = new Kinetic.Layer();
+ var toolboxLayer = new Kinetic.Layer();
+ var workLayer = new Kinetic.Layer();
+ var borderLayer = new Kinetic.Layer();
+ var funBarLayer = new Kinetic.Layer();
+ var dragLayer = new Kinetic.Layer();
+ var textLayer = new Kinetic.Layer();
+ var labelLayer = new Kinetic.Layer();
+ var screenLayer = new Kinetic.Layer();
+ var renderLayer = new Kinetic.Layer();
