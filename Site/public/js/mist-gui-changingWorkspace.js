@@ -170,7 +170,9 @@
         else {
           // remove the line and update its indexes
           removeLine(element);
-      }
+          // remove extra outlet
+          removeOutlet(actionObj.sink);
+        }
       } // if insert
       // if the action in question is a movement
       else if (action == 'move') {
@@ -370,6 +372,8 @@
     outlet.attrs.lineIn = null;
     // update the sink's number of outlets
     sink.attrs.numInputs--;
+    // reset the strokeWidth
+    line.setAttr('strokeWidth', lineStrokeWidth);
     // remove the line from the lineLayer
     line.remove();
     // if the sink is the currShape
@@ -399,8 +403,9 @@
    * updates the funBar text. 
    */ 
    var insertLine = function(actionObj) {
+    var sink = actionObj.sink;
     var source = actionObj.source;
-    var outlet = actionObj.sink.children[actionObj.sinkIndex + 3];
+    var outlet = sink.children[actionObj.sinkIndex + 3];
     var element = elementTable[actionObj.id];
     // move old line to the lineLayer
     element.moveTo(lineLayer);
@@ -415,9 +420,13 @@
     // connect outlet to line
     outlet.attrs.lineIn = element;
     // increment numInputs
-    actionObj.sink.attrs.numInputs++;
+    sink.attrs.numInputs++;
+    // add outlet if nessecary
+    if (sink.children[sink.children.length - 1].attrs.lineIn) {
+      addOutlet(sink);
+    }
     // assert and update renderability of the sink
-    assertRenderable(actionObj.sink);
+    assertRenderable(sink);
     // if the currShape is defined
     if (currShape != undefined) {
       // update the funBarText
@@ -429,7 +438,7 @@
       shadowEnabled: false
   });
     // update the currshape to be the sink and re-draw
-    currShape = actionObj.sink;
+    currShape = sink;
     dragLayer.draw();
     // update the currShape to be the source and re-draw
     currShape = actionObj.source;

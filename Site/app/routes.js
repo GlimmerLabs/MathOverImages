@@ -120,7 +120,6 @@ module.exports = function(app,passport,database) {
   // Path:  /tutorial
   //   Page for creating (something)
   /* create page */
-
   app.get('/tutorial', function(req, res) {
     res.render('../public/views/tutorialHome.jade', {
       loggedIn: req.session.loggedIn,
@@ -343,6 +342,7 @@ module.exports = function(app,passport,database) {
 
   // Route does not exist
   app.use(function(req, res, next){
-
+    var fourohfour = require("../functions/404.js");
+    fourohfour.buildPage(req,res,database);
   });
 };
