@@ -28,6 +28,7 @@ var stage = new Kinetic.Stage({
  var toolboxLayer = new Kinetic.Layer();
  var dragLayer = new Kinetic.Layer();
  var textLayer = new Kinetic.Layer();
+ var labelLayer = new Kinetic.Layer();
 
 /**
  * Add the layers to the stage. The top layer is the one most recently added, and
@@ -43,5 +44,6 @@ var stage = new Kinetic.Stage({
  stage.add(funBarLayer);
  stage.add(dragLayer);
  stage.add(textLayer);
+ stage.add(labelLayer);
 
 readyEditing(stage);
