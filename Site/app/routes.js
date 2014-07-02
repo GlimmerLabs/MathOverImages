@@ -343,6 +343,7 @@ module.exports = function(app,passport,database) {
 
   // Route does not exist
   app.use(function(req, res, next){
-
+    var fourohfour = require("../functions/404.js");
+    fourohfour.buildPage(req,res,database);
   });
 };
