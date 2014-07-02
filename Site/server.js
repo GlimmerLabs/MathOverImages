@@ -43,8 +43,10 @@ app.use(cookieParser()); // read cookie information (for auth)
 app.use(bodyParser.urlencoded({
   extended: true
 })); // get info from html forms
+app.use(session({secret: auth["session-secret"],
+                 saveUninitialized: true,
+                 resave: true}));
 
-app.use(expressSession({secret: auth["session-secret"]})); // session secret
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
