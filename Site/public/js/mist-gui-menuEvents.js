@@ -113,22 +113,28 @@ menuButtonLayer.on('click', function(){
     var group = evt.target.getParent();
     if (tagsOn) {
      if (isFunction(group) || isValue(group)) {
-      openTag = makeLabel(group);
-      labelLayer.add(openTag)
-      labelLayer.draw();
+      setTimeout(function(){
+        if (openTag) {
+          openTag.destroy();
+        }
+        var temp = menuLayer.getIntersection(stage.getPointerPosition());
+        if (temp && group == temp.getParent()) {
+          openTag = makeLabel(group);
+          labelLayer.add(openTag)
+          labelLayer.draw(); 
+        }
+      }, 500);
     } 
   }
 });
 
-menuLayer.on('mouseout', function(evt) {
-  var group = evt.target.getParent();
-  if (tagsOn) {  
-    if (isFunction(group) || isValue(group)) {
+  menuLayer.on('mouseout', function(evt) {
+    var group = evt.target.getParent();
+    if (openTag) {  
       openTag.destroy();
       labelLayer.draw();
     }
-  }
-});
+  });
 
 toggleTag.on('mouseover', function() {
   toggleTag.children[0].setAttr('fill', 'black');
