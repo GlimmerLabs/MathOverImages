@@ -19,5 +19,7 @@ var stage = new Kinetic.Stage({
  stage.add(labelLayer);
  stage.add(toolboxLayer);
  stage.add(dragLayer);
+ stage.add(screenLayer);
+ stage.add(renderLayer);
 
 readyEditing(stage);
