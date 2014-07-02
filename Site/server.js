@@ -40,7 +40,9 @@ var database = require('./functions/database.js');
 app.use(compress());
 app.use(morgan('dev')); //log every request to the console
 app.use(cookieParser()); // read cookie information (for auth)
-app.use(bodyParser()); // get info from html forms
+app.use(bodyParser.urlencoded({
+  extended: true
+})); // get info from html forms
 
 app.use(expressSession({secret: auth["session-secret"]})); // session secret
 app.use(passport.initialize());
