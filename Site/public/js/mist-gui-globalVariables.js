@@ -119,12 +119,14 @@ var values = {
 //MENU BOOLEANS
 var valueExpanded = false;
 var functionExpanded = false;
+var tagsOn = true;
 
 /* variables to globally reference the most recently used object/line and current state */
 var currShape;
 var currLine;
 var dragShape = null;
 var scaledObj = null;
+var openTag;
 
 //OTHER BOOLEANS
 var makingLine = false;
