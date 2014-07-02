@@ -1,4 +1,4 @@
-var descriptions = {
+var menuDescriptions = {
 	add:      'add values together\n  minumum of 2 inputs \n  maximum of 20.',
 	multiply: 'multiply values together\n  minumum of 2 inputs \n  maximum of 20.',
 	negate:   'negate a value\n  maximum of 1 input',
@@ -18,15 +18,26 @@ var descriptions = {
 	constant: 'enter your own number',
 }
 
-var tagColor = 'white'
+var toolboxDescriptions = {
+	workTool: 'select and move objects',
+	lineTool: 'create connections from values and functions to functions',
+	deleteTool: 'delete lines, values, and functions from workspace',
+	undo: 'undo',
+	redo: 'redo'
+};
+
+var tagColor = 'white';
+var pointerSize = width / 90;
+
+
 
 var makeLabel = function(group) {
 	var xOffset = 0;
 	if (isValue(group)){
 		xOffset = -4;
 	}
-	var name = group.attrs.name;
-	var text = descriptions[name];
+	var name = group.name();
+	var text = menuDescriptions[name];
 	var label = new Kinetic.Label ({
 		x: group.x() + (functionTotalSideLength / 2) + xOffset,
 		y: group.y() + (1.1 * functionTotalSideLength)
@@ -35,8 +46,8 @@ var makeLabel = function(group) {
 	label.add(new Kinetic.Tag({
 		fill: tagColor,
 		pointerDirection: 'up',
-		pointerWidth: width / 90,
-		pointerHeight: width / 90,
+		pointerWidth: pointerSize,
+		pointerHeight: pointerSize,
 		lineJoin: 'round',
 		shadowColor: 'black',
 		shadowOffset: [5, 5],
@@ -49,5 +60,54 @@ var makeLabel = function(group) {
 		padding: 5,
 		fill: 'black'
 	}));
+	return label;
+};
+
+var makeToolLabel = function(group) {
+	var xToolbox = toolboxGroup.x();
+	var yToolbox = toolboxGroup.y();
+	var name = group.name();
+	var text = toolboxDescriptions[name];
+	var tagX = xToolbox + group.x() + (1.1 * toolboxButtonSize);
+	var direction = 'left'
+	if (xToolbox > (width / 2)) {
+		tagX = xToolbox + group.x() - (0.1 * toolboxButtonSize);
+		direction = 'right'
+	}
+	var label = new Kinetic.Label ({
+		x: tagX,
+		y: yToolbox + group.y() + (toolboxButtonSize / 2),
+	});
+
+	label.add(new Kinetic.Tag({
+		fill: tagColor,
+		pointerDirection: direction,
+		pointerWidth: pointerSize,
+		pointerHeight: pointerSize,
+		lineJoin: 'round',
+		shadowColor: 'black',
+		shadowOffset: [5, 5],
+	}));
+
+	label.add(new Kinetic.Text({
+		text: text,
+		fontFamily: globalFont,
+		fontSize: 13,
+		padding: 5,
+		fill: 'black'
+	}));
+	if (name == 'redo') {
+		var actionObj = actionArray[currIndex];
+		var action = actionObj.action;
+		var newText = 'redo ' + action; 
+		label.children[1].setAttr('text', newText)
+	}
+	else if (name == 'undo') {
+		var actionObj = actionArray[currIndex - 1];
+		var action = actionObj.action;
+		var newText = 'undo ' + action;
+		label.children[1].setAttr('text', newText)
+	}
+
 	return label;
 };
