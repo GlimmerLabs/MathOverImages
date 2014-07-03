@@ -34,9 +34,9 @@ var editableTextFont = 13;
 
 var variableColor = 'blue';
 
-var outletXOffset = width / 255;
+var outletXOffset = width / 400;
 var outletYOffset = functionRectSideLength / 3;
-var outletColor =  '#F2F2F2';
+var outletColor =  '#C4C4C4';
 
 var lineStrokeWidth = 2;
 
@@ -110,6 +110,9 @@ var values = {
 	day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
 	constant: {rep: '#',    max: 20, min: 2, color: valueConstantColor}
 }
+
+var RGBoutletColors = ['#C94949','#2D9C2D','#4272DB']
+
 
 // TOOLBOX BOOLEANS
  var lineToolOn = false;

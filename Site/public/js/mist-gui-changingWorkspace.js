@@ -413,6 +413,7 @@
   }
     // update
     updateForward(sink);
+    setOutletOpacity(sink);
 };
 
   /**

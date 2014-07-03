@@ -114,6 +114,7 @@ There are 3 different modes:
           else {
             insertToArray(actionToObject('replace', currLine, oldLine));
           }
+          setOutletOpacity(parent);
           updateForward(parent);
         }  
     } // if makingline

@@ -22,6 +22,9 @@
 			}
 			var newOutlet = makeOutlet(funGroup);
 			funGroup.add(newOutlet);
+			if (funGroup.name() == 'rgb') {
+				newOutlet.setAttr('fill', RGBoutletColors[newOutlet.attrs.outletIndex]);
+			}
 			workLayer.draw();
 			if (funGroup.attrs.renderLayer != null){
 				funGroup.attrs.renderLayer.draw();
@@ -59,6 +62,20 @@ var removeOutlet = function(funGroup) {
 		}
 	} // if above minumum number of outlets
 };
+
+var setOutletOpacity = function(group) {
+	if (isFunction(group)) {
+		for (var i = OUTLET_OFFSET; i < group.children.length; i++){
+			var outlet = group.children[i];
+			if (outlet.attrs.lineIn) {
+				outlet.setAttr('opacity', 1);
+			}
+			else {
+				outlet.setAttr('opacity', .7);
+			}
+		}
+	}
+}
 
 /**
  * findRenderFunction takes a group and, if the group has sufficient inputs, finds the 
@@ -282,6 +299,7 @@ var removeShadow = function(group) {
  	}
  	assertRenderable(newNode);
  	updateForward(newNode);
+ 	setOutletOpacity(newNode);
  	lineLayer.draw();
  	workLayer.draw();
  };
@@ -312,6 +330,7 @@ var removeShadow = function(group) {
  		node.children[2].setAttr('y', functionRectSideLength + functionImageBoxOffset);
  		// set numInputs to zero
  		node.attrs.numInputs = 0;
+ 		setOutletOpacity(node);
  	}
  };
 
