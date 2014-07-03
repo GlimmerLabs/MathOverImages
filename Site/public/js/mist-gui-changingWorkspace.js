@@ -148,10 +148,6 @@
         } // go through each of the old line connections
         updateForward(element);
         removeShadow(element);
-        //removeShadow(currShape);
-        //currShape = element;
-        //setSelectedShadow(currShape);
-        //updateForward(currShape);
         updateFunBar();        
       } // if node
       // else working with a line
@@ -337,7 +333,6 @@
         removeShadow(currShape);
         currShape = element;
         setSelectedShadow(currShape);
-        assertRenderable(element);
         updateForward(element);
         updateFunBar(); 
       } // if move
