@@ -235,11 +235,11 @@ var removeShadow = function(group) {
  		// check if oldNode allows more inputs than newNode
  		if (newNode.attrs.maxInputs < oldNode.children.length - OUTLET_OFFSET) {
  			// add appropriate outlets to newNode
- 			while (newNode.children.length < newNode.attrs.maxInputs + 3) {
+ 			while (newNode.children.length < newNode.attrs.maxInputs + OUTLET_OFFSET) {
  				addOutlet(newNode);
  			}
  			var outletIndex = OUTLET_OFFSET; // which outlet we are applying the next input to
- 			for(var i = OUTLET_OFFSET; i < newNode.attrs.maxInputs - OUTLET_OFFSET; i++) {
+ 			for(var i = OUTLET_OFFSET; i < newNode.attrs.maxInputs + OUTLET_OFFSET; i++) {
  				if (oldNode.children[i].attrs.lineIn) {
  					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
  					newNode.attrs.numInputs++;
@@ -247,7 +247,7 @@ var removeShadow = function(group) {
  					outletIndex++;
  				}
  			}
- 			while (i < oldNode.children.length - OUTLET_OFFSET) {
+ 			while (i < oldNode.children.length) {
  				if(oldNode.children[i].attrs.lineIn) {
  					removeLine(oldNode.children[i].attrs.lineIn);
  				}
