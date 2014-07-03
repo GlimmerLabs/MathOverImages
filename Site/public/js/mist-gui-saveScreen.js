@@ -18,13 +18,15 @@ var popTextWidth = popCanvasSide;
 var popTextFontSize = 16;
 var popTextHeight = 2 * popTextFontSize;
 
-var nameTextShift = 50;
+var nameTextShift = width / 18;
 
 var popButtonWidth = popCanvasSide / 3.4;
 var popButtonHeight = popTextHeight / 1.25;
 var popButtonShiftX = (popCanvasSide - (3 * popButtonWidth)) / 2;
 var popButtonColor = '#A0A3A3';
 var popButtonSelectedColor = '#B6BABA'
+
+var errorColor = '#A11212';
 
 
 var cover = new Kinetic.Rect({
@@ -108,6 +110,16 @@ nameEditText.drawMethod = function(){
 	screenLayer.draw()
 };
 
+var popErrorText = new Kinetic.Text({
+	x: popTextShiftX,
+	y: popTextShiftY + (popTextHeight * 2.5),
+	text: '',
+	width: popRectWidth - (2*popTextShiftX),
+	fontFamily: globalFont,
+	fontSize: 14,
+	fill: errorColor,
+});
+popSaveGroup.add(popErrorText);
 
 var popSaveButtonGroup = new Kinetic.Group({
 	x: popTextShiftX,
@@ -274,15 +286,20 @@ popCancelButtonGroup.on('mouseup', function(){
 
 popSaveButtonGroup.on('mouseup', function(){
 	var newName = nameEditText.attrs.text;
-	var renderFunction = currShape.attrs.renderFunction;
-	saveImage(newName, renderFunction, true, true, true);
-	cover.setAttr('visible', false);
-	popSaveGroup.setAttr('visible', false);
-	showThumbnails();
-	animation = false;
-	setTimeout(function(){
-		renderLayer.draw();
-	}, 50);
+	if (newName == '' || newName == 'Enter a Name') {
+		popErrorText.setAttr('text', 'Please enter a name for your image.');
+	}
+	else {
+		var renderFunction = currShape.attrs.renderFunction;
+		saveImage(newName, renderFunction, true, true, true);
+		cover.setAttr('visible', false);
+		popSaveGroup.setAttr('visible', false);
+		showThumbnails();
+		animation = false;
+		setTimeout(function(){
+			renderLayer.draw();
+		}, 50);
+	}
 	screenLayer.draw();
 });
 
