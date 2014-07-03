@@ -138,12 +138,12 @@ menuButtonLayer.on('click', function(){
 
 toggleTag.on('mouseover', function() {
   toggleTag.children[0].setAttr('fill', 'black');
-  labelLayer.draw();
+  borderLayer.draw();
 });
 
 toggleTag.on('mouseout', function() {
   toggleTag.children[0].setAttr('fill', '#787878');
-  labelLayer.draw();
+  borderLayer.draw();
 });
 
 toggleTag.on('mouseup', function(){
@@ -155,7 +155,7 @@ toggleTag.on('mouseup', function(){
     tagsOn = true;
     toggleTag.children[0].setAttr('text', 'Turn Labels Off');
   }
-  labelLayer.draw();
+  borderLayer.draw();
 });
 
 // CONTROL MENU EVENTS 

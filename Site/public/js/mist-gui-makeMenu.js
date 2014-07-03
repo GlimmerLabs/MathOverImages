@@ -93,7 +93,7 @@ var borderLine = new Kinetic.Line({
     x: (width / 90),
     y: menuHeight + (width / 90)
   });
-  labelLayer.add(toggleTag);
+  borderLayer.add(toggleTag);
 
   toggleTag.add(new Kinetic.Text({
     x:0,
