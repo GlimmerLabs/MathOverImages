@@ -101,7 +101,7 @@ var setOutletOpacity = function(group) {
  * updateFunBar changes the text in the funBar according to the currShape.
  */
  var updateFunBar = function() {
- 	if (currShape && isRenderable(currShape)) {
+ 	if (currShape && assertRenderable(currShape)) {
  		currText = currShape.attrs.renderFunction;
  		var currFontSize;
  		if (currText.length <= 50) {
