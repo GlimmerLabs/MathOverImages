@@ -21,20 +21,21 @@ module.exports.buildRandomPage = (function(req, res, database) {
   module.exports.getRandomImages (9, function(images, error){
     if(error) {
       res.redirect("/404");
-    };
+    }
     else {
       var userid = (req.session.user) ? req.session.user.userid : null;
       setLikes(images, userid, function(imageArray, errorArray){
         res.render('../public/views/gallery.jade',{
-          loggedIn: req.session.loggedIn,
-          user: req.session.user,
-          images: imageArray,
-          nextPage: nextPage,
-          currentPage: req.params.pageNumber,
-          type: "random"
-        });
+            loggedIn: req.session.loggedIn,
+            user: req.session.user,
+            images: imageArray,
+            nextPage: nextPage,
+            currentPage: req.params.pageNumber,
+            type: "random"
+          }
+        );
       });
-    };
+    }
   });
 });
 
@@ -43,20 +44,21 @@ module.exports.buildRecentsPage = function(req, res, database) {
   module.exports.getRecentImages(9, req.params.pageNumber, function(images, nextPage,  error) {
     if(error) {
       res.redirect("/404");
-    };
+    }
     else {
       var userid = (req.session.user) ? req.session.user.userid : null;
       setLikes(images, userid, function(imageArray, errorArray){
         res.render('../public/views/gallery.jade',{
-          loggedIn: req.session.loggedIn,
-          user: req.session.user,
-          images: imageArray,
-          nextPage: nextPage,
-          currentPage: req.params.pageNumber,
-          type: "recent"
-        });
+            loggedIn: req.session.loggedIn,
+            user: req.session.user,
+            images: imageArray,
+            nextPage: nextPage,
+            currentPage: req.params.pageNumber,
+            type: "recent"
+          }
+        );
       });
-    };
+    }
   });
 };
 
