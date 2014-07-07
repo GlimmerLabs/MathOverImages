@@ -286,6 +286,36 @@ handlers.saveimage = function(info, req, res){
 }// handlers.saveimage
 
 /*
+check if an image exists
+action: imageexists
+title: The title of the image
+*/
+handlers.imageexists = function(info, req, res) {
+  if (!req.session.loggedIn) {
+    fail(res, "Could not save image because you're not logged in");
+  } else {
+    database.imageExists(req.session.user.userid, info.title, function(exists) {
+
+    });
+  }
+}
+
+/*
+check if an image exists
+action: wsexists
+title: The title of the image
+*/
+handlers.wsexists = function(info, req, res) {
+  if (!req.session.loggedIn) {
+    fail(res, "Could not save image because you're not logged in");
+  } else {
+    database.wsExists(req.session.user.userid, info.name, function(exists) {
+      res.send(exists);
+    });
+  }
+}
+
+/*
 Toggle the like on an image
 action: toggleLike
 imageid, to like or unlike
