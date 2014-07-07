@@ -836,3 +836,33 @@ module.exports.countNumberofLikes=(function (imageid, callback) {
       callback(count[0].likes, null);
   });
 });
+
+/*
+  Procedure:
+  database.hasLiked(userid, imageid, callback(liked, error));
+  Parameters:
+  imageid, the image to check likes
+  Purpose:
+  To get the results of ratings in each image
+  Pre-conditions:
+  Image exists
+  Post-conditions:
+  Count will be the most up-to-date number of likes
+  Preferences:
+  Automatically sanitizes.
+*/
+
+module.exports.hasLiked=(function (userid, imageid, callback) {
+  imageid=sanitize(imageid);
+  userid=sanitize(userid);
+
+  module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
+    if (error)
+      callback(null, error);
+    else if (rows[0])
+      callback(true, null);
+    else
+      callback(false, null);
+
+  });
+});
