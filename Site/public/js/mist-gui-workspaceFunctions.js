@@ -227,6 +227,19 @@ var wsExists = function(name) {
   request.send();
   return eval(request.responseText);
 }
+
+/**
+ * Determines if a image exists.  Returns true if an image exists
+ * with the given title and false otherwise.
+ */
+var imageExists = function(title) {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=imageexists&title=" + title;
+  request.open("GET", url, false);
+  request.send();
+  return eval(request.responseText);
+}
+
 // +--------------+----------------------------------------------------
 // | Dialog Boxes |
 // +--------------+
