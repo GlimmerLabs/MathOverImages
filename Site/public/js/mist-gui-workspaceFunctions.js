@@ -213,3 +213,14 @@ var saveImage = function(title, code, isPublic, codeVisible, replace) {
   request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   request.send(data);
 }
+
+/**
+ * Determines if a workspace exists.
+ */
+var wsExists = function(name) {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=wsexists&name=" + name;
+  request,open("GET", "/api", false);
+  request.send();
+  return request.responseText;
+}

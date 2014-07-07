@@ -378,13 +378,9 @@ var showThumbnails = function() {
 var removeOuterWhiteSpace = function (string) {
   var start = 0;
   var end = string.length - 1;
-  while (start < string.length && string[start] == ' ') {
-    start++;
-  } // while
-  while (string[end] == ' ' && end >= start) {
-    end--;
-  } // while
-  return string.substring(start, end+1);
+  string = string.replace(/^ */, "");
+  string = string.replace(/ *$/, "");
+  return string;
 }; // removeOuterWhiteSpace
 
 

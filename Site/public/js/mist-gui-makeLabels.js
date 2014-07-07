@@ -1,20 +1,27 @@
-var menuDescriptions = {
-	add:      'add values together\n  minumum of 2 inputs \n  maximum of 20.',
-	multiply: 'multiply values together\n  minumum of 2 inputs \n  maximum of 20.',
-	negate:   'negate a value\n  maximum of 1 input',
-	sine:     'take the sine of a value\n  maximum of 1 input',
-	cosine:   'take the cosine of a value\n  maximum of 1 input',
-	absolute: 'take the absolute value of\n a value\n  maximum of 1 input',
-	average:  'take the average of values\n  minumum of 2 inputs \n  maximum of 20.',
-	sign:     'return -1 or 1 based on the\n sign of the value\n  maximum of 1 input',
-	wrapsum:  'minumum of 2 inputs \n  maximum of 20.',
-	rgb:      '3 inputs (R,G,B)\n  - R is the red value\n  - G is the green value\n  - B is the blue value',
+/**
+ * getInfoText takes a string (key), looks up the information for that key in 
+ * MIST.builtins.functions and returns a string to be used in the label for that key.
+ */
+var getInfoText = function(key) {
+	var info = MIST.builtins.functions.get(key);
+	return key + '(' + info.params + ')\n\n' + info.about;
+};
+
+var menuFunctionDescriptions = {}
+
+var funKeys = MIST.builtins.functions.keys();
+for(var i = 0; i < funKeys.length; i++) {
+	var key = funKeys[i];
+	menuFunctionDescriptions[key] = getInfoText(key);
+}
+
+var menuValuesDescriptions = {
 	x:        'ranges -1 to 1 based on the x-value',
 	y:        'ranges -1 to 1 based on the y-value',
-	second:   'goes through values -1 to 1\n every second',
-	minute:   'goes through values -1 to 1\n every minute',
-	hour:     'goes through values -1 to 1\n every hour',
-	day:      'goes through values -1 to 1\n every day',
+	second:   'goes through values -1 to 1 every second',
+	minute:   'goes through values -1 to 1 every minute',
+	hour:     'goes through values -1 to 1 every hour',
+	day:      'goes through values -1 to 1 every day',
 	constant: 'enter your own number',
 }
 
@@ -33,11 +40,13 @@ var pointerSize = width / 90;
 
 var makeLabel = function(group) {
 	var xOffset = 0;
+	var rep = group.attrs.rep;
+	var text = menuFunctionDescriptions[rep];
 	if (isValue(group)){
 		xOffset = -4;
+		text = menuValuesDescriptions[group.name()];
 	}
-	var name = group.name();
-	var text = menuDescriptions[name];
+
 	var label = new Kinetic.Label ({
 		x: group.x() + (functionTotalSideLength / 2) + xOffset,
 		y: group.y() + (1.1 * functionTotalSideLength)
@@ -60,6 +69,18 @@ var makeLabel = function(group) {
 		padding: 5,
 		fill: 'black'
 	}));
+	
+	if (label.children[1].width() > 160) {
+		label.children[1].destroy();
+		label.add(new Kinetic.Text({
+			text: text,
+			width: 160,
+			fontFamily: globalFont,
+			fontSize: 13,
+			padding: 5,
+			fill: 'black'
+		}));
+	}
 	return label;
 };
 
