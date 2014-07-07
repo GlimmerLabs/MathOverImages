@@ -9,10 +9,10 @@ var mail = require('./mail');
 
 // Make a connection pool to handle concurrencies esp. that of async calls
 var pool = mysql.createPool({
-    host : auth["mysql-hostname"],
-    user : auth["mysql-username"],
-    password : auth["mysql-password"],
-    database : auth["mysql-database"]
+  host : auth["mysql-hostname"],
+  user : auth["mysql-username"],
+  password : auth["mysql-password"],
+  database : auth["mysql-database"]
 });
 
 
@@ -35,9 +35,9 @@ var pool = mysql.createPool({
   This function is not available outside of this document.
 */
 var hashPassword = (function (passwordtohash, callback) {
-    bcrypt.hash(passwordtohash, null, null, function(err,hash) {
-	callback(hash, err);
-    });
+  bcrypt.hash(passwordtohash, null, null, function(err,hash) {
+    callback(hash, err);
+  });
 });// hashPassword(passwordtohash, callback(hashedPassword));
 
 /*
@@ -57,10 +57,10 @@ var hashPassword = (function (passwordtohash, callback) {
     This function is not available outside of this document.
 */
 var sanitize = (function (string) {
-    var escaped = validate.escape(string);
-    // Restore ampersands (and other things?)
-    // escaped = escaped.replace("&amp;", "&");
-    return escaped;
+  var escaped = validate.escape(string);
+  // Restore ampersands (and other things?)
+  // escaped = escaped.replace("&amp;", "&");
+  return escaped;
 }); // sanitize(string);
 module.exports.sanitize = sanitize;
 
@@ -84,17 +84,17 @@ module.exports.sanitize = sanitize;
 */
 
 module.exports.query = (function (query, callback){
-    pool.getConnection(function(err,connection){
-	connection.query(query, function(err,rows,fields){
-	    if (err) {
-		callback(null, err);
-	    }
-	    else{
-		callback(rows,null);
-	    }
-	});
-	connection.release();
+  pool.getConnection(function(err,connection){
+    connection.query(query, function(err,rows,fields){
+      if (err) {
+        callback(null, err);
+      }
+      else{
+        callback(rows,null);
+      }
     });
+    connection.release();
+  });
 }); // database.query(query, callback(rows, error));
 
 /*
@@ -116,24 +116,80 @@ module.exports.query = (function (query, callback){
 */
 module.exports.userExists = (function(checkString, callback){
 
+  checkstring = sanitize(checkString); // Always sanitize user input.
+  // check if string is a username
+  module.exports.query("SELECT username FROM users WHERE username = '" + checkString + "';", function (rows, error){
+    if (!rows[0]){ // string is not a username
+      // check if string is an email address
+      module.exports.query("SELECT email FROM users WHERE email = '" + checkString + "';", function(rows, error){
+        if (!rows[0]){ // string is not an email address
+          // user does not exist
+          callback(false);
+        }
+        // email exists
+        else callback(true);
+      });
+    }
+    // username exists
+    else callback(true);
+  });
+}); // database.userExists(checkString, callback(exists));
+
+/*
+  Procedure:
+  database.imageExists(userid, checkString);
+  Purpose:
+  Checks to see if an image with the given string as a title exists for the user
+  Parameters:
+  userid, the userid of the current session user
+  checkstring, a string containing a desired title for an image
+  Produces:
+  exists, a BOOLEAN result
+  Pre-conditions:
+  None
+  Post-conditions:
+  None
+*/
+module.exports.imageExists = (function(userid, checkString){
+
     checkstring = sanitize(checkString); // Always sanitize user input.
     // check if string is a username
-    module.exports.query("SELECT username FROM users WHERE username = '" + checkString + "';", function (rows, error){
-	if (!rows[0]){ // string is not a username
-	    // check if string is an email address
-	    module.exports.query("SELECT email FROM users WHERE email = '" + checkString + "';", function(rows, error){
-		if (!rows[0]){ // string is not an email address
-		    // user does not exist
-		    callback(false);
-		}
-		// email exists
-		else callback(true);
-	    });
-	}
-	// username exists
-	else callback(true);
-    });
-}); // database.userExists(checkString, callback(exists));
+    module.exports.query("SELECT title FROM images WHERE title = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
+  if (!rows[0]){ // string is not a username
+    return false;
+  }
+  // username exists
+  else return true;
+  });
+}); // database.imageExists(userid, checkString;
+
+/*
+  Procedure:
+  database.wsExists(userid, checkString;
+  Purpose:
+  Checks to see if a workspace with the given string as a name exists for the user
+  Parameters:
+  userid, the userid of the current session user
+  checkstring, a string containing a desired name for a workspace
+  Produces:
+  exists, a BOOLEAN result
+  Pre-conditions:
+  None
+  Post-conditions:
+  None
+*/
+module.exports.wsExists = (function(userid, checkString){
+
+    checkstring = sanitize(checkString); // Always sanitize user input.
+    // check if string is a username
+    module.exports.query("SELECT name FROM workspaces WHERE name = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
+  if (!rows[0]){ // string is not a username
+    return false;
+  }
+  // username exists
+  else return true;
+  });
+}); // database.wsExists(userid, checkString;
 
 /*
   Procedure:
@@ -160,55 +216,55 @@ module.exports.userExists = (function(checkString, callback){
 */
 
 module.exports.addUser =(function (forename, surname, password, email, username, callback) {
-    // Always sanitize user input
-    forename = sanitize(forename);
-    surname = sanitize(surname);
-    password = sanitize(password);
-    email = sanitize(email);
-    username = sanitize(username);
+  // Always sanitize user input
+  forename = sanitize(forename);
+  surname = sanitize(surname);
+  password = sanitize(password);
+  email = sanitize(email);
+  username = sanitize(username);
 
-    if (!validate.isEmail(email)){
-	callback(false, "ERROR: Email is not a valid email address");
+  if (!validate.isEmail(email)){
+    callback(false, "ERROR: Email is not a valid email address");
 
-    }
-    else if (validate.isEmail(username)){
-	callback(false, "ERROR: Username may not be an email address.")
-    }
-    else {
+  }
+  else if (validate.isEmail(username)){
+    callback(false, "ERROR: Username may not be an email address.")
+  }
+  else {
 
-	// Check to see if username or email are already in the database
+    // Check to see if username or email are already in the database
 
-	module.exports.userExists(username, function(exists){
-	    if (exists){// Username exists
-		callback(false, "ERROR: Username already exists.");
-	    }
-	    else {
-		module.exports.userExists(email, function(exists){
-		    if (exists) // Email address exists
-			callback(false, "ERROR: Email already used.");
+    module.exports.userExists(username, function(exists){
+      if (exists){// Username exists
+        callback(false, "ERROR: Username already exists.");
+      }
+      else {
+        module.exports.userExists(email, function(exists){
+          if (exists) // Email address exists
+            callback(false, "ERROR: Email already used.");
 
-		    else // user does not already exist, proceed with creation
-		    {
-			// hash the password
-			hashPassword(password, function (hashedPassword, err) {
-			    // add user to database
-			    if (!err){
-				module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, username, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + username + "', UTC_TIMESTAMP);", function(results, error){
-				    if (results) {
-					callback(true,error);
-				    }
-				    else
-					callback(false,error);
-				});
-			    }
-			    else callback(false, err);
+          else // user does not already exist, proceed with creation
+          {
+            // hash the password
+            hashPassword(password, function (hashedPassword, err) {
+              // add user to database
+              if (!err){
+                module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, username, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + username + "', UTC_TIMESTAMP);", function(results, error){
+                  if (results) {
+                    callback(true,error);
+                  }
+                  else
+                    callback(false,error);
+                });
+              }
+              else callback(false, err);
 
-			});
-		    }
-		});
-	    }
-	});
-    }
+            });
+          }
+        });
+      }
+    });
+  }
 }); // database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
 
 /*
@@ -230,22 +286,22 @@ module.exports.addUser =(function (forename, surname, password, email, username,
   This procedure automatically sanitizes user input. This will also return false if the user does not exist. The client should never be told if a user exists.
 */
 module.exports.verifyPassword = (function (userid, passwordToTest, callback){
-    // Always sanitize user input
-    user = sanitize(userid);
-    passwordToTest = sanitize(passwordToTest);
-    module.exports.query("SELECT hashedPassword FROM users WHERE userid = '" + userid + "';", function(rows, error){
-        if (!rows[0])
-            callback(false); // user does not exist
+  // Always sanitize user input
+  user = sanitize(userid);
+  passwordToTest = sanitize(passwordToTest);
+  module.exports.query("SELECT hashedPassword FROM users WHERE userid = '" + userid + "';", function(rows, error){
+    if (!rows[0])
+      callback(false); // user does not exist
+    else
+      bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(error,result) {
+        if (!error){
+          console.log("NO error");
+          callback(result,null);
+        }
         else
-            bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(error,result) {
-		if (!error){
-		    console.log("NO error");
-		    callback(result,null);
-		}
-		else
-		    callback (null, error);
-            });
-    });
+          callback (null, error);
+      });
+  });
 }); // database.verifyPassword(userid, passwordToTest, callback(verified));
 
 /*
@@ -267,28 +323,28 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
   None
 */
 module.exports.changeUsername = (function (userid, newUsername, password, callback){
-    newUsername = sanitize(newUsername);
-    userid = sanitize(userid);
-    password = sanitize(password);
-    module.exports.verifyPassword(userid, password, function(verified, error){
-	if (!verified)
-	    callback(false, error);
-	else
-	    // Check to see if username or email are already in the database
+  newUsername = sanitize(newUsername);
+  userid = sanitize(userid);
+  password = sanitize(password);
+  module.exports.verifyPassword(userid, password, function(verified, error){
+    if (!verified)
+      callback(false, error);
+    else
+      // Check to see if username or email are already in the database
 
-	    module.exports.userExists(newUsername, function(exists){
-		if (exists) // Username exists
-		    callback(false, "ERROR: Username already exists.");
-		else  // user does not already exist, proceed with creation
-		    module.exports.query("UPDATE users SET username='" + newUsername +"' WHERE userid = '" + userid + "';", function (rows, error){
-			if (!error) {
-			    callback(true,error);
-			}
-			else
-			    callback(false,error);
-		    });
-	    });
-    });
+      module.exports.userExists(newUsername, function(exists){
+        if (exists) // Username exists
+          callback(false, "ERROR: Username already exists.");
+        else  // user does not already exist, proceed with creation
+          module.exports.query("UPDATE users SET username='" + newUsername +"' WHERE userid = '" + userid + "';", function (rows, error){
+            if (!error) {
+              callback(true,error);
+            }
+            else
+              callback(false,error);
+          });
+      });
+  });
 }); // database.changeUsername(user, newUsername, callback(success, error));
 
 /*
@@ -313,36 +369,36 @@ module.exports.changeUsername = (function (userid, newUsername, password, callba
   None
 */
 module.exports.changePassword = (function (userid, oldPassword, newPassword, callback){
-    oldPassword = sanitize(oldPassword);
-    newPassword = sanitize(newPassword);
-    userid = sanitize(userid);
-    module.exports.query("SELECT hashedPassword from users WHERE userid= '" + userid + "';", function (response, error){
-	if (error)
-	    callback(false, error);
+  oldPassword = sanitize(oldPassword);
+  newPassword = sanitize(newPassword);
+  userid = sanitize(userid);
+  module.exports.query("SELECT hashedPassword from users WHERE userid= '" + userid + "';", function (response, error){
+    if (error)
+      callback(false, error);
 
-	else if (!response[0])
-	    callback(false, "Invalid Credentials");
+    else if (!response[0])
+      callback(false, "Invalid Credentials");
 
-	else
-	    module.exports.verifyPassword(userid, oldPassword, function(verified, error){
-		if (error)
-		    callback(false, error);
-		else if (!verified)
-		    callback(false, "Invalid Credentials: password");
-		else
-		    hashPassword(newPassword, function (newHash, error) {
-			if (error)
-			    callback(false, error);
-			else
-			    module.exports.query("UPDATE users SET hashedPassword='" + newHash +"' WHERE userid = '" + userid + "';", function (rows, error){
-				if (error)
-				    callback(false, error);
-				else
-				    callback(true, null);
-			    });
-		    });
-	    });
-    });
+    else
+      module.exports.verifyPassword(userid, oldPassword, function(verified, error){
+        if (error)
+          callback(false, error);
+        else if (!verified)
+          callback(false, "Invalid Credentials: password");
+        else
+          hashPassword(newPassword, function (newHash, error) {
+            if (error)
+              callback(false, error);
+            else
+              module.exports.query("UPDATE users SET hashedPassword='" + newHash +"' WHERE userid = '" + userid + "';", function (rows, error){
+                if (error)
+                  callback(false, error);
+                else
+                  callback(true, null);
+              });
+          });
+      });
+  });
 }); // database.changePassword(user, oldPassword, newPassword, callback(success, error));
 
 /*
@@ -364,27 +420,27 @@ module.exports.changePassword = (function (userid, oldPassword, newPassword, cal
   None
 */
 module.exports.changeEmail = (function (userid, newEmail, password, callback){
-    newEmail = sanitize(newEmail);
-    userid = sanitize(userid);
-    password = sanitize(password);
-    module.exports.verifyPassword(userid, password, function(verified, error){
-	if (!verified)
-	    callback(false, error);
-	else
-	    // Check to see if username or email are already in the database
-	    module.exports.userExists(newEmail, function(exists){
-		if (exists) // Email exists
-		    callback(false, "ERROR: Email already in use.");
-		else  // email does not already exist, proceed with creation
-		    module.exports.query("UPDATE users SET email='" + newEmail +"' WHERE userid = '" + userid + "';", function (rows, error){
-			if (!error) {
-			    callback(true,error);
-			}
-			else
-			    callback(false,error);
-		    });
-	    });
-    });
+  newEmail = sanitize(newEmail);
+  userid = sanitize(userid);
+  password = sanitize(password);
+  module.exports.verifyPassword(userid, password, function(verified, error){
+    if (!verified)
+      callback(false, error);
+    else
+      // Check to see if username or email are already in the database
+      module.exports.userExists(newEmail, function(exists){
+        if (exists) // Email exists
+          callback(false, "ERROR: Email already in use.");
+        else  // email does not already exist, proceed with creation
+          module.exports.query("UPDATE users SET email='" + newEmail +"' WHERE userid = '" + userid + "';", function (rows, error){
+            if (!error) {
+              callback(true,error);
+            }
+            else
+              callback(false,error);
+          });
+      });
+  });
 }); // database.changeEmail(user, newEmail, callback(success, error));
 
 /*
@@ -406,15 +462,15 @@ module.exports.changeEmail = (function (userid, newEmail, password, callback){
   None
 */
 module.exports.changeAboutSection = (function (userid, newAbout, callback){
-    newAbout = sanitize(newAbout);
-    userid = sanitize(userid);
-    console.log("new about: " + newAbout);
-    module.exports.query("UPDATE users SET about='" + newAbout +"' WHERE userid= '"+userid+ "';", function (rows, error){
-	if (error)
-	    callback(false, error);
-	else
-	    callback(true, error);
-    });
+  newAbout = sanitize(newAbout);
+  userid = sanitize(userid);
+  console.log("new about: " + newAbout);
+  module.exports.query("UPDATE users SET about='" + newAbout +"' WHERE userid= '"+userid+ "';", function (rows, error){
+    if (error)
+      callback(false, error);
+    else
+      callback(true, error);
+  });
 
 });//database.changeAboutSection(userid, newAbout);
 
@@ -452,46 +508,46 @@ module.exports.changeAboutSection = (function (userid, newAbout, callback){
 */
 
 module.exports.logIn = (function (user, password, callback) {
-    user = sanitize(user);
-    password = sanitize(password);
-    module.exports.query("SELECT * FROM users WHERE email = '" + user + "';", function(rows, error){
-	if (error)
-	    callback(null, error);
-	else if (!rows[0]) // user is not an email in the database
-	    module.exports.query("SELECT * FROM users WHERE username ='" + user + "';", function(rows, error){
-		if (error)
-		    callback(null,error);
-		else if (!rows[0]) // user is also not a username, and therefore is not in the database
-		    callback(null, "Invalid Credentials");
-		else
-		    module.exports.verifyPassword(rows[0].userid, password, function (success, error){
-			if (error)
-			    callback(null, error);
-			else if (!success)
-			    callback(null, "Invalid Credentials");
-			else{
-			    module.exports.query("UPDATE users SET lastLoginTime= UTC_TIMESTAMP WHERE userid='" +rows[0].userid +"';", function(response,error){
-				console.log(rows[0].username + " has logged in.");
-			    });
-			    callback(rows[0], null);
-			}
-		    });
-	    });
-	else
-	    module.exports.verifyPassword(rows[0].userid, password, function(success, error) {
-		if (error)
-		    callback(null, error);
-		else if (!success)
-		    callback(null, "Invalid Credentials");
-		else{
-		    module.exports.query("UPDATE users SET lastLoginTime= UTC_TIMESTAMP WHERE userid='" +rows[0].userid +"';", function(response,error){
-			console.log(rows[0].username + " has logged in.");
-		    });
-		    callback(rows[0], null);
-		}
-	    });
+  user = sanitize(user);
+  password = sanitize(password);
+  module.exports.query("SELECT * FROM users WHERE email = '" + user + "';", function(rows, error){
+    if (error)
+      callback(null, error);
+    else if (!rows[0]) // user is not an email in the database
+      module.exports.query("SELECT * FROM users WHERE username ='" + user + "';", function(rows, error){
+        if (error)
+          callback(null,error);
+        else if (!rows[0]) // user is also not a username, and therefore is not in the database
+          callback(null, "Invalid Credentials");
+        else
+          module.exports.verifyPassword(rows[0].userid, password, function (success, error){
+            if (error)
+              callback(null, error);
+            else if (!success)
+              callback(null, "Invalid Credentials");
+            else{
+              module.exports.query("UPDATE users SET lastLoginTime= UTC_TIMESTAMP WHERE userid='" +rows[0].userid +"';", function(response,error){
+                console.log(rows[0].username + " has logged in.");
+              });
+              callback(rows[0], null);
+            }
+          });
+      });
+    else
+      module.exports.verifyPassword(rows[0].userid, password, function(success, error) {
+        if (error)
+          callback(null, error);
+        else if (!success)
+          callback(null, "Invalid Credentials");
+        else{
+          module.exports.query("UPDATE users SET lastLoginTime= UTC_TIMESTAMP WHERE userid='" +rows[0].userid +"';", function(response,error){
+            console.log(rows[0].username + " has logged in.");
+          });
+          callback(rows[0], null);
+        }
+      });
 
-    });
+  });
 });// database.logIn(user, password, callback(user, error));
 
 /*
@@ -528,14 +584,14 @@ module.exports.logIn = (function (user, password, callback) {
 */
 
 module.exports.getUser = (function (userid, callback){
-    module.exports.query("SELECT * FROM users WHERE userid='" + userid + "';", function(rows, error){
-	if (error)
-	    callback(null, error);
-	else if (!rows[0])
-	    callback(null, "ERROR: User does not exist.");
-	else
-	    callback(rows[0], null);
-    });
+  module.exports.query("SELECT * FROM users WHERE userid='" + userid + "';", function(rows, error){
+    if (error)
+      callback(null, error);
+    else if (!rows[0])
+      callback(null, "ERROR: User does not exist.");
+    else
+      callback(rows[0], null);
+  });
 }); // database.getUser(userid, callback(userObject, error));
 
 /*
@@ -559,15 +615,15 @@ module.exports.getUser = (function (userid, callback){
   callback(userid, error)
 */
 module.exports.getIDforUsername = (function (username, callback) {
-    username=sanitize(username);
-    module.exports.query("SELECT userid FROM users WHERE username= '" + username + "';", function(rows, error){
-	if (error)
-	    callback(null, error);
-	else if (!rows[0])
-	    callback(null, "ERROR: User does not exist.");
-	else
-	    callback(rows[0].userid, null);
-    });
+  username=sanitize(username);
+  module.exports.query("SELECT userid FROM users WHERE username= '" + username + "';", function(rows, error){
+    if (error)
+      callback(null, error);
+    else if (!rows[0])
+      callback(null, "ERROR: User does not exist.");
+    else
+      callback(rows[0].userid, null);
+  });
 });
 
 // TO DO
@@ -578,170 +634,168 @@ module.exports.getIDforUsername = (function (username, callback) {
 //images query shortcode
 
 module.exports.imageInfo=(function(imageid, callback) {
-    imageid=sanitize(imageid);
-    module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid  FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
-	if (error)
-	    callback(null, error);
-	else if (!rows[0])
-	    callback(null, "ERROR: Image does not exist.");
-	else
-	    callback(rows[0], null);
-    });
+  imageid=sanitize(imageid);
+  module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid  FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
+    if (error)
+      callback(null, error);
+    else if (!rows[0])
+      callback(null, "ERROR: Image does not exist.");
+    else
+      callback(rows[0], null);
+  });
 });
 
 //albums query shortcode
 
 module.exports.albumsInfo=(function(userid, callback) {
-    userid=sanitize(userid);
-    module.exports.query("SELECT users.username, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
-    });
+  userid=sanitize(userid);
+  module.exports.query("SELECT users.username, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
 });
 
 //Get First Image of Album to Display
 
 module.exports.firstImageofAlbum=(function(albumid, callback){
-    albumid=sanitize(albumid);
-    module.exports.query("SELECT images.code from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid LIMIT 1;" , function (rows, error){
-        if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
-    });
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT images.code from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid LIMIT 1;" , function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
 });
 
 //albumContents query shortcode
 
 module.exports.albumContentsInfo=(function(albumid, callback) {
-    albumid=sanitize(albumid);
-    module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
-	if (error)
-	    callback(null, error);
-	else if (!rows[0])
-	    callback(null, "Album does not exist");
-	else
-	    callback(rows, null);
-    });
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+    if (error)
+      callback(null, error);
+    else if (!rows[0])
+      callback(null, "Album does not exist");
+    else
+      callback(rows, null);
+  });
 });
 
 // Get owner of albums in albumContents
 
 module.exports.albumOwnerInfo=(function(albumid, callback) {
-    albumid=sanitize(albumid);
-    module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and albums.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
-	if (error)
-	    callback(null, error);
-	else if (!rows[0])
-	    callback(null, "Owner does not exist");
-	else
-	    callback(rows, null);
-    });
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and albums.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+    if (error)
+      callback(null, error);
+    else if (!rows[0])
+      callback(null, "Owner does not exist");
+    else
+      callback(rows, null);
+  });
 });
 
 //Get Commenter Information for single image
 
 module.exports.commentInfo=(function(imageid, callback) {
-    imageid=sanitize(imageid);
-    module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
-    });
+  imageid=sanitize(imageid);
+  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
 });
 
 
 // To comment
 
 module.exports.saveComment=(function(userid, imageid, newComment, callback) {
-    userid=sanitize(userid);
-    imageid=sanitize(imageid);
-    newComment=sanitize(newComment);
-    module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') +"');" , function (rows, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
+  userid=sanitize(userid);
+  imageid=sanitize(imageid);
+  newComment=sanitize(newComment);
+  module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') +"');" , function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
 });
-}); 
 
 module.exports.getAllImagesforUser=(function (userid, callback) {
-    userid=sanitize(userid);
-    module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
+  userid=sanitize(userid);
+  module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
 });
-}); 
 
 
 module.exports.getAllImagesforUser=(function (userid, callback) {
-    userid=sanitize(userid);
-    module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
-    });
-}); 
+  userid=sanitize(userid);
+  module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
+});
 
-module.exports.pictureRatings=(function (userid, imageid, callback) {
-    userid=sanitize(userid);
-    imageid=sanitize(imageid);
-    // has the person actually rated this image?
-    module.exports.query("SELECT ratings.userid, ratings.imageid FROM ratings WHERE ratings.imageid='" + imageid + "' AND ratings.userid='" + userid + "';", function (rows, error){
-	if (error)
-	    callback(null, error);
-	else if (!rows[0])//{ 
-	    // rating for this image by this user does not exist, add this rating, increment rating
-	    module.exports.query("INSERT INTO ratings (userid, imageid) VALUES ('" + userid + "', '" + imageid + "');", function (rows, error){
-		if (error)
-		    callback(null, error);
-		else
-		    module.exports.query("SELECT images.rating FROM images WHERE images.imageid='" + imageid + "';", function(results, error){
-			if (error)
-			    callback(null, error);
-			else module.exports.query("UPDATE images SET rating='" + (results.ratings + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
-			    if (err)
-				callback(null, err);
-			    else
-				callback(updated, null);
-			});
-		    });
-	    });
-//	}
-	else 
-	    // if rating for this user already exists, delete the rating, decrement the rating
-	    module.exports.query("DELETE FROM ratings WHERE userid='" + userid + "' AND imageid='" + imageid + "';",  function (rows, error){
-		if (error)
-		    callback(null, error);else
-			module.exports.query("SELECT images.rating FROM images WHERE images.imageid='" + imageid + "';", function(results, error){
-			    if (error)
-				callback(null, error);
-			    else module.exports.query("UPDATE images SET rating='" + (results.ratings - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, error){
-				if (err)
-				    callback(null, err);
-				else
-				    callback(updated, null);
-			    });
-			});	
-	    });
-    });
+module.exports.toggleLike=(function (userid, imageid, callback) {
+  userid=sanitize(userid);
+  imageid=sanitize(imageid);
+  // has the person already rated this image?
+  module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
+    if (error)
+      callback(null, error);
+    else if (!rows[0])
+      // rating for this image by this user does not exist, add this rating, increment rating
+      module.exports.query("INSERT INTO ratings (userid, imageid) VALUES ('" + userid + "', '" + imageid + "');", function (rows, error){
+        if (error)
+          callback(null, error);
+        else
+          module.exports.query("SELECT rating FROM images WHERE imageid='" + imageid + "';", function(results, error){
+            if (error)
+              callback(null, error);
+            else module.exports.query("UPDATE images SET rating='" + (results.ratings + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
+              if (error)
+                callback(null, error);
+              else
+                callback(true, null);
+            });
+          });
+      });
+    else
+      // if rating for this user already exists, delete the rating, decrement the rating
+      module.exports.query("DELETE FROM ratings WHERE userid='" + userid + "' AND imageid='" + imageid + "';",  function (rows, error){
+        if (error)
+          callback(null, error);else
+            module.exports.query("SELECT rating FROM images WHERE imageid='" + imageid + "';", function(results, error){
+              if (error)
+                callback(null, error);
+              else module.exports.query("UPDATE images SET rating='" + (results.ratings - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, error){
+                if (err)
+                  callback(null, err);
+                else
+                  callback(true, null);
+              });
+            });
+      });
+  });
 });
 
 
 // to get the results of ratings in each image: use rows.length (MAINTENANCE THING)
-module.exports.countNumberofRates=(function (imageid, callback) {
-    imageid=sanitize(imageid);
-    module.exports.query("SELECT ratings.userid, ratings.imageid FROM ratings WHERE ratings.imageid= '" + imageid + "';" , function (rows, error){
-		if (error)
-		    callback(null, error);
-		else
-		    callback(rows.length, null);
-	    });
-    });
-//}); 
+module.exports.countNumberofLikes=(function (imageid, callback) {
+  imageid=sanitize(imageid);
+  module.exports.query("SELECT COUNT(userid) AS likes FROM ratings WHERE imageid= '" + imageid + "';" , function (count, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(count[0].likes, null);
+  });
+});
