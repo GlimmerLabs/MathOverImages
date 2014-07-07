@@ -14,7 +14,7 @@ $(document).ready(function() {
   });
   $('#clickY').click(function(evt) {
     hideImage();
-    $('#y').show(); 
+    $('#y').show();
     $('#blank').hide();
   });
 });

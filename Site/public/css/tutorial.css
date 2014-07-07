@@ -16,8 +16,8 @@ border-collapse: collapse;
 
 body
 {
-background-image:url('https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpa1/v/t35.0-12/10516297_10204571330109882_1262746675_o.jpg?oh=9904e17ab9a85202b414f3e19307a37f&oe=53B655D3&__gda__=1404461822_68aa81e4ddc86be7619244b151e26239');
-background-image-size: 100%;
+  background-image: url('https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpa1/v/t35.0-12/10516297_10204571330109882_1262746675_o.jpg?oh=9e545e8daf102f13d36cd0bdbee16bec&oe=53BCED53&__gda__=1404893822_2369ff497a1e4aab86597dd62c1be0be');
+  background-image-size: 100%;
   background-color:#cccccc;
   background-size: cover;
 }
@@ -38,8 +38,10 @@ p {
   padding: 50px;
   background-color: #4A4A4A;
   height: 100%;
-  width: 30%;
-  float: right;
+  float: left;
+  width: 25%;
+  word-wrap: word-break;
+  margin: -2% -7% 5%;
 }
 
 #instructText{
@@ -47,5 +49,24 @@ p {
 }
 
 #workspace {
-margin: auto 0px;
+  float: right;
+  width: 75%;
+  height: 80%;
+}
+
+.image{
+  height: 30%;
+  width: 30%;
+  border: 1px black solid;
+  margin:2% 15%;
+}
+
+.clickX {
+  width: 40%
+}
+.clickY {
+  width: 25%
+}
+#buttons{
+  float: left;
 }
