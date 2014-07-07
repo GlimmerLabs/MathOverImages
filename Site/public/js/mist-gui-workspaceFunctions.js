@@ -196,6 +196,7 @@ var loadWorkspace = function(wsname) {
       console.log(json);
       resetWorkspace();
       jsonToWorkspace(json);
+      currentWorkspace = wsname;
     }
   }; // onReadyState
   request.open("GET",url,true);
