@@ -196,6 +196,7 @@ var loadWorkspace = function(wsname) {
       console.log(json);
       resetWorkspace();
       jsonToWorkspace(json);
+      currentWorkspace = wsname;
     }
   }; // onReadyState
   request.open("GET",url,true);
@@ -227,6 +228,19 @@ var wsExists = function(name) {
   request.send();
   return eval(request.responseText);
 }
+
+/**
+ * Determines if a image exists.  Returns true if an image exists
+ * with the given title and false otherwise.
+ */
+var imageExists = function(title) {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=imageexists&title=" + title;
+  request.open("GET", url, false);
+  request.send();
+  return eval(request.responseText);
+}
+
 // +--------------+----------------------------------------------------
 // | Dialog Boxes |
 // +--------------+
@@ -299,3 +313,24 @@ var showLoadWorkspaceDialog = function() {
   // Show the dialog
   $("#load-workspace").dialog("open");
 } // showLoadWorkspaceDialog
+
+
+// +-------------------+-----------------------------------------------
+// | Session Functions |
+// +-------------------+
+window.onbeforeunload = function() {
+  var request = new XMLHttpRequest();
+  var data = "action=storews&code="+code;
+  request.open("POST", "/api", true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
+}
+
+var initWorkspace = function() {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=returnws";
+  request.open("GET", url, true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send();
+  return request.responseText;
+}

@@ -4,15 +4,22 @@
 var setLikes = function(imageArray, userID, callback) {
   var imageArrayClone = imageArray.slice(0, imageArray.length);
   var errorsArray = [];
+  var likes = {counter: 1, likes: []};
   for(var image = 0; image < imageArrayClone.length; image++) {
     (function(currentIndex){
       filedatabase.hasLiked(userID, imageArrayClone[currentIndex].imageid, function(liked, error) {
-        imageArrayClone[currentIndex].liked = liked;
-        errorsArray.push(error); 
+        likes.likes[currentIndex] = liked;
+        likes.counter++;
+        if(likes.counter == imageArray.length) {
+          for(var i=0;i<likes.likes.length;i++) {
+            imageArrayClone[i].liked = likes.likes[i];
+          }
+          callback(imageArrayClone, errorsArray);
+        }
+        errorsArray.push(error);
       });
     })(image);
   }
-  callback(imageArrayClone, errorsArray);
 }
 
 var filedatabase;
