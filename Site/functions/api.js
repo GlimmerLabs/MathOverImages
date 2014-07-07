@@ -330,12 +330,8 @@ return the ws stored in the session
 action: returnws
 */
 handlers.returnws = function(info, req, res) {
-  if (!req.session.workspaceCode) {
-    res.send("");
-  } else {
-    res.send(req.session.workspaceCode);
-  }
-    res.end();
+  res.send(req.session.workspaceCode);
+  res.end();
 }
 
 /*
