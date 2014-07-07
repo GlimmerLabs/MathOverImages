@@ -38,5 +38,9 @@ block content
     div(id='leaveComment' class='comment')
      h1: a(href='/user/' + user.username)= user.username
      form(method='POST')
-      textarea(name= 'newComment' placeholder='leave a comment')
+      textarea(name= 'newComment' required='required' placeholder='leave a comment')
       input(type='submit' value='submit' name='commentSubmit')
+    if (image.userid === user.userid)
+     form(method='POST')
+      input(type='hidden' value= image.imageid name='delete')
+      input(type='submit' value='Delete this Image?')
