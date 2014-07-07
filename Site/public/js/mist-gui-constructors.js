@@ -27,13 +27,14 @@
       maxInputs: functions[funName].max, 
       minInputs: functions[funName].min, 
       lineOut: [], 
+      rep: functions[funName].rep,
       prefix: functions[funName].prefix, 
       separator: functions[funName].separator,
       renderFunction: null,
       visible: false,
       renderLayer: null,
-                        scaleX: 1,
-                        scaleY: 1
+      scaleX: 1,
+      scaleY: 1
     });
     /* create rectangle shape */
     var newRect = new Kinetic.Rect({

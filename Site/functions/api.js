@@ -286,6 +286,59 @@ handlers.saveimage = function(info, req, res){
 }// handlers.saveimage
 
 /*
+check if an image exists
+action: imageexists
+title: The title of the image
+*/
+handlers.imageexists = function(info, req, res) {
+  if (!req.session.loggedIn) {
+    fail(res, "Could not save image because you're not logged in");
+  } else {
+    database.imageExists(req.session.user.userid, info.title, function(exists) {
+      res.send(exists);
+    });
+  }
+}
+
+/*
+check if an image exists
+action: wsexists
+title: The title of the image
+*/
+handlers.wsexists = function(info, req, res) {
+  if (!req.session.loggedIn) {
+    fail(res, "Could not save image because you're not logged in");
+  } else {
+    database.wsExists(req.session.user.userid, info.name, function(exists) {
+      res.send(exists);
+    });
+  }
+}
+
+/*
+store the ws in the session
+action: storews
+code: the code for the workspace
+*/
+handlers.storews = function(info, req, res) {
+  req.session.workspaceCode = info.code;
+  res.end();
+}
+
+/*
+return the ws stored in the session
+action: returnws
+*/
+handlers.returnws = function(info, req, res) {
+  if (!req.session.workspaceCode) {
+    res.send("");
+  } else {
+    res.send(req.session.workspaceCode);
+  }
+    res.end();
+}
+
+/*
 Toggle the like on an image
 action: toggleLike
 imageid, to like or unlike
@@ -299,6 +352,6 @@ handlers.toggleLike = function(info, req, res) {
       if (error)
         fail(res, "Error: " + error);
       else
-        res.end(success);
+        res.end(success.toString());
     });
 }; // handlers.toggleLike

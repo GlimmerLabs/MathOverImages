@@ -1,20 +1,27 @@
-var menuDescriptions = {
-	add:      'add values together\n  minumum of 2 inputs \n  maximum of 20.',
-	multiply: 'multiply values together\n  minumum of 2 inputs \n  maximum of 20.',
-	negate:   'negate a value\n  maximum of 1 input',
-	sine:     'take the sine of a value\n  maximum of 1 input',
-	cosine:   'take the cosine of a value\n  maximum of 1 input',
-	absolute: 'take the absolute value of\n a value\n  maximum of 1 input',
-	average:  'take the average of values\n  minumum of 2 inputs \n  maximum of 20.',
-	sign:     'return -1 or 1 based on the\n sign of the value\n  maximum of 1 input',
-	wrapsum:  'minumum of 2 inputs \n  maximum of 20.',
-	rgb:      '3 inputs (R,G,B)\n  - R is the red value\n  - G is the green value\n  - B is the blue value',
+/**
+ * getInfoText takes a string (key), looks up the information for that key in 
+ * MIST.builtins.functions and returns a string to be used in the label for that key.
+ */
+var getInfoText = function(key) {
+	var info = MIST.builtins.functions.get(key);
+	return key + '(' + info.params + ')\n\n' + info.about;
+};
+
+var menuFunctionDescriptions = {}
+
+var funKeys = MIST.builtins.functions.keys();
+for(var i = 0; i < funKeys.length; i++) {
+	var key = funKeys[i];
+	menuFunctionDescriptions[key] = getInfoText(key);
+}
+
+var menuValuesDescriptions = {
 	x:        'ranges -1 to 1 based on the x-value',
 	y:        'ranges -1 to 1 based on the y-value',
-	second:   'goes through values -1 to 1\n every second',
-	minute:   'goes through values -1 to 1\n every minute',
-	hour:     'goes through values -1 to 1\n every hour',
-	day:      'goes through values -1 to 1\n every day',
+	second:   'goes through values -1 to 1 every second',
+	minute:   'goes through values -1 to 1 every minute',
+	hour:     'goes through values -1 to 1 every hour',
+	day:      'goes through values -1 to 1 every day',
 	constant: 'enter your own number',
 }
 
@@ -27,39 +34,95 @@ var toolboxDescriptions = {
 };
 
 var tagColor = 'white';
-var pointerSize = width / 90;
-
+var pointerWidth = width / 90;
+var pointerHeight = width / 104;
+var triRadius = width / 156;
 
 
 var makeLabel = function(group) {
 	var xOffset = 0;
-	if (isValue(group)){
-		xOffset = -4;
+	var rep = group.attrs.rep;
+	var text = menuFunctionDescriptions[rep];
+	if (rep == 'rgb') {
+		var label = new Kinetic.Group({
+			x: group.x(),
+			y: group.y()
+		});
+
+		var rgbText = new Kinetic.Text({
+			text: text,
+			x: -110,
+			y: pointerHeight + (1.1 * functionTotalSideLength),
+			padding: 5,
+			width: 160,
+			fill: 'black'
+		});
+
+		label.add(new Kinetic.Rect({
+			x: rgbText.x(),
+			y: rgbText.y(),
+			width: rgbText.width(),
+			height: rgbText.height(),
+			fill: tagColor,
+			lineJoin: 'round',
+			shadowColor: 'black',
+			shadowOffset: [5, 5],
+		}));
+
+		/*
+		label.add(new Kinetic.RegularPolygon({
+			x: (functionTotalSideLength / 2),
+			y: (1.2 * functionTotalSideLength),
+			sides: 3,
+			radius: 7,
+			fill: tagColor,
+			stroke: 'black',
+			strokeWidth: .3,
+			lineJoin: 'round',
+		}));
+*/
+
+		label.add(rgbText);
 	}
-	var name = group.name();
-	var text = menuDescriptions[name];
-	var label = new Kinetic.Label ({
-		x: group.x() + (functionTotalSideLength / 2) + xOffset,
-		y: group.y() + (1.1 * functionTotalSideLength)
-	});
+	else {
+		if (isValue(group)){
+			xOffset = -4;
+			text = menuValuesDescriptions[group.name()];
+		}
+		var label = new Kinetic.Label ({
+			x: group.x() + (functionTotalSideLength / 2) + xOffset,
+			y: group.y() + (1.1 * functionTotalSideLength),
+		});
 
-	label.add(new Kinetic.Tag({
-		fill: tagColor,
-		pointerDirection: 'up',
-		pointerWidth: pointerSize,
-		pointerHeight: pointerSize,
-		lineJoin: 'round',
-		shadowColor: 'black',
-		shadowOffset: [5, 5],
-	}));
+		label.add(new Kinetic.Tag({
+			fill: tagColor,
+			pointerDirection: 'up',
+			pointerWidth: pointerWidth,
+			pointerHeight: pointerHeight,
+			lineJoin: 'round',
+			shadowColor: 'black',
+			shadowOffset: [5, 5],
+		}));
 
-	label.add(new Kinetic.Text({
-		text: text,
-		fontFamily: globalFont,
-		fontSize: 13,
-		padding: 5,
-		fill: 'black'
-	}));
+		label.add(new Kinetic.Text({
+			text: text,
+			fontFamily: globalFont,
+			fontSize: 13,
+			padding: 5,
+			fill: 'black'
+		}));
+		if (label.children[1].width() > 160) {
+			label.children[1].destroy();
+			label.add(new Kinetic.Text({
+				text: text,
+				width: 160,
+				fontFamily: globalFont,
+				fontSize: 13,
+				padding: 5,
+				fill: 'black'
+			}));
+		}
+	}
 	return label;
 };
 
@@ -82,8 +145,8 @@ var makeToolLabel = function(group) {
 	label.add(new Kinetic.Tag({
 		fill: tagColor,
 		pointerDirection: direction,
-		pointerWidth: pointerSize,
-		pointerHeight: pointerSize,
+		pointerWidth: pointerWidth,
+		pointerHeight: pointerHeight,
 		lineJoin: 'round',
 		shadowColor: 'black',
 		shadowOffset: [5, 5],

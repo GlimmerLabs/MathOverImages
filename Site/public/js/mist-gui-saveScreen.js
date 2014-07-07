@@ -286,6 +286,7 @@ screenLayer.on('mouseup', function(evt) {
 popCancelButtonGroup.on('mouseup', function(){
   cover.setAttr('visible', false);
   popSaveGroup.setAttr('visible', false);
+  popErrorText.setAttr('text', '');
   animation = false;
   showThumbnails();
   setTimeout(function(){
@@ -307,9 +308,14 @@ popSaveButtonGroup.on('mouseup', function(){
   if (newName == '' || newName == 'Enter a Name') {
     popErrorText.setAttr('text', 'Please enter a name for your image.');
   } // if no name is entered
+  else if (imageExists(newName)) {
+  	popErrorText.setAttr('text', 'You\'ve already made an image called \'' + 
+  		newName + '\'\n' + 'Please choose a different name.');
+  }
   else {
     var renderFunction = currShape.attrs.renderFunction;
     saveImage(newName, renderFunction, true, true, true);
+    popErrorText.setAttr('text', '');
     cover.setAttr('visible', false);
     popSaveGroup.setAttr('visible', false);
     showThumbnails();
@@ -378,13 +384,9 @@ var showThumbnails = function() {
 var removeOuterWhiteSpace = function (string) {
   var start = 0;
   var end = string.length - 1;
-  while (start < string.length && string[start] == ' ') {
-    start++;
-  } // while
-  while (string[end] == ' ' && end >= start) {
-    end--;
-  } // while
-  return string.substring(start, end+1);
+  string = string.replace(/^ */, "");
+  string = string.replace(/ *$/, "");
+  return string;
 }; // removeOuterWhiteSpace
 
 

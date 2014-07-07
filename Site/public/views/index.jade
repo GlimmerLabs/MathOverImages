@@ -24,16 +24,27 @@ block content
   div(id='main')
     div(id='featuredImage')
       img(src='/logos/featured.png')
+    div(id='about')
+      p
+        | MIST, the
+        i  Mathematical Image Synthesis Toolkit
+        | , is a platform for building interesting animated images.
+        | Try exploring the galleries, reading the tutorials, or
+        | creating your own images.
     div(id='homeButtons')
       a(href='/create' id='create')
          ='create'
       a(href='/tutorial' id='tutorials')
          ='tutorials'
+      a(href='/galleries' id='gallery')
+         ='gallery'
     div(id='galleryImages')
+      p(class='info').
+        Some of the following images animate when you move the mouse over them.
       - for (var i=0; i < images.length; i++)
         figure
           a(href='/image/' + images[i].imageid)
             canvas(id='canvas'+i width='150' height='150')
             input(type='hidden' id='code'+i value=images[i].code)
           figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
-      h1: a(href='/gallery') See more in gallery
+      figure: p(id="seemore"): a(href='/gallery') See more in gallery

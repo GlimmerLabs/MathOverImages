@@ -157,10 +157,12 @@ var saveWorkspace = function(name, replace) {
  * undefined.  If there's an error, workspaces should be undefined
  * and error should contain the error string.
  */
-var listWorkspaces = function(callback) {
+var listWorkspaces = function(callback,async) {
+  if (async == undefined) { async = true; }
   var url = "/api?action=listws";
   var request = new XMLHttpRequest();
   request.onreadystatechange = function() {
+    // console.log(request.readyState, request);
     if (request.readyState != 4) {
       return;
     } // if it's not ready
@@ -171,7 +173,7 @@ var listWorkspaces = function(callback) {
       callback(JSON.parse(request.responseText),undefined);
     }
   } // request.onreadystatechange
-  request.open("GET",url,true);
+  request.open("GET", url, async);
   request.send();
 } // listWorkspaces
 
@@ -194,6 +196,7 @@ var loadWorkspace = function(wsname) {
       console.log(json);
       resetWorkspace();
       jsonToWorkspace(json);
+      currentWorkspace = wsname;
     }
   }; // onReadyState
   request.open("GET",url,true);
@@ -212,4 +215,122 @@ var saveImage = function(title, code, isPublic, codeVisible, replace) {
   request.open("POST", "/api", true);
   request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   request.send(data);
+}
+
+/**
+ * Determines if a workspace exists.  Returns true if the workspace exists
+ * and false otherwise.
+ */
+var wsExists = function(name) {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=wsexists&name=" + name;
+  request.open("GET", url, false);
+  request.send();
+  return eval(request.responseText);
+}
+
+/**
+ * Determines if a image exists.  Returns true if an image exists
+ * with the given title and false otherwise.
+ */
+var imageExists = function(title) {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=imageexists&title=" + title;
+  request.open("GET", url, false);
+  request.send();
+  return eval(request.responseText);
+}
+
+// +--------------+----------------------------------------------------
+// | Dialog Boxes |
+// +--------------+
+
+/**
+ * Add the HTML for the dialog box.
+ */
+var addLoadWorkspaceDialog = function() {
+  // Build the element
+  var dialog = document.createElement("div");
+  dialog.id = "load-workspace";
+  dialog.title = "Load Workspace";
+  // dialog.innerHTML='<form><fieldset><label for="workspace-name">Workspace</label><select id="workspace-name"></select></fieldset></form>';
+  dialog.innerHTML='<p>Select the workspace to load.</p><form><select id="workspace-name"></select></form>';
+  document.body.appendChild(dialog);
+  console.log(dialog);
+
+  // Turn it into a JQuery dialog
+  $("#load-workspace").dialog({
+    autoOpen: false,
+    resizable: false,
+    width: "50%",
+    modal: true,
+    buttons: {
+      "Load": function() {
+        $("#load-workspace").dialog("close");
+        var menu = document.getElementById("workspace-name");
+        var wsname = menu.options[menu.selectedIndex].value;
+        loadWorkspace(wsname);
+      }, // load
+      "Cancel": function() {
+        $("#load-workspace").dialog("close");
+      } // cancel
+    } // buttons
+  });
+} // addLoadWorkspaceDialog
+
+/**
+ * Show the dialog box for loading a workspace.
+ */
+var showLoadWorkspaceDialog = function() {
+  // Make sure that the dialog exists
+  if (!document.getElementById("load-workspace")) {
+    addLoadWorkspaceDialog();
+  } // if the dialog does not exist
+
+  // Clear the list of workspaces
+  var workspaces = document.getElementById("workspace-name");
+  workspaces.innerHTML = "";
+
+  // Build the list of workspaces
+  listWorkspaces(function(names,error) {
+    if (error) {
+      alert("Whoops ... " + error);
+      return;
+    }
+    if (names.length == 0) {
+      alert("No workspaces exist");
+      return;
+    }
+    for (var i = 0; i < names.length; i++) {
+      var name = names[i];
+      var option = document.createElement("option");
+      option.value = name;
+      option.innerHTML = name;
+      workspaces.appendChild(option);
+    } // for
+  });
+
+  // Show the dialog
+  $("#load-workspace").dialog("open");
+} // showLoadWorkspaceDialog
+
+
+// +-------------------+-----------------------------------------------
+// | Session Functions |
+// +-------------------+
+window.onbeforeunload = function() {
+  var request = new XMLHttpRequest();
+  var data = "action=storews&code="+code;
+  request.open("POST", "/api", true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
+}
+
+var initWorkspace = function() {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=returnws";
+  request.open("GET", url, true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send();
+  return request.responseText;
 }
