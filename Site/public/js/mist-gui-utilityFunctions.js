@@ -299,7 +299,7 @@ var removeShadow = function(group) {
  	}
  	assertRenderable(newNode);
  	updateForward(newNode);
- 	setOutletOpacity(newNode);
+ 	//setOutletOpacity(newNode);
  	lineLayer.draw();
  	workLayer.draw();
  };
@@ -330,7 +330,7 @@ var removeShadow = function(group) {
  		node.children[2].setAttr('y', functionRectSideLength + functionImageBoxOffset);
  		// set numInputs to zero
  		node.attrs.numInputs = 0;
- 		setOutletOpacity(node);
+ 		//setOutletOpacity(node);
  	}
  };
 

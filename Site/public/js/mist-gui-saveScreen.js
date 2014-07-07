@@ -98,14 +98,15 @@ var popErrorText = new Kinetic.Text({
 });
 popSaveGroup.add(popErrorText);
 
-var popSaveButtonGroup = new Kinetic.Group({
+//CANCEL BUTTON GROUP
+var popCancelButtonGroup = new Kinetic.Group({
   x: popTextShiftX,
   y: popRectHeight - (popTextHeight * 1.25),
-  name: 'save'
+  name: 'cancel'
 });
-popSaveGroup.add(popSaveButtonGroup);
+popSaveGroup.add(popCancelButtonGroup);
 
-var popSaveButton = new Kinetic.Rect ({
+var popCancelButton = new Kinetic.Rect ({
   x: 0,
   y: 0,
   width: popButtonWidth,
@@ -116,10 +117,10 @@ var popSaveButton = new Kinetic.Rect ({
   shadowColor: 'black',
   shadowEnabled: false
 });
-popSaveButtonGroup.add(popSaveButton);
+popCancelButtonGroup.add(popCancelButton);
 
-var popSaveButtonText = new Kinetic.Text({
-  text: "Save",
+var popCancelButtonText = new Kinetic.Text({
+  text: "Cancel",
   x: 0,
   y: (popButtonHeight - 16) / 2,
   width: popButtonWidth,
@@ -128,8 +129,9 @@ var popSaveButtonText = new Kinetic.Text({
   fontFamily: globalFont,
   align: 'center'
 });
-popSaveButtonGroup.add(popSaveButtonText);
+popCancelButtonGroup.add(popCancelButtonText);
 
+//DOWLOAD BUTTON GROUP
 var popDownloadButtonGroup = new Kinetic.Group({
   x: popTextShiftX + popButtonShiftX + popButtonWidth,
   y: popRectHeight - (popTextHeight * 1.25),
@@ -162,14 +164,16 @@ var popDownloadButtonText = new Kinetic.Text({
 });
 popDownloadButtonGroup.add(popDownloadButtonText);
 
-var popCancelButtonGroup = new Kinetic.Group({
+
+//SAVE BUTTON GROUP
+var popSaveButtonGroup = new Kinetic.Group({
   x: popTextShiftX + (2 * popButtonShiftX) + (2 * popButtonWidth),
   y: popRectHeight - (popTextHeight * 1.25),
-  name: 'cancel'
+  name: 'save'
 });
-popSaveGroup.add(popCancelButtonGroup);
+popSaveGroup.add(popSaveButtonGroup);
 
-var popCancelButton = new Kinetic.Rect ({
+var popSaveButton = new Kinetic.Rect ({
   x: 0,
   y: 0,
   width: popButtonWidth,
@@ -180,10 +184,10 @@ var popCancelButton = new Kinetic.Rect ({
   shadowColor: 'black',
   shadowEnabled: false
 });
-popCancelButtonGroup.add(popCancelButton);
+popSaveButtonGroup.add(popSaveButton);
 
-var popCancelButtonText = new Kinetic.Text({
-  text: "Cancel",
+var popSaveButtonText = new Kinetic.Text({
+  text: "Save",
   x: 0,
   y: (popButtonHeight - 16) / 2,
   width: popButtonWidth,
@@ -192,7 +196,7 @@ var popCancelButtonText = new Kinetic.Text({
   fontFamily: globalFont,
   align: 'center'
 });
-popCancelButtonGroup.add(popCancelButtonText);
+popSaveButtonGroup.add(popSaveButtonText);
 
 // rCanvas is the canvas used to render the image on the saveScreen
 var rCanvas = renderLayer.canvas._canvas;
@@ -374,13 +378,9 @@ var showThumbnails = function() {
 var removeOuterWhiteSpace = function (string) {
   var start = 0;
   var end = string.length - 1;
-  while (start < string.length && string[start] == ' ') {
-    start++;
-  } // while
-  while (string[end] == ' ' && end >= start) {
-    end--;
-  } // while
-  return string.substring(start, end+1);
+  string = string.replace(/^ */, "");
+  string = string.replace(/ *$/, "");
+  return string;
 }; // removeOuterWhiteSpace
 
 

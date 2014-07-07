@@ -27,6 +27,7 @@
       maxInputs: functions[funName].max, 
       minInputs: functions[funName].min, 
       lineOut: [], 
+      rep: functions[funName].rep,
       prefix: functions[funName].prefix, 
       separator: functions[funName].separator,
       renderFunction: null,
@@ -215,7 +216,7 @@
       y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
         outletYOffset + functionHalfStrokeWidth,
       fill: outletColor,
-      opacity: .7,
+      opacity: 1,
       stroke: 'black',
       strokeWidth: 1,
       lineIn: null,
