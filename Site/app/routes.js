@@ -148,15 +148,6 @@ module.exports = function(app,passport,database) {
     sendFileWithSuffix(res, './public/css/' + req.params.file, '.css');
   });
 
-  // --------------------------------------------------
-  // Path:  /default
-  //   A default page, used when we haven't yet implemented the page
-  app.get('/default', function(req, res) {
-    res.render('../public/views/default.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
 
   // --------------------------------------------------
   // Path:  /expert
@@ -215,12 +206,17 @@ module.exports = function(app,passport,database) {
     albums.allImagesinAlbum(req, res, database);
   });
 
-  app.post('/image/:imageid', function(req,res) {
-    if(req.body.commentSubmit != null) {
-      var image = require("../functions/image.js");
-      image.saveComment(req, res, database);
-    };
-  });
+    app.post('/image/:imageid', function(req,res) {
+	if(req.body.commentSubmit != null) {
+	    var image = require("../functions/image.js");
+	    image.saveComment(req, res, database);
+	}
+	else if(req.body.delete != null) {
+	    var image = require("../functions/image.js");
+	    image.deleteImage(req, res, database);
+	};
+    });
+
   // --------------------------------------------------
   // Path:  /js
   //   Distribute client-side Javascript files
@@ -269,7 +265,6 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/me', function(req,res) {
-
     if(req.body.aboutSubmit != null) {
       var username = require("../functions/username.js");
       username.changeAboutSection(req, res, database);
@@ -352,6 +347,14 @@ module.exports = function(app,passport,database) {
   app.get('/verify', function(req,res) {
     // TODO: VERIFY user
     res.redirect('/login');
+  });
+
+  app.get('/badges', function(req,res) {
+    res.render("../public/views/soon.jade");
+  });
+
+  app.get('/challenges', function(req,res) {
+    res.render("../public/views/soon.jade");
   });
 
   // Route does not exist
