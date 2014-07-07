@@ -295,7 +295,7 @@ handlers.imageexists = function(info, req, res) {
     fail(res, "Could not save image because you're not logged in");
   } else {
     database.imageExists(req.session.user.userid, info.title, function(exists) {
-
+      res.send(exists);
     });
   }
 }
