@@ -312,3 +312,18 @@ var showLoadWorkspaceDialog = function() {
   // Show the dialog
   $("#load-workspace").dialog("open");
 } // showLoadWorkspaceDialog
+
+
+// +--------------+----------------------------------------------------
+// | Leave Page   |
+// +--------------+
+window.onbeforeunload = function () {
+  var request = new XMLHttpRequest();
+  var data = "action=storews&code="+code;
+  request.open("POST", "/api", true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
+}
+
+
+
