@@ -1,5 +1,5 @@
 var popWsRectWidth = width * .4;
-var popWsRectHeight = height * .16;
+var popWsRectHeight = height * .25;
 var popSaveWsGroupX = (width - popWsRectWidth) / 2;
 var popSaveWsGroupY = (height - popWsRectHeight) / 2;
 
@@ -66,6 +66,17 @@ nameWsEditText.drawMethod = function(){
 	screenLayer.draw()
 };
 
+var popWsErrorText = new Kinetic.Text({
+	text: '',
+	x: popTextShiftX,
+	y: nameWsText.height() + (2 * popTextShiftX),
+	width: popWsRectWidth - (2 * popTextShiftX),
+	fill: errorColor,
+	fontFamily: globalFont,
+	fontSize: 14
+});
+saveWsGroup.add(popWsErrorText);
+
 var popWsCancelButtonGroup = new Kinetic.Group({
 	x: (popWsRectWidth / 2) + popWsButtonShiftX,
 	y: popWsRectHeight - (popTextHeight * 1.25),
@@ -130,23 +141,129 @@ var popSaveWsButtonText = new Kinetic.Text({
 });
 popSaveWsButtonGroup.add(popSaveWsButtonText);
 
-popWsCancelButtonGroup.on('mouseup', function(){
-	cover.setAttr('visible', false);
-	saveWsGroup.setAttr('visible', false);
-	showThumbnails();
+
+
+var popWsYesButtonGroup = new Kinetic.Group ({
+	x: (popWsRectWidth / 2) + popWsButtonShiftX,
+	y: popWsRectHeight - (popTextHeight * 1.25),
+	name: 'yes',
+	visible: false
+});
+saveWsGroup.add(popWsYesButtonGroup);
+
+popWsYesButtonGroup.add(new Kinetic.Rect ({
+	x: 0,
+	y: 0,
+	width: popWsButtonWidth,
+	height: popWsButtonHeight,
+	fill: popButtonColor,
+	stroke: 'black',
+	strokeWidth: 1,
+	shadowColor: 'black',
+	shadowEnabled: false
+}));
+
+popWsYesButtonGroup.add(new Kinetic.Text({
+	text: "Yes",
+	x: 0,
+	y: (popWsButtonHeight - 16) / 2,
+	width: popWsButtonWidth,
+	fill: 'black',
+	fontSize: 16,
+	fontFamily: globalFont,
+	align: 'center'
+}));
+
+var popWsNoButtonGroup = new Kinetic.Group ({
+	x: (popWsRectWidth / 2) + (2 * popWsButtonShiftX) + popWsButtonWidth,
+	y: popWsRectHeight - (popTextHeight * 1.25),
+	name: 'yes',
+	visible: false
+});
+saveWsGroup.add(popWsNoButtonGroup);
+
+popWsNoButtonGroup.add(new Kinetic.Rect ({
+	x: 0,
+	y: 0,
+	width: popWsButtonWidth,
+	height: popWsButtonHeight,
+	fill: popButtonColor,
+	stroke: 'black',
+	strokeWidth: 1,
+	shadowColor: 'black',
+	shadowEnabled: false
+}));
+
+popWsNoButtonGroup.add(new Kinetic.Text({
+	text: "No",
+	x: 0,
+	y: (popWsButtonHeight - 16) / 2,
+	width: popWsButtonWidth,
+	fill: 'black',
+	fontSize: 16,
+	fontFamily: globalFont,
+	align: 'center'
+}));
+
+var attempts = 0;
+popSaveWsButtonGroup.on('mouseup', function(){
+	var newName = nameWsEditText.attrs.text;
+	if (wsExists(newName)) {
+		popWsErrorText.setAttr('text', '\'' + newName  + '\' is already a workspace.\n' +
+			'Do you want to continue anyways?');
+		popWsYesButtonGroup.setAttr('visible', true);
+		popWsNoButtonGroup.setAttr('visible', true);
+		popSaveWsButtonGroup.setAttr('visible', false);
+		popWsCancelButtonGroup.setAttr('visible', false);
+		nameWsEditText.setEditable(false);
+	}
+	else {
+		saveWorkspace(newName, true);
+		currentWorkspace = newName;
+		cover.setAttr('visible', false);
+		saveWsGroup.setAttr('visible', false);
+		showThumbnails();
+	}
 	screenLayer.draw();
 });
 
-popSaveWsButtonGroup.on('mouseup', function(){
+popWsYesButtonGroup.on('mouseup', function(){
 	var newName = nameWsEditText.attrs.text;
 	saveWorkspace(newName, true);
 	currentWorkspace = newName;
+	popWsYesButtonGroup.setAttr('visible', false);
+	popWsNoButtonGroup.setAttr('visible', false);
+	popSaveWsButtonGroup.setAttr('visible', true);
+	popWsCancelButtonGroup.setAttr('visible', true);
+	nameWsEditText.setEditable(true);
+	popWsErrorText.setAttr('text', '');
 	cover.setAttr('visible', false);
 	saveWsGroup.setAttr('visible', false);
 	showThumbnails();
 	screenLayer.draw();
 });
 
+popWsNoButtonGroup.on('mouseup', function(){
+	popWsYesButtonGroup.setAttr('visible', false);
+	popWsNoButtonGroup.setAttr('visible', false);
+	popSaveWsButtonGroup.setAttr('visible', true);
+	popWsCancelButtonGroup.setAttr('visible', true);
+	popWsErrorText.setAttr('text', '');
+	nameWsEditText.setAttr('text', 'Enter a Name');
+	nameWsEditText.setEditable(true);
+	screenLayer.draw();
+});
+
+popWsCancelButtonGroup.on('mouseup', function(){
+	popWsYesButtonGroup.setAttr('visible', false);
+	popSaveWsButtonGroup.setAttr('visible', true);
+	popWsErrorText.setAttr('text', '');
+	cover.setAttr('visible', false);
+	saveWsGroup.setAttr('visible', false);
+	nameWsEditText.setEditable(true);
+	showThumbnails();
+	screenLayer.draw();
+});
 
 var openSaveWsPopUp = function() {
 	hideThumbnails();

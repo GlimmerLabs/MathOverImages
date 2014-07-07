@@ -4,6 +4,16 @@ block title
 block extraMetas
 block extraLinks
   script(type='text/javascript' src='https://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js')
+  script(type='text/javascript' src='/js/mist-utils.js')
+  script(type='text/javascript' src='/js/mist-functions.js')
+  script(type='text/javascript' src='/js/mist-layout.js')
+  script(type='text/javascript' src='/js/mist-functions-layout.js')
+  script(type='text/javascript' src='/js/mist-functions-builtin.js')
+  script(type='text/javascript' src='/js/mist-render.js')
+  script(type='text/javascript' src='/js/mistui-dialogs.js')
+  script(type='text/javascript' src='/js/mistui-help.js')
+  script(type='text/javascript' src='/js/mistui-menus.js')
+  script(type='text/javascript' src='/js/mistui-animator.js')
   script(type='text/javascript' src='/js/mist-gui-globalVariables.js')
   script(type='text/javascript' src='/js/mist-gui-utilityFunctions.js')
   script(type='text/javascript' src='/js/mist-gui-predicates.js')
@@ -25,16 +35,6 @@ block extraLinks
   script(type='text/javascript' src='/js/mist-gui-openWorkspaceScreen.js')
   script(type='text/javascript' src='/js/mist-gui-funBarEvents.js')
   script(type='text/javascript' src='/js/mist-gui-makeLabels.js')
-  script(type='text/javascript' src='/js/mist-utils.js')
-  script(type='text/javascript' src='/js/mist-functions.js')
-  script(type='text/javascript' src='/js/mist-layout.js')
-  script(type='text/javascript' src='/js/mist-functions-layout.js')
-  script(type='text/javascript' src='/js/mist-functions-builtin.js')
-  script(type='text/javascript' src='/js/mist-render.js')
-  script(type='text/javascript' src='/js/mistui-dialogs.js')
-  script(type='text/javascript' src='/js/mistui-help.js')
-  script(type='text/javascript' src='/js/mistui-menus.js')
-  script(type='text/javascript' src='/js/mistui-animator.js')
   script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
 
 
@@ -42,6 +42,9 @@ block extraLinks
 
 block stylesheets
   link(rel='stylesheet' href='/css/mist-gui.css')
+  link(rel='stylesheet' href='http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css')
+  link(rel='stylesheet' href='/css/jquery-override.css')
+
 block content
   div(id='main')
     div(id='container')
