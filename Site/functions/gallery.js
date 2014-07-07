@@ -1,16 +1,32 @@
 /**
  * Functions related to the gallery.
  */
+var setLikes = function(imageArray, userID, callback) {
+  var imageArrayClone = imageArray.slice(0, imageArray.length);
+  var errorsArray = [];
+  for(var image = 0; image < imageArrayClone.length; image++) {
+    (function(currentIndex){
+      database.hasLiked(userId, imageArrayClone[currentIndex].imageid, function(liked, error) {
+        imageArrayClone[currentIndex].liked = liked;
+        errorsArray.push(error); 
+      });
+    })(image);
+  }
+  callback(imageArrayClone, errorsArray);
+}
+
 var filedatabase;
 module.exports.buildRandomPage = (function(req, res, database) {
   filedatabase=database;
   module.exports.getRandomImages (9, function(images, error){
-    res.render('../public/views/gallery.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user,
-      images: images,
-      currentPage: req.params.pageNumber,
-      type: "random"
+    setLikes(images, req.session.user.userid, function(imageArray, errorArray){
+      res.render('../public/views/gallery.jade',{
+        loggedIn: req.session.loggedIn,
+        user: req.session.user,
+        images: imageArray,
+        currentPage: req.params.pageNumber,
+        type: "random"
+      });
     });
   });
 });
@@ -18,13 +34,14 @@ module.exports.buildRandomPage = (function(req, res, database) {
 module.exports.buildRecentsPage = function(req, res, database) {
   filedatabase=database;
   module.exports.getRecentImages(9, req.params.pageNumber, function(images, nextPage,  error) {
-    res.render('../public/views/gallery.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user,
-      images: images,
-      nextPage: nextPage,
-      currentPage: req.params.pageNumber,
-      type: "recent"
+    setLikes(images, req.session.user.userid, function(imageArray, errorArray){
+      res.render('../public/views/gallery.jade',{
+        loggedIn: req.session.loggedIn,
+        user: req.session.user,
+        images: imageArray,
+        currentPage: req.params.pageNumber,
+        type: "recent"
+      });
     });
   });
 };
@@ -89,14 +106,15 @@ module.exports.getRecentImages= (function(count, page, callback) {
 module.exports.buildTopRatedPage = function(req, res, database) {
     filedatabase=database;
     module.exports.getTopRated(9, req.params.pageNumber, function(images, nextPage, error) {
-	res.render('../public/views/gallery.jade',{
-	    loggedIn: req.session.loggedIn,
-	    user: req.session.user,
-	    nextPage:nextPage,
-	    images: images,
-	    currentPage: req.params.pageNumber,
-	    type: "toprated"
-	});
+        setLikes(images, req.session.user.userid, function(imageArray, errorArray){
+          res.render('../public/views/gallery.jade',{
+            loggedIn: req.session.loggedIn,
+            user: req.session.user,
+            images: imageArray,
+            currentPage: req.params.pageNumber,
+            type: "toprated"
+          });
+        });
     });
 };
 
