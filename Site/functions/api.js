@@ -325,6 +325,18 @@ handlers.storews = function(info, req, res) {
   res.end();
 }
 
+/*
+return the ws stored in the session
+action: returnws
+*/
+handlers.returnws = function(info, req, res) {
+  if (!req.session.workspaceCode) {
+    res.send("");
+  } else {
+    res.send(req.session.workspaceCode);
+  }
+    res.end();
+}
 
 /*
 Toggle the like on an image
