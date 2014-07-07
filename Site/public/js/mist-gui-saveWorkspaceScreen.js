@@ -141,12 +141,7 @@ var popSaveWsButtonText = new Kinetic.Text({
 });
 popSaveWsButtonGroup.add(popSaveWsButtonText);
 
-popWsCancelButtonGroup.on('mouseup', function(){
-	cover.setAttr('visible', false);
-	saveWsGroup.setAttr('visible', false);
-	showThumbnails();
-	screenLayer.draw();
-});
+
 
 var popWsYesButtonGroup = new Kinetic.Group ({
 	x: (popWsRectWidth / 2) + (2 * popWsButtonShiftX) + popWsButtonWidth,
@@ -202,6 +197,19 @@ popWsYesButtonGroup.on('mouseup', function(){
 	var newName = nameWsEditText.attrs.text;
 	saveWorkspace(newName, true);
 	currentWorkspace = newName;
+	popWsYesButtonGroup.setAttr('visible', false);
+	popSaveWsButtonGroup.setAttr('visible', true);
+	popWsErrorText.setAttr('text', '');
+	cover.setAttr('visible', false);
+	saveWsGroup.setAttr('visible', false);
+	showThumbnails();
+	screenLayer.draw();
+});
+
+popWsCancelButtonGroup.on('mouseup', function(){
+	popWsYesButtonGroup.setAttr('visible', false);
+	popSaveWsButtonGroup.setAttr('visible', true);
+	popWsErrorText.setAttr('text', '');
 	cover.setAttr('visible', false);
 	saveWsGroup.setAttr('visible', false);
 	showThumbnails();

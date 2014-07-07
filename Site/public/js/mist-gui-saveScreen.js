@@ -286,6 +286,7 @@ screenLayer.on('mouseup', function(evt) {
 popCancelButtonGroup.on('mouseup', function(){
   cover.setAttr('visible', false);
   popSaveGroup.setAttr('visible', false);
+  popErrorText.setAttr('text', '');
   animation = false;
   showThumbnails();
   setTimeout(function(){
@@ -314,6 +315,7 @@ popSaveButtonGroup.on('mouseup', function(){
   else {
     var renderFunction = currShape.attrs.renderFunction;
     saveImage(newName, renderFunction, true, true, true);
+    popErrorText.setAttr('text', '');
     cover.setAttr('visible', false);
     popSaveGroup.setAttr('visible', false);
     showThumbnails();
