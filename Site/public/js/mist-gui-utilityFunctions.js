@@ -22,6 +22,9 @@
 			}
 			var newOutlet = makeOutlet(funGroup);
 			funGroup.add(newOutlet);
+			if (funGroup.name() == 'rgb') {
+				newOutlet.setAttr('fill', RGBoutletColors[newOutlet.attrs.outletIndex]);
+			}
 			workLayer.draw();
 			if (funGroup.attrs.renderLayer != null){
 				funGroup.attrs.renderLayer.draw();
@@ -60,6 +63,20 @@ var removeOutlet = function(funGroup) {
 	} // if above minumum number of outlets
 };
 
+var setOutletOpacity = function(group) {
+	if (isFunction(group)) {
+		for (var i = OUTLET_OFFSET; i < group.children.length; i++){
+			var outlet = group.children[i];
+			if (outlet.attrs.lineIn) {
+				outlet.setAttr('opacity', 1);
+			}
+			else {
+				outlet.setAttr('opacity', .7);
+			}
+		}
+	}
+}
+
 /**
  * findRenderFunction takes a group and, if the group has sufficient inputs, finds the 
  * renderFunction that should be used to create an image for output.
@@ -84,7 +101,7 @@ var removeOutlet = function(funGroup) {
  * updateFunBar changes the text in the funBar according to the currShape.
  */
  var updateFunBar = function() {
- 	if (currShape && isRenderable(currShape)) {
+ 	if (currShape && assertRenderable(currShape)) {
  		currText = currShape.attrs.renderFunction;
  		var currFontSize;
  		if (currText.length <= 50) {
@@ -235,11 +252,11 @@ var removeShadow = function(group) {
  		// check if oldNode allows more inputs than newNode
  		if (newNode.attrs.maxInputs < oldNode.children.length - OUTLET_OFFSET) {
  			// add appropriate outlets to newNode
- 			while (newNode.children.length < newNode.attrs.maxInputs + 3) {
+ 			while (newNode.children.length < newNode.attrs.maxInputs + OUTLET_OFFSET) {
  				addOutlet(newNode);
  			}
  			var outletIndex = OUTLET_OFFSET; // which outlet we are applying the next input to
- 			for(var i = OUTLET_OFFSET; i < newNode.attrs.maxInputs - OUTLET_OFFSET; i++) {
+ 			for(var i = OUTLET_OFFSET; i < newNode.attrs.maxInputs + OUTLET_OFFSET; i++) {
  				if (oldNode.children[i].attrs.lineIn) {
  					newNode.children[outletIndex].attrs.lineIn = oldNode.children[i].attrs.lineIn;
  					newNode.attrs.numInputs++;
@@ -247,7 +264,7 @@ var removeShadow = function(group) {
  					outletIndex++;
  				}
  			}
- 			while (i < oldNode.children.length - OUTLET_OFFSET) {
+ 			while (i < oldNode.children.length) {
  				if(oldNode.children[i].attrs.lineIn) {
  					removeLine(oldNode.children[i].attrs.lineIn);
  				}
@@ -282,6 +299,7 @@ var removeShadow = function(group) {
  	}
  	assertRenderable(newNode);
  	updateForward(newNode);
+ 	setOutletOpacity(newNode);
  	lineLayer.draw();
  	workLayer.draw();
  };
@@ -312,6 +330,7 @@ var removeShadow = function(group) {
  		node.children[2].setAttr('y', functionRectSideLength + functionImageBoxOffset);
  		// set numInputs to zero
  		node.attrs.numInputs = 0;
+ 		setOutletOpacity(node);
  	}
  };
 
