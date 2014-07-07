@@ -305,14 +305,15 @@ popCancelButtonGroup.on('mouseup', function(){
 popSaveButtonGroup.on('mouseup', function(){
   var newName = nameEditText.attrs.text;
   newName = removeOuterWhiteSpace(newName);
+  var response = imageExists(newName);
   if (newName == '' || newName == 'Enter a Name') {
     popErrorText.setAttr('text', 'Please enter a name for your image.');
   } // if no name is entered
-  else if (imageExists(newName) == 'true') {
+  else if (response == 'true') {
   	popErrorText.setAttr('text', 'You\'ve already made an image called \'' + 
   		newName + '\'\n' + 'Please choose a different name.');
   } // if image already exists in user's account
-  else if (imageExists(newName) == 'logged out') {
+  else if (response == 'logged out') {
   	popErrorText.setAttr('text', 'To save an image, please log in or sign up.');
   } // if user is not logged in
   else {
