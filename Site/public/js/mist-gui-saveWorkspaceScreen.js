@@ -1,5 +1,5 @@
 var popWsRectWidth = width * .4;
-var popWsRectHeight = height * .16;
+var popWsRectHeight = height * .25;
 var popSaveWsGroupX = (width - popWsRectWidth) / 2;
 var popSaveWsGroupY = (height - popWsRectHeight) / 2;
 
@@ -65,6 +65,17 @@ nameWsEditText.defaultText = 'Enter a Name';
 nameWsEditText.drawMethod = function(){
 	screenLayer.draw()
 };
+
+var popWsErrorText = new Kinetic.Text({
+	text: '',
+	x: popTextShiftX,
+	y: nameWsText.height() + (2 * popTextShiftX),
+	width: popWsRectWidth - (2 * popTextShiftX),
+	fill: errorColor,
+	fontFamily: globalFont,
+	fontSize: 14
+});
+saveWsGroup.add(popWsErrorText);
 
 var popWsCancelButtonGroup = new Kinetic.Group({
 	x: (popWsRectWidth / 2) + popWsButtonShiftX,
@@ -137,7 +148,56 @@ popWsCancelButtonGroup.on('mouseup', function(){
 	screenLayer.draw();
 });
 
+var popWsYesButtonGroup = new Kinetic.Group ({
+	x: (popWsRectWidth / 2) + (2 * popWsButtonShiftX) + popWsButtonWidth,
+	y: popWsRectHeight - (popTextHeight * 1.25),
+	name: 'yes',
+	visible: false
+});
+
+popWsYesButtonGroup.add(new Kinetic.Rect ({
+	x: 0,
+	y: 0,
+	width: popWsButtonWidth,
+	height: popWsButtonHeight,
+	fill: popButtonColor,
+	stroke: 'black',
+	strokeWidth: 1,
+	shadowColor: 'black',
+	shadowEnabled: false
+}));
+
+popWsYesButtonGroup.add(new Kinetic.Text({
+	text: "Yes",
+	x: 0,
+	y: (popWsButtonHeight - 16) / 2,
+	width: popWsButtonWidth,
+	fill: 'black',
+	fontSize: 16,
+	fontFamily: globalFont,
+	align: 'center'
+}));
+
+var attempts = 0;
 popSaveWsButtonGroup.on('mouseup', function(){
+	var newName = nameWsEditText.attrs.text;
+	if (wsExists(newName)) {
+		popWsErrorText.setAttr('text', '\'' + newName  + '\' is already a workspace.\n' +
+			'Do you want to continue anyways?');
+		popWsYesButtonGroup.setAttr('visible', true);
+		popSaveWsButtonGroup.setAttr('visible', false);
+	}
+	else {
+		saveWorkspace(newName, true);
+		currentWorkspace = newName;
+		cover.setAttr('visible', false);
+		saveWsGroup.setAttr('visible', false);
+		showThumbnails();
+	}
+	screenLayer.draw();
+});
+
+popWsYesButtonGroup.on('mouseup', function(){
 	var newName = nameWsEditText.attrs.text;
 	saveWorkspace(newName, true);
 	currentWorkspace = newName;
@@ -146,7 +206,6 @@ popSaveWsButtonGroup.on('mouseup', function(){
 	showThumbnails();
 	screenLayer.draw();
 });
-
 
 var openSaveWsPopUp = function() {
 	hideThumbnails();
