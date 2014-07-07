@@ -143,6 +143,7 @@ module.exports.userExists = (function(checkString, callback){
   Parameters:
   userid, the userid of the current session user
   checkstring, a string containing a desired title for an image
+  callback(exists), a function describing what to do with the result
   Produces:
   exists, a BOOLEAN result
   Pre-conditions:
@@ -150,27 +151,28 @@ module.exports.userExists = (function(checkString, callback){
   Post-conditions:
   None
 */
-module.exports.imageExists = (function(userid, checkString){
+module.exports.imageExists = (function(userid, checkString, callback){
 
     checkstring = sanitize(checkString); // Always sanitize user input.
     // check if string is a username
     module.exports.query("SELECT title FROM images WHERE title = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
   if (!rows[0]){ // string is not a username
-    return false;
+    callback(false);
   }
   // username exists
-  else return true;
+  else callback(true);
   });
-}); // database.imageExists(userid, checkString;
+}); // database.imageExists(userid, checkString, callback(exists));
 
 /*
   Procedure:
-  database.wsExists(userid, checkString;
+  database.wsExists(userid, checkString, callback(exists));
   Purpose:
   Checks to see if a workspace with the given string as a name exists for the user
   Parameters:
   userid, the userid of the current session user
   checkstring, a string containing a desired name for a workspace
+  callback(exists), a function describing what to do with the result
   Produces:
   exists, a BOOLEAN result
   Pre-conditions:
@@ -178,16 +180,16 @@ module.exports.imageExists = (function(userid, checkString){
   Post-conditions:
   None
 */
-module.exports.wsExists = (function(userid, checkString){
+module.exports.wsExists = (function(userid, checkString, callback){
 
     checkstring = sanitize(checkString); // Always sanitize user input.
     // check if string is a username
     module.exports.query("SELECT name FROM workspaces WHERE name = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
   if (!rows[0]){ // string is not a username
-    return false;
+    callback(false);;
   }
   // username exists
-  else return true;
+  else callback(true);;
   });
 }); // database.wsExists(userid, checkString;
 
@@ -745,57 +747,122 @@ module.exports.getAllImagesforUser=(function (userid, callback) {
   });
 });
 
+/*
+  Procedure:
+  database.toggleLike(userid, imageid, callback(success, error));
+  Parameters:
+  userid, the user to toggle the like
+  imageid, the image to toggle
+  Produces:
+  success, a boolean
+  error, if there is one
+  Purpose:
+  To make it easy to like or unlike an image, depending on its current status
+  Pre-conditions:
+  None
+  Post-conditions:
+  The database will be changed to reflect this change in opinion
+  Preferences:
+  Automatically sanitizes.
+*/
+
 module.exports.toggleLike=(function (userid, imageid, callback) {
   userid=sanitize(userid);
   imageid=sanitize(imageid);
-  // has the person already rated this image?
+  // Check to see if user has already rated this image.
   module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
     if (error)
-      callback(null, error);
+      callback(false, error);
     else if (!rows[0])
-      // rating for this image by this user does not exist, add this rating, increment rating
+      // rating for this image by this user does not exist, add this rating, increment image rating
       module.exports.query("INSERT INTO ratings (userid, imageid) VALUES ('" + userid + "', '" + imageid + "');", function (rows, error){
         if (error)
-          callback(null, error);
+          callback(false, error);
         else
           module.exports.query("SELECT rating FROM images WHERE imageid='" + imageid + "';", function(results, error){
             if (error)
-              callback(null, error);
-            else module.exports.query("UPDATE images SET rating='" + (results.ratings + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
-              if (error)
-                callback(null, error);
-              else
-                callback(true, null);
-            });
-          });
-      });
+              callback(false, error);
+            else
+              module.exports.query("UPDATE images SET rating='" + (results.ratings + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
+                if (error)
+                  callback(false, error);
+                else
+                  callback(true, null);
+              }); // Update images table with new rating
+          }); // Find current rating of image
+      }); // Add rating
     else
       // if rating for this user already exists, delete the rating, decrement the rating
       module.exports.query("DELETE FROM ratings WHERE userid='" + userid + "' AND imageid='" + imageid + "';",  function (rows, error){
         if (error)
-          callback(null, error);else
-            module.exports.query("SELECT rating FROM images WHERE imageid='" + imageid + "';", function(results, error){
-              if (error)
-                callback(null, error);
-              else module.exports.query("UPDATE images SET rating='" + (results.ratings - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, error){
-                if (err)
-                  callback(null, err);
-                else
-                  callback(true, null);
-              });
-            });
-      });
-  });
-});
+          callback(false, error);
+        else
+          module.exports.query("SELECT rating FROM images WHERE imageid='" + imageid + "';", function(results, error){
+            if (error)
+              callback(false, error);
+            else module.exports.query("UPDATE images SET rating='" + (results.ratings - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, err){
+              if (err)
+                callback(false, err);
+              else
+                callback(true, null);
+            }); // Update images table with new rating
+          }); // Find current rating of image
+      }); // Delete rating from table
+  }); // Check if rating exists
+}); // module.exports.toggleLike
 
+/*
+  Procedure:
+  database.countNumberofLikes(imageid, callback(count, error));
+  Parameters:
+  imageid, the image to check likes
+  Purpose:
+  To get the results of ratings in each image
+  Pre-conditions:
+  Image exists
+  Post-conditions:
+  Count will be the most up-to-date number of likes
+  Preferences:
+  Automatically sanitizes.
+*/
 
-// to get the results of ratings in each image: use rows.length (MAINTENANCE THING)
 module.exports.countNumberofLikes=(function (imageid, callback) {
   imageid=sanitize(imageid);
   module.exports.query("SELECT COUNT(userid) AS likes FROM ratings WHERE imageid= '" + imageid + "';" , function (count, error){
+
     if (error)
       callback(null, error);
     else
       callback(count[0].likes, null);
+  });
+});
+
+/*
+  Procedure:
+  database.hasLiked(userid, imageid, callback(liked, error));
+  Parameters:
+  imageid, the image to check likes
+  Purpose:
+  To get the results of ratings in each image
+  Pre-conditions:
+  Image exists
+  Post-conditions:
+  Count will be the most up-to-date number of likes
+  Preferences:
+  Automatically sanitizes.
+*/
+
+module.exports.hasLiked=(function (userid, imageid, callback) {
+  imageid=sanitize(imageid);
+  userid=sanitize(userid);
+
+  module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
+    if (error)
+      callback(null, error);
+    else if (rows[0])
+      callback(true, null);
+    else
+      callback(false, null);
+
   });
 });
