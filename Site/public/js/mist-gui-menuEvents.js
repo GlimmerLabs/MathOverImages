@@ -113,31 +113,37 @@ menuButtonLayer.on('click', function(){
     var group = evt.target.getParent();
     if (tagsOn) {
      if (isFunction(group) || isValue(group)) {
-      openTag = makeLabel(group);
-      labelLayer.add(openTag)
-      labelLayer.draw();
+      setTimeout(function(){
+        if (openTag) {
+          openTag.destroy();
+        }
+        var temp = menuLayer.getIntersection(stage.getPointerPosition());
+        if (temp && group == temp.getParent()) {
+          openTag = makeLabel(group);
+          labelLayer.add(openTag)
+          labelLayer.draw(); 
+        }
+      }, 500);
     } 
   }
 });
 
-menuLayer.on('mouseout', function(evt) {
-  var group = evt.target.getParent();
-  if (tagsOn) {  
-    if (isFunction(group) || isValue(group)) {
+  menuLayer.on('mouseout', function(evt) {
+    var group = evt.target.getParent();
+    if (openTag) {  
       openTag.destroy();
       labelLayer.draw();
     }
-  }
-});
+  });
 
 toggleTag.on('mouseover', function() {
   toggleTag.children[0].setAttr('fill', 'black');
-  labelLayer.draw();
+  borderLayer.draw();
 });
 
 toggleTag.on('mouseout', function() {
   toggleTag.children[0].setAttr('fill', '#787878');
-  labelLayer.draw();
+  borderLayer.draw();
 });
 
 toggleTag.on('mouseup', function(){
@@ -149,7 +155,7 @@ toggleTag.on('mouseup', function(){
     tagsOn = true;
     toggleTag.children[0].setAttr('text', 'Turn Labels Off');
   }
-  labelLayer.draw();
+  borderLayer.draw();
 });
 
 // CONTROL MENU EVENTS 

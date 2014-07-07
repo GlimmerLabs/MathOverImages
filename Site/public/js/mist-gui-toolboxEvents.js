@@ -72,13 +72,10 @@ undoGroup.on('mouseup', function() {
     undoAction(actionArray[currIndex - 1]);
     currIndex--;
     shadeUndoRedo();
+    openTag.destroy();
+    labelLayer.draw();
     toolboxLayer.draw();
   }
-});
-
-undoGroup.on('mouseout', function() {
-  undoButton.setAttr('shadowEnabled', false);
-  toolboxLayer.draw();
 });
 
 redoGroup.on('mousedown', function() {
@@ -94,15 +91,60 @@ redoGroup.on('mouseup', function() {
     redoAction(actionArray[currIndex]);
     currIndex++;
     shadeUndoRedo();
+    openTag.destroy();
+    labelLayer.draw();
     toolboxLayer.draw();
   }
 });
 
-redoGroup.on('mouseout', function() {
-  redoButton.setAttr('shadowEnabled', false);
-  toolboxLayer.draw();
-});
 
 toolboxControl.on('mousedown', function() {
   toolboxGroup.startDrag();
+});
+
+toolboxLayer.on('mouseover', function(evt) {
+  var group = evt.target.getParent();
+  var name = group.name();
+  if (name == 'undo' || name == 'redo') {
+    var valid = (name == 'undo' && currIndex > 0) || (name == 'redo' && totalIndex > currIndex);
+    if (valid) {
+      setTimeout(function(){
+        if (openTag) {
+          openTag.destroy();
+        }
+        var temp = toolboxLayer.getIntersection(stage.getPointerPosition());
+        if (temp && group == temp.getParent()) {
+          openTag = makeToolLabel(group);
+          labelLayer.add(openTag);
+          labelLayer.draw();
+        } 
+      }, 500);
+    } 
+  }
+  else if (name && tagsOn) {
+    setTimeout(function(){
+      if (openTag) {
+        openTag.destroy();
+      }
+      var temp = toolboxLayer.getIntersection(stage.getPointerPosition());
+      if (temp && group == temp.getParent()) {
+        openTag = makeToolLabel(group);
+        labelLayer.add(openTag);
+        labelLayer.draw();
+      } 
+    }, 500);
+  }
+});
+
+toolboxLayer.on('mouseout', function(evt) {
+  var group = evt.target.getParent();
+  var name = group.name();
+  if (name == 'undo' || name == 'redo') {
+    group.children[0].setAttr('shadowEnabled', false);
+    toolboxLayer.draw();
+  }
+  if (openTag) {
+    openTag.destroy();
+    labelLayer.draw();
+  }
 });

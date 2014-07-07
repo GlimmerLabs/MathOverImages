@@ -114,6 +114,7 @@ There are 3 different modes:
           else {
             insertToArray(actionToObject('replace', currLine, oldLine));
           }
+          //setOutletOpacity(parent);
           updateForward(parent);
         }  
     } // if makingline
@@ -130,7 +131,7 @@ There are 3 different modes:
         }
         setTimeout(function() {workLayer.draw()}, 50);
       } 
-      else {
+      else if (parent.name() != 'rgb') {
         makingLine = true;
         currLine = makeLine(parent);
         parent.attrs.lineOut[parent.attrs.lineOut.length] = currLine;
