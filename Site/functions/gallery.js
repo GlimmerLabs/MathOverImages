@@ -19,7 +19,8 @@ var filedatabase;
 module.exports.buildRandomPage = (function(req, res, database) {
   filedatabase=database;
   module.exports.getRandomImages (9, function(images, error){
-    setLikes(images, req.session.user.userid, function(imageArray, errorArray){
+    var userid = (req.session.user) ? req.session.user.userid : null;
+    setLikes(images, userid, function(imageArray, errorArray){
       res.render('../public/views/gallery.jade',{
         loggedIn: req.session.loggedIn,
         user: req.session.user,
@@ -34,7 +35,8 @@ module.exports.buildRandomPage = (function(req, res, database) {
 module.exports.buildRecentsPage = function(req, res, database) {
   filedatabase=database;
   module.exports.getRecentImages(9, req.params.pageNumber, function(images, nextPage,  error) {
-    setLikes(images, req.session.user.userid, function(imageArray, errorArray){
+    var userid = (req.session.user) ? req.session.user.userid : null;
+    setLikes(images, userid, function(imageArray, errorArray){
       res.render('../public/views/gallery.jade',{
         loggedIn: req.session.loggedIn,
         user: req.session.user,
@@ -106,14 +108,15 @@ module.exports.getRecentImages= (function(count, page, callback) {
 module.exports.buildTopRatedPage = function(req, res, database) {
     filedatabase=database;
     module.exports.getTopRated(9, req.params.pageNumber, function(images, nextPage, error) {
-        setLikes(images, req.session.user.userid, function(imageArray, errorArray){
-          res.render('../public/views/gallery.jade',{
-            loggedIn: req.session.loggedIn,
-            user: req.session.user,
-            images: imageArray,
-            currentPage: req.params.pageNumber,
-            type: "toprated"
-          });
+        var userid = (req.session.user) ? req.session.user.userid : null;
+        setLikes(images, userid, function(imageArray, errorArray){
+            res.render('../public/views/gallery.jade',{
+              loggedIn: req.session.loggedIn,
+              user: req.session.user,
+              images: imageArray,
+              currentPage: req.params.pageNumber,
+              type: "toprated"
+            });
         });
     });
 };
