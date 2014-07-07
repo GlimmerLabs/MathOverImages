@@ -154,6 +154,7 @@ var popWsYesButtonGroup = new Kinetic.Group ({
 	name: 'yes',
 	visible: false
 });
+saveWsGroup.add(popWsYesButtonGroup);
 
 popWsYesButtonGroup.add(new Kinetic.Rect ({
 	x: 0,
