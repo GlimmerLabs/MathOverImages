@@ -66,7 +66,22 @@ div.comment p {
 div.comment h1.op a{
 	background-color: #3fAAA0;
 }
-
+.starred{
+	display: inline-block;
+}
+.starred::first-letter{
+	color: #EFDC5C;
+	font-size: 1em;
+}
+.starred:hover::first-letter{
+	color: #979797;
+}
+.unstarred{
+	display: inline-block;
+}
+.unstarred:hover::first-letter{
+	color: #EFDC5C;
+}
 #leaveComment form {
 }
 
