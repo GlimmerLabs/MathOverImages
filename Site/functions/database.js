@@ -783,11 +783,11 @@ module.exports.toggleLike=(function (userid, imageid, callback) {
             if (error)
               callback(false, error);
             else
-              module.exports.query("UPDATE images SET rating='" + (results.ratings + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
+              module.exports.query("UPDATE images SET rating='" + (results[0].rating + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
                 if (error)
                   callback(false, error);
                 else
-                  callback(true, null);
+                  callback("Liked", null);
               }); // Update images table with new rating
           }); // Find current rating of image
       }); // Add rating
@@ -800,11 +800,11 @@ module.exports.toggleLike=(function (userid, imageid, callback) {
           module.exports.query("SELECT rating FROM images WHERE imageid='" + imageid + "';", function(results, error){
             if (error)
               callback(false, error);
-            else module.exports.query("UPDATE images SET rating='" + (results.ratings - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, err){
+            else module.exports.query("UPDATE images SET rating='" + (results[0].rating - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, err){
               if (err)
                 callback(false, err);
               else
-                callback(true, null);
+                callback("Unliked", null);
             }); // Update images table with new rating
           }); // Find current rating of image
       }); // Delete rating from table
@@ -841,13 +841,15 @@ module.exports.countNumberofLikes=(function (imageid, callback) {
   Procedure:
   database.hasLiked(userid, imageid, callback(liked, error));
   Parameters:
+  userid, the user to check likes
   imageid, the image to check likes
   Purpose:
-  To get the results of ratings in each image
+  To check to see if a user has rated an image
   Pre-conditions:
   Image exists
+  User exists
   Post-conditions:
-  Count will be the most up-to-date number of likes
+  liked will be a boolean
   Preferences:
   Automatically sanitizes.
 */
@@ -855,7 +857,6 @@ module.exports.countNumberofLikes=(function (imageid, callback) {
 module.exports.hasLiked=(function (userid, imageid, callback) {
   imageid=sanitize(imageid);
   userid=sanitize(userid);
-
   module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
     if (error)
       callback(null, error);
@@ -863,6 +864,5 @@ module.exports.hasLiked=(function (userid, imageid, callback) {
       callback(true, null);
     else
       callback(false, null);
-
   });
 });
