@@ -23,3 +23,9 @@ var stage = new Kinetic.Stage({
  stage.add(renderLayer);
 
 readyEditing(stage);
+
+var prevWorkspace = initWorkspace();
+
+if (prevWorkspace) {
+	jsonToWorkspace(prevWorkspace);
+}

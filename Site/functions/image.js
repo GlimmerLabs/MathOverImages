@@ -26,6 +26,15 @@ module.exports.saveComment= function(req, res, database) {
 	if(!success)
 	    res.end(error)
 	else
-	   res.redirect('/image/'+ req.params.imageid);
+	   res.redirect('back');
+   });
+}
+
+module.exports.deleteImage= function(req, res, database) {
+    database.deleteImage(req.session.user.userid, req.params.imageid, function(success, error) {
+	if(!success)
+	    res.end(error)
+	else
+	   res.redirect('/');
    });
 }

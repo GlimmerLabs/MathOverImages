@@ -637,7 +637,7 @@ module.exports.getIDforUsername = (function (username, callback) {
 
 module.exports.imageInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
-  module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid  FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
+  module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid, images.userid FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
     if (error)
       callback(null, error);
     else if (!rows[0])
@@ -726,6 +726,19 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
   });
 });
 
+// delete Image
+module.exports.deleteImage=(function (userid, imageid, callback) {
+    userid=sanitize(userid);
+    imageid=sanitize(imageid);
+    module.exports.query("DELETE FROM images WHERE imageid='" + imageid + "' AND userid= '" + userid + "';", function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
+});
+
+// get all images for user
 module.exports.getAllImagesforUser=(function (userid, callback) {
   userid=sanitize(userid);
   module.exports.query("SELECT images.imageid, images.title, users.username, images.userid, images.code, images.rating, images.modifiedAt from images, users WHERE users.userid=images.userid and users.userid='" + userid + "' ORDER BY images.modifiedAt DESC;", function (rows, error){

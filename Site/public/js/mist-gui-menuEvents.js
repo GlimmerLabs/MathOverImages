@@ -202,5 +202,5 @@ saveButton.on('mouseup', function(){
 
 openButton.on('mouseup', function(){
   enableWorkTool();
-  openOpenWsPopUp();
+  showLoadWorkspaceDialog();
 });

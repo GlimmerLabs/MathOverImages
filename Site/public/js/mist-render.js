@@ -216,7 +216,9 @@ MIST.render = function(exp, context, canvas, renderWidth, renderHeight,
   var d = new Date();
   var t = {
     s: d.getMilliseconds()/500 - 1,
-    m: (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1
+    m: (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1,
+    h: (d.getMinutes()*60 + d.getSeconds())/1800 - 1,
+    d: (d.getHours()*60 + d.getMinutes())/720 - 1
   };
   // Use the core function
   MIST.renderAt(t, exp, context, canvas, renderWidth, renderHeight,
