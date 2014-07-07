@@ -35,17 +35,14 @@ block content
       th(class='user'): a(href='/user/'+ comment[i].username)= comment[i].username
       td(class='comment')= comment[i].comment
    if loggedIn
-<<<<<<< HEAD
     div(id='leaveComment' class='comment')
      h1: a(href='/user/' + user.username)= user.username
      form(method='POST')
       textarea(name= 'newComment' required='required' placeholder='leave a comment')
-=======
     tr(id='leaveComment' class='comment')
      th(class="user"): a(href='/user/' + user.username)= user.username
      td: form(method='POST')
       textarea(name='newComment' placeholder='leave a comment')
->>>>>>> e9d534ba2a303681b178744893a592e61ed4328b
       input(type='submit' value='submit' name='commentSubmit')
     if (image.userid === user.userid)
      form(method='POST')
