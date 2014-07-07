@@ -787,7 +787,7 @@ module.exports.toggleLike=(function (userid, imageid, callback) {
                 if (error)
                   callback(false, error);
                 else
-                  callback(true, null);
+                  callback("Liked", null);
               }); // Update images table with new rating
           }); // Find current rating of image
       }); // Add rating
@@ -804,7 +804,7 @@ module.exports.toggleLike=(function (userid, imageid, callback) {
               if (err)
                 callback(false, err);
               else
-                callback(true, null);
+                callback("Unliked", null);
             }); // Update images table with new rating
           }); // Find current rating of image
       }); // Delete rating from table
