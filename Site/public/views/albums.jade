@@ -31,9 +31,8 @@ block content
       a(href='/challenges' class='subview') challenges
     div(id = 'albums')
       a(href='/'+ profileBeingViewed + '/images/')
-          h1 All my Images >
+        h1.all All my Images >
       - for(var i=0; i < albums.length; i++)
         figure
           a(href='/albums/' + albums[i].albumid)
-              h1= albums[i].name
-              img(src = '/samples/color2.jpg')
+              h1= albums[i].name 
