@@ -19,34 +19,44 @@ var filedatabase;
 module.exports.buildRandomPage = (function(req, res, database) {
   filedatabase=database;
   module.exports.getRandomImages (9, function(images, error){
-    var userid = (req.session.user) ? req.session.user.userid : null;
-    setLikes(images, userid, function(imageArray, errorArray){
-      res.render('../public/views/gallery.jade',{
-        loggedIn: req.session.loggedIn,
-        user: req.session.user,
-        images: imageArray,
-        nextPage: nextPage,
-        currentPage: req.params.pageNumber,
-        type: "random"
+    if(error) {
+      res.redirect("/404");
+    };
+    else {
+      var userid = (req.session.user) ? req.session.user.userid : null;
+      setLikes(images, userid, function(imageArray, errorArray){
+        res.render('../public/views/gallery.jade',{
+          loggedIn: req.session.loggedIn,
+          user: req.session.user,
+          images: imageArray,
+          nextPage: nextPage,
+          currentPage: req.params.pageNumber,
+          type: "random"
+        });
       });
-    });
+    };
   });
 });
 
 module.exports.buildRecentsPage = function(req, res, database) {
   filedatabase=database;
   module.exports.getRecentImages(9, req.params.pageNumber, function(images, nextPage,  error) {
-    var userid = (req.session.user) ? req.session.user.userid : null;
-    setLikes(images, userid, function(imageArray, errorArray){
-      res.render('../public/views/gallery.jade',{
-        loggedIn: req.session.loggedIn,
-        user: req.session.user,
-        images: imageArray,
-        nextPage: nextPage,
-        currentPage: req.params.pageNumber,
-        type: "recent"
+    if(error) {
+      res.redirect("/404");
+    };
+    else {
+      var userid = (req.session.user) ? req.session.user.userid : null;
+      setLikes(images, userid, function(imageArray, errorArray){
+        res.render('../public/views/gallery.jade',{
+          loggedIn: req.session.loggedIn,
+          user: req.session.user,
+          images: imageArray,
+          nextPage: nextPage,
+          currentPage: req.params.pageNumber,
+          type: "recent"
+        });
       });
-    });
+    };
   });
 };
 
@@ -99,7 +109,7 @@ module.exports.getRecentImages= (function(count, page, callback) {
   var start = (page-1)*count;
   filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT " + start +","+ (count+1) + ";", function(rows, error){
     if(rows == null) {
-      
+      callback(null, null, true);
     }
     else if(rows.length <= count){
       callback(rows.slice(0, count), false, error)
@@ -113,17 +123,22 @@ module.exports.getRecentImages= (function(count, page, callback) {
 module.exports.buildTopRatedPage = function(req, res, database) {
     filedatabase=database;
     module.exports.getTopRated(9, req.params.pageNumber, function(images, nextPage, error) {
-        var userid = (req.session.user) ? req.session.user.userid : null;
-        setLikes(images, userid, function(imageArray, errorArray){
-            res.render('../public/views/gallery.jade',{
-              loggedIn: req.session.loggedIn,
-              user: req.session.user,
-              images: imageArray,
-              currentPage: req.params.pageNumber,
-              nextPage: nextPage,
-              type: "toprated"
-            });
-        });
+        if(error) {
+          res.redirect("/404");
+        }
+        else {
+          var userid = (req.session.user) ? req.session.user.userid : null;
+          setLikes(images, userid, function(imageArray, errorArray){
+              res.render('../public/views/gallery.jade',{
+                loggedIn: req.session.loggedIn,
+                user: req.session.user,
+                images: imageArray,
+                currentPage: req.params.pageNumber,
+                nextPage: nextPage,
+                type: "toprated"
+              });
+          });
+        }
     });
 };
 
@@ -131,7 +146,10 @@ module.exports.getTopRated= (function(count, page, callback) {
 
     var start = (page-1)*count;
     filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY rating DESC LIMIT " + start +","+ (count+1) + ";", function(rows, error){
-    if(rows.length <= count){
+    if(rows == null) {
+      callback(null, null, true);
+    }
+    else if(rows.length <= count){
       callback(rows.slice(0, count), false, error)
     }
     else{
