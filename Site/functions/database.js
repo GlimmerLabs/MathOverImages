@@ -718,7 +718,7 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
   userid=sanitize(userid);
   imageid=sanitize(imageid);
   newComment=sanitize(newComment);
-  module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') +"');" , function (rows, error){
+  module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "','" + UTC_TIMESTAMP +"');" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -868,14 +868,53 @@ module.exports.countNumberofLikes=(function (imageid, callback) {
 */
 
 module.exports.hasLiked=(function (userid, imageid, callback) {
-  imageid=sanitize(imageid);
-  userid=sanitize(userid);
-  module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
-    if (error)
-      callback(null, error);
-    else if (rows[0])
-      callback(true, null);
-    else
-      callback(false, null);
-  });
+    imageid=sanitize(imageid);
+    userid=sanitize(userid);
+    module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else if (rows[0])
+	    callback(true, null);
+	else
+	    callback(false, null);
+    });
+});
+
+
+// create Album
+module.exports.createAlbum=(function (userid, name, dateCreated, callback) {
+    userid=sanitize(userid);
+    name=sanitize(name);
+    module.exports.query("INSERT INTO albums (userid, name, dateCreated) VALUES('" + userid + "','" + name + "', UTC_TIMESTAMP);", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else
+	    callback(rows, null);
+    });
+});
+
+//delete from album (not image database)
+module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
+    albumid=sanitize(albumid);
+    imageid=sanitize(imageid);
+    module.exports.query("DELETE FROM albumContents WHERE albumid='" + albumid + "' AND imageid='" +imageid + "';",function (rows, error){
+	if (error)
+	    callback(null, error);
+	else
+	    callback(rows, null);
+    });
+});
+
+
+
+// add to album
+module.exports.addtoAlbum=(function (albumid, imageid, dateAdded, callback) {
+    userid=sanitize(userid);
+    name=sanitize(name);
+    module.exports.query("INSERT INTO albumContents (albumid, imageid, dateAdded) VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else
+	    callback(rows, null);
+    });
 });
