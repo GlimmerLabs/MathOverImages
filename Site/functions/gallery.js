@@ -96,12 +96,12 @@ module.exports.getRecentImages= (function(count, page, callback) {
 
   var start = (page-1)*count;
   filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT " + start +","+ (count+1) + ";", function(rows, error){
-  if(rows.length <=9){
-    callback(rows.slice(0, count), false, error)
-  }
-  else{
-    callback(rows.slice(0, count),true,  error);
-  }
+    else if(rows.length <= count){
+      callback(rows.slice(0, count), false, error)
+    }
+    else{
+      callback(rows.slice(0, count),true,  error);
+    }
   });
 });
 
@@ -125,11 +125,11 @@ module.exports.getTopRated= (function(count, page, callback) {
 
     var start = (page-1)*count;
     filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY rating DESC LIMIT " + start +","+ (count+1) + ";", function(rows, error){
-  if(rows.length <=9){
-    callback(rows.slice(0, count), false, error)
-  }
-  else{
-    callback(rows.slice(0, count),true,  error);
-  }
+    if(rows.length <= count){
+      callback(rows.slice(0, count), false, error)
+    }
+    else{
+      callback(rows.slice(0, count),true,  error);
+    }
   });
 });
