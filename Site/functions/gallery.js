@@ -6,7 +6,7 @@ var setLikes = function(imageArray, userID, callback) {
   var errorsArray = [];
   for(var image = 0; image < imageArrayClone.length; image++) {
     (function(currentIndex){
-      database.hasLiked(userId, imageArrayClone[currentIndex].imageid, function(liked, error) {
+      filedatabase.hasLiked(userID, imageArrayClone[currentIndex].imageid, function(liked, error) {
         imageArrayClone[currentIndex].liked = liked;
         errorsArray.push(error); 
       });
