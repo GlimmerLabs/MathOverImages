@@ -143,6 +143,7 @@ module.exports.userExists = (function(checkString, callback){
   Parameters:
   userid, the userid of the current session user
   checkstring, a string containing a desired title for an image
+  callback(exists), a function describing what to do with the result
   Produces:
   exists, a BOOLEAN result
   Pre-conditions:
@@ -150,27 +151,28 @@ module.exports.userExists = (function(checkString, callback){
   Post-conditions:
   None
 */
-module.exports.imageExists = (function(userid, checkString){
+module.exports.imageExists = (function(userid, checkString, callback){
 
     checkstring = sanitize(checkString); // Always sanitize user input.
     // check if string is a username
     module.exports.query("SELECT title FROM images WHERE title = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
   if (!rows[0]){ // string is not a username
-    return false;
+    callback(false);
   }
   // username exists
-  else return true;
+  else callback(true);
   });
-}); // database.imageExists(userid, checkString;
+}); // database.imageExists(userid, checkString, callback(exists));
 
 /*
   Procedure:
-  database.wsExists(userid, checkString;
+  database.wsExists(userid, checkString, callback(exists));
   Purpose:
   Checks to see if a workspace with the given string as a name exists for the user
   Parameters:
   userid, the userid of the current session user
   checkstring, a string containing a desired name for a workspace
+  callback(exists), a function describing what to do with the result
   Produces:
   exists, a BOOLEAN result
   Pre-conditions:
@@ -178,16 +180,16 @@ module.exports.imageExists = (function(userid, checkString){
   Post-conditions:
   None
 */
-module.exports.wsExists = (function(userid, checkString){
+module.exports.wsExists = (function(userid, checkString, callback){
 
     checkstring = sanitize(checkString); // Always sanitize user input.
     // check if string is a username
     module.exports.query("SELECT name FROM workspaces WHERE name = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
   if (!rows[0]){ // string is not a username
-    return false;
+    callback(false);;
   }
   // username exists
-  else return true;
+  else callback(true);;
   });
 }); // database.wsExists(userid, checkString;
 
