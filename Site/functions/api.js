@@ -292,7 +292,7 @@ title: The title of the image
 */
 handlers.imageexists = function(info, req, res) {
   if (!req.session.loggedIn) {
-    fail(res, "Could not save image because you're not logged in");
+    res.send("logged out");
   } else {
     database.imageExists(req.session.user.userid, info.title, function(exists) {
       res.send(exists);
@@ -307,7 +307,7 @@ title: The title of the image
 */
 handlers.wsexists = function(info, req, res) {
   if (!req.session.loggedIn) {
-    fail(res, "Could not save image because you're not logged in");
+    res.send("logged out");
   } else {
     database.wsExists(req.session.user.userid, info.name, function(exists) {
       res.send(exists);
