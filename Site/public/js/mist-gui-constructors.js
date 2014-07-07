@@ -33,8 +33,8 @@
       renderFunction: null,
       visible: false,
       renderLayer: null,
-                        scaleX: 1,
-                        scaleY: 1
+      scaleX: 1,
+      scaleY: 1
     });
     /* create rectangle shape */
     var newRect = new Kinetic.Rect({
