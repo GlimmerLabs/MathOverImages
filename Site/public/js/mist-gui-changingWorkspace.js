@@ -146,14 +146,15 @@
           // re-call the function on the line in question's deletion
           undoAction(connections[i]);
         } // go through each of the old line connections
-        removeShadow(currShape);
-        currShape = element;
-        setSelectedShadow(currShape);
+        updateForward(element);
+        removeShadow(element);
         updateFunBar();        
       } // if node
-      // if working with a line
+      // else working with a line
       else {
         insertLine(actionObj);
+        assertRenderable(actionObj.sink);
+        updateForward(actionObj.sink);
       } // else element is a line
       } // if delete
       // if the action in question is an insertion
@@ -198,7 +199,7 @@
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             oldGroup.moveTo(workLayer);
-            replaceNode (element, oldGroup);
+            replaceNode(element, oldGroup);
             var totalNeeded = oldGroup.children.length + actionObj.connections.length;
             for (var i = 0; i < actionObj.connections.length; i++)
             {
@@ -206,12 +207,16 @@
                 addOutlet(oldGroup);
               }
               insertLine(actionObj.connections[i]);
+              assertRenderable(actionObj.connections[i].sink);
+              updateForward(actionObj.connections[i].sink);
             }
             workLayer.draw();
         } // if node
         else {
             removeLine(element);
             insertLine(actionObj.deleteLine);
+            assertRenderable(actionObj.sink);
+            updateForward(actionObj.sink);
         } // else line
       } // if replace
     } // if undo
@@ -301,6 +306,8 @@
         else {
           // insert the old line
           insertLine(actionObj);
+          assertRenderable(actionObj.sink);
+          updateForward(actionObj.sink);
           lineLayer.draw();
       }
       workLayer.draw();
@@ -326,24 +333,30 @@
         removeShadow(currShape);
         currShape = element;
         setSelectedShadow(currShape);
-        updateFunBar();
+        updateForward(element);
+        updateFunBar(); 
       } // if move
       // else replace
       else {
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             element.moveTo(workLayer);
-            replaceNode (oldGroup, element);
-            
+            replaceNode (oldGroup, element); 
             for (var i = 0; i < actionObj.connections.length; i++)
             {
+              var lineObj = actionObj.connections[i];
+            
               insertLine(actionObj.connections[i]);
+              assertRenderable(actionObj.connections[i].sink);
+              updateForward(actionObj.connections[i].sink);
             }
 
         } // if node
         else {
           removeLine(elementTable[actionObj.deleteLine.id]);
           insertLine(actionObj);
+          assertRenderable(actionObj.sink);
+          updateForward(actionObj.sink);
         } // else line
       } // else replace
       dragLayer.draw(); 
@@ -395,55 +408,52 @@
   }
     // update
     updateForward(sink);
+    setOutletOpacity(sink);
 };
 
   /**
    * insertLine takes an actionObj, finds the corresponding line, moves it to the 
    * lineLayer, and connects the line to its source and sink.
-   * updates the funBar text. 
    */ 
    var insertLine = function(actionObj) {
     var sink = actionObj.sink;
     var source = actionObj.source;
     var outlet = sink.children[actionObj.sinkIndex + 3];
-    var element = elementTable[actionObj.id];
-    // move old line to the lineLayer
-    element.moveTo(lineLayer);
-    // connect line to source
-    element.attrs.source = source;
-    // change sourceIndex in line
-    element.attrs.sourceIndex = source.attrs.lineOut.length;
-    // connect source to line
-    source.attrs.lineOut[source.attrs.lineOut.length] = element;
-    // connect line to outlet
-    element.attrs.outlet = outlet;
-    // connect outlet to line
-    outlet.attrs.lineIn = element;
-    // increment numInputs
-    sink.attrs.numInputs++;
-    // add outlet if nessecary
-    if (sink.children[sink.children.length - 1].attrs.lineIn) {
-      addOutlet(sink);
+    if (outlet) {
+      var element = elementTable[actionObj.id];
+      // move old line to the lineLayer
+      element.moveTo(lineLayer);
+      // connect line to source
+      element.attrs.source = source;
+      // change sourceIndex in line
+      element.attrs.sourceIndex = source.attrs.lineOut.length;
+      // connect source to line
+      source.attrs.lineOut[source.attrs.lineOut.length] = element;
+      // connect line to outlet
+      element.attrs.outlet = outlet;
+      // connect outlet to line
+      outlet.attrs.lineIn = element;
+      // increment numInputs
+      sink.attrs.numInputs++;
+      // add outlet if nessecary
+      if (sink.children[sink.children.length - 1].attrs.lineIn) {
+        addOutlet(sink);
+      }
+      // set the line's attributes
+      element.setAttrs({
+        scale: 1,
+        shadowEnabled: false
+      });
+      var temp = currShape;
+      // update the currshape to be the sink and re-draw
+      currShape = sink;
+      dragLayer.draw();
+      // update the currShape to be the source and re-draw
+      currShape = actionObj.source;
+      dragLayer.draw();
+      currShape = temp;
     }
-    // assert and update renderability of the sink
-    assertRenderable(sink);
-    // if the currShape is defined
-    if (currShape != undefined) {
-      // update the funBarText
-      updateFunBar();
-  }
-    // set the line's attributes
-    element.setAttrs({
-      scale: 1,
-      shadowEnabled: false
-  });
-    // update the currshape to be the sink and re-draw
-    currShape = sink;
-    dragLayer.draw();
-    // update the currShape to be the source and re-draw
-    currShape = actionObj.source;
-    dragLayer.draw();
-};
+  };
 
 
   /**

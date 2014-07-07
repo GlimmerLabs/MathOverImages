@@ -686,5 +686,62 @@ module.exports.getAllImagesforUser=(function (userid, callback) {
 	    callback(null, error);
 	else
 	    callback(rows, null);
-});
+    });
 }); 
+
+module.exports.pictureRatings=(function (userid, imageid, callback) {
+    userid=sanitize(userid);
+    imageid=sanitize(imageid);
+    // has the person actually rated this image?
+    module.exports.query("SELECT ratings.userid, ratings.imageid FROM ratings WHERE ratings.imageid='" + imageid + "' AND ratings.userid='" + userid + "';", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else if (!rows[0])//{ 
+	    // rating for this image by this user does not exist, add this rating, increment rating
+	    module.exports.query("INSERT INTO ratings (userid, imageid) VALUES ('" + userid + "', '" + imageid + "');", function (rows, error){
+		if (error)
+		    callback(null, error);
+		else
+		    module.exports.query("SELECT images.rating FROM images WHERE images.imageid='" + imageid + "';", function(results, error){
+			if (error)
+			    callback(null, error);
+			else module.exports.query("UPDATE images SET rating='" + (results.ratings + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
+			    if (err)
+				callback(null, err);
+			    else
+				callback(updated, null);
+			});
+		    });
+	    });
+//	}
+	else 
+	    // if rating for this user already exists, delete the rating, decrement the rating
+	    module.exports.query("DELETE FROM ratings WHERE userid='" + userid + "' AND imageid='" + imageid + "';",  function (rows, error){
+		if (error)
+		    callback(null, error);else
+			module.exports.query("SELECT images.rating FROM images WHERE images.imageid='" + imageid + "';", function(results, error){
+			    if (error)
+				callback(null, error);
+			    else module.exports.query("UPDATE images SET rating='" + (results.ratings - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, error){
+				if (err)
+				    callback(null, err);
+				else
+				    callback(updated, null);
+			    });
+			});	
+	    });
+    });
+});
+
+
+// to get the results of ratings in each image: use rows.length (MAINTENANCE THING)
+module.exports.countNumberofRates=(function (imageid, callback) {
+    imageid=sanitize(imageid);
+    module.exports.query("SELECT ratings.userid, ratings.imageid FROM ratings WHERE ratings.imageid= '" + imageid + "';" , function (rows, error){
+		if (error)
+		    callback(null, error);
+		else
+		    callback(rows.length, null);
+	    });
+    });
+//}); 

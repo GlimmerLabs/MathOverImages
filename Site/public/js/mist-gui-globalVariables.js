@@ -34,9 +34,9 @@ var editableTextFont = 13;
 
 var variableColor = 'blue';
 
-var outletXOffset = width / 255;
+var outletXOffset = width / 400;
 var outletYOffset = functionRectSideLength / 3;
-var outletColor =  '#F2F2F2';
+var outletColor =  '#C4C4C4';
 
 var lineStrokeWidth = 2;
 
@@ -85,6 +85,34 @@ var funBarIconSideLength = funBarHeight / 4;
 var funBarIconTextWidth = width / 18;
 var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
+//SAVE SCREEN
+var popRectColor = '#e8e8e8'
+var popRectWidth = width * .4;
+var popRectHeight = height * .85;
+var popSaveGroupX = (width - popRectWidth) / 2;
+var popSaveGroupY = (height - popRectHeight) / 2;
+
+var popCanvasSide = popRectWidth * 0.9;
+var popCanvasResolution = width * (3/9);
+var popCanvasShiftX = popSaveGroupX + (popRectWidth - popCanvasSide) / 2;
+var popCanvasShiftY = popSaveGroupY + (popRectWidth - popCanvasSide) / 2;
+
+var popTextShiftX = (popRectWidth - popCanvasSide) / 2;
+var popTextShiftY = ((popRectWidth - popCanvasSide) / 1.5) + popCanvasSide;
+var popTextWidth = popCanvasSide;
+var popTextFontSize = 16;
+var popTextHeight = 2 * popTextFontSize;
+
+var nameTextShift = width / 18;
+
+var popButtonWidth = popCanvasSide / 3.4;
+var popButtonHeight = popTextHeight / 1.25;
+var popButtonShiftX = (popCanvasSide - (3 * popButtonWidth)) / 2;
+var popButtonColor = '#A0A3A3';
+var popButtonSelectedColor = '#B6BABA'
+
+var errorColor = '#A11212';
+
 
 
 var funNames = ['add', 'multiply', 'average', 'sine', 'cosine', 'absolute', 'sign', 'rgb'];
@@ -110,6 +138,9 @@ var values = {
 	day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
 	constant: {rep: '#',    max: 20, min: 2, color: valueConstantColor}
 }
+
+var RGBoutletColors = ['#C94949','#2D9C2D','#4272DB']
+
 
 // TOOLBOX BOOLEANS
  var lineToolOn = false;

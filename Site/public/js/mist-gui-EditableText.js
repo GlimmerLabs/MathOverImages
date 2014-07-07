@@ -352,7 +352,6 @@ var updateValueText = function(text) {
 		for (var i = 3; i < 5; i++) {
 			value.children[i].setAttr('visible', false);
 		}
-		assertRenderable(value);
 		updateForward(value);
 		updateFunBar();
 	}
