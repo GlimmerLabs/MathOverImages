@@ -320,6 +320,7 @@ var showLoadWorkspaceDialog = function() {
 // +-------------------+
 window.onbeforeunload = function() {
   var request = new XMLHttpRequest();
+  code = workspaceToJSON();
   var data = "action=storews&code="+code;
   request.open("POST", "/api", true);
   request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -329,7 +330,7 @@ window.onbeforeunload = function() {
 var initWorkspace = function() {
   var request = new XMLHttpRequest();
   var url = "/api?action=returnws";
-  request.open("GET", url, true);
+  request.open("GET", url, false);
   request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   request.send();
   return request.responseText;
