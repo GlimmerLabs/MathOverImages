@@ -196,6 +196,7 @@ var loadWorkspace = function(wsname) {
       console.log(json);
       resetWorkspace();
       jsonToWorkspace(json);
+      currentWorkspace = wsname;
     }
   }; // onReadyState
   request.open("GET",url,true);
@@ -312,3 +313,25 @@ var showLoadWorkspaceDialog = function() {
   // Show the dialog
   $("#load-workspace").dialog("open");
 } // showLoadWorkspaceDialog
+
+
+// +-------------------+-----------------------------------------------
+// | Session Functions |
+// +-------------------+
+window.onbeforeunload = function() {
+  var request = new XMLHttpRequest();
+  code = workspaceToJSON();
+  var data = "action=storews&code="+code;
+  request.open("POST", "/api", true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
+}
+
+var initWorkspace = function() {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=returnws";
+  request.open("GET", url, false);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send();
+  return request.responseText;
+}

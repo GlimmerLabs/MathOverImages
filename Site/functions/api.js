@@ -316,6 +316,25 @@ handlers.wsexists = function(info, req, res) {
 }
 
 /*
+store the ws in the session
+action: storews
+code: the code for the workspace
+*/
+handlers.storews = function(info, req, res) {
+  req.session.workspaceCode = info.code;
+  res.end();
+}
+
+/*
+return the ws stored in the session
+action: returnws
+*/
+handlers.returnws = function(info, req, res) {
+  res.send(req.session.workspaceCode);
+  res.end();
+}
+
+/*
 Toggle the like on an image
 action: toggleLike
 imageid, to like or unlike
