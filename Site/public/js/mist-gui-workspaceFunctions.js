@@ -215,12 +215,13 @@ var saveImage = function(title, code, isPublic, codeVisible, replace) {
 }
 
 /**
- * Determines if a workspace exists.
+ * Determines if a workspace exists.  Returns true if the workspace exists
+ * and false otherwise.
  */
 var wsExists = function(name) {
   var request = new XMLHttpRequest();
   var url = "/api?action=wsexists&name=" + name;
-  request,open("GET", "/api", false);
+  request.open("GET", url, false);
   request.send();
-  return request.responseText;
+  return eval(request.responseText);
 }
