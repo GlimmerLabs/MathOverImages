@@ -311,10 +311,10 @@ popSaveButtonGroup.on('mouseup', function(){
   else if (imageExists(newName) == 'true') {
   	popErrorText.setAttr('text', 'You\'ve already made an image called \'' + 
   		newName + '\'\n' + 'Please choose a different name.');
-  }
+  } // if image already exists in user's account
   else if (imageExists(newName) == 'logged out') {
   	popErrorText.setAttr('text', 'To save an image, please log in or sign up.');
-  }
+  } // if user is not logged in
   else {
     var renderFunction = currShape.attrs.renderFunction;
     saveImage(newName, renderFunction, true, true, true);
