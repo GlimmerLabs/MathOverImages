@@ -329,6 +329,6 @@ handlers.toggleLike = function(info, req, res) {
       if (error)
         fail(res, "Error: " + error);
       else
-        res.end(success);
+        res.end(success.toString());
     });
 }; // handlers.toggleLike
