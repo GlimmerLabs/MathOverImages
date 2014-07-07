@@ -9,6 +9,7 @@ lineLayer.on('click', function(evt) {
     removeLine(evt.target);
     insertToArray(actionToObject('delete', evt.target));
     lineLayer.draw();
+    workLayer.draw();
   }
 });
 

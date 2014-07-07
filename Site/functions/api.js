@@ -99,7 +99,7 @@ handlers.deletews = function(info, req, res) {
 
   // Build the query
   var query = "DELETE FROM workspaces WHERE userid=" +
-  req.session.user.userid + " and name='" + name + "'";
+      req.session.user.userid + " and name='" + name + "'";
 
   // Send the query
   database.query(query, function(rows, error) {
@@ -125,8 +125,8 @@ handlers.getws = function(info, req, res) {
   }
   else if (info.name) {
     var query = "SELECT data FROM workspaces WHERE userid=" +
-    req.session.user.userid + " and name='"  +
-    database.sanitize(info.name) + "'";
+        req.session.user.userid + " and name='"  +
+        database.sanitize(info.name) + "'";
     // console.log(query);
     database.query(query, function(rows, error) {
       if (error) {
@@ -156,7 +156,7 @@ handlers.listws = function(info, req, res) {
   }
   else {
     var query = "SELECT name FROM workspaces WHERE userid=" +
-    req.session.user.userid;
+        req.session.user.userid;
     database.query(query, function(rows, error) {
       if (error) {
         fail(res, "Error: "+error);
@@ -188,7 +188,7 @@ handlers.savews = function(info, req, res) {
   }
   else {
     var query = "SELECT id FROM workspaces WHERE name='"+
-    database.sanitize(info.name)+"' AND userid="+req.session.user.userid;
+        database.sanitize(info.name)+"' AND userid="+req.session.user.userid;
     database.query(query, function(rows, error) {
       if (error) {
         fail(res, "Error: "+error);
@@ -199,7 +199,7 @@ handlers.savews = function(info, req, res) {
         }
         else {
           var newQuery = "UPDATE workspaces SET data='"+
-          database.sanitize(info.data)+"' WHERE id="+rows[0].id;
+              database.sanitize(info.data)+"' WHERE id="+rows[0].id;
           database.query(newQuery, function(rows, error) {
             if (error) {
               fail(res, "Error: "+error);
@@ -212,8 +212,8 @@ handlers.savews = function(info, req, res) {
       } // If rows[0]
       else {
         var newQuery = "INSERT INTO workspaces (userid, name, data) VALUES (" +
-        req.session.user.userid + ",'" + database.sanitize(info.name) +
-        "','" + database.sanitize(info.data) +"')";
+            req.session.user.userid + ",'" + database.sanitize(info.name) +
+            "','" + database.sanitize(info.data) +"')";
         database.query(newQuery, function(rows, error) {
           if (error) {
             fail(res, "Error: "+error);
@@ -246,7 +246,7 @@ handlers.saveimage = function(info, req, res){
   }
   else {
     var query = "SELECT imageid FROM images WHERE title='"+
-    database.sanitize(info.title)+"' AND userid="+req.session.user.userid;
+        database.sanitize(info.title)+"' AND userid="+req.session.user.userid;
     database.query(query, function(rows, error) {
       if (error) {
         fail(res, "Error: "+error);
@@ -257,7 +257,7 @@ handlers.saveimage = function(info, req, res){
         }
         else {
           var newQuery = "UPDATE images SET code='"+
-          database.sanitize(info.code)+"', modifiedAt= UTC_TIMESTAMP WHERE imageid="+rows[0].imageid;
+              database.sanitize(info.code)+"', modifiedAt= UTC_TIMESTAMP WHERE imageid="+rows[0].imageid;
           database.query(newQuery, function(rows, error) {
             if (error) {
               fail(res, "Error: "+error);
@@ -284,3 +284,21 @@ handlers.saveimage = function(info, req, res){
     });
   }
 }// handlers.saveimage
+
+/*
+Toggle the like on an image
+action: toggleLike
+imageid, to like or unlike
+*/
+
+handlers.toggleLike = function(info, req, res) {
+  if (!req.session.loggedIn)
+    fail(res, "User is not logged in.");
+  else
+    database.toggleLike(req.session.user.userid, info.imageid, function(success, error){
+      if (error)
+        fail(res, "Error: " + error);
+      else
+        res.end(success);
+    });
+}; // handlers.toggleLike

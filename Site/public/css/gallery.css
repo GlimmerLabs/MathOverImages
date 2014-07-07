@@ -45,12 +45,22 @@
  width: 5%
 }
 */
-
-figure figcaption.left:first-letter{
+.starred{
+	display: inline-block;
+}
+.starred::first-letter{
 	color: #EFDC5C;
 	font-size: 1em;
 }
-
+.starred:hover::first-letter{
+	color: #979797;
+}
+.unstarred{
+	display: inline-block;
+}
+.unstarred:hover::first-letter{
+	color: #EFDC5C;
+}
 figure figcaption.right a{
 	color: #979797;
 	font-size: 1em;

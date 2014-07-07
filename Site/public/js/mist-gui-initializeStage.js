@@ -16,8 +16,8 @@ var stage = new Kinetic.Stage({
  stage.add(borderLayer);
  stage.add(funBarLayer);
  stage.add(textLayer);
- stage.add(labelLayer);
  stage.add(toolboxLayer);
+ stage.add(labelLayer);
  stage.add(dragLayer);
  stage.add(screenLayer);
  stage.add(renderLayer);
