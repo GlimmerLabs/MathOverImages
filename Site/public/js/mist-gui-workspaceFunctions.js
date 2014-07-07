@@ -314,10 +314,10 @@ var showLoadWorkspaceDialog = function() {
 } // showLoadWorkspaceDialog
 
 
-// +--------------+----------------------------------------------------
-// | Leave Page   |
-// +--------------+
-window.onbeforeunload = function () {
+// +-------------------+-----------------------------------------------
+// | Session Functions |
+// +-------------------+
+window.onbeforeunload = function() {
   var request = new XMLHttpRequest();
   var data = "action=storews&code="+code;
   request.open("POST", "/api", true);
@@ -325,5 +325,11 @@ window.onbeforeunload = function () {
   request.send(data);
 }
 
-
-
+var initWorkspace = function() {
+  var request = new XMLHttpRequest();
+  var url = "/api?action=returnws";
+  request.open("GET", url, true);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send();
+  return request.responseText;
+}
