@@ -23,7 +23,7 @@ block content
  div(id='main')
   h1= image.title
   h2= image.modifiedAt.toUTCString()
-  figure
+  figure(data-imageid=image.imageid)
    canvas(id='canvas' width='400' height='400')
    figcaption(class='left')= "★" + image.rating
    a(href='/user/'+ image.username)
