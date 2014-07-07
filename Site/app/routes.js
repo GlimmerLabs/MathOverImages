@@ -135,7 +135,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/tutorial/workspace', function(req, res) {
-      res.render('../public/views/tutorialWorkspace.jade', {
+      res.render('../public/views/tutorialGUI1.jade', {
       loggedIn: req.session.loggedIn,
       user: req.session.user
     });
