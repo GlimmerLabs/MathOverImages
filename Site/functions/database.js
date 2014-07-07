@@ -866,3 +866,15 @@ module.exports.hasLiked=(function (userid, imageid, callback) {
       callback(false, null);
   });
 });
+
+
+module.exports.deletePhoto=(function (userid, imageid, callback) {
+    userid=santize(userid);
+    imageid=sanitize(imageid);
+    module.exports.query("DELETE FROM images WHERE imageid='" +imageid + "' AND userid= '"+ userid +  "';", function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
+});
