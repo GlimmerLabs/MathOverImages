@@ -137,6 +137,62 @@ module.exports.userExists = (function(checkString, callback){
 
 /*
   Procedure:
+  database.imageExists(userid, checkString);
+  Purpose:
+  Checks to see if an image with the given string as a title exists for the user
+  Parameters:
+  userid, the userid of the current session user
+  checkstring, a string containing a desired title for an image
+  Produces:
+  exists, a BOOLEAN result
+  Pre-conditions:
+  None
+  Post-conditions:
+  None
+*/
+module.exports.imageExists = (function(userid, checkString){
+
+    checkstring = sanitize(checkString); // Always sanitize user input.
+    // check if string is a username
+    module.exports.query("SELECT title FROM images WHERE title = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
+  if (!rows[0]){ // string is not a username
+    return false;
+  }
+  // username exists
+  else return true;
+  });
+}); // database.imageExists(userid, checkString;
+
+/*
+  Procedure:
+  database.wsExists(userid, checkString;
+  Purpose:
+  Checks to see if a workspace with the given string as a name exists for the user
+  Parameters:
+  userid, the userid of the current session user
+  checkstring, a string containing a desired name for a workspace
+  Produces:
+  exists, a BOOLEAN result
+  Pre-conditions:
+  None
+  Post-conditions:
+  None
+*/
+module.exports.wsExists = (function(userid, checkString){
+
+    checkstring = sanitize(checkString); // Always sanitize user input.
+    // check if string is a username
+    module.exports.query("SELECT name FROM workspaces WHERE name = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
+  if (!rows[0]){ // string is not a username
+    return false;
+  }
+  // username exists
+  else return true;
+  });
+}); // database.wsExists(userid, checkString;
+
+/*
+  Procedure:
   database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
   Purpose:
   Adds a user to the database
