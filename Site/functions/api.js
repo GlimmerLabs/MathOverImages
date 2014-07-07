@@ -286,8 +286,9 @@ handlers.saveimage = function(info, req, res){
 }// handlers.saveimage
 
 /*
-imageid
-
+Toggle the like on an image
+action: toggleLike
+imageid, to like or unlike
 */
 
 handlers.toggleLike = function(info, req, res) {
