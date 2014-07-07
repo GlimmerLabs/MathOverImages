@@ -308,9 +308,12 @@ popSaveButtonGroup.on('mouseup', function(){
   if (newName == '' || newName == 'Enter a Name') {
     popErrorText.setAttr('text', 'Please enter a name for your image.');
   } // if no name is entered
-  else if (imageExists(newName)) {
+  else if (imageExists(newName) == 'true') {
   	popErrorText.setAttr('text', 'You\'ve already made an image called \'' + 
   		newName + '\'\n' + 'Please choose a different name.');
+  }
+  else if (imageExists(newName) == 'logged out') {
+  	popErrorText.setAttr('text', 'To save an image, please log in or sign up.');
   }
   else {
     var renderFunction = currShape.attrs.renderFunction;
