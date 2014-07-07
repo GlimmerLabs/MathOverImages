@@ -11,13 +11,15 @@ figure img {
 
 figure h1 {
 	color: #979797;
-	border: 2px solid #3FAAA0;
 	text-align: center;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;
 	white-space: nowrap;
 	width: 100%;
+	font-size: 1.3em;
+	border: 1px solid #ddd;
+	box-shadow: 0 0 5px #ddd;
 
 }
 
@@ -34,4 +36,9 @@ figure h1:hover {
 form input[type='image']{
     width: 20px;
     height: 20px;
+}
+
+.all {
+    color: #979797;
+    font-size: 1.3em;
 }
