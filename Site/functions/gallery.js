@@ -29,7 +29,6 @@ module.exports.buildRandomPage = (function(req, res, database) {
             loggedIn: req.session.loggedIn,
             user: req.session.user,
             images: imageArray,
-            nextPage: nextPage,
             currentPage: req.params.pageNumber,
             type: "random"
           }
