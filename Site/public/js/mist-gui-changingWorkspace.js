@@ -408,7 +408,7 @@
   }
     // update
     updateForward(sink);
-    setOutletOpacity(sink);
+    //setOutletOpacity(sink);
 };
 
   /**
