@@ -215,7 +215,7 @@
       y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
         outletYOffset + functionHalfStrokeWidth,
       fill: outletColor,
-      opacity: .7,
+      opacity: 1,
       stroke: 'black',
       strokeWidth: 1,
       lineIn: null,
