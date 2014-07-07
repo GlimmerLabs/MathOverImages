@@ -1,0 +1,13 @@
+/**
+ * jquery-override.css
+ *   Some standard mechanisms for overriding jquery.
+ */
+
+/**
+ * For some reason, modal dialog boxes leave a stripe.  THe following
+ * was suggested in 
+ * http://stackoverflow.com/questions/3200000/jquery-ui-modal-dialog-stripe-issue
+ */
+.ui-widget-overlay {
+  background: #000;
+} 
