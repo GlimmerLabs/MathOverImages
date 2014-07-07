@@ -34,52 +34,94 @@ var toolboxDescriptions = {
 };
 
 var tagColor = 'white';
-var pointerSize = width / 90;
-
+var pointerWidth = width / 90;
+var pointerHeight = width / 104;
+var triRadius = width / 156;
 
 
 var makeLabel = function(group) {
 	var xOffset = 0;
 	var rep = group.attrs.rep;
 	var text = menuFunctionDescriptions[rep];
-	if (isValue(group)){
-		xOffset = -4;
-		text = menuValuesDescriptions[group.name()];
+	if (rep == 'rgb') {
+		var label = new Kinetic.Group({
+			x: group.x(),
+			y: group.y()
+		});
+
+		var rgbText = new Kinetic.Text({
+			text: text,
+			x: -110,
+			y: pointerHeight + (1.1 * functionTotalSideLength),
+			padding: 5,
+			width: 160,
+			fill: 'black'
+		});
+
+		label.add(new Kinetic.Rect({
+			x: rgbText.x(),
+			y: rgbText.y(),
+			width: rgbText.width(),
+			height: rgbText.height(),
+			fill: tagColor,
+			lineJoin: 'round',
+			shadowColor: 'black',
+			shadowOffset: [5, 5],
+		}));
+
+		/*
+		label.add(new Kinetic.RegularPolygon({
+			x: (functionTotalSideLength / 2),
+			y: (1.2 * functionTotalSideLength),
+			sides: 3,
+			radius: 7,
+			fill: tagColor,
+			stroke: 'black',
+			strokeWidth: .3,
+			lineJoin: 'round',
+		}));
+*/
+
+		label.add(rgbText);
 	}
+	else {
+		if (isValue(group)){
+			xOffset = -4;
+			text = menuValuesDescriptions[group.name()];
+		}
+		var label = new Kinetic.Label ({
+			x: group.x() + (functionTotalSideLength / 2) + xOffset,
+			y: group.y() + (1.1 * functionTotalSideLength),
+		});
 
-	var label = new Kinetic.Label ({
-		x: group.x() + (functionTotalSideLength / 2) + xOffset,
-		y: group.y() + (1.1 * functionTotalSideLength)
-	});
+		label.add(new Kinetic.Tag({
+			fill: tagColor,
+			pointerDirection: 'up',
+			pointerWidth: pointerWidth,
+			pointerHeight: pointerHeight,
+			lineJoin: 'round',
+			shadowColor: 'black',
+			shadowOffset: [5, 5],
+		}));
 
-	label.add(new Kinetic.Tag({
-		fill: tagColor,
-		pointerDirection: 'up',
-		pointerWidth: pointerSize,
-		pointerHeight: pointerSize,
-		lineJoin: 'round',
-		shadowColor: 'black',
-		shadowOffset: [5, 5],
-	}));
-
-	label.add(new Kinetic.Text({
-		text: text,
-		fontFamily: globalFont,
-		fontSize: 13,
-		padding: 5,
-		fill: 'black'
-	}));
-	
-	if (label.children[1].width() > 160) {
-		label.children[1].destroy();
 		label.add(new Kinetic.Text({
 			text: text,
-			width: 160,
 			fontFamily: globalFont,
 			fontSize: 13,
 			padding: 5,
 			fill: 'black'
 		}));
+		if (label.children[1].width() > 160) {
+			label.children[1].destroy();
+			label.add(new Kinetic.Text({
+				text: text,
+				width: 160,
+				fontFamily: globalFont,
+				fontSize: 13,
+				padding: 5,
+				fill: 'black'
+			}));
+		}
 	}
 	return label;
 };
