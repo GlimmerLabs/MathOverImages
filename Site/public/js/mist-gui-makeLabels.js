@@ -145,8 +145,8 @@ var makeToolLabel = function(group) {
 	label.add(new Kinetic.Tag({
 		fill: tagColor,
 		pointerDirection: direction,
-		pointerWidth: pointerSize,
-		pointerHeight: pointerSize,
+		pointerWidth: pointerWidth,
+		pointerHeight: pointerHeight,
 		lineJoin: 'round',
 		shadowColor: 'black',
 		shadowOffset: [5, 5],

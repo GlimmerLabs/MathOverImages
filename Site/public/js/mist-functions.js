@@ -528,7 +528,7 @@ MIST.Collection = function(name, about) {
  */
 MIST.Collection.prototype.keys = function() {
   return Object.keys(this.values);
-} // MIST.Collecdtion.prototype.keys
+} // MIST.Collection.prototype.keys
 
 /**
  * Clear the contents of the collection.
