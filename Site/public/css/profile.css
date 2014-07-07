@@ -13,9 +13,20 @@
 	clear: left;
 }
 
-#featuredImage img {
-	width:380px;
-	height: 380px;
+h1.imageTitle {
+	color: #4A4A4A;
+	font-size: 2em;
+	margin: 0 auto;
+	font-weight: normal;
+	text-align: center;
+}
+
+.code {
+	visibility: hidden;
+}
+
+figure {
+	width: 400px;
 }
 
 #contactUser {
@@ -24,12 +35,12 @@
 }
 
 textarea{
-    resize: none;
-    color: #111111;
-    border-radius: 3px;
-    border: 1px solid #979797;
-    -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-    box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+	resize: none;
+	color: #111111;
+	border-radius: 3px;
+	border: 1px solid #979797;
+	-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+	box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
 }
 
 #contactUser textarea {
@@ -84,23 +95,23 @@ input:hover {
 }
 
 .settings:hover {
-    color: #EFDC5C;
-    background-color: #FFFFFF;
+	color: #EFDC5C;
+	background-color: #FFFFFF;
 }
 
 input[type='submit'] {
-    margin: 20px 0px;
-    color: #FFF;
-    background-color: #979797;
-    border:1px solid white;
-    font-size: 1em;
-    font-weight: 800;
+	margin: 20px 0px;
+	color: #FFF;
+	background-color: #979797;
+	border:1px solid white;
+	font-size: 1em;
+	font-weight: 800;
 }
 
 input[type='submit']:hover {
-    color: #979797;
-    background-color: #FFF;
-    cursor: pointer;
+	color: #979797;
+	background-color: #FFF;
+	cursor: pointer;
 }
 
 #edit-bio {
@@ -110,15 +121,15 @@ float: left;
 }
 
 figcaption.bio-view {
-  white-space: pre-wrap;
-  position: relative;
-  margin: 0px 50px;
-  width: 500px;
-  word-wrap: break-word;
-  -moz-hyphens:auto;
-  -ms-hyphens: auto;
-  -webkit-hyphens:auto;
-  hyphens: auto;
+	white-space: pre-wrap;
+	position: relative;
+	margin: 0px 50px;
+	width: 500px;
+	word-wrap: break-word;
+	-moz-hyphens:auto;
+	-ms-hyphens: auto;
+	-webkit-hyphens:auto;
+	hyphens: auto;
 }
 
 #bio-form {

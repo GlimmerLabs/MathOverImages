@@ -245,22 +245,12 @@
           var targetLine;
           // go through each of the outlets of the object
           for(var i = 3; i < element.children.length; i++) {
+            
             // grab each line to the outlet
             targetLine = element.children[i].attrs.lineIn;
             // if such a line exists
             if(targetLine != null) {
-              // empty out the outlet
-              targetLine.attrs.outlet = null;
-              var index = targetLine.attrs.sourceIndex;
-              var source = targetLine.attrs.source;
-              // go through the source's lineOuts after the lineOut of interest
-              for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
-                // incrementing all of their positions
-                source.attrs.lineOut[j].attrs.sourceIndex--;
-            }
-              // remove the lineOut of interest
-              targetLine.attrs.source.attrs.lineOut.splice(index, 1);
-              targetLine.remove();
+              removeLine(targetLine);
             } // if not null
         }
           // deal with the lines leading out of the node being deleted
@@ -408,7 +398,7 @@
   }
     // update
     updateForward(sink);
-    setOutletOpacity(sink);
+    //setOutletOpacity(sink);
 };
 
   /**

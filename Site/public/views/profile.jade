@@ -1,40 +1,53 @@
 extends ./partials/framework
 block title
-  title= viewing.username + " on MIST"
+	title= viewing.username + " on MIST"
 
 block extraMetas
 block extraLinks
-  script(type='text/javascript' src='/js/profile.js')
+	script(type='text/javascript' src='/js/profile.js')
+	script(type='text/javascript' src='/js/mist-utils.js')
+	script(type='text/javascript' src='/js/mist-functions.js')
+	script(type='text/javascript' src='/js/mist-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-layout.js')
+	script(type='text/javascript' src='/js/mist-functions-builtin.js')
+	script(type='text/javascript' src='/js/mist-render.js')
+	script(type='text/javascript' src='/js/mistui-dialogs.js')
+	script(type='text/javascript' src='/js/mistui-help.js')
+	script(type='text/javascript' src='/js/mistui-menus.js')
+	script(type='text/javascript' src='/js/mistui-animator.js')
+	script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+	script(type='text/javascript' src='/js/imagepage.js')
 block stylesheets
 
-  link(rel='stylesheet', href='/css/profile')
+	link(rel='stylesheet', href='/css/profile')
 
 
 block content
-  div(id='main')
-    div(id = 'pageTitle')
-      h1= viewing.username
-    div(id = 'subviews')
-      a(href='/user/'+ viewing.username class='subview' id='selected') profile
-      a(href='/badges' class='subview') badges
-      a(href='/user/'+ viewing.username +'/albums' class='subview') albums
-      a(href='/challenges' class='subview') challenges
-    div(id='subTitle')
-      p= "member since " + viewing.signupTime.toLocaleDateString()
-    div(id='featuredImage')
-      figure
-          img(src='/samples/bw1.jpg' alt='Untitled by username')
-          p
-            figcaption= "Untitled by " +  viewing.username
-    if viewingSelf
-      a(href='/accountSettings' class='settings'): account account settings
-      div(id='bio')
-        input(type='image' id='edit-bio' src='/icons/edit_button.png' value='submit')
-        figcaption(class='bio-view')= viewing.about
-          form(method='POST' id='bio-form')
-            textarea(name='aboutSection' cols='40' rows='10')= viewing.about
-            input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
-    else
-      div(id='bio')
-        figcaption(class='bio-view')= viewing.about
-        form(action='#' method='POST')
+	div(id='main')
+		div(id = 'pageTitle')
+			h1= viewing.username
+		div(id = 'subviews')
+			a(href='/user/'+ viewing.username class='subview' id='selected') profile
+			a(href='/badges' class='subview') badges
+			a(href='/user/'+ viewing.username +'/albums' class='subview') albums
+			a(href='/challenges' class='subview') challenges
+		div(id='subTitle')
+			p= "member since " + viewing.signupTime.toLocaleDateString()
+		div(id='featuredImage')
+			figure
+				h1(class='imageTitle')= image.title
+				canvas(id='canvas' width='400' height='400')
+				a(href='/user/'+ image.username): figcaption(class='right')= image.username
+			p(id='code' class='code')= image.code
+		if viewingSelf
+			a(href='/accountSettings' class='settings'): account account settings
+			div(id='bio')
+				input(type='image' id='edit-bio' src='/icons/edit_button.png' value='submit')
+				figcaption(class='bio-view')= viewing.about
+				form(method='POST' id='bio-form')
+					textarea(name='aboutSection' cols='40' rows='10')= viewing.about
+					input(type='submit' value='Update Bio' id='submit' name='aboutSubmit')
+		else
+			div(id='bio')
+				figcaption(class='bio-view')= viewing.about
+				form(action='#' method='POST')
