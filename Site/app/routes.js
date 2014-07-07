@@ -121,7 +121,7 @@ module.exports = function(app,passport,database) {
   //   Page for creating (something)
   /* create page */
   app.get('/tutorial', function(req, res) {
-    res.render('../public/views/tutorialHome.jade', {
+    res.render('../public/views/tutorialGUI1.jade', {
       loggedIn: req.session.loggedIn,
       user: req.session.user
     });

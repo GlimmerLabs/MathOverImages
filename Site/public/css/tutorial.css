@@ -56,8 +56,8 @@ p {
 }
 
 .image{
-  height: 30%;
-  width: 30%;
+  height: 50%;
+  width: 50%;
   border: 1px black solid;
   margin:2% 15%;
 }
@@ -71,3 +71,4 @@ p {
 #buttons{
   float: left;
 }
+
