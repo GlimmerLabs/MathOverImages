@@ -783,7 +783,7 @@ module.exports.toggleLike=(function (userid, imageid, callback) {
             if (error)
               callback(false, error);
             else
-              module.exports.query("UPDATE images SET rating='" + (results.ratings + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
+              module.exports.query("UPDATE images SET rating='" + (results[0].rating + 1) + "' WHERE imageid= '" + imageid + "';", function(updated, error){
                 if (error)
                   callback(false, error);
                 else
@@ -800,7 +800,7 @@ module.exports.toggleLike=(function (userid, imageid, callback) {
           module.exports.query("SELECT rating FROM images WHERE imageid='" + imageid + "';", function(results, error){
             if (error)
               callback(false, error);
-            else module.exports.query("UPDATE images SET rating='" + (results.ratings - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, err){
+            else module.exports.query("UPDATE images SET rating='" + (results[0].rating - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, err){
               if (err)
                 callback(false, err);
               else
