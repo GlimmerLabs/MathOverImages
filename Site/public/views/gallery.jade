@@ -15,6 +15,7 @@ block extraLinks
   script(type='text/javascript' src='/js/mistui-animator.js')
   script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
   script(type='text/javascript' src='/js/gallery.js')
+  script(type='text/javascript' src='/js/likes.js')
 
 block stylesheets
   link(rel='stylesheet', href='/css/gallery')
@@ -46,7 +47,7 @@ block content
         ul(class='rig columns-3')
           - for (var i=0; i < images.length; i++)
             li
-              figure
+              figure(data-imageid=images[i].imageid)
                 a(href='/image/' + images[i].imageid)
                   canvas(id='canvas'+i width='180px' height='180px')
                   input(type='hidden' id='code'+i value=images[i].code)
