@@ -25,7 +25,7 @@ function hideImage() {
 }
 $(document).ready(function() {
   hideImage();
-  $('#click00').click(function(evt) {
+  $('#click01').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').show();
@@ -52,7 +52,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click02').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -79,7 +79,7 @@ $(document).ready(function() {
     $('.image22').hide();
     $('.image23').hide();
   });
-  $('#click').click(function(evt) {
+  $('#click03').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -106,7 +106,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click04').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -133,7 +133,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click05').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -160,7 +160,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click06').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -187,7 +187,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click07').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -214,7 +214,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click08').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -241,7 +241,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click09').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -268,7 +268,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click10').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -298,7 +298,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click11').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -325,7 +325,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click12').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -352,7 +352,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click13').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -379,7 +379,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click14').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -406,7 +406,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click15').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -433,7 +433,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click16').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -460,7 +460,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click17').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -487,7 +487,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click18').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -514,7 +514,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click19').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -541,7 +541,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click20').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -568,7 +568,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click21').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -595,7 +595,7 @@ $(document).ready(function() {
     $('.image22').hide();
   });
 
-  $('#click').click(function(evt) {
+  $('#click22').click(function(evt) {
     hideImage();
     $('.image00').hide();
     $('.image01').hide();
@@ -621,3 +621,4 @@ $(document).ready(function() {
     $('.image21').hide();
     $('.image22').show();
   });
+});
