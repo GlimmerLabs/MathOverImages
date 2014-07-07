@@ -25,6 +25,7 @@ module.exports.buildRandomPage = (function(req, res, database) {
         loggedIn: req.session.loggedIn,
         user: req.session.user,
         images: imageArray,
+        nextPage: nextPage,
         currentPage: req.params.pageNumber,
         type: "random"
       });
@@ -41,6 +42,7 @@ module.exports.buildRecentsPage = function(req, res, database) {
         loggedIn: req.session.loggedIn,
         user: req.session.user,
         images: imageArray,
+        nextPage: nextPage,
         currentPage: req.params.pageNumber,
         type: "recent"
       });
@@ -96,6 +98,9 @@ module.exports.getRecentImages= (function(count, page, callback) {
 
   var start = (page-1)*count;
   filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY modifiedAt DESC LIMIT " + start +","+ (count+1) + ";", function(rows, error){
+    if(rows == null) {
+      
+    }
     else if(rows.length <= count){
       callback(rows.slice(0, count), false, error)
     }
@@ -115,6 +120,7 @@ module.exports.buildTopRatedPage = function(req, res, database) {
               user: req.session.user,
               images: imageArray,
               currentPage: req.params.pageNumber,
+              nextPage: nextPage,
               type: "toprated"
             });
         });
