@@ -52,3 +52,10 @@ block content
      form(method='POST')
       input(type='hidden' value= image.imageid name='delete')
       input(type='submit' value='Delete this Image?')
+  if loggedIn
+    div(id='add')
+      ul
+        li + add to album
+          ul
+            - for(var i=0; i < 3; i++)
+              li bob

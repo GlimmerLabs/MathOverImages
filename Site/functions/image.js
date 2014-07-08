@@ -20,7 +20,12 @@ module.exports.buildPage =  function(req, res, database) {
 	});
 	});
 };
-
+ /*
+module.exports.albumsInfo= function (req, res, database) {
+    database.albumsInfo(req.session.user.userid, function(albums, error){
+			    if(error)
+				res.end(error)
+*/
 module.exports.saveComment= function(req, res, database) {
     database.saveComment(req.session.user.userid, req.params.imageid, req.body.newComment, function(success, error) {
 	if(!success)
