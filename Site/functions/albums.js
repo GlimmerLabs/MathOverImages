@@ -12,22 +12,14 @@ database.getIDforUsername(req.params.username,
 	    if(error)
 		res.end(error)
 	    else
-/*		var albumId=new Array(albums.length);
-		var i= 0;
-		for (i= 0; i< albums.length; i++){
-		    albumId[i]=albums[i];
-		}
-	    database.firstImageofAlbum(albumId[0], function(imageShown, error){
-*/		res.render('../public/views/albums.jade', {
+		res.render('../public/views/albums.jade', {
 		    loggedIn: req.session.loggedIn,
 		    user:req.session.user,
 		    profileBeingViewed: req.params.username,
                     albums:albums
-//		    imageShown:imageShown
 		});
 	});
 });
-//});
 };
 
 module.exports.allImagesinAlbum = function(req, res, database) {
@@ -49,3 +41,11 @@ database.getIDforUsername(req.params.username,
 });
 };
 
+module.exports.createAlbum= function(req, res, database) {
+    database.createAlbum(req.session.user.userid, req.body.newAlbum, function (success, error){
+	if(!success)
+	    res.end(error);
+	else
+	    res.redirect('back');
+    });
+};
