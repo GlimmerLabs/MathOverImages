@@ -89,7 +89,7 @@ screenLayer.draw()
 
 var popErrorText = new Kinetic.Text({
   x: popTextShiftX,
-  y: popTextShiftY + (popTextHeight * 2.5),
+  y: popTextShiftY + (popTextHeight * 2.2),
   text: '',
   width: popRectWidth - (2*popTextShiftX),
   fontFamily: globalFont,
