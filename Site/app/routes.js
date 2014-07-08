@@ -139,6 +139,12 @@ module.exports = function(app,passport,database) {
     sendFileWithSuffix(res, './public/css/' + req.params.file, '.css');
   });
 
+  // --------------------------------------------------
+  // Path:  /sitemap.xml
+  //   The site map
+  app.get('/sitemap.xml', function(req,res) {
+    res.sendfile('/sitemap.xml');
+  });
 
   // --------------------------------------------------
   // Path:  /expert
