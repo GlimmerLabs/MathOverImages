@@ -34,6 +34,10 @@ function addFigcaptionListeners() {
               clickedFigcaption.innerText= "★" + (parseInt(clickedFigcaption.innerText.slice(1)) - 1);
             }
           }
+          else {
+            if (error === "User is not logged in.")
+              alert("You must be logged in to rate images.");
+          }
         }, imageid);
       }
     }
