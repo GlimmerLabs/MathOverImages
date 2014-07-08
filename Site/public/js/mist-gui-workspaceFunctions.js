@@ -226,7 +226,7 @@ var wsExists = function(name) {
   var url = "/api?action=wsexists&name=" + name;
   request.open("GET", url, false);
   request.send();
-  return eval(request.responseText);
+  return request.responseText;
 }
 
 /**

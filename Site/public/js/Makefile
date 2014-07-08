@@ -3,6 +3,7 @@
 #   join files together.
 
 MIST_FILES = \
+        mist-header.js \
         mist-functions.js \
         mist-functions-builtin.js \
         mist-layout.js \
@@ -11,6 +12,7 @@ MIST_FILES = \
         mist-utils.js
 
 MIST_GUI_FILES = \
+        mist-gui-header.js \
         mist-gui-EditableText.js \
         mist-gui-changingWorkspace.js \
         mist-gui-constructors.js \
@@ -35,13 +37,15 @@ MIST_GUI_FILES = \
         mist-gui-workspaceFunctions.js 
 
 MISTUI_FILES = \
+        mistui-header.js \
         mistui-animation.js \
         mistui-animator.js \
         mistui-dialogs.js \
         mistui-help.js \
         mistui-menus.js
 
-default: mist.js mistui.js mistgui.js
+default: mist.js mistui.js mistgui.js \
+        ugly.mist.js ugly.mistui.js ugly.mistgui.js
 
 mist.js: $(MIST_FILES)
 	cat $^ > $@
@@ -51,3 +55,6 @@ mistui.js: $(MISTUI_FILES)
 
 mistgui.js: $(MIST_GUI_FILES)
 	cat $^ > $@
+
+ugly.%: %
+	uglifyjs $^ > $@
