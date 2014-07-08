@@ -45,22 +45,20 @@
  width: 5%
 }
 */
-.starred{
+.starred, .unstarred{
 	display: inline-block;
+  cursor: pointer;
 }
 .starred::first-letter{
 	color: #EFDC5C;
 	font-size: 1em;
 }
-.starred:hover::first-letter{
-	color: #979797;
+
+.starred:hover::first-letter, .unstarred:hover::first-letter {
+	text-shadow:0 1px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
-.unstarred{
-	display: inline-block;
-}
-.unstarred:hover::first-letter{
-	color: #EFDC5C;
-}
+
 figure figcaption.right a{
 	color: #979797;
 	font-size: 1em;
@@ -123,7 +121,7 @@ ul.rig.columns-3 li{
 ul.rig.columns-4 li{
 	width: 22.5%; /* this value + 2.5 should = 25% */
 }
- 
+
 @media (max-width: 480px) {
 	ul.grid-nav li{
 		display: block;
