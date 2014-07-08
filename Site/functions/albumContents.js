@@ -26,3 +26,11 @@ database.albumContentsInfo(userid, req.params.albumid, function(albumContents, e
 	});
 };
 
+module.exports.deleteFromAlbums=function(req, res, database) {
+    database.deleteFromAlbums(req.params.albumid, req.body.deleteImage, function (success, error){
+	if(!success)
+	    res.end(error)
+	else
+	    res.redirect('back');
+    });
+};
