@@ -675,11 +675,11 @@ module.exports.firstImageofAlbum=(function(albumid, callback){
 
 module.exports.getAlbumContentsTitle=(function(albumid, callback) {
   albumid=sanitize(albumid);
- module.exports.query("SELECT albums.name FROM albums WHERE albumid='" + albumid + "';" , function (rows, error){
+ module.exports.query("SELECT albums.name, albums.userid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
     if (error)
       callback(null, error);
     else
-      callback(rows[0].name, null);
+      callback(rows[0], null);
   });
 });
 
@@ -688,8 +688,7 @@ module.exports.albumContentsInfo=(function(userid, albumid, callback) {
   module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid  and albums.userid = '" + userid + "' ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
     if (error)
       callback(null, error);
-    else if (!rows[0])
-      callback(null, "Album does not exist");
+
     else
       callback(rows, null);
   });
