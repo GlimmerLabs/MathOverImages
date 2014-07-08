@@ -1,71 +1,69 @@
-@import url("/css/styles");
+@import url("/css/styles.css");
 
 #gallery{
     padding: 12%;
 }
 
 #top,pageTitleGeneral {
-	background-color: #3FAAA0;
+ background-color: #3FAAA0;
 }
 
 #albumPageTitle {
-	height:140px;
-	min-width:600px;
-	margin: 0px -110px;
-	float: left;
-	background-color: #EFDC5C;
+ height:140px;
+ min-width:600px;
+ margin: 0px -110px;
+ float: left;
+ background-color: #EFDC5C;
 }
 
 #albumPageTitle h1{
-	border: 7px solid white;
-	margin: 15px;
-	color: #FFF;
-	display: inline-block;
-	font-weight: 800;
-	font-size: 4em;
-	padding: 5px;
-	clear: left;
+ border: 7px solid white;
+ margin: 15px;
+ color: #FFF;
+ display: inline-block;
+ font-weight: 800;
+ font-size: 4em;
+ padding: 5px;
+ clear: left;
 }
 
 /*
 #images {
-	width: 90%;
-	margin: auto;
-	clear: both;
+ width: 90%;
+ margin: auto;
+ clear: both;
 
 }
 
 #images figure {
-	width:19%;
-	float: left;
-	margin: 50px;
+ width:19%;
+ float: left;
+ margin: 50px;
 }
 
 #images figure img{
  width: 5%
 }
 */
-.starred{
-	display: inline-block;
+.starred, .unstarred{
+ display: inline-block;
+  cursor: pointer;
 }
 .starred::first-letter{
-	color: #EFDC5C;
-	font-size: 1em;
+ color: #EFDC5C;
+ font-size: 1em;
 }
-.starred:hover::first-letter{
-	color: #979797;
+
+.starred:hover::first-letter, .unstarred:hover::first-letter {
+ text-shadow:0 1px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
-.unstarred{
-	display: inline-block;
-}
-.unstarred:hover::first-letter{
-	color: #EFDC5C;
-}
+
 figure figcaption.right a{
-	color: #979797;
-	font-size: 1em;
-	text-decoration: none;
-	margin: 74% 0% 0% -20%
+ color: #979797;
+ font-size: 1em;
+ text-decoration: none;
+ margin: 74% 0% 0% -20%
 }
 
 figure figcaption.center{
@@ -74,11 +72,11 @@ figure figcaption.center{
 }
 
 h2{
-	color: #979797;
-	text-align: center;
-	width: 60%;
-	margin: 0px auto;
-	font-weight: normal;
+ color: #979797;
+ text-align: center;
+ width: 60%;
+ margin: 0px auto;
+ font-weight: normal;
 
 }
 
@@ -87,58 +85,58 @@ figcaption.right a:visited {
 }
 
 ul.rig {
-	list-style: none;
-	font-size: 0px;
-	color: #979797;
-	margin-left: -2.5%; /* should match li left margin */
+ list-style: none;
+ font-size: 0px;
+ color: #979797;
+ margin-left: -2.5%; /* should match li left margin */
 }
 ul.rig li{
-	display: inline-block;
-	padding: 10px;
-	margin: 0 0 2.5% 2.5%;
-	background: #fff;
-	border: 1px solid #ddd;
-	font-size: 16px;
-	font-size: 1rem;
-	box-shadow: 0 0 5px #ddd;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+ display: inline-block;
+ padding: 10px;
+ margin: 0 0 2.5% 2.5%;
+ background: #fff;
+ border: 1px solid #ddd;
+ font-size: 16px;
+ font-size: 1rem;
+ box-shadow: 0 0 5px #ddd;
+ box-sizing: border-box;
+ -moz-box-sizing: border-box;
+ -webkit-box-sizing: border-box;
 }
 ul.rig li canvas{
-	max-width: 100%;
-	height: auto;
-	margin: 0 0 10px;
+ max-width: 100%;
+ height: auto;
+ margin: 0 0 10px;
 }
 
 /* class for 2 columns */
 ul.rig.columns-2 li{
-	width: 47.5%; /* this value + 2.5 should = 50% */
+ width: 47.5%; /* this value + 2.5 should = 50% */
 }
 /* class for 3 columns */
 ul.rig.columns-3 li{
-	width: 30.83%; /* this value + 2.5 should = 33% */
+ width: 30.83%; /* this value + 2.5 should = 33% */
 }
 /* class for 4 columns */
 ul.rig.columns-4 li{
-	width: 22.5%; /* this value + 2.5 should = 25% */
+ width: 22.5%; /* this value + 2.5 should = 25% */
 }
- 
+
 @media (max-width: 480px) {
-	ul.grid-nav li{
-		display: block;
-		margin: 0 0 5px;
-	}
-	ul.grid-nav li a {
-		display: block;
-	}
-	ul.rig {
-		margin-left: 0;
-	}
-	ul.rig li{
-		width: 100% !important; /* over-ride all li styles */
-		margin: 0 0 20px;
-	}
+ ul.grid-nav li{
+  display: block;
+  margin: 0 0 5px;
+ }
+ ul.grid-nav li a {
+  display: block;
+ }
+ ul.rig {
+  margin-left: 0;
+ }
+ ul.rig li{
+  width: 100% !important; /* over-ride all li styles */
+  margin: 0 0 20px;
+ }
 }
 
 #pageNumber a{

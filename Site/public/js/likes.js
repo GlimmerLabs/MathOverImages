@@ -27,10 +27,16 @@ function addFigcaptionListeners() {
           if(!error){
             if(response == "Liked") {
               clickedFigcaption.className = "left starred";
+              clickedFigcaption.innerText = "★" + (parseInt(clickedFigcaption.innerText.slice(1)) + 1);
             }
             if(response == "Unliked") {
               clickedFigcaption.className = "left unstarred";
+              clickedFigcaption.innerText= "★" + (parseInt(clickedFigcaption.innerText.slice(1)) - 1);
             }
+          }
+          else {
+            if (error === "User is not logged in.")
+              alert("You must be logged in to rate images.");
           }
         }, imageid);
       }

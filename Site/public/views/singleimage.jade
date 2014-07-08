@@ -18,14 +18,17 @@ block extraLinks
  script(type='text/javascript' src='/js/likes.js')
 
 block stylesheets
- link(rel='stylesheet' href='/css/singleImage')
+ link(rel='stylesheet' href='/css/singleImage.css')
 block content
  div(id='main')
   h1= image.title
   h2= image.modifiedAt.toUTCString()
   figure
    canvas(id='canvas' width='400' height='400')
-   figcaption(class='left')= "★" + image.rating
+   if(false)
+    figcaption(class='left starred')= "★" + image.rating
+   else
+    figcaption(class='left unstarred')= "★" + image.rating
    a(href='/user/'+ image.username)
     figcaption(class='right')= image.username
   p(id='code' class='code')= image.code

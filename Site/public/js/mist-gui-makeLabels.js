@@ -26,9 +26,9 @@ var menuValuesDescriptions = {
 }
 
 var toolboxDescriptions = {
-	workTool: 'select and move objects',
-	lineTool: 'create connections from values and functions to functions',
-	deleteTool: 'delete lines, values, and functions from workspace',
+	workTool: 'select and move objects (w)',
+	lineTool: 'create connections from values and functions to functions (c)',
+	deleteTool: 'delete lines, values, and functions from workspace (d)',
 	undo: 'undo',
 	redo: 'redo'
 };
@@ -162,13 +162,13 @@ var makeToolLabel = function(group) {
 	if (name == 'redo') {
 		var actionObj = actionArray[currIndex];
 		var action = actionObj.action;
-		var newText = 'redo ' + action; 
+		var newText = 'redo ' + action + ' (ctrl-y)'; 
 		label.children[1].setAttr('text', newText)
 	}
 	else if (name == 'undo') {
 		var actionObj = actionArray[currIndex - 1];
 		var action = actionObj.action;
-		var newText = 'undo ' + action;
+		var newText = 'undo ' + action + ' (ctrl-z)';
 		label.children[1].setAttr('text', newText)
 	}
 

@@ -1,117 +1,117 @@
-@import url("/css/styles");
+@import url("/css/styles.css");
 
 #bio {
-	padding: 2%;
-	width: 50%;
-	float: left;
-	font-size: 1.5em;
-	color: #979797;
+ padding: 2%;
+ width: 50%;
+ float: left;
+ font-size: 1.5em;
+ color: #979797;
 }
 
 #featuredImage {
-	float: left;
-	clear: left;
+ float: left;
+ clear: left;
 }
 
 h1.imageTitle {
-	color: #4A4A4A;
-	font-size: 2em;
-	margin: 0 auto;
-	font-weight: normal;
-	text-align: center;
+ color: #4A4A4A;
+ font-size: 2em;
+ margin: 0 auto;
+ font-weight: normal;
+ text-align: center;
 }
 
 .code {
-	visibility: hidden;
+ visibility: hidden;
 }
 
 figure {
-	width: 400px;
+ width: 400px;
 }
 
 #contactUser {
-	float: left;
-	padding: 20px;
+ float: left;
+ padding: 20px;
 }
 
 textarea{
-	resize: none;
-	color: #111111;
-	border-radius: 3px;
-	border: 1px solid #979797;
-	-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-	box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+ resize: none;
+ color: #111111;
+ border-radius: 3px;
+ border: 1px solid #979797;
+ -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+ box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
 }
 
 #contactUser textarea {
-	border-radius: 3px;
-	border: 1px solid #979797;
-	-moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-	box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-	width: 500px;
-	height: 50px;
-	color: #BBBBBB;
+ border-radius: 3px;
+ border: 1px solid #979797;
+ -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+ box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+ width: 500px;
+ height: 50px;
+ color: #BBBBBB;
 }
 
 #contactUser input {
-	display: block;
-	float: right;
-	color: #FFF;
-	background-color: #D8D8D8;
-	border:1px solid white;
-	font-size: 1.5em;
-	font-weight: 800;
-	padding: 3px 20px;
+ display: block;
+ float: right;
+ color: #FFF;
+ background-color: #D8D8D8;
+ border:1px solid white;
+ font-size: 1.5em;
+ font-weight: 800;
+ padding: 3px 20px;
 }
 
 input:hover {
-	color: #D8D8D8;
-	background-color: #FFF;
-	cursor: pointer;
+ color: #D8D8D8;
+ background-color: #FFF;
+ cursor: pointer;
 }
 
 #changeBio img {
-	width: 25px;
-	height: 25px;
+ width: 25px;
+ height: 25px;
 }
 
 #link {
-	text-decoration: none;
-	text-color: #979797;
-	float: right;
+ text-decoration: none;
+ text-color: #979797;
+ float: right;
 }
 
 .settings {
-	display: inline-block;
-	height: 40px;
-	width: 250px;
-	text-align: center;
-	font-size: 1.7em;
-	color: #FFFFFF;
-	text-decoration: none;
-	float: right;
-	background-color: #EFDC5C;
-	margin: 0px 6%;
+ display: inline-block;
+ height: 40px;
+ width: 250px;
+ text-align: center;
+ font-size: 1.7em;
+ color: #FFFFFF;
+ text-decoration: none;
+ float: right;
+ background-color: #EFDC5C;
+ margin: 0px 6%;
 }
 
 .settings:hover {
-	color: #EFDC5C;
-	background-color: #FFFFFF;
+ color: #EFDC5C;
+ background-color: #FFFFFF;
 }
 
 input[type='submit'] {
-	margin: 20px 0px;
-	color: #FFF;
-	background-color: #979797;
-	border:1px solid white;
-	font-size: 1em;
-	font-weight: 800;
+ margin: 20px 0px;
+ color: #FFF;
+ background-color: #979797;
+ border:1px solid white;
+ font-size: 1em;
+ font-weight: 800;
 }
 
 input[type='submit']:hover {
-	color: #979797;
-	background-color: #FFF;
-	cursor: pointer;
+ color: #979797;
+ background-color: #FFF;
+ cursor: pointer;
 }
 
 #edit-bio {
@@ -121,15 +121,15 @@ float: left;
 }
 
 figcaption.bio-view {
-	white-space: pre-wrap;
-	position: relative;
-	margin: 0px 50px;
-	width: 500px;
-	word-wrap: break-word;
-	-moz-hyphens:auto;
-	-ms-hyphens: auto;
-	-webkit-hyphens:auto;
-	hyphens: auto;
+ white-space: pre-wrap;
+ position: relative;
+ margin: 0px 50px;
+ width: 500px;
+ word-wrap: break-word;
+ -moz-hyphens:auto;
+ -ms-hyphens: auto;
+ -webkit-hyphens:auto;
+ hyphens: auto;
 }
 
 #bio-form {

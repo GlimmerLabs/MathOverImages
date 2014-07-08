@@ -1,21 +1,21 @@
-@import url("/css/styles");
+@import url("/css/styles.css");
 
 
 
 
 #flashZone h1 {
-	font-family: 'Open Sans';
-	font-weight: 800;
-	margin:10px;
+ font-family: 'Open Sans';
+ font-weight: 800;
+ margin:10px;
 }
 
 form {
-	margin: 0px auto;
+ margin: 0px auto;
 }
 
 table {
-	color:#979797;
-	margin:0px auto;
+ color:#979797;
+ margin:0px auto;
 }
 
 td {
@@ -27,33 +27,33 @@ padding: 50px;
 }
 
 input[type='submit'] {
-	display:block;
-	clear: left;
-	margin: 0px auto;
-	color: #FFF;
-	background-color:#979797;
-	border:1px solid white;
-	font-size: 1.5em;
-	font-weight: 800;
-	padding: 3px 20px;
+ display:block;
+ clear: left;
+ margin: 0px auto;
+ color: #FFF;
+ background-color:#979797;
+ border:1px solid white;
+ font-size: 1.5em;
+ font-weight: 800;
+ padding: 3px 20px;
 }
 
 input[type='submit']:hover {
-	color: #979797;
-	background-color: #FFF;
-	cursor: pointer;
+ color: #979797;
+ background-color: #FFF;
+ cursor: pointer;
 }
 
 .signupField {
-	border: 1px solid #979797;
-	-moz-box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-	box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-	border-radius: 3px;
-	padding:7px;
+ border: 1px solid #979797;
+ -moz-box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+ box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+ border-radius: 3px;
+ padding:7px;
 
 }
 
 form p {
-	display: inline;
-	color: #979797;
+ display: inline;
+ color: #979797;
 }
