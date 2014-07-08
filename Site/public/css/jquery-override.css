@@ -4,10 +4,10 @@
  */
 
 /**
- * For some reason, modal dialog boxes leave a stripe.  THe following
- * was suggested in 
+ * For some reason, modal dialog boxes leave a stripe.  The following
+ * was suggested in
  * http://stackoverflow.com/questions/3200000/jquery-ui-modal-dialog-stripe-issue
  */
 .ui-widget-overlay {
   background: #000;
-} 
+}

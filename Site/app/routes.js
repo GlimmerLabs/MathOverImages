@@ -88,15 +88,28 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path:  /albums
   //   Albums page
-  app.get('/albums', function(req,res) {
+  app.get('/user/:username/albums', function(req,res) {
     var albums = require("../functions/albums.js");
     albums.buildPage(req, res, database);
-    //res.redirect('/user/' + req.session.user.username + '/albums');
   });
-  app.get('/albums/:albumid', function(req,res) {
+  app.get('/user/:username/albums/:albumid', function(req,res) {
     var albumContents = require("../functions/albumContents.js");
     albumContents.buildPage(req, res, database);
   });
+
+  app.post('/user/:username/albums/:albumid', function(req,res) {
+ if(req.body.deleteImage != null) {
+    var albumContents = require("../functions/albumContents.js");
+    albumContents.deleteFromAlbums(req, res, database);
+  };
+});
+
+  app.post('/user/:username/albums', function (req,res) {
+    if(req.body.newAlbumSubmit != null) {
+      var albums = require("../functions/albums.js");
+      albums.createAlbum(req, res, database);
+};
+});
 
   // --------------------------------------------------
   // Path:  /api
@@ -108,34 +121,8 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path:  /create
   //   Page for creating (something)
-  /* create page */
   app.get('/create', function(req,res) {
     res.render('../public/views/mist-gui.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
-
-  // --------------------------------------------------
-  // Path:  /tutorial
-  //   Page for creating (something)
-  /* create page */
-  app.get('/tutorial', function(req, res) {
-    res.render('../public/views/tutorialGUI1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
-
-  app.get('/tutorial/introToMIST', function(req, res) {
-      res.render('../public/views/tutorialIntro1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
-
-  app.get('/tutorial/workspace', function(req, res) {
-      res.render('../public/views/tutorialGUI1.jade', {
       loggedIn: req.session.loggedIn,
       user: req.session.user
     });
@@ -201,7 +188,7 @@ module.exports = function(app,passport,database) {
     image.buildPage(req, res, database);
   });
 
-  app.get('/:username/images', function(req,res) {
+  app.get('/user/:username/images', function(req,res) {
     var albums = require("../functions/albums.js");
     albums.allImagesinAlbum(req, res, database);
   });
@@ -269,6 +256,37 @@ module.exports = function(app,passport,database) {
       var username = require("../functions/username.js");
       username.changeAboutSection(req, res, database);
     }
+  });
+
+  // --------------------------------------------------
+  // Path:  /tutorial
+  //   Various tutorials.  
+  app.get('/tutorial', function(req, res) {
+    res.render('../public/views/tutorialGUI1.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  // --------------------------------------------------
+  // Path:  /images/tutorial
+  //   Tutorial Screenshots
+  app.get('/images/tutorial/:file', function(req,res) {
+    res.sendfile('./public/images/tutorial/' + req.params.file);
+  });
+
+  app.get('/tutorial/introToMIST', function(req, res) {
+      res.render('../public/views/tutorialIntro1.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  app.get('/tutorial/workspace', function(req, res) {
+      res.render('../public/views/tutorialGUI1.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
   });
 
   // --------------------------------------------------

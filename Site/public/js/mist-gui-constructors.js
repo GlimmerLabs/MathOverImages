@@ -143,6 +143,11 @@
 /* 
   makeVariableGroup an integer x, and an integer y, and returns a variable node
   that can be used as a temporary input, and exported as an empty outlet for a function
+
+  var hex = makeVariableGroup(500, 500);
+  hex.setAttr('visible', true);
+  workLayer.add(hex);
+  workLayer.add(hex);
   */
   var makeVariableGroup = function(x, y) {
     /* initialize group for the variable */
@@ -152,46 +157,34 @@
       y: y,
       lineOut: [],
       visible: false,
-      renderFunction: null,
-      renderLayer: null,
-      label: ''
     });
     /* create circle shape. */
-    var newCircle = new Kinetic.Circle({
-      x: functionTotalSideLength/2,
-      y: functionTotalSideLength/2,
-      radius: functionTotalSideLength/2,
-      fill: variableColor,
-      rotation: 45,
-      name: 'variableCircle'
+    var newHex = new Kinetic.RegularPolygon({
+      sides: 6,
+      x: variableWidth,
+      y: variableRadius,
+      radius: variableRadius,
+      fillRed: variableColor['r'],
+      fillGreen: variableColor['g'],
+      fillBlue: variableColor['b'],
+      fillAlpha: variableColor['a'],
+      stroke: variableStrokeColor,
+      strokeWidth: 2,
+      name: 'variableHex'
     });
-    newGroup.add(newCircle);
-    /* create text to be displayed on diamond. */
+    newGroup.add(newHex);
+    /* create text to be displayed below hex. */
     var newText = new Kinetic.Text({
       text: "",
-      fontFamily: 'OpenSans',
-      fill: 'black',
+      fontFamily: globalFont,
+      fill: variableTextColor,
       fontSize: 16,
       x: 0,
-      y: functionTotalSideLength/2,
-      width: functionRectSideLength,
+      y: (-.5 * variableRadius),
+      width: 2 * variableWidth,
       align: 'center'
     });
     newGroup.add(newText);
-    /* create small box in bottom right corner. Originally not visible. */
-    var newBox = new Kinetic.Rect({
-      name: 'imageBox',
-      x: valueImageBoxOffset,
-      y: valueImageBoxOffset,
-      width: imageBoxSideLength,
-      height: imageBoxSideLength,
-      fill: imageBoxColor,
-      stroke: 'black',
-      strokeWidth: .5,
-      visible: false,
-      expanded: false
-    });
-    newGroup.add(newBox);
 
     return newGroup;
   };
