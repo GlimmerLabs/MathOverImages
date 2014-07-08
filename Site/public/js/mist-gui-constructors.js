@@ -157,23 +157,25 @@
       label: ''
     });
     /* create circle shape. */
-    var newCircle = new Kinetic.Circle({
+    var newHex = new Kinetic.RegularPolygon({
+      sides: 6,
       x: functionTotalSideLength/2,
       y: functionTotalSideLength/2,
-      radius: functionTotalSideLength/2,
+      radius: 1.2 * (functionTotalSideLength/2),
       fill: variableColor,
-      rotation: 45,
-      name: 'variableCircle'
+      fillAlpha: 50,
+      //rotation: 45,
+      name: 'variableHex'
     });
-    newGroup.add(newCircle);
-    /* create text to be displayed on diamond. */
+    newGroup.add(newHex);
+    /* create text to be displayed below hex. */
     var newText = new Kinetic.Text({
       text: "",
-      fontFamily: 'OpenSans',
+      fontFamily: globalFont,
       fill: 'black',
       fontSize: 16,
       x: 0,
-      y: functionTotalSideLength/2,
+      y: (1.1 * functionTotalSideLength),
       width: functionRectSideLength,
       align: 'center'
     });
