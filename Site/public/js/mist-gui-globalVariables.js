@@ -58,7 +58,7 @@ var editableTextWidth = width / 15;
 var editableTextHeight = width / 30;
 var editableTextFont = 13;
 
-var variableColor = 'blue';
+var variableColor = '#C5E76D';
 
 var outletXOffset = width / 400;
 var outletYOffset = functionRectSideLength / 3;
@@ -164,6 +164,7 @@ var currLine;
 var dragShape = null;
 var scaledObj = null;
 var openTag;
+var map = [];
 
 //OTHER BOOLEANS
 var makingLine = false;
