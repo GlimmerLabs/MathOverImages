@@ -97,7 +97,7 @@ header nav li:hover {
  background-color: #3FAAA0;
 }
 
-#pageTitleGeneral h1{
+#pageTitleGeneral h1 {
  border: 7px solid white;
  margin: 15px;
  color: #FFF;
@@ -110,11 +110,16 @@ header nav li:hover {
 }
 
 #subTitle {
- float: left;
+ /* float: left; */
+ text-align: left;
  clear: left;
  color: #979797;
- margin: -15px -80px;
+ margin: -15px -60px;
  display: block;
+}
+
+#subTitle h2 {
+  text-align: left;
 }
 
 #flashZone {
