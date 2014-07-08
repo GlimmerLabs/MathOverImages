@@ -1,4 +1,4 @@
-@import url("/css/styles");
+@import url("/css/styles.css");
 
 .introTR, .introTD{
 border: 2px solid black;
@@ -16,7 +16,7 @@ border-collapse: collapse;
 
 body
 {
-  background-image: url('https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpa1/v/t35.0-12/10516297_10204571330109882_1262746675_o.jpg?oh=9e545e8daf102f13d36cd0bdbee16bec&oe=53BCED53&__gda__=1404893822_2369ff497a1e4aab86597dd62c1be0be');
+  background-image: url('/logos/featured.png');
   background-image-size: 100%;
   background-color:#cccccc;
   background-size: cover;
@@ -26,22 +26,16 @@ h1 {
   text-align: center;
 }
 
-a {
-  color: black;
-}
-
-p {
-  color: black;
-}
-
 #instructions{
-  padding: 50px;
+  position: relative;
+  padding: 30px 50px 50px 50px;
   background-color: #4A4A4A;
-  height: 100%;
+  height: 650px;
   float: left;
   width: 25%;
   word-wrap: word-break;
   margin: -2% -7% 5%;
+  color: white;
 }
 
 #instructText{
@@ -51,24 +45,60 @@ p {
 #workspace {
   float: right;
   width: 70%;
-  height: 80%;
-  margins: 0% 3%;
+  height: 90%;
+  margins: 10%;
 }
 
 .image{
-  height: 50%;
-  width: 50%;
+  max-width: 500px;
   border: 1px black solid;
-  margin:2% 15%;
+  margin:5% 15%;
 }
 
 .clickX {
-  width: 40%
+  width: 40%;
 }
 .clickY {
-  width: 25%
+  width: 25%;
 }
-#buttons{
+a#clickPrevious.nextPrevious{
   float: left;
+  position: absolute;
+  bottom: 0px;
+  left: 10%;
+  align-self: flex-end;
+  text-align: left;
+  text-decoration: none;
+  color: #FFFFFF;
+  background-color: #4a4a4a;
+  width: 40%;
+  font-size: 1.2em;
 }
 
+a#clickNext.nextPrevious{
+  float: right;
+  position: absolute;
+  bottom: 0px;
+  right: 10%;
+  text-align: right;
+  text-decoration: none;
+  color: #FFFFFF;
+  background-color: #4a4a4a;
+  width: 40%;
+  font-size: 1.2em;
+}
+
+a#clickNext.nextPrevious:hover{
+  background-color:#FFF;
+  color: #4a4a4a;
+}
+
+a#clickPrevious.nextPrevious:hover{
+  background-color:#FFF;
+  color: #4a4a4a;
+}
+
+img.image18 {
+  border: 1px black solid;
+  margin:2% 15%;
+}
