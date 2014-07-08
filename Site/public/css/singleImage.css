@@ -29,9 +29,18 @@ figure img {
 	width: 400px;
 }
 
-figure figcaption.left:first-letter{
+.starred, .unstarred{
+	display: inline-block;
+  cursor: pointer;
+}
+.starred::first-letter{
 	color: #EFDC5C;
 	font-size: 1em;
+}
+
+.starred:hover::first-letter, .unstarred:hover::first-letter {
+	text-shadow:0 1px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 
 #comments {
@@ -66,24 +75,7 @@ div.comment p {
 div.comment h1.op a{
 	background-color: #3fAAA0;
 }
-.starred{
-	display: inline-block;
-}
-.starred::first-letter{
-	color: #EFDC5C;
-	font-size: 1em;
-}
-.starred:hover::first-letter{
-	color: #979797;
-}
-.unstarred{
-	display: inline-block;
-}
-.unstarred:hover::first-letter{
-	color: #EFDC5C;
-}
-#leaveComment form {
-}
+
 
 #leaveComment form textarea {
 	width: 450px;
