@@ -675,11 +675,11 @@ module.exports.firstImageofAlbum=(function(albumid, callback){
 
 module.exports.getAlbumContentsTitle=(function(albumid, callback) {
   albumid=sanitize(albumid);
- module.exports.query("SELECT albums.name FROM albums WHERE albumid='" + albumid + "';" , function (rows, error){
+ module.exports.query("SELECT albums.name, albums.userid FROM albums WHERE albumid='" + albumid + "';" , function (rows, error){
     if (error)
       callback(null, error);
     else
-      callback(rows[0].name, null);
+      callback(rows[0], null);
   });
 });
 
