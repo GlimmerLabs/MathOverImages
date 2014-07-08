@@ -29,72 +29,116 @@ function switchImage(i) {
   switch (i) {
     case 0:
       $('.image00').show();
+      $('#clickPrevious').hide();
       break;
     case 1:
       $('.image01').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 2:
       $('.image02').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 3:
       $('.image03').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 4:
       $('.image04').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 5:
       $('.image05').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 6:
       $('.image06').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 7:
       $('.image07').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 8:
       $('.image08').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 9:
       $('.image09').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 10:
       $('.image10').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 11:
       $('.image11').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 12:
       $('.image12').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 13:
       $('.image13').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 14:
       $('.image14').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 15:
       $('.image15').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 16:
       $('.image16').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 17:
       $('.image17').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 18:
       $('.image18').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 19:
       $('.image19').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 20:
       $('.image20').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     case 21:
       $('.image21').show();
+      $('#clickPrevious').show();
+      $('#clickNext').show();
       break;
     default:
       $('.image22').show();
+      $('#clickNext').hide();
       break;
 
 }
