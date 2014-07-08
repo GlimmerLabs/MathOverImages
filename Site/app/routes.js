@@ -143,7 +143,7 @@ module.exports = function(app,passport,database) {
   // Path:  /sitemap.xml
   //   The site map
   app.get('/sitemap.xml', function(req,res) {
-    res.sendfile('/sitemap.xml');
+    res.sendfile('./sitemap.xml');
   });
 
   // --------------------------------------------------
