@@ -14,6 +14,10 @@ var isValue = function(target) {
 	return (target.attrs.maxInputs == null && target.nodeType == 'Group');
 };
 
+var isVariable = function(target) {
+	return (target.name() == 'variable');
+}
+
 /*
 isOutlet determines if target is an outletGroup and returns a boolean value. 
 target is an object.
