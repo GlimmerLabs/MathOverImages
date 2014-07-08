@@ -30,12 +30,18 @@ block content
       th(class='user'): a(href='/user/'+ comment[i].username)= comment[i].username
       td(class='comment')= comment[i].comment
    if loggedIn
+    div(id='add')
+      ul
+        li + add to album
+          ul
+            - for(var i=0; i < 3; i++)
+              li bob
     tr(id='leaveComment' class='comment')
      th(class="user"): a(href='/user/' + user.username)= user.username
      td: form(method='POST')
       textarea(name='newComment' placeholder='leave a comment')
       input(type='submit' value='submit' name='commentSubmit')
-  if (image.userid === user.userid)
-   form(method='POST')
-    input(type='hidden' value= image.imageid name='delete')
-    input(type='submit' value='Delete this Image?')
+    if (image.userid === user.userid)
+     form(method='POST')
+      input(type='hidden' value= image.imageid name='delete')
+      input(type='submit' value='Delete this Image?')
