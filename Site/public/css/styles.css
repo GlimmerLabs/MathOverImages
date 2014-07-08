@@ -131,6 +131,7 @@ header nav li:hover {
 
 .code {
 	font-family: Courier New, Courier, monospace;
+  word-wrap:break-word;
 	font-size: 2em;
 }
 
