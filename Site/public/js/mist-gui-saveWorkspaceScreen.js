@@ -208,10 +208,8 @@ popWsNoButtonGroup.add(new Kinetic.Text({
 var attempts = 0;
 popSaveWsButtonGroup.on('mouseup', function(){
 	var newName = nameWsEditText.attrs.text;
-	console.log('newName:' + newName);
 	var response = wsExists(newName);
 	if (response == 'true') {
-		console.log('got to true');
 		popWsErrorText.setAttr('text', '\'' + newName  + '\' is already a workspace.\n' +
 			'Do you want to continue anyways?');
 		popWsYesButtonGroup.setAttr('visible', true);
