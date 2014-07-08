@@ -683,13 +683,13 @@ module.exports.getAlbumContentsTitle=(function(albumid, callback) {
   });
 });
 
-module.exports.albumContentsInfo=(function(albumid, callback) {
+module.exports.albumContentsInfo=(function(userid, albumid, callback) {
   albumid=sanitize(albumid);
-  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid  and albums.userid = '" + userid + "' ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else if (!rows[0])
-      callback(rows[0], null);
+      callback(null, "Album does not exist");
     else
       callback(rows, null);
   });
