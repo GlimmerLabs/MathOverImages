@@ -16,7 +16,7 @@ border-collapse: collapse;
 
 body
 {
-  background-image: url('https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpa1/v/t35.0-12/10516297_10204571330109882_1262746675_o.jpg?oh=9e545e8daf102f13d36cd0bdbee16bec&oe=53BCED53&__gda__=1404893822_2369ff497a1e4aab86597dd62c1be0be');
+  background-image: url('/logos/featured.png');
   background-image-size: 100%;
   background-color:#cccccc;
   background-size: cover;
@@ -49,7 +49,7 @@ h1 {
 }
 
 .image{
-  width: 58%;
+  max-width: 500px;
   border: 1px black solid;
   margin:5% 15%;
 }
