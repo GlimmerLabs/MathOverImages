@@ -16,7 +16,7 @@ border-collapse: collapse;
 
 body
 {
-  background-image: url('https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpa1/v/t35.0-12/10516297_10204571330109882_1262746675_o.jpg?oh=9e545e8daf102f13d36cd0bdbee16bec&oe=53BCED53&__gda__=1404893822_2369ff497a1e4aab86597dd62c1be0be');
+  background-image: url('/logos/featured.png');
   background-image-size: 100%;
   background-color:#cccccc;
   background-size: cover;
@@ -27,9 +27,10 @@ h1 {
 }
 
 #instructions{
+  position: relative;
   padding: 30px 50px 50px 50px;
   background-color: #4A4A4A;
-  height: 550px;
+  height: 650px;
   float: left;
   width: 25%;
   word-wrap: word-break;
@@ -49,26 +50,47 @@ h1 {
 }
 
 .image{
-  width: 58%;
+  max-width: 500px;
   border: 1px black solid;
   margin:5% 15%;
 }
 
 .clickX {
-  width: 40%
+  width: 40%;
 }
 .clickY {
-  width: 25%
+  width: 25%;
 }
 a#clickPrevious.nextPrevious{
   float: left;
+  position: absolute;
+  bottom: 0px;
+  left: 10%;
+  align-self: flex-end;
+  text-align: left;
   text-decoration: none;
   color: #FFFFFF;
   background-color: #4a4a4a;
-  height: 40px;
-  width: 150px;
-  text-align: left;
-  font-size: 1.7em;
+  width: 40%;
+  font-size: 1.2em;
+}
+
+a#clickNext.nextPrevious{
+  float: right;
+  position: absolute;
+  bottom: 0px;
+  right: 10%;
+  text-align: right;
+  text-decoration: none;
+  color: #FFFFFF;
+  background-color: #4a4a4a;
+  width: 40%;
+  font-size: 1.2em;
+}
+
+a#clickNext.nextPrevious:hover{
+  background-color:#FFF;
+  color: #4a4a4a;
 }
 
 a#clickPrevious.nextPrevious:hover{
@@ -76,26 +98,7 @@ a#clickPrevious.nextPrevious:hover{
   color: #4a4a4a;
 }
 
-a#clickNext.nextPrevious{
-  float: right;
-  text-decoration: none;
-  color: #FFFFFF;
-  background-color: #4a4a4a;
-  height: 40px;
-  width: 150px;
-  text-align: right;
-  font-size: 1.7em;
-}
-a#clickNext.nextPrevious:hover{
-  background-color:#FFF;
-  color: #4a4a4a;
-}
-
 img.image18 {
   border: 1px black solid;
   margin:2% 15%;
-}
-
-#buttons {
-  align-self: flex-end;
 }
