@@ -115,7 +115,8 @@ ul.rig.columns-2 li{
 }
 /* class for 3 columns */
 ul.rig.columns-3 li{
- width: 30.83%; /* this value + 2.5 should = 33% */
+
+width: 28.83%; 
 }
 /* class for 4 columns */
 ul.rig.columns-4 li{

@@ -97,6 +97,17 @@ module.exports = function(app,passport,database) {
     albumContents.buildPage(req, res, database);
   });
 
+  app.post('/user/:username/albums/:albumid', function(req,res) {
+ if(req.body.deleteImage != null) {
+    var albumContents = require("../functions/albumContents.js");
+    albumContents.deleteFromAlbums(req, res, database);
+  }
+ else if (req.body.deleteWholeAlbum != null) {
+   var albumContents = require("../functions/albumContents.js");
+   albumContents.deleteAlbum(req, res, database);
+  };
+});
+
   app.post('/user/:username/albums', function (req,res) {
     if(req.body.newAlbumSubmit != null) {
       var albums = require("../functions/albums.js");
