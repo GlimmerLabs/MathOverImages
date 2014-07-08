@@ -718,7 +718,7 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
   userid=sanitize(userid);
   imageid=sanitize(imageid);
   newComment=sanitize(newComment);
-  module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "','" + UTC_TIMESTAMP +"');" , function (rows, error){
+  module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "', UTC_TIMESTAMP);" , function (rows, error){
     if (error)
       callback(null, error);
     else
