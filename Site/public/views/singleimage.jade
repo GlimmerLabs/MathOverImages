@@ -32,23 +32,18 @@ block content
    a(href='/user/'+ image.username)
     figcaption(class='right')= image.username
   p(id='code' class='code')= image.code
-  div
   table(id='comments')
-   tr(class='comment')
-    - for (var i=0; i < comment.length; i++)
+   - for (var i=0; i < comment.length; i++)
+    tr(class='comment')
       th(class='user'): a(href='/user/'+ comment[i].username)= comment[i].username
       td(class='comment')= comment[i].comment
    if loggedIn
-    div(id='leaveComment' class='comment')
-     h1: a(href='/user/' + user.username)= user.username
-     form(method='POST')
-      textarea(name= 'newComment' required='required' placeholder='leave a comment')
     tr(id='leaveComment' class='comment')
      th(class="user"): a(href='/user/' + user.username)= user.username
      td: form(method='POST')
       textarea(name='newComment' placeholder='leave a comment')
       input(type='submit' value='submit' name='commentSubmit')
-    if (image.userid === user.userid)
-     form(method='POST')
-      input(type='hidden' value= image.imageid name='delete')
-      input(type='submit' value='Delete this Image?')
+  if (image.userid === user.userid)
+   form(method='POST')
+    input(type='hidden' value= image.imageid name='delete')
+    input(type='submit' value='Delete this Image?')
