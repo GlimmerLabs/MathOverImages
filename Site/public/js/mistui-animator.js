@@ -38,15 +38,8 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
    // need to re-render a particular frame.)
   this.time = { t:0, m:0 };
  
-   // Set up the render width and height
-  if (exp.indexOf('t.') >= 0) {
-    this.renderWidth = 200;
-    this.renderHeight = 200;
-  }
-  else {
-    this.renderWidth = canvas.width;
-    this.renderHeight = canvas.height;
-  }
+  // Set up the bounds (which also sets up the render width and height)
+  this.bounds(0, 0, canvas.width, canvas.height);
 
   // Parse the expression
   try {
@@ -61,6 +54,26 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
 // +---------+-------------------------------------------------------
 // | Methods |
 // +---------+
+
+/**
+ * Set the bounds of the animator.
+ */
+MIST.ui.Animator.prototype.bounds = function(left,top,width,height) {
+  this.left = left;
+  this.top = top;
+  this.width = width;
+  this.height = height;
+
+   // Set up the render width and height
+  if (this.exp.indexOf('t.') >= 0) {
+    this.renderWidth = 200;
+    this.renderHeight = 200;
+  }
+  else {
+    this.renderWidth = width;
+    this.renderHeight = height;
+  }
+}; // bounds
 
 /**
  * Do one frame of the animation.
@@ -85,7 +98,8 @@ MIST.ui.Animator.prototype.frame = function() {
 
   // Make the frame
   this.time = MIST.render(this.expParsed, this.context, this.canvas, 
-      this.renderWidth, this.renderHeight);
+      this.renderWidth, this.renderHeight, this.left, this.top,
+      this.width, this.height);
 } // frame
 
 /**
