@@ -26,10 +26,6 @@ h1 {
   text-align: center;
 }
 
-a {
-  color: black;
-}
-
 #instructions{
   padding: 30px 50px 50px 50px;
   background-color: #4A4A4A;
@@ -47,16 +43,15 @@ a {
 
 #workspace {
   float: right;
-  width: %;
+  width: 70%;
   height: 90%;
-  margins: 0% 10%;
+  margins: 10%;
 }
 
 .image{
-  height: 50%;
-  width: 50%;
+  width: 58%;
   border: 1px black solid;
-  margin:2% 15%;
+  margin:5% 15%;
 }
 
 .clickX {
@@ -67,11 +62,9 @@ a {
 }
 a#clickPrevious.nextPrevious{
   float: left;
-  vertical-align: bottom;
   text-decoration: none;
   color: #FFFFFF;
   background-color: #4a4a4a;
-  display: inline-block;
   height: 40px;
   width: 150px;
   text-align: left;
@@ -85,11 +78,9 @@ a#clickPrevious.nextPrevious:hover{
 
 a#clickNext.nextPrevious{
   float: right;
-  vertical-align: bottom;
   text-decoration: none;
   color: #FFFFFF;
   background-color: #4a4a4a;
-  display: inline-block;
   height: 40px;
   width: 150px;
   text-align: right;
@@ -100,7 +91,11 @@ a#clickNext.nextPrevious:hover{
   color: #4a4a4a;
 }
 
-img.image18.image {
-  width: 25%;
-  height: 25%;
+img.image18 {
+  border: 1px black solid;
+  margin:2% 15%;
+}
+
+#buttons {
+  align-self: flex-end;
 }
