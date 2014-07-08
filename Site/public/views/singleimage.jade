@@ -38,6 +38,12 @@ block content
       th(class='user'): a(href='/user/'+ comment[i].username)= comment[i].username
       td(class='comment')= comment[i].comment
    if loggedIn
+    div(id='add')
+      ul
+        li + add to album
+          ul
+            - for(var i=0; i < 3; i++)
+              li bob
     tr(id='leaveComment' class='comment')
      th(class="user"): a(href='/user/' + user.username)= user.username
      td: form(method='POST')
@@ -47,10 +53,3 @@ block content
      form(method='POST')
       input(type='hidden' value= image.imageid name='delete')
       input(type='submit' value='Delete this Image?')
-  if loggedIn
-    div(id='add')
-      ul
-        li + add to album
-          ul
-            - for(var i=0; i < 3; i++)
-              li bob
