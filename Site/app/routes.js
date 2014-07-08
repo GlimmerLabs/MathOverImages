@@ -101,6 +101,10 @@ module.exports = function(app,passport,database) {
  if(req.body.deleteImage != null) {
     var albumContents = require("../functions/albumContents.js");
     albumContents.deleteFromAlbums(req, res, database);
+  }
+ else if (req.body.deleteWholeAlbum != null) {
+   var albumContents = require("../functions/albumContents.js");
+   albumContents.deleteAlbum(req, res, database);
   };
 });
 
@@ -135,6 +139,12 @@ module.exports = function(app,passport,database) {
     sendFileWithSuffix(res, './public/css/' + req.params.file, '.css');
   });
 
+  // --------------------------------------------------
+  // Path:  /sitemap.xml
+  //   The site map
+  app.get('/sitemap.xml', function(req,res) {
+    res.sendfile('/sitemap.xml');
+  });
 
   // --------------------------------------------------
   // Path:  /expert
