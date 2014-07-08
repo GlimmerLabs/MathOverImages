@@ -25,7 +25,8 @@ block content
     div(id='top')
       div(id='pageTitle')
           h1= albumOwner
-          h2= albumTitle.name
+          if (albumOwner==albumTitle.username)
+            h2= albumTitle.name
       div(id='subviews')
         a(href='/user/'+ albumOwner class='subview') bio
         a(href='/badges' class='subview') badges
