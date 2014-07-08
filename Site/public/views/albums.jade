@@ -30,9 +30,13 @@ block content
       a(href='' class='subview' id='selected') albums
       a(href='/challenges' class='subview') challenges
     div(id = 'albums')
-      a(href='/'+ profileBeingViewed + '/images/')
+      a(href='/user/'+ profileBeingViewed + '/images/')
         h1.all All my Images >
       - for(var i=0; i < albums.length; i++)
         figure
-          a(href='/albums/' + albums[i].albumid)
-              h1= albums[i].name 
+          a(href='/user/' + profileBeingViewed + '/albums/' + albums[i].albumid)
+              h1= albums[i].name
+  if loggedIn && (user.username===profileBeingViewed)
+    form(method='POST')
+      textarea(name='newAlbum' required= 'required' placeholder='Enter new Album Name' cols='5' rows='5')
+      input(type='submit'  value='Create New Album' id='submit' name='newAlbumSubmit')
