@@ -121,34 +121,8 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path:  /create
   //   Page for creating (something)
-  /* create page */
   app.get('/create', function(req,res) {
     res.render('../public/views/mist-gui.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
-
-  // --------------------------------------------------
-  // Path:  /tutorial
-  //   Page for creating (something)
-  /* create page */
-  app.get('/tutorial', function(req, res) {
-    res.render('../public/views/tutorialGUI1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
-
-  app.get('/tutorial/introToMIST', function(req, res) {
-      res.render('../public/views/tutorialIntro1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
-
-  app.get('/tutorial/workspace', function(req, res) {
-      res.render('../public/views/tutorialGUI1.jade', {
       loggedIn: req.session.loggedIn,
       user: req.session.user
     });
@@ -282,6 +256,37 @@ module.exports = function(app,passport,database) {
       var username = require("../functions/username.js");
       username.changeAboutSection(req, res, database);
     }
+  });
+
+  // --------------------------------------------------
+  // Path:  /tutorial
+  //   Various tutorials.  
+  app.get('/tutorial', function(req, res) {
+    res.render('../public/views/tutorialGUI1.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  // --------------------------------------------------
+  // Path:  /images/tutorial
+  //   Tutorial Screenshots
+  app.get('/images/tutorial/:file', function(req,res) {
+    res.sendfile('./public/images/tutorial/' + req.params.file);
+  });
+
+  app.get('/tutorial/introToMIST', function(req, res) {
+      res.render('../public/views/tutorialIntro1.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  app.get('/tutorial/workspace', function(req, res) {
+      res.render('../public/views/tutorialGUI1.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
   });
 
   // --------------------------------------------------
