@@ -3,6 +3,8 @@
  *   Information on mapping various URLs to functions or files.
  */
 
+var tutorial = require("../functions/tutorial.js");
+
 // +-------+---------------------------------------------------------
 // | Notes |
 // +-------+
@@ -260,6 +262,18 @@ module.exports = function(app,passport,database) {
       user: req.session.user
     });
   });
+
+  app.get('/tutorial/intro/', function(req, res) {
+    res.redirect('/tutorial/intro/00');
+  });
+
+/*
+  app.get('/tutorial/intro/:page', function(req, res) {
+    var tut = require("../functions/tutorial.js");
+    tut.intro(req,res);
+  });
+*/
+    
 
   app.get('/tutorial/introToMIST', function(req, res) {
       res.render('../public/views/tutorialIntro1.jade', {
