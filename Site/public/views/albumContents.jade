@@ -32,6 +32,10 @@ block content
         a(href='/badges' class='subview') badges
         a(href='/user/'+ albumOwner +'/albums' class='subview' id= 'selected') albums
         a(href='/challenges' class='subview') challenges
+    if loggedIn && (albumTitle.userid === user.userid)
+      form(method='POST')
+        input(type='hidden' value= albumTitle.username name='deleteWholeAlbum')
+        input(type='submit' value='Delete the Whole Album')
     div(id='gallery')
       div(id='images')
         ul(class='rig columns-3')
