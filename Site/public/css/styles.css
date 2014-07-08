@@ -6,12 +6,12 @@
 }
 
 #main {
-	margin:100px;
+	margin:80px;
 }
 
 /* Header */
 header {
-	margin: -100px -10px;
+	margin: -80px -10px;
 	width: 101%;
 	height: 60px;
 	background-color: #4A4A4A;
@@ -73,7 +73,7 @@ header nav li:hover {
 #pageTitle {
 	height:100px;
 	min-width:400px;
-	margin: 0px -110px;
+	margin: 0px -90px;
 	float: left;
 	background-color: #EFDC5C;
 }
