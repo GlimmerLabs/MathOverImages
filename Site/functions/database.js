@@ -675,7 +675,7 @@ module.exports.firstImageofAlbum=(function(albumid, callback){
 
 module.exports.getAlbumContentsTitle=(function(albumid, callback) {
   albumid=sanitize(albumid);
- module.exports.query("SELECT albums.name, albums.userid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
+ module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -906,14 +906,29 @@ module.exports.createAlbum=(function (userid, name, callback) {
 module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
     albumid=sanitize(albumid);
     imageid=sanitize(imageid);
-    module.exports.query("DELETE FROM albumContents WHERE albumid='" + albumid + "' AND imageid='" +imageid + "';",function (rows, error){
+    module.exports.query("DELETE FROM albumContents WHERE albumid='" + albumid + "' AND imageid='" +imageid + "';",function (success, error){
 	if (error)
 	    callback(null, error);
 	else
-	    callback(rows, null);
+	    callback(success, null);
     });
 });
 
+// delete whole album
+module.exports.deleteAlbum=(function (albumid, callback) {
+    albumid=sanitize(albumid);
+    module.exports.query("DELETE FROM albums WHERE albumid= '" + albumid + "';",function(success, error){
+	if (error)
+	    callback(null, error)
+	else
+	    module.exports.query("DELETE FROM albumContents WHERE albumid= '" + albumid + "';",function (success, err){
+		if (err)
+		    callback (null, err)
+		else
+		    callback(success, null);
+	    });
+    });
+});
 
 // add to album
 module.exports.addtoAlbum=(function (albumid, imageid, dateAdded, callback) {
