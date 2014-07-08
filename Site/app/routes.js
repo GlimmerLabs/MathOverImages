@@ -200,6 +200,13 @@ module.exports = function(app,passport,database) {
     });
 
   // --------------------------------------------------
+  // Path:  /images/tutorial
+  //   Tutorial Screenshots
+  app.get('/images/tutorial/:file', function(req,res) {
+    res.sendfile('./public/images/tutorial/' + req.params.file);
+  });
+
+  // --------------------------------------------------
   // Path:  /js
   //   Distribute client-side Javascript files
   app.get('/js/:file', function(req,res) {
@@ -274,7 +281,6 @@ module.exports = function(app,passport,database) {
   });
 */
     
-
   app.get('/tutorial/introToMIST', function(req, res) {
       res.render('../public/views/tutorialIntro1.jade', {
       loggedIn: req.session.loggedIn,
