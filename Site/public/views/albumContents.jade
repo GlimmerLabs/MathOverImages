@@ -25,7 +25,7 @@ block content
     div(id='top')
       div(id='pageTitle')
           h1= albumOwner
-          h2= albumTitle
+          h2= albumTitle.name
       div(id='subviews')
         a(href='/user/'+ albumOwner class='subview') bio
         a(href='/badges' class='subview') badges
@@ -44,3 +44,7 @@ block content
                     input(type='hidden' id='code'+i value=albumContents[i].code)
                   a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
                   figcaption(class='left')= "★" + albumContents[i].rating
+                  if loggedIn && (albumTitle.userid === user.userid)
+                      form(method='POST')
+                        input(type='hidden' value= albumContents[i].imageid name='deleteImage')
+                        input(type='submit' value='Delete from Album?')
