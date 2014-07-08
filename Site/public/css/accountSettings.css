@@ -1,7 +1,7 @@
 /**
- * accountSettings.css
- *   Styles for the "account settings" page.
- */
+* accountSettings.css
+*   Styles for the "account settings" page.
+*/
 @import url("/css/styles");
 
 img editButton {
@@ -17,7 +17,7 @@ img editButton {
   background-size: 100% 100%;
 }
 #content {
-text-align: center;
+  text-align: center;
   width: 250px;
 }
 
@@ -45,6 +45,7 @@ text-align: center;
 form {
   width: 50%;
   margin: 0 auto;
+  clear: both;
 }
 
 table {
@@ -61,30 +62,30 @@ tr {
 }
 
 input[type='submit'] {
-   display:block;
-   float: right;
-   clear: left;
-   margin: 50px;
-   color: #FFF;
-   background-color: #979797;
-   border:1px solid white;
-   font-size: 1.5em;
-   font-weight: 800;
-   padding: 3px 20px;
+  display:block;
+  float: right;
+  clear: left;
+  margin: 50px;
+  color: #FFF;
+  background-color: #979797;
+  border:1px solid white;
+  font-size: 1.5em;
+  font-weight: 800;
+  padding: 3px 20px;
 }
 
 input[type='submit']:hover {
-   color: #979797;
-   background-color: #FFF;
-   cursor: pointer;
+  color: #979797;
+  background-color: #FFF;
+  cursor: pointer;
 }
 
 .signupField {
-   border: 1px solid #979797;
-   -moz-box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-   box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-   border-radius: 3px;
-   padding:7px;
+  border: 1px solid #979797;
+  -moz-box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+  box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+  border-radius: 3px;
+  padding:7px;
 }
 
 form p {
