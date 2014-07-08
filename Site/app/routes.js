@@ -88,15 +88,21 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path:  /albums
   //   Albums page
-  app.get('/albums', function(req,res) {
+  app.get('/user/:username/albums', function(req,res) {
     var albums = require("../functions/albums.js");
     albums.buildPage(req, res, database);
-    //res.redirect('/user/' + req.session.user.username + '/albums');
   });
-  app.get('/albums/:albumid', function(req,res) {
+  app.get('/user/:username/albums/:albumid', function(req,res) {
     var albumContents = require("../functions/albumContents.js");
     albumContents.buildPage(req, res, database);
   });
+
+  app.post('/user/:username/albums', function (req,res) {
+    if(req.body.newAlbumSubmit != null) {
+      var albums = require("../functions/albums.js");
+      albums.createAlbum(req, res, database);
+};
+});
 
   // --------------------------------------------------
   // Path:  /api
@@ -201,7 +207,7 @@ module.exports = function(app,passport,database) {
     image.buildPage(req, res, database);
   });
 
-  app.get('/:username/images', function(req,res) {
+  app.get('/user/:username/images', function(req,res) {
     var albums = require("../functions/albums.js");
     albums.allImagesinAlbum(req, res, database);
   });

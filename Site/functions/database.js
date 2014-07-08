@@ -582,7 +582,7 @@ module.exports.logIn = (function (user, password, callback) {
   Post-conditions:
   All information from the database will be retrieved
   Preferences:
-  Use database.getIDorUsername to get the id to pass to this function
+  Use database.getIDforUsername to get the id to pass to this function
 */
 
 module.exports.getUser = (function (userid, callback){
@@ -651,7 +651,7 @@ module.exports.imageInfo=(function(imageid, callback) {
 
 module.exports.albumsInfo=(function(userid, callback) {
   userid=sanitize(userid);
-  module.exports.query("SELECT users.username, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
+  module.exports.query("SELECT users.username, users.userid, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -673,9 +673,19 @@ module.exports.firstImageofAlbum=(function(albumid, callback){
 
 //albumContents query shortcode
 
-module.exports.albumContentsInfo=(function(albumid, callback) {
+module.exports.getAlbumContentsTitle=(function(albumid, callback) {
   albumid=sanitize(albumid);
-  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+ module.exports.query("SELECT albums.name FROM albums WHERE albumid='" + albumid + "';" , function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows[0].name, null);
+  });
+});
+
+module.exports.albumContentsInfo=(function(userid, albumid, callback) {
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid  and albums.userid = '" + userid + "' ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else if (!rows[0])
@@ -882,7 +892,7 @@ module.exports.hasLiked=(function (userid, imageid, callback) {
 
 
 // create Album
-module.exports.createAlbum=(function (userid, name, dateCreated, callback) {
+module.exports.createAlbum=(function (userid, name, callback) {
     userid=sanitize(userid);
     name=sanitize(name);
     module.exports.query("INSERT INTO albums (userid, name, dateCreated) VALUES('" + userid + "','" + name + "', UTC_TIMESTAMP);", function (rows, error){
@@ -904,7 +914,6 @@ module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
 	    callback(rows, null);
     });
 });
-
 
 
 // add to album
