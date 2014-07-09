@@ -76,6 +76,26 @@ MIST.ui.Animator.prototype.bounds = function(left,top,width,height) {
 }; // bounds
 
 /**
+ * Show the coordinates
+ */
+MIST.ui.Animator.prototype.coords = function() {
+  var context = this.canvas.getContext("2d");
+  context.font="15px Helvetica";
+  context.textAlign="end";
+  context.textBaseline="middle";
+  context.fillText("-1", this.left-5, this.top+(this.height/2));
+  context.textAlign="start";
+  context.textBaseline="middle";
+  context.fillText("+1", this.left+this.width+5, this.top+(this.height/2));
+  context.textAlign="center";
+  context.textBaseline="bottom";
+  context.fillText("-1", this.left+(this.width/2), this.top-5);
+  context.textAlign="center";
+  context.textBaseline="top";
+  context.fillText("+1", this.left+(this.width/2), this.top+this.height+5);
+}; // coords
+
+/**
  * Do one frame of the animation.
  */
 MIST.ui.Animator.prototype.frame = function() {
