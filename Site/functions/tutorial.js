@@ -58,6 +58,7 @@ var tutorialPage = function(req, res, path, page, pages) {
   console.log(view);
 
   // And render the page
-  res.render(view, { next: next, prev: prev });
+  res.render(view, { next: next, prev: prev, page: index+1, 
+      count: pages.length });
 }; // tutorialPage
 
