@@ -8,6 +8,13 @@ block extraLinks
  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
  script(type='text/javascript' src='/js/imagepage.js')
  script(type='text/javascript' src='/js/likes.js')
+ script(type='text/javascript' src='/js/mist-utils.js')
+ script(type='text/javascript' src='/js/mist-functions.js')
+ script(type='text/javascript' src='/js/mist-layout.js')
+ script(type='text/javascript' src='/js/mist-functions-layout.js')
+ script(type='text/javascript' src='/js/mist-functions-builtin.js')
+ script(type='text/javascript' src='/js/mist-render.js')
+ script(type='text/javascript' src='/js/mistui-animator.js')
 
 block stylesheets
  link(rel='stylesheet' href='/css/singleImage.css')
@@ -34,8 +41,8 @@ block content
       ul
         li + add to album
           ul
-            - for(var i=0; i < 3; i++)
-              li bob
+            - for(var i=0; i < 1; i++)
+              li no albums
     tr(id='leaveComment' class='comment')
      th(class="user"): a(href='/user/' + user.username)= user.username
      td: form(method='POST')
