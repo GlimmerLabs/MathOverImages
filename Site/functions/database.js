@@ -906,7 +906,7 @@ module.exports.createAlbum=(function (userid, name, callback) {
 module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
     albumid=sanitize(albumid);
     imageid=sanitize(imageid);
-    module.exports.query("DELETE FROM albumContents WHERE albumid='" + albumid + "' AND imageid='" +imageid + "';",function (success, error){
+    module.exports.query("DELETE FROM albumContents WHERE albumid='" + albumid + "' AND imageid='" +imageid + "' LIMIT 1;",function (success, error){
 	if (error)
 	    callback(null, error);
 	else
@@ -931,13 +931,13 @@ module.exports.deleteAlbum=(function (albumid, callback) {
 });
 
 // add to album
-module.exports.addtoAlbum=(function (albumid, imageid, dateAdded, callback) {
-    userid=sanitize(userid);
-    name=sanitize(name);
-    module.exports.query("INSERT INTO albumContents (albumid, imageid, dateAdded) VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);", function (rows, error){
+module.exports.addtoAlbum=(function (albumid, imageid, callback) {
+    albumid=sanitize(albumid);
+    imageid=sanitize(imageid);
+    module.exports.query("INSERT INTO albumContents (albumid, imageid, dateAdded) VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);", function (success, error){
 	if (error)
-	    callback(null, error);
+	    callback(null, error)
 	else
-	    callback(rows, null);
+	    callback(success, null);
     });
-});
+}); 

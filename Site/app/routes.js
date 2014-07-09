@@ -213,6 +213,10 @@ module.exports = function(app,passport,database) {
 	else if(req.body.delete != null) {
 	    var image = require("../functions/image.js");
 	    image.deleteImage(req, res, database);
+	}
+	else if (req.body.add != null){
+	    var image = require("../functions/image.js");
+	    image.addtoAlbum(req, res, database);
 	};
     });
 

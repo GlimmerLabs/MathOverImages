@@ -41,12 +41,15 @@ block content
       ul
         li + add to album
           ul
-            - for(var i=0; i < 1; i++)
-              li no albums
+            - for(var i=0; i < albums.length; i++)
+              form(method='POST')
+                li= albums[i].name
+                  input(type='hidden' value= albums[i].albumid  name='add')
+                  input(type='submit')
     tr(id='leaveComment' class='comment')
      th(class="user"): a(href='/user/' + user.username)= user.username
      td: form(method='POST')
-      textarea(name='newComment' placeholder='leave a comment')
+      textarea(name='newComment' required= 'required' placeholder='leave a comment')
       input(type='submit' value='submit' name='commentSubmit')
     if (image.userid === user.userid)
      form(method='POST')
