@@ -209,6 +209,9 @@ function readyEditing(stage)
 	stage.on("click", 
 		function(event)
 		{
+			if (document.activeElement.name) {
+				document.activeElement.blur();
+			}
 			if (workToolOn) {
 			// Check if target object has text method(if it does than it is a text object)
 			if (event.target.text != null) {
@@ -254,7 +257,8 @@ function readyEditing(stage)
 	}
 	document.body.onkeydown = function(e) {
 		var keycode = e.which || e.keyCode;
-		if(activeText != null) {
+		var activeForm = document.activeElement.name;
+		if(!activeForm && activeText != null) {
 			clearTimeout(activeText.cursor.timeout);
 			activeText.cursor.shouldChange = false;
 			activeText.cursor.opacity(1);
@@ -330,7 +334,7 @@ function readyEditing(stage)
 				activeText.drawMethod();
 			}
 		}
-		else {
+		else if (!activeForm) {
 			/**
  			 * onkeydown events that will be active when the workspace is open
  			 * - remove default on backspace
