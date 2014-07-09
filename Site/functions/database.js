@@ -297,7 +297,6 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
     else
       bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(error,result) {
         if (!error){
-          console.log("NO error");
           callback(result,null);
         }
         else
@@ -466,7 +465,6 @@ module.exports.changeEmail = (function (userid, newEmail, password, callback){
 module.exports.changeAboutSection = (function (userid, newAbout, callback){
   newAbout = sanitize(newAbout);
   userid = sanitize(userid);
-  console.log("new about: " + newAbout);
   module.exports.query("UPDATE users SET about='" + newAbout +"' WHERE userid= '"+userid+ "';", function (rows, error){
     if (error)
       callback(false, error);

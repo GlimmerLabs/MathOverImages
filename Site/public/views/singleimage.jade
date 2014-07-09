@@ -3,18 +3,11 @@ block title
  title= image.title + " by " + image.username + " on MIST"
 block extraMetas
 block extraLinks
- script(type='text/javascript' src='/js/mist.js')
- script(type='text/javascript' src='/js/mistui.js')
+ script(type='text/javascript' src='/js/ugly.mist.js')
+ script(type='text/javascript' src='/js/ugly.mistui.js')
  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
  script(type='text/javascript' src='/js/imagepage.js')
  script(type='text/javascript' src='/js/likes.js')
- script(type='text/javascript' src='/js/mist-utils.js')
- script(type='text/javascript' src='/js/mist-functions.js')
- script(type='text/javascript' src='/js/mist-layout.js')
- script(type='text/javascript' src='/js/mist-functions-layout.js')
- script(type='text/javascript' src='/js/mist-functions-builtin.js')
- script(type='text/javascript' src='/js/mist-render.js')
- script(type='text/javascript' src='/js/mistui-animator.js')
 
 block stylesheets
  link(rel='stylesheet' href='/css/singleImage.css')
@@ -37,6 +30,10 @@ block content
       th(class='user'): a(href='/user/'+ comment[i].username)= comment[i].username
       td(class='comment')= comment[i].comment
    if loggedIn
+    if (image.userid === user.userid)
+     form(method='POST')
+      input(type='hidden' value= image.imageid name='delete')
+      input(type='submit' class='delete' value='delete this image')
     div(id='add')
       ul
         li + add to album
@@ -51,7 +48,3 @@ block content
      td: form(method='POST')
       textarea(name='newComment' required= 'required' placeholder='leave a comment')
       input(type='submit' value='submit' name='commentSubmit')
-    if (image.userid === user.userid)
-     form(method='POST')
-      input(type='hidden' value= image.imageid name='delete')
-      input(type='submit' value='Delete this Image?')
