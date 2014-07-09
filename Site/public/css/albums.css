@@ -41,3 +41,39 @@ form input[type='image']{
     color: #979797;
     font-size: 1.3em;
 }
+
+.all:hover{
+    color: #4A4A4A;
+    cursor: pointer;
+}
+
+input[type='submit'].album{
+    color: #FFF;
+    background-color: #979797;
+    border:1px solid white;
+    font-size: 1em;
+    font-weight: 800;
+}
+
+input[type='submit'].album:hover{
+   color: #979797;
+    background-color: #FFF;
+    cursor: pointer;
+    }
+
+textarea{
+ width: 150px;
+ height:20px;
+ resize: none;
+ color: #111111;
+ border-radius: 3px;
+ border: 1px solid #979797;
+ -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+ box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
+}
+
+
+#createAlbum {
+    float: right;
+    margin: 20px 100px;
+}
