@@ -1,0 +1,84 @@
+@import url("/css/styles.css");
+
+body {
+}
+
+h1 {
+}
+
+h2 {
+  text-align: center;
+}
+
+#narrative {
+  width: 25%;
+}
+
+#illustration {
+  text-align: center;
+  width: 75%;
+}
+
+.image{
+  max-width: 500px;
+  border: 1px black solid;
+  margin:5% 15%;
+}
+
+.clickX {
+  width: 40%;
+}
+.clickY {
+  width: 25%;
+}
+a#clickPrevious.nextPrevious{
+  float: left;
+  position: absolute;
+  bottom: 0px;
+  left: 10%;
+  align-self: flex-end;
+  text-align: left;
+  text-decoration: none;
+  color: #FFFFFF;
+  background-color: #4a4a4a;
+  width: 40%;
+  font-size: 1.2em;
+}
+
+a#clickNext.nextPrevious{
+  float: right;
+  position: absolute;
+  bottom: 0px;
+  right: 10%;
+  text-align: right;
+  text-decoration: none;
+  color: #FFFFFF;
+  background-color: #4a4a4a;
+  width: 40%;
+  font-size: 1.2em;
+}
+
+a#clickNext.nextPrevious:hover{
+  background-color:#FFF;
+  color: #4a4a4a;
+}
+
+a#clickPrevious.nextPrevious:hover{
+  background-color:#FFF;
+  color: #4a4a4a;
+}
+
+img.image18 {
+  border: 1px black solid;
+  margin:2% 15%;
+}
+
+div.tutorial {
+  display: flex;
+  justify-content: space-between;
+}
+
+div.links {
+  display: flex;
+  justify-content: space-between;
+}
