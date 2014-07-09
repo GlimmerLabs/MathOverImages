@@ -186,6 +186,16 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path: /help
+  //   The list of available hlep pages
+  app.get('/help', function(req,res) {
+    res.render('../public/views/help.jade',{
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  // --------------------------------------------------
   // Path: /icons
   //   Various icons
   app.get('/icons/:file', function(req,res) {

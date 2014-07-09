@@ -1,0 +1,36 @@
+extends ./partials/framework
+block title
+  title MIST Help
+
+block extraMetas
+block extraLinks
+
+block stylesheets
+
+  link(rel='stylesheet', href='/css/styles.css')
+  link(rel='stylesheet', href='/css/help.css')
+
+block content
+  div(id='main')
+    div(id = 'pageTitleGeneral')
+      h1 help
+    p.intro.
+      Confused about MIST?  Here are a few quick guides to get you
+      started.
+    table.help
+      tr
+        th Section
+        th Description
+        th Type
+      tr
+        td: a(href='/tutorial/intro') An Introduction to MIST
+        td A quick introduction to the ideas behind MIST
+        td Text
+      tr
+        td: a(href='/tutorial/gui') The MIST Graphical User Interface
+        td A short introduction to the graphical user interface for creating new MIST images
+        td Text
+      tr
+        td The MIST Graphical User Interface
+        td A short introduction to the graphical user interface for creating new MIST images
+        td Video
