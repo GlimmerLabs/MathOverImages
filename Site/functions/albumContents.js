@@ -27,7 +27,7 @@ database.albumContentsInfo(userid, req.params.albumid, function(albumContents, e
 };
 
 module.exports.deleteAlbum=function(req, res, database) {
-    database.deleteAlbum(req.params.albumid, function (success, error){
+    database.deleteAlbum(req.session.user.userid, req.params.albumid, function (success, error){
 	if(!success)
 	    res.end(error)
 	else
