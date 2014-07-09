@@ -42,7 +42,7 @@ block content
               form(method='POST')
                 li= albums[i].name
                   input(type='hidden' value= albums[i].albumid  name='add')
-                  input(type='submit')
+                  input(type='submit' value='select' class='select')
     tr(id='leaveComment' class='comment')
      th(class="user"): a(href='/user/' + user.username)= user.username
      td: form(method='POST')
