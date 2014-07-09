@@ -283,7 +283,7 @@ module.exports = function(app,passport,database) {
 
   // --------------------------------------------------
   // Path: /tutorial
-  //   Various tutorials.  
+  //   Various tutorials.
   app.get('/tutorial', function(req, res) {
     res.render('../public/views/tutorialGUI1.jade', {
       loggedIn: req.session.loggedIn,
@@ -312,7 +312,7 @@ module.exports = function(app,passport,database) {
   app.get('/tutorial/intro/:page', function(req, res) {
     tutorial.intro(req,res);
   });
-    
+
   app.get('/tutorial/introToMIST', function(req, res) {
       res.render('../public/views/tutorialIntro1.jade', {
       loggedIn: req.session.loggedIn,
@@ -406,11 +406,17 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/badges', function(req,res) {
-    res.render("../public/views/soon.jade");
+    res.render("../public/views/soon.jade", {
+      loggedIn:req.session.loggedIn,
+      user: req.session.user
+    });
   });
 
   app.get('/challenges', function(req,res) {
-    res.render("../public/views/soon.jade");
+    res.render("../public/views/soon.jade", {
+      loggedIn:req.session.loggedIn,
+      user: req.session.user
+    });
   });
 
   // Route does not exist
