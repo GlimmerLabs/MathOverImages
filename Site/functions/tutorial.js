@@ -10,7 +10,9 @@
  * gui - Render a page in the GUI tutorial.
  */
 module.exports.gui = function(req, res) {
-  var pages = ['start', 'values'];
+  var pages = ['start', 'values', 'add-value', 'image-box',
+      'image-open', 'functions', 'add-function', 'line-tool',
+      'source', 'target', 'valid', 'text'];
   tutorialPage(req, res, "/tutorial/gui/", req.params.page, pages);
 } // gui
 

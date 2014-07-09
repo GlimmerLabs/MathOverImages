@@ -287,6 +287,16 @@ module.exports = function(app,passport,database) {
     });
   });
 
+  app.get('/tutorial/gui', function(req, res) {
+    res.redirect('/tutorial/gui/start');
+  });
+  app.get('/tutorial/gui/', function(req, res) {
+    res.redirect('/tutorial/gui/start');
+  });
+  app.get('/tutorial/gui/:page', function(req, res) {
+    tutorial.gui(req, res);
+  });
+
   app.get('/tutorial/intro', function(req, res) {
     res.redirect('/tutorial/intro/start');
   });
