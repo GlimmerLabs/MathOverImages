@@ -101,6 +101,23 @@ input[type='submit'].delete{
     font-size: 1em;
 }
 
+input[type='submit'].select{
+    font-size: 1em;
+    font-weight: 100;
+    float: right;
+    border: none;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+input[type='submit'].select:hover{
+    background-color: #555;
+    color: #FFF;
+}
+
 tr.comment {
   valign: top;
   vertical-align: top;
