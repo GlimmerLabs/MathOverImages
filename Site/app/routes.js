@@ -30,9 +30,9 @@ var tutorial = require("../functions/tutorial.js");
 function sendFileWithSuffix(res,path,suffix) {
   res.sendfile(path, function(err) {
     if (err) {
-      console.log("First response: " + err);
+      // console.log("First response: " + err);
       res.sendfile(path + suffix, function(err) {
-        console.log("Second response: " + err);
+        // console.log("Second response: " + err);
         if (err) {
           res.send(404,'');
         }
