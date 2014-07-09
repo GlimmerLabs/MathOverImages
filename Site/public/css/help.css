@@ -1,0 +1,22 @@
+/**
+ * help.css
+ *   CSS for the help page.
+ */
+
+p.intro {
+  clear: left;
+}
+
+table.help {
+  clear: left;
+}
+
+table.help td, 
+table.help th {
+  vertical-align: top;
+  padding: 5px;
+}
+
+th {
+  text-align: left;
+}
