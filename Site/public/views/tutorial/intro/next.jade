@@ -1,0 +1,18 @@
+extends ../../partials/tutorial
+block title
+  title An Introduction to MIST - Next Steps
+block mainhead
+  h1 tutorial / intro
+block subhead
+  h2 Next Steps
+block narrative
+  p.
+    You've learned the basics of the MIST world.  It's time to start making your own 
+    images.  You can click on <a href="/create">Create</a> and try to figure out the 
+    graphical user interface yourself, or you can read 
+    <a href="/tutorial/gui">the gui tutorial</a>.
+  p.
+    <em>Thanks to Zoe Wolter for the image.</em>
+block illustration
+  canvas(id="canvas",class="image",width=300,height=300)
+  p(id="code",style="visibility:hidden") sin(sin(sum(mult(y,y),mult(sum(x,sin(t.m)),sum(x,sin(t.m))),cos(sum(cos(t.m),cos(sum(mult(x,x),mult(y,y))))))))

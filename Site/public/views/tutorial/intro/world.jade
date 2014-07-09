@@ -1,0 +1,17 @@
+extends ../../partials/tutorial
+block title
+  title An Introduction to MIST - The MIST "World"
+block mainhead
+  h1 tutorial / intro
+block subhead
+  h2 The MIST "World"
+block narrative
+  p.
+    All images in MIST are drawn on a square canvas (you can
+    change the aspect ratio later).  You can think of the
+    canvas as a vertically flipped portion of the plane.  X
+    values range from -1 at the left to 1 at the right.  Y
+    values range from -1 at the top to 1 at the bottom.
+block illustration
+  canvas(id="canvas",class="world",width=300,height=300)
+  p(id="code",style="visibility:hidden") 0

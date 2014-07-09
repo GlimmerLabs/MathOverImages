@@ -1,0 +1,16 @@
+extends ../../partials/tutorial
+block title
+  title An Introduction to MIST - Black
+block mainhead
+  h1 tutorial / intro
+block subhead
+  h2 Greyscale Images: Black
+block narrative
+  p.
+    Numbers also represent colors.  Since we're working in the range -1
+    to 1, we must assign a meaning to each number.  We'll
+    start with greyscale images.  In greyscale, the value 1
+    represents the color black (or lots of ink).
+block illustration
+  canvas(id="canvas",class="world",width=300,height=300)
+  p(id="code" class="code") 1
