@@ -26,7 +26,7 @@ block content
     div(id='homeButtons')
       a(href='/create' id='create')
          ='create'
-      a(href='/tutorial' id='tutorials')
+      a(href='/help' id='tutorials')
          ='tutorials'
       a(href='/gallery' id='gallery')
          ='gallery'
@@ -39,4 +39,4 @@ block content
             canvas(id='canvas'+i width='150' height='150')
             input(type='hidden' id='code'+i value=images[i].code)
           figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
-      p(id="seemore"): a(href='/gallery') See more in gallery
+      figure(id="seemore"): a(href='/gallery') See more in gallery
