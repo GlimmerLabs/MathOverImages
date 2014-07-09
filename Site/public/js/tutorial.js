@@ -40,13 +40,15 @@ var animate = function(canvas,coords) {
   var canvasId = canvas.id;
   var codeId = canvasId.replace("canvas","code");
   var code = document.getElementById(codeId);
-  animator = new MIST.ui.Animator(code.innerHTML, "", {}, canvas);
-  if (coords) {
-    animator.bounds(20,20,canvas.width-40,canvas.height-40);
-    animator.coords();
-  }
-  animator.start();
-  animators[canvasId] = animator;
+  if (code) {
+    animator = new MIST.ui.Animator(code.innerHTML, "", {}, canvas);
+    if (coords) {
+      animator.bounds(20,20,canvas.width-40,canvas.height-40);
+      animator.coords();
+    }
+    animator.start();
+    animators[canvasId] = animator;
+  } // if (code)
 }; // animate
 
 // +------------------+------------------------------------------------
