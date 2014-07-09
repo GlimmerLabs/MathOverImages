@@ -58,8 +58,9 @@ var hashPassword = (function (passwordtohash, callback) {
 */
 var sanitize = (function (string) {
   var escaped = validate.escape(string);
-  // Restore ampersands (and other things?)
-  // escaped = escaped.replace("&amp;", "&");
+  escaped = escaped.replace(/'/g, '&#39;');
+// Restore ampersands (and other things?)
+ // escaped = escaped.replace("&amp;", "&");
   return escaped;
 }); // sanitize(string);
 module.exports.sanitize = sanitize;
@@ -913,9 +914,9 @@ module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
 });
 
 // delete whole album
-module.exports.deleteAlbum=(function (albumid, callback) {
+module.exports.deleteAlbum=(function (userid, albumid, callback) {
     albumid=sanitize(albumid);
-    module.exports.query("DELETE FROM albums WHERE albumid= '" + albumid + "';",function(success, error){
+    module.exports.query("DELETE FROM albums WHERE albumid= '" + albumid + "' and userid= '" + userid + "';",function(success, error){
 	if (error)
 	    callback(null, error)
 	else
