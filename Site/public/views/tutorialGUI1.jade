@@ -3,23 +3,27 @@ block title
   title Introduction to MIST Workspace
 block extraMetas
 block extraLinks
-  script(type='text/javascript' src='../js/tutorialGUI1')
+  script(type='text/javascript' src='../js/tutorialGUI1.js')
 block stylesheets
-  link(rel='stylesheet', href='/css/tutorial')
+  link(rel='stylesheet', href='/css/tutorial.css')
 
 block content
   div(id='main')
     div(id='instructions')
-      h3 What the MIST are these things?!
+      h3 What the MIST is this thing?!
       p(class='image00' style='white-space:pre-line;')
         | Welcome to MIST! By now you're probably wondering how in the world you can work with the Create space.
+        | 
         |    On the right, we labeled what exactly all that stuff is.  Click through the next buttons to familiarize yourself with the workspace on MIST.
+        | 
         |    You may find it useful to open up another window to interact with the workspace side-by-side.
       p(class='image01' style='white-space:pre-line;')
         | Now to add a value to the workspace and view its graphical representation in the [-1, 1] world.
+        | 
         | Start by clicking on the 'add a value' tab of the menu to view the values available.
       p(class='image02' style='white-space:pre-line;')
         | To add a value to the workspace, simply drag it down to where you want it!
+        | 
         | The options are:
         |     x
         |     y
@@ -35,7 +39,9 @@ block content
         |   *To close an open image, re-click anywhere on the image.
       p(class='image05' style='white-space:pre-line;')
         | Now to add a function and connect a value.
+        | 
         | Start by clicking on the 'add a function' tab of the menu to view the functions available.
+        | 
         |   The options are:
         |     sum – accepts multiple inputs
         |     mult – accepts multiple inputs
@@ -55,19 +61,23 @@ block content
         | Click the little grey outlet on your function to connect the new line to the function.
       p(class='image10' style='white-space:pre-line;')
         | This function is now 'valid' since it only takes one input.
+        | 
         | Now it has a mini image box to view the resulting image!
       p(class='image11' style='white-space:pre-line;')
         | Since the function was also the last item to be clicked on, you can also view the function being represented as an image, as text!
       p(class='image12' style='white-space:pre-line;')
         | Branches can also be created to view multiple images at once.
+        | 
         | Try out another function such as 'sum' which takes multiple inputs, as seen by the two initial outlets.
       p(class='image13' style='white-space:pre-line;')
         | You can now connect the 'valid' function from before to the still empty 'sum' along with a second 'x' value.
       p(class='image14' style='white-space:pre-line;')
         | With two inputs, the 'sum' function is now valid and can be viewed alongside the 'x'.
+        | 
         | At the bottom of the workspace, you can the text has also been updated!
       p(class='image15' style='white-space:pre-line;')
         | Now to delete an object.
+        | 
         | Start by clicking on the 'delete tool' in the toolbox.
       p(class='image16' style='white-space:pre-line;')
         | Click an object such as the oh-so-important 'sin' function....
@@ -75,6 +85,7 @@ block content
         | … And the workspace updates with viewable text and valid images.
       p(class='image18' style='white-space:pre-line;')
         | To undo a change to the workspace, simply click on the undo button in the toolbox.
+        | 
         |   *Undone actions can also be redone with the redo button located below the undo button.
       p(class='image19' style='white-space:pre-line;')
         | And Viola! The complete workspace is back.
@@ -85,10 +96,10 @@ block content
       p(class='image22' style='white-space:pre-line;')
         | Then saving your image is simply a click away.
       div(id='buttons')
-        a(href='#' id='clickPreviousTop' class='nextPrevious') << previous
-        a(href='#' id='clickNextTop' class='nextPrevious') next >>
-        a(href='#' id='clickPreviousBtm' class='nextPrevious') << previous
-        a(href='#' id='clickNextBtm' class='nextPrevious') next >>
+        a(href='#' id='clickPreviousTop') << previous
+        a(href='#' id='clickNextTop') next >>
+        a(href='#' id='clickPreviousBtm') << previous
+        a(href='#' id='clickNextBtm') next >>
   img(class='image00 image' src='/images/tutorial/1.jpg')
   img(class='image01 image' src='/images/tutorial/2.jpg')
   img(class='image02 image' src='/images/tutorial/3.jpg')
