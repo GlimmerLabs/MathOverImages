@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# A simple script for updating the site
+
+# First, we pull changes from git
+git pull
+
+# Next, we make the compound Javascript files
+pushd Site/public/js
+make
+popd
