@@ -277,7 +277,7 @@ module.exports = function(app,passport,database) {
   app.get('/logout', function(req,res) {
     req.session.loggedIn = false;
     req.session.user = null;
-    res.redirect('/');
+    res.redirect('back');
   });
 
   // --------------------------------------------------
