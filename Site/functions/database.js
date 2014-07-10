@@ -943,12 +943,20 @@ module.exports.addtoAlbum=(function (albumid, imageid, callback) {
 
 
 /* DATABASE SEARCH FUNCTIONS */
-
-//callback(resultObject)
-// resultObject has the following attributes:
-//   users, an array of users that match the searchString
-
-// Omnisearch
+/*
+  Procedure:
+  database.omnisearch(searchString, callback(resultObject, error));
+  Parameters:
+  searchString, A string to search
+  Purpose:
+  Find content in the database similar to a string
+  Pre-conditions:
+  None
+  Post-conditions:
+  All results will be returned.
+  Preferences:
+  None
+*/
 module.exports.omnisearch = (function(searchString, callback){
   var result = {};
   module.exports.userSearch (searchString, function(userArray, error){
@@ -983,7 +991,20 @@ module.exports.omnisearch = (function(searchString, callback){
       });
   });
 });
-// SEARCH FOR USER
+/*
+  Procedure:
+  database.userSearch(searchString, callback(resultArray, error));
+  Parameters:
+  searchString, A string to search
+  Purpose:
+  Find users in the database with a username close to the searchString
+  Pre-conditions:
+  None
+  Post-conditions:
+  All results will be returned.
+  Preferences:
+  Automatically sanitizes.
+*/
 module.exports.userSearch = (function(searchString, callback){
   searchString = sanitize(searchString);
   module.exports.query("SELECT username, featuredImage FROM users WHERE username LIKE '%" + searchString + "%';", function (results, error){
@@ -993,7 +1014,20 @@ module.exports.userSearch = (function(searchString, callback){
       callback(results, null);
   });
 });
-// SEARCH FOR IMAGES
+/*
+  Procedure:
+  database.imageSearch(searchString, callback(resultArray, error));
+  Parameters:
+  searchString, A string to search
+  Purpose:
+  Find images in the database with a title similar to searchString
+  Pre-conditions:
+  None
+  Post-conditions:
+  All results will be returned.
+  Preferences:
+  Automatically sanitizes.
+*/
 module.exports.imageSearch = (function(searchString, callback){
   searchString = sanitize(searchString);
   module.exports.query("SELECT * FROM images WHERE title LIKE '%" + searchString + "%';", function (results, error){
@@ -1003,7 +1037,20 @@ module.exports.imageSearch = (function(searchString, callback){
       callback(results, null);
   });
 });
-// SEARCH FOR comments
+/*
+  Procedure:
+  database.commentSearch(searchString, callback(resultArray, error));
+  Parameters:
+  searchString, A string to search
+  Purpose:
+  Find comments in the database with content similar to searchString
+  Pre-conditions:
+  None
+  Post-conditions:
+  All results will be returned.
+  Preferences:
+  Automatically sanitizes.
+*/
 module.exports.commentSearch = (function(searchString, callback){
   searchString = sanitize(searchString);
   module.exports.query("SELECT * FROM comments WHERE comment LIKE '%" + searchString + "%';", function (results, error){
@@ -1013,7 +1060,20 @@ module.exports.commentSearch = (function(searchString, callback){
       callback(results, null);
   });
 });
-// Search for albums
+/*
+  Procedure:
+  database.albumSearch(searchString, callback(resultArray, error));
+  Parameters:
+  searchString, A string to search
+  Purpose:
+  Find albums in the database with a name similar to searchString
+  Pre-conditions:
+  None
+  Post-conditions:
+  All results will be returned.
+  Preferences:
+  Automatically sanitizes.
+*/
 module.exports.albumSearch = (function(searchString, callback){
   searchString = sanitize(searchString);
   module.exports.query("SELECT * FROM albums WHERE name LIKE '%" + searchString + "%';", function (results, error){
@@ -1023,7 +1083,20 @@ module.exports.albumSearch = (function(searchString, callback){
       callback(results, null);
   });
 });
-// Search for functions
+/*
+  Procedure:
+  database.functionSearch(searchString, callback(resultArray, error));
+  Parameters:
+  searchString, A string to search
+  Purpose:
+  Find functions in the database with a name similar to searchString
+  Pre-conditions:
+  None
+  Post-conditions:
+  All results will be returned.
+  Preferences:
+  Automatically sanitizes.
+*/
 module.exports.functionSearch = (function(searchString, callback){
   searchString = sanitize(searchString);
   module.exports.query("SELECT * FROM functions WHERE functionName LIKE '%" + searchString + "%';", function (results, error){
@@ -1033,3 +1106,5 @@ module.exports.functionSearch = (function(searchString, callback){
       callback(results, null);
   });
 });
+
+/* END DATABASE SEARCH FUNCTIONS */
