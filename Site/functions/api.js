@@ -351,3 +351,17 @@ handlers.toggleLike = function(info, req, res) {
         res.end(success.toString());
     });
 }; // handlers.toggleLike
+
+/*
+Search for names and values in the database.
+action: omnisearch
+search, the search string
+*/
+handlers.omnisearch = (function (info, req, res) {
+  database.omnisearch(info.search, function(resultObject, error){
+    if (error)
+      fail(res, error.stringify);
+    else
+      res.end(resultObject.stringify);
+  });
+});
