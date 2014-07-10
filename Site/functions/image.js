@@ -71,3 +71,12 @@ module.exports.deleteImage= function(req, res, database) {
        res.redirect('/');
    });
 }
+
+module.exports.setProfilePicture= function(req, res, database) {
+    database.setProfilePicture(req.session.user.userid, req.params.imageid, function(success, error) {
+if (!success)
+   res.end(error)
+else
+   res.redirect('/user/'+ req.session.user.username + '/');
+    })
+};

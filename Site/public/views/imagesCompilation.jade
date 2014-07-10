@@ -1,6 +1,6 @@
 extends ./partials/framework
 block title
-  title= images[0].username + " on MIST"
+  title= viewing + " on MIST"
 block extraMetas
 block extraLinks
   script(type='text/javascript' src='/js/ugly.mist.js')
@@ -15,11 +15,11 @@ block content
   div(id='main')
     div(id='top')
       div(id='pageTitle')
-        h1= images[0].username
+        h1= viewing
       div(id='subviews')
-        a(href='/user/'+ images[0].username class='subview') bio
+        a(href='/user/'+ viewing class='subview') profile
         a(href='/badges' class='subview') badges
-        a(href='/user/'+ images[0].username +'/albums' class='subview' id= 'selected') albums
+        a(href='/user/'+ viewing +'/albums' class='subview' id= 'selected') albums
         a(href='/challenges' class='subview') challenges
     div(id='gallery')
       div(id='images')

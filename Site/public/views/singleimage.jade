@@ -32,6 +32,9 @@ block content
    if loggedIn
     if (image.userid === user.userid)
      form(method='POST')
+      input(type='hidden' value= image.imageid name='profile')
+      input(type='submit' class='profile' value='set as profile picture')
+     form(method='POST')
       input(type='hidden' value= image.imageid name='delete')
       input(type='submit' class='delete' value='delete this image')
     div(id='add')
