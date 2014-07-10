@@ -294,12 +294,6 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path: /tutorial
   //   Various tutorials.
-  app.get('/tutorial', function(req, res) {
-    res.render('../public/views/tutorialGUI1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
 
   app.get('/tutorial/gui', function(req, res) {
     res.redirect('/tutorial/gui/start');
@@ -323,19 +317,6 @@ module.exports = function(app,passport,database) {
     tutorial.intro(req,res);
   });
 
-  app.get('/tutorial/introToMIST', function(req, res) {
-      res.render('../public/views/tutorialIntro1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
-
-  app.get('/tutorial/workspace', function(req, res) {
-      res.render('../public/views/tutorialGUI1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
 
   // --------------------------------------------------
   // Path: /user
