@@ -24,13 +24,16 @@ block content
    a(href='/challenges' class='subview') challenges
   div(id='subTitle')
    p= "member since " + viewing.signupTime.toLocaleDateString()
-  div(id='featuredImage')
-   figure
-    h1(class='imageTitle')= image.title
-    a(href='/image/'+image.imageid)
-     canvas(id='canvas' width='400' height='400')
-    a(href='/user/'+ image.username): figcaption(class='right')= image.username
-   p(id='code' class='code')= image.code
+  if (image != NULL)
+   div(id='featuredImage')
+    figure
+     h1(class='imageTitle')= image.title
+     a(href='/image/'+image.imageid)
+      canvas(id='canvas' width='400' height='400')
+     a(href='/user/'+ image.username): figcaption(class='right')= image.username
+    p(id='code' class='code')= image.code
+  else
+      canvas(id='canvas' width='400' height='400')
   if viewingSelf
    a(href='/accountSettings' class='settings'): account account settings
    div(id='bio')
