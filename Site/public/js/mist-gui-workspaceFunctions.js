@@ -318,15 +318,30 @@ var showLoadWorkspaceDialog = function() {
 // +-------------------+-----------------------------------------------
 // | Session Functions |
 // +-------------------+
-window.onbeforeunload = function() {
-  var request = new XMLHttpRequest();
+
+/**
+ * -jquery ajax call to ensure beforeunload event works with all browsers-
+ *  This event sends a POST request to the api to store the current state
+ * of a user's workspace as a element of the req.session object.
+ */
+$(window).on('beforeunload', function() {
+    var x = storeWS();
+    return x;
+});
+function storeWS(){
   code = workspaceToJSON();
   var data = "action=storews&code="+code;
-  request.open("POST", "/api", true);
-  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  request.send(data);
+  jQuery.ajax("/api", {
+    data: data,
+    type: 'POST'
+    });
 }
 
+/**
+ * function to load a workspace from the req.session object. This queries
+ * the server for the req.session.workspaceCode field, and returns it if
+ * it exists. This is called during initialize stage.
+ */
 var initWorkspace = function() {
   var request = new XMLHttpRequest();
   var url = "/api?action=returnws";
