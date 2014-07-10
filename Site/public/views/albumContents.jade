@@ -7,6 +7,7 @@ block extraLinks
   script(type='text/javascript' src='/js/ugly.mistui.js')
   script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
   script(type='text/javascript' src='/js/gallery.js')
+  script(type='text/javascript' src='/js/likes.js')
 
 block stylesheets
   link(rel='stylesheet' href='/css/gallery')
@@ -33,13 +34,16 @@ block content
           if (albumContents != null)
             - for (var i = 0; i < albumContents.length; i++)
               li
-                figure
+                figure(data-imageid=albumContents[i].imageid)
                   a(href='/image/' + albumContents[i].imageid)
                     figcaption(class='center')= albumContents[i].title
                     canvas(id='canvas'+i width='180' height='180')
                     input(type='hidden' id='code'+i value=albumContents[i].code)
                   a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
-                  figcaption(class='left')= "★" + albumContents[i].rating
+                  if(albumContents[i].liked)
+                    figcaption(class='left starred')= "★" + albumContents[i].rating
+                  else
+                    figcaption(class='left unstarred')= "★" + albumContents[i].rating
                   if loggedIn && (albumTitle.userid === user.userid)
                       form(method='POST')
                         input(type='hidden' value= albumContents[i].imageid name='deleteImage')
