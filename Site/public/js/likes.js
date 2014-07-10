@@ -18,7 +18,7 @@ function createAjaxGetRequest(callback, imageid){
 function addFigcaptionListeners() {
   var figcaptions = document.getElementsByTagName("figcaption");
   for(var i = 0; i < figcaptions.length; i++) {
-    if(figcaptions[i].innerText.indexOf("★") != -1) {
+    if(figcaptions[i].innerHTML.indexOf("★") != -1) {
       figcaptions[i].onclick = function(evt){
         var imageid = this.parentNode.getAttribute("data-imageid");
         imageid = imageid.replace("/image/");
@@ -27,10 +27,16 @@ function addFigcaptionListeners() {
           if(!error){
             if(response == "Liked") {
               clickedFigcaption.className = "left starred";
+              clickedFigcaption.innerHTML = "★" + (parseInt(clickedFigcaption.innerHTML.slice(1)) + 1);
             }
             if(response == "Unliked") {
               clickedFigcaption.className = "left unstarred";
+              clickedFigcaption.innerHTML= "★" + (parseInt(clickedFigcaption.innerHTML.slice(1)) - 1);
             }
+          }
+          else {
+            if (error === "User is not logged in.")
+              alert("You must be logged in to rate images.");
           }
         }, imageid);
       }
