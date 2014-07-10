@@ -8,20 +8,11 @@
 // +-------+
 
 /*
-   1. We assume that each image has a canvas named "canvas#" and an
-      accompanying hidden field named "code#".  We also assume that
-      the numbers start at 0 (although I don't think that matters
-      right now).
+   1. We assume that each image has a canvas named "canvas#" and
+      an accompanying field (possibly hidden) named "code#".  We
+      also assume that the numbers start at 0 (although I don't
+      think that matters right now).
  */
-
-// +-----------+-------------------------------------------------------
-// | Constants |
-// +-----------+
-
-/**
- * The maximum number of images on a page.
- */
-var MAX_IMAGES = 16;
 
 // +-------+-----------------------------------------------------------
 // | Setup |
@@ -40,48 +31,58 @@ var context = {};
 /**
  * The animators for all of the images.
  */
-images = [];
+images = {};
 
 // +-----------+-------------------------------------------------------
 // | Functions |
 // +-----------+
 
 /**
- * Set up the ith canvas.
+ * Set up the ith canvas.  (No longer used, but included for posterity.)
  */
 function setup(i) {
-  var canvas = document.getElementById('canvas' + i);
-  var code = document.getElementById('code' + i);
+  setupCanvas(document.getElementById('canvas' + i));
+} // setup(i)
+
+/**
+ * Set up an individual canvas.
+ */
+function setupCanvas(canvas) {
+  if (!canvas) return;
+  var canvasId = canvas.id;
+  var i = eval(canvasId.replace("canvas",""));
+  var codeId = "code" + i;
+  var code = document.getElementById(codeId);
 
   // Make sure the element exists
-  if (!canvas || !code ||!(code.value)) {
+  if (!code || !(code.value)) {
     return;
   } // if
 
   // Show the image
-  images[i] = new MIST.ui.Animator(code.value, [], context, canvas);
-  images[i].frame();    // Or .start() if you want all of the images animated
+  images[canvasId] = new MIST.ui.Animator(code.value, [], context, canvas);
+  images[canvasId].frame();    // Or .start() if you want all of the images animated
 
   // Add event handlers to the element for animating and stopping animation
   canvas.onmouseover = function(evt) {
-    images[i].start();
+    images[canvasId].start();
   } // canvas.mouseenter
 
   canvas.onmouseout = function(evt) {
-    images[i].stop();
+    images[canvasId].stop();
   } // canvas.mouseleave
 
   // Add event handlers for the x and y coordinate
   // Forthcoming
-} // setup
+} // setupCanvas
 
 // +------------------+------------------------------------------------
 // | Final Page Setup |
 // +------------------+
 
 $(document).ready(function() {
-  // Do the initial rendering
-  for (var i = 0; i < MAX_IMAGES; i++) {
-    setup(i);
-  } // for
+  var canvases = document.getElementsByTagName("canvas");
+  for (var i = 0; i < canvases.length; i++) {
+    setupCanvas(canvases[i]);
+  }
 });
