@@ -7,6 +7,7 @@ block extraLinks
  script(type='text/javascript' src='/js/ugly.mistui.js')
  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
  script(type='text/javascript' src='/js/imagepage.js')
+ script(type='text/javascript' src='/js/likes.js')
 
 block stylesheets
  link(rel='stylesheet', href='/css/index.css')
@@ -19,10 +20,14 @@ block content
   div(id='subTitle')
    h2 That page does not exist, but here's a random image!
   h1= image.title
-  a(href='/image/'+image.imageid): figure
-   canvas(id='canvas' width='400' height='400')
-   figcaption(class='left')= "★" + image.rating
-   a(href='/user/'+ image.username)
-    figcaption(class='right')= image.username
-  p(id='code' class='code')= image.code
+  a(href='/image/'+image.imageid)
+   figure(data-imageid=image.imageid)
+     canvas(id='canvas' width='400' height='400')
+     if(liked)
+      figcaption(class='left starred')= "★" + image.rating
+     else
+      figcaption(class='left unstarred')= "★" + image.rating
+     a(href='/user/'+ image.username)
+      figcaption(class='right')= image.username
+    p(id='code' class='code')= image.code
 

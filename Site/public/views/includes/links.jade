@@ -1,9 +1,9 @@
 div.links
   if (prev)
-    p.prev: a(href=prev) << Prev
+    p.prev: a(href=prev id='clickPrevious') << prev
   else
     p
   if (next)
-    p.next: a(href=next) Next >>
+    p.next: a(href=next id='clickNext') next >>
   else
     p
