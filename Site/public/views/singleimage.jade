@@ -17,7 +17,7 @@ block content
   h2= image.modifiedAt.toUTCString()
   figure(data-imageid=image.imageid)
    canvas(id='canvas' width='400' height='400')
-   if(false)
+   if(liked)
     figcaption(class='left starred')= "★" + image.rating
    else
     figcaption(class='left unstarred')= "★" + image.rating
