@@ -32,13 +32,15 @@ module.exports.buildPage = function(req, res, database) {
           if(error)
             res.end(error)
           else
-            database.getAlbumContentsTitle(req.params.albumid, function(albumTitle, error){
-              res.render('../public/views/albumContents.jade', {
-                  loggedIn: req.session.loggedIn,
-                  user: req.session.user,
-                  albumContents: albumContents,
-                  albumTitle:albumTitle,
-                  albumOwner:req.params.username
+            setLikes(albumContents, (req.session.user) ? req.session.user.userid : null, function(images){
+              database.getAlbumContentsTitle(req.params.albumid, function(albumTitle, error){
+                res.render('../public/views/albumContents.jade', {
+                    loggedIn: req.session.loggedIn,
+                    user: req.session.user,
+                    albumContents: images,
+                    albumTitle:albumTitle,
+                    albumOwner:req.params.username
+                });
               });
             });
         });
