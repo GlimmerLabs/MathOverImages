@@ -31,7 +31,9 @@ h2 {
 .clickY {
   width: 25%;
 }
-a#clickPrevious{
+
+a.clickPrevious{
+  padding: 2px;
   float: left;
   position: static;
   bottom: 0px;
@@ -45,7 +47,8 @@ a#clickPrevious{
   font-size: 1.2em;
 }
 
-a#clickNext{
+a.clickNext{
+  padding: 2px;
   float: right;
   position: static;
   bottom: 0px;
@@ -58,12 +61,12 @@ a#clickNext{
   font-size: 1.2em;
 }
 
-a#clickNext:hover{
+a.clickNext:hover{
   background-color:#FFF;
   color: #979797;
 }
 
-a#clickPrevious:hover{
+a.clickPrevious:hover{
   background-color:#FFF;
   color: #979797;
 }
