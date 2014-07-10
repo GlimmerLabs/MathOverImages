@@ -16,20 +16,20 @@ module.exports.buildPage =  function(req, res, database) {
                 res.end(error);
             else
                 res.render('../public/views/singleimage.jade', {
-                comment:comment,
-                user: req.session.user,
-                loggedIn: req.session.loggedIn,
-                image: image,
-                albums: albums
+                    comment:comment,
+                    user: req.session.user,
+                    loggedIn: req.session.loggedIn,
+                    image: image,
+                    albums: albums
                 });
             });
         }
         else
             res.render('../public/views/singleimage.jade', {
-            comment:comment,
-            user: req.session.user,
-            loggedIn: req.session.loggedIn,
-            image: image,
+                comment:comment,
+                user: req.session.user,
+                loggedIn: req.session.loggedIn,
+                image: image,
             });
         });
     });
