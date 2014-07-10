@@ -227,6 +227,10 @@ module.exports = function(app,passport,database) {
 	else if (req.body.add != null){
 	    var image = require("../functions/image.js");
 	    image.addtoAlbum(req, res, database);
+	}
+	else if (req.body.profile != null){
+	    var image = require("../functions/image.js");
+	    image.setProfilePicture(req, res, database);
 	};
     });
 
@@ -273,7 +277,7 @@ module.exports = function(app,passport,database) {
   app.get('/logout', function(req,res) {
     req.session.loggedIn = false;
     req.session.user = null;
-    res.redirect('/');
+    res.redirect('back');
   });
 
   // --------------------------------------------------

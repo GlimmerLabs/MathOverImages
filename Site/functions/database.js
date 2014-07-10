@@ -746,6 +746,19 @@ module.exports.deleteImage=(function (userid, imageid, callback) {
   });
 });
 
+
+//Set profile picture
+module.exports.setProfilePicture=(function (userid, imageid, callback) {
+    userid=sanitize(userid);
+    imageid=sanitize(imageid);
+    module.exports.query("UPDATE users SET featuredImage='" + imageid + "' WHERE userid= '" + userid + "';", function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
+});
+
 // get all images for user
 module.exports.getAllImagesforUser=(function (userid, callback) {
   userid=sanitize(userid);
