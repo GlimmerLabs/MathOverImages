@@ -9,13 +9,8 @@ $(document).ready(function(){
       $(".hidden").show();
       $(".hidden").animate({opacity: 1});
       $(".hidden input[type='text']").focus();
-
     });
-
-
   });
-
-
 
   $("#cancel").click(function() {
     $('.hidden').animate({ opacity:0}, function(){
@@ -35,5 +30,18 @@ $(document).ready(function(){
       $(".hidden").submit();
     }
   });
-  // End Header Functions
 });
+
+/* Search Bar Functions */
+var omnisearch = (function(string, callback){
+  var data = {
+    action: "omnisearch",
+    search: string
+  };
+  $.post("/api", data, function(response){
+    callback(JSON.parse(response));
+  });
+});
+
+/* End Search Bar Functions */
+// End Header Functions
