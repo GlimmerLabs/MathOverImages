@@ -736,16 +736,25 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
 
 // delete Image
 module.exports.deleteImage=(function (userid, imageid, callback) {
-  userid=sanitize(userid);
-  imageid=sanitize(imageid);
-  module.exports.query("DELETE FROM images WHERE imageid='" + imageid + "' AND userid= '" + userid + "';", function (rows, error){
-    if (error)
-      callback(null, error);
-    else
-      callback(rows, null);
-  });
+    userid=sanitize(userid);
+    imageid=sanitize(imageid);
+    module.exports.query("DELETE FROM images WHERE imageid='" + imageid + "' AND userid= '" + userid + "';", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else
+	    module.exports.query("DELETE FROM albumContents WHERE imageid='" +imageid + "';", function (success, error){
+		if (error)
+		    callback(null, error);
+		else
+		    module.exports.query("DELETE FROM comments WHERE onImage='" + imageid + "';",function(success, error){
+			if (error)
+			    callback(error);
+			else
+			    callback(success, null);
+		    });
+	    });
+    });
 });
-
 
 //Set profile picture
 module.exports.setProfilePicture=(function (userid, imageid, callback) {
