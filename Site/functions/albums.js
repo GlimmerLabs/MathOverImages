@@ -1,13 +1,13 @@
 /**
  * Functions related to the album.
  */
-var setLikes = function(imageArray, userID, callback) {
+var setLikes = function(imageArray, userID, database, callback) {
   var imageArrayClone = imageArray.slice(0, imageArray.length);
   var errorsArray = [];
   var likes = {counter: 1, likes: []};
   for(var image = 0; image < imageArrayClone.length; image++) {
     (function(currentIndex){
-      filedatabase.hasLiked(userID, imageArrayClone[currentIndex].imageid, function(liked, error) {
+      database.hasLiked(userID, imageArrayClone[currentIndex].imageid, function(liked, error) {
         likes.likes[currentIndex] = liked;
         likes.counter++;
         if(likes.counter == imageArray.length) {
@@ -51,11 +51,13 @@ module.exports.allImagesinAlbum = function(req, res, database) {
           if(error)
             res.end(error)
           else
-            res.render('../public/views/imagesCompilation.jade', {
-              loggedIn: req.session.loggedIn,
-              user:req.session.user,
-              images:images,
-              viewing:req.params.username
+            setLikes(images, (req.session.user) ? req.session.user.userid : null, database, function(imageArray){
+              res.render('../public/views/imagesCompilation.jade', {
+                loggedIn: req.session.loggedIn,
+                user:req.session.user,
+                images:imageArray || images,
+                viewing:req.params.username
+              });
             });
         });
   });
