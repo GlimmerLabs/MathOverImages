@@ -215,24 +215,24 @@ module.exports = function(app,passport,database) {
     albums.allImagesinAlbum(req, res, database);
   });
 
-    app.post('/image/:imageid', function(req,res) {
-	if(req.body.commentSubmit != null) {
-	    var image = require("../functions/image.js");
-	    image.saveComment(req, res, database);
-	}
-	else if(req.body.delete != null) {
-	    var image = require("../functions/image.js");
-	    image.deleteImage(req, res, database);
-	}
-	else if (req.body.add != null){
-	    var image = require("../functions/image.js");
-	    image.addtoAlbum(req, res, database);
-	}
-	else if (req.body.profile != null){
-	    var image = require("../functions/image.js");
-	    image.setProfilePicture(req, res, database);
-	};
-    });
+  app.post('/image/:imageid', function(req,res) {
+    if(req.body.commentSubmit != null) {
+      var image = require("../functions/image.js");
+      image.saveComment(req, res, database);
+    }
+    else if(req.body.delete != null) {
+      var image = require("../functions/image.js");
+      image.deleteImage(req, res, database);
+    }
+    else if (req.body.add != null){
+      var image = require("../functions/image.js");
+      image.addtoAlbum(req, res, database);
+    }
+    else if (req.body.profile != null){
+      var image = require("../functions/image.js");
+      image.setProfilePicture(req, res, database);
+    };
+  });
 
   // --------------------------------------------------
   // Path: /images/tutorial
@@ -350,7 +350,9 @@ module.exports = function(app,passport,database) {
   // Path: /signup
   //   Signup page
   app.get('/signup', function(req,res) {
-    res.render('../public/views/signup.jade');
+    res.render('../public/views/signup.jade', {
+      prior:{}
+    });
   });
 
   app.post('/signup', function(req,res) {

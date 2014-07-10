@@ -185,6 +185,10 @@ a {
 text-decoration: none;
 }
 
+.error {
+ color: red;
+}
+
 /* Footer */
 footer nav ul {
  margin:0;
