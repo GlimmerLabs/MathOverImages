@@ -59,8 +59,8 @@ var hashPassword = (function (passwordtohash, callback) {
 var sanitize = (function (string) {
   var escaped = validate.escape(string);
   escaped = escaped.replace(/'/g, '&#39;');
-// Restore ampersands (and other things?)
- // escaped = escaped.replace("&amp;", "&");
+  // Restore ampersands (and other things?)
+  // escaped = escaped.replace("&amp;", "&");
   return escaped;
 }); // sanitize(string);
 module.exports.sanitize = sanitize;
@@ -154,14 +154,14 @@ module.exports.userExists = (function(checkString, callback){
 */
 module.exports.imageExists = (function(userid, checkString, callback){
 
-    checkstring = sanitize(checkString); // Always sanitize user input.
-    // check if string is a username
-    module.exports.query("SELECT title FROM images WHERE title = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
-  if (!rows[0]){ // string is not a username
-    callback(false);
-  }
-  // username exists
-  else callback(true);
+  checkstring = sanitize(checkString); // Always sanitize user input.
+  // check if string is a username
+  module.exports.query("SELECT title FROM images WHERE title = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
+    if (!rows[0]){ // string is not a username
+      callback(false);
+    }
+    // username exists
+    else callback(true);
   });
 }); // database.imageExists(userid, checkString, callback(exists));
 
@@ -183,14 +183,14 @@ module.exports.imageExists = (function(userid, checkString, callback){
 */
 module.exports.wsExists = (function(userid, checkString, callback){
 
-    checkstring = sanitize(checkString); // Always sanitize user input.
-    // check if string is a username
-    module.exports.query("SELECT name FROM workspaces WHERE name = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
-  if (!rows[0]){ // string is not a username
-    callback(false);;
-  }
-  // username exists
-  else callback(true);;
+  checkstring = sanitize(checkString); // Always sanitize user input.
+  // check if string is a username
+  module.exports.query("SELECT name FROM workspaces WHERE name = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
+    if (!rows[0]){ // string is not a username
+      callback(false);;
+    }
+    // username exists
+    else callback(true);;
   });
 }); // database.wsExists(userid, checkString;
 
@@ -674,7 +674,7 @@ module.exports.firstImageofAlbum=(function(albumid, callback){
 
 module.exports.getAlbumContentsTitle=(function(albumid, callback) {
   albumid=sanitize(albumid);
- module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
+  module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -736,9 +736,9 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
 
 // delete Image
 module.exports.deleteImage=(function (userid, imageid, callback) {
-    userid=sanitize(userid);
-    imageid=sanitize(imageid);
-    module.exports.query("DELETE FROM images WHERE imageid='" + imageid + "' AND userid= '" + userid + "';", function (rows, error){
+  userid=sanitize(userid);
+  imageid=sanitize(imageid);
+  module.exports.query("DELETE FROM images WHERE imageid='" + imageid + "' AND userid= '" + userid + "';", function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -876,67 +876,160 @@ module.exports.countNumberofLikes=(function (imageid, callback) {
 */
 
 module.exports.hasLiked=(function (userid, imageid, callback) {
-    imageid=sanitize(imageid);
-    userid=sanitize(userid);
-    module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
-	if (error)
-	    callback(null, error);
-	else if (rows[0])
-	    callback(true, null);
-	else
-	    callback(false, null);
-    });
+  imageid=sanitize(imageid);
+  userid=sanitize(userid);
+  module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
+    if (error)
+      callback(null, error);
+    else if (rows[0])
+      callback(true, null);
+    else
+      callback(false, null);
+  });
 });
 
 
 // create Album
 module.exports.createAlbum=(function (userid, name, callback) {
-    userid=sanitize(userid);
-    name=sanitize(name);
-    module.exports.query("INSERT INTO albums (userid, name, dateCreated) VALUES('" + userid + "','" + name + "', UTC_TIMESTAMP);", function (rows, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(rows, null);
-    });
+  userid=sanitize(userid);
+  name=sanitize(name);
+  module.exports.query("INSERT INTO albums (userid, name, dateCreated) VALUES('" + userid + "','" + name + "', UTC_TIMESTAMP);", function (rows, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(rows, null);
+  });
 });
 
 //delete from album (not image database)
 module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
-    albumid=sanitize(albumid);
-    imageid=sanitize(imageid);
-    module.exports.query("DELETE FROM albumContents WHERE albumid='" + albumid + "' AND imageid='" +imageid + "' LIMIT 1;",function (success, error){
-	if (error)
-	    callback(null, error);
-	else
-	    callback(success, null);
-    });
+  albumid=sanitize(albumid);
+  imageid=sanitize(imageid);
+  module.exports.query("DELETE FROM albumContents WHERE albumid='" + albumid + "' AND imageid='" +imageid + "' LIMIT 1;",function (success, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(success, null);
+  });
 });
 
 // delete whole album
 module.exports.deleteAlbum=(function (userid, albumid, callback) {
-    albumid=sanitize(albumid);
-    module.exports.query("DELETE FROM albums WHERE albumid= '" + albumid + "' and userid= '" + userid + "';",function(success, error){
-	if (error)
-	    callback(null, error)
-	else
-	    module.exports.query("DELETE FROM albumContents WHERE albumid= '" + albumid + "';",function (success, err){
-		if (err)
-		    callback (null, err)
-		else
-		    callback(success, null);
-	    });
-    });
+  albumid=sanitize(albumid);
+  module.exports.query("DELETE FROM albums WHERE albumid= '" + albumid + "' and userid= '" + userid + "';",function(success, error){
+    if (error)
+      callback(null, error)
+      else
+        module.exports.query("DELETE FROM albumContents WHERE albumid= '" + albumid + "';",function (success, err){
+          if (err)
+            callback (null, err)
+            else
+              callback(success, null);
+        });
+  });
 });
 
 // add to album
 module.exports.addtoAlbum=(function (albumid, imageid, callback) {
-    albumid=sanitize(albumid);
-    imageid=sanitize(imageid);
-    module.exports.query("INSERT INTO albumContents (albumid, imageid, dateAdded) VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);", function (success, error){
-	if (error)
-	    callback(null, error)
-	else
-	    callback(success, null);
-    });
-}); 
+  albumid=sanitize(albumid);
+  imageid=sanitize(imageid);
+  module.exports.query("INSERT INTO albumContents (albumid, imageid, dateAdded) VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);", function (success, error){
+    if (error)
+      callback(null, error)
+      else
+        callback(success, null);
+  });
+});
+
+
+/* DATABASE SEARCH FUNCTIONS */
+
+//callback(resultObject)
+// resultObject has the following attributes:
+//   users, an array of users that match the searchString
+
+// Omnisearch
+module.exports.omnisearch = (function(searchString, callback){
+  var result = {};
+  module.exports.userSearch (searchString, function(userArray, error){
+    result.users = userArray;
+    if (error)
+      callback(null, error);
+    else
+      module.exports.imageSearch (searchString, function(imageArray, error){
+        result.images = imageArray;
+        if (error)
+          callback(null, error);
+        else
+          module.exports.commentSearch(searchString, function (commentArray, error) {
+            result.comments = commentArray;
+            if (error)
+              callback(null, error);
+            else
+              module.exports.albumSearch(searchString, function (albumArray, error){
+                result.albums = albumArray;
+                if (error)
+                  callback(null, error);
+                else
+                  module.exports.functionSearch(searchString, function(functionArray, error){
+                    result.functions = functionArray;
+                    if (error)
+                      callback(null, error);
+                    else
+                      callback(result, null);
+                  });
+              });
+          });
+      });
+  });
+});
+// SEARCH FOR USER
+module.exports.userSearch = (function(searchString, callback){
+  searchString = sanitize(searchString);
+  module.exports.query("SELECT * FROM users WHERE username LIKE '%" + searchString + "%';", function (results, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(results, null);
+  });
+});
+// SEARCH FOR IMAGES
+module.exports.imageSearch = (function(searchString, callback){
+  searchString = sanitize(searchString);
+  module.exports.query("SELECT * FROM images WHERE title LIKE '%" + searchString + "%';", function (results, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(results, null);
+  });
+});
+// SEARCH FOR comments
+module.exports.commentSearch = (function(searchString, callback){
+  searchString = sanitize(searchString);
+  module.exports.query("SELECT * FROM comments WHERE comment LIKE '%" + searchString + "%';", function (results, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(results, null);
+  });
+});
+// Search for albums
+module.exports.albumSearch = (function(searchString, callback){
+  searchString = sanitize(searchString);
+  module.exports.query("SELECT * FROM albums WHERE name LIKE '%" + searchString + "%';", function (results, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(results, null);
+  });
+});
+// Search for functions
+module.exports.functionSearch = (function(searchString, callback){
+  searchString = sanitize(searchString);
+  module.exports.query("SELECT * FROM functions WHERE functionName LIKE '%" + searchString + "%';", function (results, error){
+    if (error)
+      callback(null, error);
+    else
+      callback(results, null);
+  });
+});
