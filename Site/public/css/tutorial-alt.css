@@ -82,3 +82,16 @@ div.links {
   display: flex;
   justify-content: space-between;
 }
+
+/* Sam's failed attempt to do progress bars. */
+div.progressbar {
+  width: 100px;
+  height: 1em;
+  border: 1px solid black;
+  padding: 0;
+}
+
+span.progress {
+  background: black;
+  width: 20px;
+}
