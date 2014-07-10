@@ -7,30 +7,38 @@ module.exports.buildPage =  function(req, res, database) {
     if(error)
         res.end(error)
     else
-        database.commentInfo(image.imageid, function(comment, error){
-        if (error)
-            res.end(error)
-        else if (req.session.user != null){
-            database.albumsInfo(req.session.user.userid, function(albums, error){
+        database.hasLiked((req.session.user) ? req.session.user.userid : null, image.imageid, function(liked, error) {
             if(error)
-                res.end(error);
-            else
-                res.render('../public/views/singleimage.jade', {
-                    comment:comment,
-                    user: req.session.user,
-                    loggedIn: req.session.loggedIn,
-                    image: image,
-                    albums: albums
+                res.end(error)
+            else {
+                database.commentInfo(image.imageid, function(comment, error){
+                if (error)
+                    res.end(error)
+                else if (req.session.user != null){
+                    database.albumsInfo(req.session.user.userid, function(albums, error){
+                    if(error)
+                        res.end(error);
+                    else
+                        res.render('../public/views/singleimage.jade', {
+                            comment:comment,
+                            user: req.session.user,
+                            loggedIn: req.session.loggedIn,
+                            image: image,
+                            albums: albums,
+                            liked: liked
+                       });
+                    });
+                }
+                else
+                    res.render('../public/views/singleimage.jade', {
+                        comment:comment,
+                        user: req.session.user,
+                        loggedIn: req.session.loggedIn,
+                        image: image,
+                        liked: liked
+                    });
                 });
-            });
-        }
-        else
-            res.render('../public/views/singleimage.jade', {
-                comment:comment,
-                user: req.session.user,
-                loggedIn: req.session.loggedIn,
-                image: image,
-            });
+            }
         });
     });
 };
