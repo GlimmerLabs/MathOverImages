@@ -127,7 +127,6 @@ handlers.getws = function(info, req, res) {
     var query = "SELECT data FROM workspaces WHERE userid=" +
         req.session.user.userid + " and name='"  +
         database.sanitize(info.name) + "'";
-    // console.log(query);
     database.query(query, function(rows, error) {
       if (error) {
         fail(res, "Could not get workspace because " + error);
@@ -136,7 +135,6 @@ handlers.getws = function(info, req, res) {
         fail(res, "No workspace with name " + info.name);
       }
       else {
-        // console.log("Result is " + rows[0].data);
         res.setHeader("Content-type", "text/plain");
         res.send(rows[0].data);
       }
@@ -270,8 +268,6 @@ handlers.saveimage = function(info, req, res){
       } // If rows[0]
       else {
         var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public, modifiedAt, createdAt) VALUES (" + req.session.user.userid + ",'" + database.sanitize(info.title) + "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) + "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) + "', UTC_TIMESTAMP, UTC_TIMESTAMP)";
-        console.log(newQuery);
-
         database.query(newQuery, function(rows, error) {
           if (error) {
             fail(res, "Error: "+error);
