@@ -26,6 +26,6 @@ a {
   color: black;
 }
 
-table.help td :hover {
+table.help tr td:first-child:hover{
   background-color: #979797;
 }
