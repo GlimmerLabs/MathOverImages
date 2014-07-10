@@ -58,8 +58,9 @@ var hashPassword = (function (passwordtohash, callback) {
 */
 var sanitize = (function (string) {
   var escaped = validate.escape(string);
-  // Restore ampersands (and other things?)
-  // escaped = escaped.replace("&amp;", "&");
+  escaped = escaped.replace(/'/g, '&#39;');
+// Restore ampersands (and other things?)
+ // escaped = escaped.replace("&amp;", "&");
   return escaped;
 }); // sanitize(string);
 module.exports.sanitize = sanitize;
@@ -297,7 +298,6 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
     else
       bcrypt.compare(passwordToTest, rows[0].hashedPassword, function(error,result) {
         if (!error){
-          console.log("NO error");
           callback(result,null);
         }
         else
@@ -466,7 +466,6 @@ module.exports.changeEmail = (function (userid, newEmail, password, callback){
 module.exports.changeAboutSection = (function (userid, newAbout, callback){
   newAbout = sanitize(newAbout);
   userid = sanitize(userid);
-  console.log("new about: " + newAbout);
   module.exports.query("UPDATE users SET about='" + newAbout +"' WHERE userid= '"+userid+ "';", function (rows, error){
     if (error)
       callback(false, error);
@@ -582,7 +581,7 @@ module.exports.logIn = (function (user, password, callback) {
   Post-conditions:
   All information from the database will be retrieved
   Preferences:
-  Use database.getIDorUsername to get the id to pass to this function
+  Use database.getIDforUsername to get the id to pass to this function
 */
 
 module.exports.getUser = (function (userid, callback){
@@ -651,7 +650,7 @@ module.exports.imageInfo=(function(imageid, callback) {
 
 module.exports.albumsInfo=(function(userid, callback) {
   userid=sanitize(userid);
-  module.exports.query("SELECT users.username, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
+  module.exports.query("SELECT users.username, users.userid, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -673,13 +672,22 @@ module.exports.firstImageofAlbum=(function(albumid, callback){
 
 //albumContents query shortcode
 
-module.exports.albumContentsInfo=(function(albumid, callback) {
+module.exports.getAlbumContentsTitle=(function(albumid, callback) {
   albumid=sanitize(albumid);
-  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+ module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
     if (error)
       callback(null, error);
-    else if (!rows[0])
-      callback(null, "Album does not exist");
+    else
+      callback(rows[0], null);
+  });
+});
+
+module.exports.albumContentsInfo=(function(userid, albumid, callback) {
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid  and albums.userid = '" + userid + "' ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+    if (error)
+      callback(null, error);
+
     else
       callback(rows, null);
   });
@@ -718,7 +726,7 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
   userid=sanitize(userid);
   imageid=sanitize(imageid);
   newComment=sanitize(newComment);
-  module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "','" + new Date().toISOString().slice(0,19).replace('T', ' ') +"');" , function (rows, error){
+  module.exports.query("INSERT INTO comments (postedBy, onImage, comment, postedAt) VALUES ('"+ userid + "','" + imageid + "','" + newComment + "', UTC_TIMESTAMP);" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -868,14 +876,67 @@ module.exports.countNumberofLikes=(function (imageid, callback) {
 */
 
 module.exports.hasLiked=(function (userid, imageid, callback) {
-  imageid=sanitize(imageid);
-  userid=sanitize(userid);
-  module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
-    if (error)
-      callback(null, error);
-    else if (rows[0])
-      callback(true, null);
-    else
-      callback(false, null);
-  });
+    imageid=sanitize(imageid);
+    userid=sanitize(userid);
+    module.exports.query("SELECT * FROM ratings WHERE imageid='" + imageid + "' AND userid='" + userid + "';", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else if (rows[0])
+	    callback(true, null);
+	else
+	    callback(false, null);
+    });
 });
+
+
+// create Album
+module.exports.createAlbum=(function (userid, name, callback) {
+    userid=sanitize(userid);
+    name=sanitize(name);
+    module.exports.query("INSERT INTO albums (userid, name, dateCreated) VALUES('" + userid + "','" + name + "', UTC_TIMESTAMP);", function (rows, error){
+	if (error)
+	    callback(null, error);
+	else
+	    callback(rows, null);
+    });
+});
+
+//delete from album (not image database)
+module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
+    albumid=sanitize(albumid);
+    imageid=sanitize(imageid);
+    module.exports.query("DELETE FROM albumContents WHERE albumid='" + albumid + "' AND imageid='" +imageid + "' LIMIT 1;",function (success, error){
+	if (error)
+	    callback(null, error);
+	else
+	    callback(success, null);
+    });
+});
+
+// delete whole album
+module.exports.deleteAlbum=(function (userid, albumid, callback) {
+    albumid=sanitize(albumid);
+    module.exports.query("DELETE FROM albums WHERE albumid= '" + albumid + "' and userid= '" + userid + "';",function(success, error){
+	if (error)
+	    callback(null, error)
+	else
+	    module.exports.query("DELETE FROM albumContents WHERE albumid= '" + albumid + "';",function (success, err){
+		if (err)
+		    callback (null, err)
+		else
+		    callback(success, null);
+	    });
+    });
+});
+
+// add to album
+module.exports.addtoAlbum=(function (albumid, imageid, callback) {
+    albumid=sanitize(albumid);
+    imageid=sanitize(imageid);
+    module.exports.query("INSERT INTO albumContents (albumid, imageid, dateAdded) VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);", function (success, error){
+	if (error)
+	    callback(null, error)
+	else
+	    callback(success, null);
+    });
+}); 

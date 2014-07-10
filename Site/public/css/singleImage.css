@@ -1,42 +1,51 @@
-@import url("/css/styles");
+@import url("/css/styles.css");
 #main {
-	text-align: center;
+ text-align: center;
 }
 
 h1 {
-	color: #4A4A4A;
-	font-size: 2em;
-	margin: 0 auto;
-	font-weight: normal;
+ color: #4A4A4A;
+ font-size: 2em;
+ margin: 0 auto;
+ font-weight: normal;
 }
 
 h2 {
-	color: #979797;
-	font-size: 1em;
-	margin: 0 auto;
-	padding: 0;
-	font-weight: normal;
+ color: #979797;
+ font-size: 1em;
+ margin: 0 auto;
+ padding: 0;
+ font-weight: normal;
 }
 
 figure{
-	margin: 5px auto;
-	width: 400px;
+ margin: 5px auto;
+ width: 400px;
 
 }
 
 figure img {
-	height: 400px;
-	width: 400px;
+ height: 400px;
+ width: 400px;
 }
 
-figure figcaption.left:first-letter{
-	color: #EFDC5C;
-	font-size: 1em;
+.starred, .unstarred{
+ display: inline-block;
+  cursor: pointer;
+}
+.starred::first-letter{
+ color: #EFDC5C;
+ font-size: 1em;
+}
+
+.starred:hover::first-letter, .unstarred:hover::first-letter {
+ text-shadow:0 1px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 
 #comments {
-	width:50%;
-	margin: 0 auto;
+ width:50%;
+ margin: 0 auto;
 }
 
 div.comment {
@@ -45,64 +54,68 @@ div.comment {
 }
 
 div.comment a {
-	clear: left;
-	margin: 0px;
-	color: #FFF;
-	font-size: .5em;
-	box-shadow: -4px 5px 4px 0px #666;
-	text-align: center;
-	border-radius: 10px;
-	padding-left: 5px;
-	padding-right: 5px;
-	background-color: #979797;
-	text-decoration: none;
+ clear: left;
+ margin: 0px;
+ color: #FFF;
+ font-size: .5em;
+ box-shadow: -4px 5px 4px 0px #666;
+ text-align: center;
+ border-radius: 10px;
+ padding-left: 5px;
+ padding-right: 5px;
+ background-color: #979797;
+ text-decoration: none;
 }
 
 div.comment p {
-	margin: 0px;
-	text-align: left;
+ margin: 0px;
+ text-align: left;
 }
 
 div.comment h1.op a{
-	background-color: #3fAAA0;
-}
-.starred{
-	display: inline-block;
-}
-.starred::first-letter{
-	color: #EFDC5C;
-	font-size: 1em;
-}
-.starred:hover::first-letter{
-	color: #979797;
-}
-.unstarred{
-	display: inline-block;
-}
-.unstarred:hover::first-letter{
-	color: #EFDC5C;
-}
-#leaveComment form {
+ background-color: #3fAAA0;
 }
 
+
 #leaveComment form textarea {
-	width: 450px;
-	height: 40px;
-	resize: none;
+ width: 450px;
+ height: 40px;
+ resize: none;
 }
 
 input[type='submit'] {
     color: #FFF;
-    background-color: #D8D8D8;
+    background-color: #979797;
     border:1px solid white;
     font-size: 1.5em;
     font-weight: 800;
 }
 
 input[type='submit']:hover {
-    color: #D8D8D8;
+    color: #979797;
     background-color: #FFF;
     cursor: pointer;
+}
+
+input[type='submit'].delete{
+    font-size: 1em;
+}
+
+input[type='submit'].select{
+    font-size: 1em;
+    font-weight: 100;
+    float: right;
+    border: none;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+input[type='submit'].select:hover{
+    background-color: #555;
+    color: #FFF;
 }
 
 tr.comment {
@@ -134,3 +147,64 @@ th.user a {
   background-color: #979797;
   text-decoration: none;
 }
+
+#add ul {
+  text-align: left;
+  display: inline;
+  margin: 0;
+  padding: 15px 4px 17px 0;
+  list-style: none;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+#add ul li {
+  display: inline-block;
+  margin-right: -4px;
+  position: relative;
+  padding: 15px 20px;
+  background: #fff;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  color: #555;
+}
+#add ul li:hover {
+  background: #555;
+  color: #fff;
+}
+#add ul li ul {
+  padding: 0;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 150px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transiton: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  -ms-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -transition: opacity 0.2s;
+}
+#add ul li ul li { 
+  background: #555; 
+  display: block; 
+  color: #fff;
+  text-shadow: 0 -1px 0 #000;
+}
+#add ul li ul li:hover { background: #666; }
+#add ul li:hover ul {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+/*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */

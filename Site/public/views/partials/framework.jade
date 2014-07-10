@@ -9,7 +9,8 @@ html(lang='en')
     block stylesheets
 
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
-    script(type='text/javascript' src="/js/main")
+    script(type='text/javascript' src="/js/main.js")
+    script(type='text/javascript' src="/js/analytics.js")
     link(rel="shortcut icon" href="/logos/favicon.ico")
     block extraLinks
   body
@@ -24,6 +25,7 @@ html(lang='en')
             li: a(href='/challenges') challenges
             li: a(href='/gallery') gallery
             li: a(href='/about') about
+            li: a(href='/help') help
             if loggedIn
               li: a(href='/me')= user.username
               li: a(href='/logout') log out
@@ -47,7 +49,7 @@ html(lang='en')
           li: a(href='/gallery') gallery
           li: a(href='/about') about
           if loggedIn
-            li: a(href='#') my account
+            li: a(href='/me') my account
           else
             li: a(href='/login') login
             li: a(href='/signup') signup

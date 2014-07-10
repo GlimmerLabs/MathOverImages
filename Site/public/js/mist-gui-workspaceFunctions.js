@@ -218,27 +218,27 @@ var saveImage = function(title, code, isPublic, codeVisible, replace) {
 }
 
 /**
- * Determines if a workspace exists.  Returns true if the workspace exists
- * and false otherwise.
+ * Determines if a workspace exists.  Returns "true" if the workspace exists
+ * with the given name,  "logged out" if the user is not logged in, and "false" otherwise.
  */
 var wsExists = function(name) {
   var request = new XMLHttpRequest();
   var url = "/api?action=wsexists&name=" + name;
   request.open("GET", url, false);
   request.send();
-  return eval(request.responseText);
+  return request.responseText;
 }
 
 /**
- * Determines if a image exists.  Returns true if an image exists
- * with the given title and false otherwise.
+ * Determines if a image exists.  Returns "true" if an image exists
+ * with the given title, "logged out" if the user is not logged in, and "false" otherwise.
  */
 var imageExists = function(title) {
   var request = new XMLHttpRequest();
   var url = "/api?action=imageexists&title=" + title;
   request.open("GET", url, false);
   request.send();
-  return eval(request.responseText);
+  return request.responseText;
 }
 
 // +--------------+----------------------------------------------------

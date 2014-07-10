@@ -3,17 +3,8 @@ block title
   title= images[0].username + " on MIST"
 block extraMetas
 block extraLinks
-  script(type='text/javascript' src='/js/mist-utils.js')
-  script(type='text/javascript' src='/js/mist-functions.js')
-  script(type='text/javascript' src='/js/mist-layout.js')
-  script(type='text/javascript' src='/js/mist-functions-layout.js')
-  script(type='text/javascript' src='/js/mist-functions-builtin.js')
-  script(type='text/javascript' src='/js/mist-render.js')
-  script(type='text/javascript' src='/js/mistui-dialogs.js')
-  script(type='text/javascript' src='/js/mistui-help.js')
-  script(type='text/javascript' src='/js/mistui-menus.js')
-  script(type='text/javascript' src='/js/mistui-animation.js')
-  script(type='text/javascript' src='/js/mistui-animator.js')
+  script(type='text/javascript' src='/js/ugly.mist.js')
+  script(type='text/javascript' src='/js/ugly.mistui.js')
   script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
   script(type='text/javascript' src='/js/gallery.js')
 
@@ -34,7 +25,7 @@ block content
       div(id='images')
         ul(class='rig columns-3')
           - for (var i = 0; i < images.length; i++)
-            li          
+            li
               figure
                 a(href='/image/' + images[i].imageid)
                   figcaption(class='center')= images[i].title

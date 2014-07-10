@@ -1,19 +1,10 @@
 extends ./partials/framework
 block title
-  title= albumOwner[0].username + " on MIST"
+  title= albumOwner + " on MIST"
 block extraMetas
 block extraLinks
-  script(type='text/javascript' src='/js/mist-utils.js')
-  script(type='text/javascript' src='/js/mist-functions.js')
-  script(type='text/javascript' src='/js/mist-layout.js')
-  script(type='text/javascript' src='/js/mist-functions-layout.js')
-  script(type='text/javascript' src='/js/mist-functions-builtin.js')
-  script(type='text/javascript' src='/js/mist-render.js')
-  script(type='text/javascript' src='/js/mistui-dialogs.js')
-  script(type='text/javascript' src='/js/mistui-help.js')
-  script(type='text/javascript' src='/js/mistui-menus.js')
-  script(type='text/javascript' src='/js/mistui-animation.js')
-  script(type='text/javascript' src='/js/mistui-animator.js')
+  script(type='text/javascript' src='/js/ugly.mist.js')
+  script(type='text/javascript' src='/js/ugly.mistui.js')
   script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
   script(type='text/javascript' src='/js/gallery.js')
 
@@ -24,22 +15,32 @@ block content
   div(id='main')
     div(id='top')
       div(id='pageTitle')
-          h1= albumOwner[0].username
-          h2= albumContents[0].name
+          h1= albumOwner
+          if (albumOwner==albumTitle.username)
+            h2= albumTitle.name
       div(id='subviews')
-        a(href='/user/'+ albumOwner[0].username class='subview') bio
+        a(href='/user/'+ albumOwner class='subview') profile
         a(href='/badges' class='subview') badges
-        a(href='/user/'+ albumOwner[0].username +'/albums' class='subview' id= 'selected') albums
+        a(href='/user/'+ albumOwner +'/albums' class='subview' id= 'selected') albums
         a(href='/challenges' class='subview') challenges
+    if loggedIn && (albumTitle.userid === user.userid) && (albumOwner==albumTitle.username)
+      form(method='POST')
+        input(type='hidden' value= albumTitle.albumid name='deleteWholeAlbum')
+        input(type='submit' value='Delete the Whole Album')
     div(id='gallery')
       div(id='images')
         ul(class='rig columns-3')
-          - for (var i = 0; i < albumContents.length; i++)
-            li
-              figure
-                a(href='/image/' + albumContents[i].imageid)
-                  figcaption(class='center')= albumContents[i].title
-                  canvas(id='canvas'+i width='180' height='180')
-                  input(type='hidden' id='code'+i value=albumContents[i].code)
-                a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
-                figcaption(class='left')= "★" + albumContents[i].rating
+          if (albumContents != null)
+            - for (var i = 0; i < albumContents.length; i++)
+              li
+                figure
+                  a(href='/image/' + albumContents[i].imageid)
+                    figcaption(class='center')= albumContents[i].title
+                    canvas(id='canvas'+i width='180' height='180')
+                    input(type='hidden' id='code'+i value=albumContents[i].code)
+                  a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
+                  figcaption(class='left')= "★" + albumContents[i].rating
+                  if loggedIn && (albumTitle.userid === user.userid)
+                      form(method='POST')
+                        input(type='hidden' value= albumContents[i].imageid name='deleteImage')
+                        input(type='submit' value='Delete from Album?')

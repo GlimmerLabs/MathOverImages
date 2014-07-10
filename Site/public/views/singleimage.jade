@@ -3,49 +3,48 @@ block title
  title= image.title + " by " + image.username + " on MIST"
 block extraMetas
 block extraLinks
- script(type='text/javascript' src='/js/mist-utils.js')
- script(type='text/javascript' src='/js/mist-functions.js')
- script(type='text/javascript' src='/js/mist-layout.js')
- script(type='text/javascript' src='/js/mist-functions-layout.js')
- script(type='text/javascript' src='/js/mist-functions-builtin.js')
- script(type='text/javascript' src='/js/mist-render.js')
- script(type='text/javascript' src='/js/mistui-dialogs.js')
- script(type='text/javascript' src='/js/mistui-help.js')
- script(type='text/javascript' src='/js/mistui-menus.js')
- script(type='text/javascript' src='/js/mistui-animator.js')
+ script(type='text/javascript' src='/js/ugly.mist.js')
+ script(type='text/javascript' src='/js/ugly.mistui.js')
  script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
  script(type='text/javascript' src='/js/imagepage.js')
  script(type='text/javascript' src='/js/likes.js')
 
 block stylesheets
- link(rel='stylesheet' href='/css/singleImage')
+ link(rel='stylesheet' href='/css/singleImage.css')
 block content
  div(id='main')
   h1= image.title
   h2= image.modifiedAt.toUTCString()
   figure(data-imageid=image.imageid)
    canvas(id='canvas' width='400' height='400')
-   figcaption(class='left')= "★" + image.rating
+   if(false)
+    figcaption(class='left starred')= "★" + image.rating
+   else
+    figcaption(class='left unstarred')= "★" + image.rating
    a(href='/user/'+ image.username)
     figcaption(class='right')= image.username
   p(id='code' class='code')= image.code
-  div
   table(id='comments')
-   tr(class='comment')
-    - for (var i=0; i < comment.length; i++)
+   - for (var i=0; i < comment.length; i++)
+    tr(class='comment')
       th(class='user'): a(href='/user/'+ comment[i].username)= comment[i].username
       td(class='comment')= comment[i].comment
    if loggedIn
-    div(id='leaveComment' class='comment')
-     h1: a(href='/user/' + user.username)= user.username
-     form(method='POST')
-      textarea(name= 'newComment' required='required' placeholder='leave a comment')
-    tr(id='leaveComment' class='comment')
-     th(class="user"): a(href='/user/' + user.username)= user.username
-     td: form(method='POST')
-      textarea(name='newComment' placeholder='leave a comment')
-      input(type='submit' value='submit' name='commentSubmit')
     if (image.userid === user.userid)
      form(method='POST')
       input(type='hidden' value= image.imageid name='delete')
-      input(type='submit' value='Delete this Image?')
+      input(type='submit' class='delete' value='delete this image')
+    div(id='add')
+      ul
+        li + add to album
+          ul
+            - for(var i=0; i < albums.length; i++)
+              form(method='POST')
+                li= albums[i].name
+                  input(type='hidden' value= albums[i].albumid  name='add')
+                  input(type='submit' value='select' class='select')
+    tr(id='leaveComment' class='comment')
+     th(class="user"): a(href='/user/' + user.username)= user.username
+     td: form(method='POST')
+      textarea(name='newComment' required= 'required' placeholder='leave a comment')
+      input(type='submit' value='submit' name='commentSubmit')

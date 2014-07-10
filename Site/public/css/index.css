@@ -1,15 +1,15 @@
-@import url("/css/styles");
+@import url("/css/styles.css");
 
 #featuredImage {
-	text-align: center;
-	margin: 20px;
+ text-align: center;
+ margin: 20px;
 }
 #featuredImage img{
-	height: 212px;
+ height: 212px;
 }
 
 #homeButtons {
-	/* padding: 40px; */
+ /* padding: 40px; */
         display: flex;
         justify-content: space-between;
  }
@@ -18,28 +18,28 @@
 }
 
 #homeButtons #create, #homeButtons #tutorials, #homeButtons #gallery {
-	/* width: 290px; */
-	/* margin: 80px 20px; */
+ /* width: 290px; */
+ /* margin: 80px 20px; */
         padding-left: 10px;
         padding-right: 10px;
-	background-color: #979797;
-	font-weight:bold;
-	color: #FFF;
-	text-align:center;
-	text-transform:lowercase;
-	text-decoration:none;
+ background-color: #979797;
+ font-weight:bold;
+ color: #FFF;
+ text-align:center;
+ text-transform:lowercase;
+ text-decoration:none;
 }
 
 #homeButtons #create:hover,
 #homeButtons #tutorials:hover,
 #homeButtons #gallery:hover {
-	background-color: #FFF;
-	color: #979797;
+ background-color: #FFF;
+ color: #979797;
 }
 
 #homeButtons #tutorials {
-	text-align: right;
-	background-color: #3FAAA0;
+ text-align: right;
+ background-color: #3FAAA0;
 }
 
 #homeButtons #gallery {
@@ -47,57 +47,57 @@
 }
 
 #homeButtons #tutorials:hover {
-	color: #3FAAA0;
+ color: #3FAAA0;
 }
 
 #homeButtons #tutorials, #homeButtons #create, #homeButtons #tutorials:hover, #homeButtons #create:hover, #homeButtons #gallery {
-	font-size: 3em;
-	/* margin: 0px; */
+ font-size: 3em;
+ /* margin: 0px; */
 }
 
 #galleryImages {
-	width: 80%;
+ width: 80%;
         margin-left: auto;
         margin-right: auto;
-	/* margin: 0 auto; */
+ /* margin: 0 auto; */
         margin-top: 20px;
-	clear: both;
-	text-align:center;
+ clear: both;
+ text-align:center;
 }
 
 #galleryImages figure {
         min-width: 150px;
         width: 150px;
-	float: left; 
+ float: left;
         padding: 8px;
-	margin-left: auto;
-	margin-right: auto;
+ margin-left: auto;
+ margin-right: auto;
         margin-top: 8px;
 }
 
 #galleryImages figure img {
-	height: 140px;
-	width: 140px;
+ height: 140px;
+ width: 140px;
 }
 
 #gallery h1 {
-	font-size:1.5em;
-	text-align:right;
+ font-size:1.5em;
+ text-align:right;
         margin-top: 0px;
 }
 
 #galleryImages a {
-	color: #979797;
-	text-decoration:none;
+ color: #979797;
+ text-decoration:none;
 }
 
 #galleryImages a:hover {
-	color: #666;
+ color: #666;
 }
 
 #figset {
-	margin: 150px auto 0 auto;
-	width: 1010px;
+ margin: 150px auto 0 auto;
+ width: 1010px;
 }
 
 #seemore {

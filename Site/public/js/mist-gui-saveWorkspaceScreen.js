@@ -208,7 +208,8 @@ popWsNoButtonGroup.add(new Kinetic.Text({
 var attempts = 0;
 popSaveWsButtonGroup.on('mouseup', function(){
 	var newName = nameWsEditText.attrs.text;
-	if (wsExists(newName)) {
+	var response = wsExists(newName);
+	if (response == 'true') {
 		popWsErrorText.setAttr('text', '\'' + newName  + '\' is already a workspace.\n' +
 			'Do you want to continue anyways?');
 		popWsYesButtonGroup.setAttr('visible', true);
@@ -216,14 +217,17 @@ popSaveWsButtonGroup.on('mouseup', function(){
 		popSaveWsButtonGroup.setAttr('visible', false);
 		popWsCancelButtonGroup.setAttr('visible', false);
 		nameWsEditText.setEditable(false);
-	}
+	} // if user already has a workspace with newName
+	else if (response == 'logged out') {
+		popWsErrorText.setAttr('To save a workspace, please log in or sign up.');
+	} // if user is not logged in
 	else {
 		saveWorkspace(newName, true);
 		currentWorkspace = newName;
 		cover.setAttr('visible', false);
 		saveWsGroup.setAttr('visible', false);
 		showThumbnails();
-	}
+	} // else a valid workspace name
 	screenLayer.draw();
 });
 
