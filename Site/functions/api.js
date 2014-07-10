@@ -360,8 +360,8 @@ search, the search string
 handlers.omnisearch = (function (info, req, res) {
   database.omnisearch(info.search, function(resultObject, error){
     if (error)
-      fail(res, error.stringify);
+      fail(res, JSON.stringify(resultObject));
     else
-      res.end(resultObject.stringify);
+      res.end(JSON.stringify(resultObject));
   });
 });
