@@ -35,7 +35,8 @@ database.getIDforUsername(req.params.username,
 		res.render('../public/views/imagesCompilation.jade', {
 		    loggedIn: req.session.loggedIn,
 		    user:req.session.user,
-		    images:images
+		    images:images,
+		    viewing:req.params.username
 		});
 	});
 });
