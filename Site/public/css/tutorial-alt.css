@@ -31,41 +31,41 @@ h2 {
 .clickY {
   width: 25%;
 }
-a#clickPrevious.nextPrevious{
+a#clickPrevious{
   float: left;
-  position: absolute;
+  position: static;
   bottom: 0px;
   left: 10%;
   align-self: flex-end;
   text-align: left;
   text-decoration: none;
   color: #FFFFFF;
-  background-color: #4a4a4a;
-  width: 40%;
+  background-color: #979797;
+  width: 100%;
   font-size: 1.2em;
 }
 
-a#clickNext.nextPrevious{
+a#clickNext{
   float: right;
-  position: absolute;
+  position: static;
   bottom: 0px;
   right: 10%;
   text-align: right;
   text-decoration: none;
   color: #FFFFFF;
-  background-color: #4a4a4a;
-  width: 40%;
+  background-color: #979797;
+  width: 100%;
   font-size: 1.2em;
 }
 
-a#clickNext.nextPrevious:hover{
+a#clickNext:hover{
   background-color:#FFF;
-  color: #4a4a4a;
+  color: #979797;
 }
 
-a#clickPrevious.nextPrevious:hover{
+a#clickPrevious:hover{
   background-color:#FFF;
-  color: #4a4a4a;
+  color: #979797;
 }
 
 img.image18 {
@@ -81,4 +81,23 @@ div.tutorial {
 div.links {
   display: flex;
   justify-content: space-between;
+}
+
+#createLink {
+  float: left;
+  position: static;
+  bottom: 0px;
+  right: 10%;
+  text-align: center;
+  text-decoration: none;
+  color: #FFFFFF;
+  background-color: #979797;
+  width: 18%;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+#createLink:hover {
+  background-color:#FFF;
+  color: #979797;
 }
