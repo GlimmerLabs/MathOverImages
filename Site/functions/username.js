@@ -25,7 +25,8 @@ module.exports.buildPage = function(req, res, database) {
 			loggedIn: req.session.loggedIn,
 			user: req.session.user,
 			viewing: userObject,
-			viewingSelf: true
+			viewingSelf: (req.session.user != null) && (req.session.user.username === req.params.username)
+
 		    });
 	    });
     });
