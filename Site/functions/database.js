@@ -986,7 +986,7 @@ module.exports.omnisearch = (function(searchString, callback){
 // SEARCH FOR USER
 module.exports.userSearch = (function(searchString, callback){
   searchString = sanitize(searchString);
-  module.exports.query("SELECT * FROM users WHERE username LIKE '%" + searchString + "%';", function (results, error){
+  module.exports.query("SELECT username, featuredImage FROM users WHERE username LIKE '%" + searchString + "%';", function (results, error){
     if (error)
       callback(null, error);
     else
