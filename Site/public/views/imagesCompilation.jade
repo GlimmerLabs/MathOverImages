@@ -7,6 +7,7 @@ block extraLinks
   script(type='text/javascript' src='/js/ugly.mistui.js')
   script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
   script(type='text/javascript' src='/js/gallery.js')
+  script(type='text/javascript' src='/js/likes.js')
 
 block stylesheets
   link(rel='stylesheet' href='/css/gallery')
@@ -26,10 +27,13 @@ block content
         ul(class='rig columns-3')
           - for (var i = 0; i < images.length; i++)
             li
-              figure
+              figure(data-imageid=images[i].imageid)
                 a(href='/image/' + images[i].imageid)
                   figcaption(class='center')= images[i].title
                   canvas(id='canvas'+i width='180' height='180')
                   input(type='hidden' id='code'+i value=images[i].code)
                 a(href='/user/' + images[i].username): figcaption(class='right')= images[i].username
-                figcaption(class='left')= "★" + images[i].rating
+                if(images[i].liked)
+                  figcaption(class='left starred')= "★" + images[i].rating
+                else
+                  figcaption(class='left unstarred')= "★" + images[i].rating
