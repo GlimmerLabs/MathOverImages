@@ -429,7 +429,18 @@ module.exports = function(app,passport,database) {
     });
   });
 
-  // Route does not exist
+  // --------------------------------------------------
+  // Path: /video
+  //   Page for creating (something)
+  app.get('/video/:name', function(req,res) {
+    res.render('../public/views/video/' + req.params.name + '.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  // --------------------------------------------------
+  // Default Route
   app.use(function(req, res, next){
     var fourohfour = require("../functions/404.js");
     fourohfour.buildPage(req,res,database);
