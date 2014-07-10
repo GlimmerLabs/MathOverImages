@@ -33,7 +33,26 @@ block content
      a(href='/user/'+ image.username): figcaption(class='right')= image.username
     p(id='code' class='code')= image.code
   else
-      canvas(id='canvas' width='400' height='400')
+   div(id='featuredImage')
+    figure
+     h1(class='imageTitle')
+      if viewingSelf
+       a(href='/user/'+viewing.username +'/images')
+        canvas(id='canvas' width='400' height='400')
+         script.
+          var canvas = document.getElementById('canvas');
+          var context = canvas.getContext("2d");
+          context.fillStyle ='#C0C0C0'
+          context.font = '20pt Open Sans';
+          context.fillText('Choose a Picture', 100, 200);
+          context.fill();
+          canvas.style.border = '#C0C0C0 1px dashed';
+      else
+        canvas(id='canvas' width='400' height='400')
+         script.
+          var canvas = document.getElementById('canvas');
+          var context = canvas.getContext("2d");
+          canvas.style.border = '#C0C0C0 1px dashed';
   if viewingSelf
    a(href='/accountSettings' class='settings'): account account settings
    div(id='bio')
