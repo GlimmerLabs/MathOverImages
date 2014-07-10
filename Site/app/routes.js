@@ -227,6 +227,10 @@ module.exports = function(app,passport,database) {
 	else if (req.body.add != null){
 	    var image = require("../functions/image.js");
 	    image.addtoAlbum(req, res, database);
+	}
+	else if (req.body.profile != null){
+	    var image = require("../functions/image.js");
+	    image.setProfilePicture(req, res, database);
 	};
     });
 
