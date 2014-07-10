@@ -17,7 +17,7 @@ block content
   h2= image.modifiedAt.toUTCString()
   figure(data-imageid=image.imageid)
    canvas(id='canvas' width='400' height='400')
-   if(false)
+   if(liked)
     figcaption(class='left starred')= "★" + image.rating
    else
     figcaption(class='left unstarred')= "★" + image.rating
@@ -28,9 +28,12 @@ block content
    - for (var i=0; i < comment.length; i++)
     tr(class='comment')
       th(class='user'): a(href='/user/'+ comment[i].username)= comment[i].username
-      td(class='comment')= comment[i].comment
+      td(class='comment')!= comment[i].comment
    if loggedIn
     if (image.userid === user.userid)
+     form(method='POST')
+      input(type='hidden' value= image.imageid name='profile')
+      input(type='submit' class='profile' value='set as profile picture')
      form(method='POST')
       input(type='hidden' value= image.imageid name='delete')
       input(type='submit' class='delete' value='delete this image')

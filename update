@@ -9,3 +9,8 @@ git pull
 pushd Site/public/js
 make
 popd
+
+# Update node dependencies
+pushd Site/
+npm install
+popd
