@@ -21,7 +21,6 @@ function addFigcaptionListeners() {
     if(figcaptions[i].innerHTML.indexOf("★") != -1) {
       figcaptions[i].onclick = function(evt){
         var imageid = this.parentNode.getAttribute("data-imageid");
-        imageid = imageid.replace("/image/");
         var clickedFigcaption = this;
         createAjaxGetRequest(function(response, error){
           if(!error){

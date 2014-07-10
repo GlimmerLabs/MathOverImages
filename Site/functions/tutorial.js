@@ -12,7 +12,10 @@
 module.exports.gui = function(req, res) {
   var pages = ['start', 'values', 'add-value', 'image-box',
       'image-open', 'functions', 'add-function', 'line-tool',
-      'source', 'target', 'valid', 'text'];
+      'source', 'target', 'valid', 'text', 'multiple-functions',
+      'connecting', 'multiple-images', 'delete-tool', 'select-deletion',
+      'deletion-update', 'undo', 'undo-update', 'save-image',
+      'naming', 'saving'];
   tutorialPage(req, res, "/tutorial/gui/", req.params.page, pages);
 } // gui
 
