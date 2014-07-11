@@ -45,9 +45,9 @@ $(document).ready(function() {
         }
         break;
       case "+":
-        animator.renderWidth = 
+        animator.renderWidth =
             Math.min(animator.renderWidth+50, animator.width);
-        animator.renderHeight = 
+        animator.renderHeight =
             Math.min(animator.renderHeight+50, animator.height);
         break;
       case "-":
@@ -56,4 +56,14 @@ $(document).ready(function() {
         break;
     } // switch
   }; // document.body.onkeypress
+});
+
+var flagComment = (function(commentId, callback){
+  var data = {
+    action: "flagComment",
+    commentId: commentId
+  };
+  $.post("/api", data, function(response){
+    callback(response);
+  });
 });
