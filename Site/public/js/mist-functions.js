@@ -56,7 +56,6 @@ try { MIST = MIST; } catch (err) { MIST = new Object(); }
 // +----------------------+------------------------------------------
 // | Types of Expressions |
 // +----------------------+
-
 MIST.TYPE = {};
 
 MIST.TYPE.RGB = "RGB";
@@ -760,7 +759,7 @@ peekType = function(tokens) {
   else
     return tokens[0].type;
 } // peekType
-/*MIST.createSanitizer = function() {
+MIST.createSanitizer = function() {
   var resultingRE = ""
   for(var i = 0; i<arguments.length-1;i++) {
     resultingRE += "(?:"+arguments[i]+")|"
@@ -777,7 +776,7 @@ MIST.sanitize = function(RE, string) {
     var current = RE.exec(string);
   }
   return result
-}*/
+}
 MIST.parse = function(str) {
   var kernel = function(tokens) {
     // This should never happen, but let's be safe.
