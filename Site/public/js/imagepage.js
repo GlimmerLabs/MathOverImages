@@ -45,9 +45,9 @@ $(document).ready(function() {
         }
         break;
       case "+":
-        animator.renderWidth = 
+        animator.renderWidth =
             Math.min(animator.renderWidth+50, animator.width);
-        animator.renderHeight = 
+        animator.renderHeight =
             Math.min(animator.renderHeight+50, animator.height);
         break;
       case "-":
@@ -64,3 +64,24 @@ $(document).ready(function() {
   document.getElementsByTagName('head')[0].appendChild(meta);
 
 });
+
+var flagComment = (function(commentId, callback){
+  var data = {
+    action: "flagComment",
+    commentId: commentId
+  };
+  $.post("/api", data, function(response){
+    callback(response);
+  });
+});
+
+var deleteComment = (function(commentId, callback){
+  var data = {
+    action: "deleteComment",
+    commentId: commentId
+  };
+  $.post("/api", data, function(response){
+    callback(response);
+  });
+});
+
