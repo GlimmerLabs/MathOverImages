@@ -194,7 +194,8 @@ text-decoration: none;
 
 /* Footer */
 footer nav ul {
- margin:0;
+ margin: 0 40px 0 auto;
+ display: block;
  list-style-type: none;
 }
 
