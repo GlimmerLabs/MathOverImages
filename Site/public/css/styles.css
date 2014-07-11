@@ -225,8 +225,12 @@ footer p {
   margin: 0 5px 0 5px; 
 }
 
+#google-follow {
+  margin: 5px 5px 0 5px;
+}
+
 #twitter-follow {
-	margin: 0 auto 0 5px;
+  margin: 0 auto 0 5px;
 }
 
 #sharing {
