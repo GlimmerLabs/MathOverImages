@@ -711,7 +711,7 @@ module.exports.albumOwnerInfo=(function(albumid, callback) {
 
 module.exports.commentInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
-  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
+  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE comments.active='1' AND comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -742,16 +742,25 @@ module.exports.deleteImage=(function (userid, imageid, callback) {
     if (error)
       callback(null, error);
     else
-      callback(rows, null);
+      module.exports.query("DELETE FROM albumContents WHERE imageid='" +imageid + "';", function (success, error){
+        if (error)
+          callback(null, error);
+        else
+          module.exports.query("DELETE FROM comments WHERE onImage='" + imageid + "';",function(success, error){
+            if (error)
+              callback(error);
+            else
+              callback(success, null);
+          });
+      });
   });
 });
 
-
 //Set profile picture
 module.exports.setProfilePicture=(function (userid, imageid, callback) {
-    userid=sanitize(userid);
-    imageid=sanitize(imageid);
-    module.exports.query("UPDATE users SET featuredImage='" + imageid + "' WHERE userid= '" + userid + "';", function (rows, error){
+  userid=sanitize(userid);
+  imageid=sanitize(imageid);
+  module.exports.query("UPDATE users SET featuredImage='" + imageid + "' WHERE userid= '" + userid + "';", function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -1121,3 +1130,76 @@ module.exports.functionSearch = (function(searchString, callback){
 });
 
 /* END DATABASE SEARCH FUNCTIONS */
+
+/* Comment moderation functions */
+// flag comments
+// callback(success, error);
+module.exports.flagComment = (function(commentId, flaggedByID){
+  commentId = sanitize(commentId);
+  flaggedByID = sanitize(flaggedByID);
+  // Check to see if user has flagged this comment already
+  module.exports.query("SELECT flaggedBy FROM flaggedComments WHERE flaggedBy='" + flaggedByID + "' AND commentId = '" + commentId + "';", function(result, error){
+    if (error)
+      callback(false, error);
+    else if (result[0])
+      callback(false, "User has already flagged this comment.");
+    else // user has not already flagged this comment.
+      module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commendId) VALUES('" + flaggedByID + "','" + commentId + "';", function(results, error){
+        if (error)
+          callback(false, error);
+        else
+          callback(true, null);
+      });
+  });
+});
+
+// delete comments
+// User is an admin or moderator
+// User is the owner of the image
+// User is the Commenter
+// callback(success, error)
+module.exports.canDeleteComment= (function (userid, commentId, callback) {
+  userid=sanitize(userid);
+  commentId=sanitize(commentId);
+  module.exports.query ("SELECT username FROM users WHERE userid='" + userid +"' AND (type='A' OR type='M');", function(result, error){
+    if (error)
+      callback(false, error);
+    else if (result[0]) // User is a moderator or an admin
+      callback(true, null);
+    else
+      module.exports.query("SELECT userid FROM comments, images WHERE comments.onImage=images.imageid AND images.userid='" + userid + "'AND comments.commentId='" + commentId + "';", function(result, error){
+        if (error)
+          callback(false, error);
+        else if (result[0]) // User owns the image
+          callback(true, null);
+        else
+          module.exports.query("SELECT userid FROM comments WHERE postedBy='" + userid +"' AND commentId='" + commentId + "';", function (result, error){
+            if (error)
+              callback(false, error);
+            else if (result[0]) // User is the comment poster.
+              callback(true, null);
+            else
+              callback(false, null);
+          });
+      });
+  });
+});
+module.exports.deleteComment= (function(userid, commentId, callback){
+  userid=sanitize(userid);
+  commentId=sanitize(commentId);
+  module.exports.canDeleteComment(userid, commentId, function(authorized, error){
+    if (error)
+      callback(false, error);
+    else if (!authorized)
+      callback(false, "User is not authorized to delete this comment.");
+    else
+      module.exports.query("UPDATE comments SET active='0' WHERE commentId='" + commentId + "';", function (result, error){
+        if (error)
+          callback(false, error);
+        else
+          callback(true, null);
+      });
+  });
+});
+
+/* End comment moderation functions */
