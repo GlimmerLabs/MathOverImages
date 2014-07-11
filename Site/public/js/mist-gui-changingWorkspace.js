@@ -363,7 +363,7 @@
    */
    var removeLine = function(line) {
     var outlet = line.attrs.outlet;
-    var sink = outlet.parent;
+    
     var index = line.attrs.sourceIndex;
     var source = line.attrs.source;
     for (var j = index + 1; j < source.attrs.lineOut.length; j++) {
@@ -371,34 +371,36 @@
     }
     // remove the sourceIndex'th lineOut from the line's source
     source.attrs.lineOut.splice(line.attrs.sourceIndex, 1);
-    // empty out the sink's outlet
-    outlet.attrs.lineIn = null;
-    // update the sink's number of outlets
-    sink.attrs.numInputs--;
-    // reset the strokeWidth
-    line.setAttr('strokeWidth', lineStrokeWidth);
-    // remove the line from the lineLayer
-    line.remove();
-    // if the sink is the currShape
-    if (sink == currShape) {
-      // if the sink is still renderable, update the funBarText
-      if (assertRenderable(sink)) {
-        funBarText.setAttr('text', currShape.attrs.renderFunction);
-      } // if renderable
-      // if sink un-renderable
+    if (outlet) {
+      var sink = outlet.parent;
+      // empty out the sink's outlet
+      outlet.attrs.lineIn = null;
+      // update the sink's number of outlets
+      sink.attrs.numInputs--;
+      // if the sink is the currShape
+      if (sink == currShape) {
+        // if the sink is still renderable, update the funBarText
+        if (assertRenderable(sink)) {
+          funBarText.setAttr('text', currShape.attrs.renderFunction);
+        } // if renderable
+        else {
+          // update currShape's identification and the funBarText
+          funBarText.setAttr('text', ''); 
+        } // else un-renderable
+        funBarLayer.draw();
+      } // if currShape
       else {
-        // update currShape's identification and the funBarText
-        funBarText.setAttr('text', ''); 
-      } // if un-renderable
-      funBarLayer.draw();
-    } // if currShape
-    else {
       // if sink is not currShape, assert and update renderability of sink
       assertRenderable(sink);
-  }
-    // update
-    updateForward(sink);
-    //setOutletOpacity(sink);
+      }
+      // update
+      updateForward(sink);
+      //setOutletOpacity(sink);
+    } // if outlet is not null
+  // reset the strokeWidth
+  line.setAttr('strokeWidth', lineStrokeWidth);
+  // remove the line from the lineLayer
+  line.remove();
 };
 
   /**
