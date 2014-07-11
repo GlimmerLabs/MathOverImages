@@ -22,8 +22,7 @@ block content
    else
     figcaption(class='left unstarred')= "★" + image.rating
    div(id="image-sharing")
-      a(id="fb-image")
-        share on facebook 
+      div(id="image-fb-share", class="fb-share-button", data-href="http://glimmer.grinnell.edu/image/"+image.imageid, data-type="button") 
       a(id="image-tweet" href="https://twitter.com/share", class="twitter-share-button", data-lang="en" data-text="Check out \""+image.title+"\" by "+image.username+" on @MISTbyGlimmer", data-url="http://glimmer.grinnell.edu/image/"+image.imageid)
         Tweet       
       a(href='/user/'+ image.username)
