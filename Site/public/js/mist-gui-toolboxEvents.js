@@ -13,7 +13,7 @@
 */
 workToolGroup.on('click', function(){
   if (makingLine) {
-    currLine.destroy();
+    removeLine(currLine);
     makingLine = false;
     lineLayer.draw();
   }
@@ -26,7 +26,7 @@ workToolGroup.on('click', function(){
 lineToolGroup.on('click', function() {
   if (lineToolOn) {
     if (makingLine) {
-     currLine.destroy();
+     removeLine(currLine);
      makingLine = false; 
      lineLayer.draw();
    }
@@ -47,7 +47,7 @@ deleteToolGroup.on('click', function() {
   } 
   else {
     if (makingLine) {
-      currLine.destroy();
+      removeLine(currLine);
       makingLine = false; 
       lineLayer.draw();
     }
@@ -68,6 +68,11 @@ undoGroup.on('mousedown', function() {
 
 undoGroup.on('mouseup', function() {
   if (currIndex > 0) {
+    if (makingLine) {
+      removeLine(currLine);
+      makingLine = false; 
+      lineLayer.draw();
+    }
     undoButton.setAttr('shadowEnabled', false);
     undoAction(actionArray[currIndex - 1]);
     currIndex--;
@@ -87,6 +92,11 @@ redoGroup.on('mousedown', function() {
 
 redoGroup.on('mouseup', function() {
   if (totalIndex > currIndex) {
+    if (makingLine) {
+      removeLine(currLine);
+      makingLine = false; 
+      lineLayer.draw();
+    }
     redoButton.setAttr('shadowEnabled', false);
     redoAction(actionArray[currIndex]);
     currIndex++;
