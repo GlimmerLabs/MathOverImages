@@ -5,10 +5,17 @@ var filedatabase;
 module.exports.buildPage = (function(req, res, database) {
   filedatabase=database;
   module.exports.getRandomImages (1, function(images, error){
-    res.render('../public/views/404.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user,
-      image: images[0]
+    database.hasLiked((req.session.user) ? req.session.user.userid : null, images.imageid, function(liked, error) {
+      if(error)
+        res.redirect("/");
+      else {
+        res.render('../public/views/404.jade',{
+          loggedIn: req.session.loggedIn,
+          user: req.session.user,
+          image: images[0],
+          liked: liked
+        });
+      }
     });
   });
 });

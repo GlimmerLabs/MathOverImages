@@ -11,12 +11,21 @@ table.help {
   clear: left;
 }
 
-table.help td, 
+table.help td,
 table.help th {
   vertical-align: top;
-  padding: 5px;
+  padding: 15px;
+  background-color: #DCE0E0;
 }
 
 th {
   text-align: left;
+}
+
+a {
+  color: black;
+}
+
+table.help tr td:first-child:hover{
+  background-color: #979797;
 }
