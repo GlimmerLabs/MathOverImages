@@ -48,6 +48,7 @@
 .starred, .unstarred{
  display: inline-block;
   cursor: pointer;
+  padding: 5%;
 }
 .starred::first-letter{
  color: #EFDC5C;
@@ -59,11 +60,12 @@
   cursor: pointer;
 }
 
-figure figcaption.right a{
+figure figcaption.right{
  color: #979797;
  font-size: 1em;
  text-decoration: none;
- margin: 74% 0% 0% -20%
+ margin: 0% 0% 0% 0%;
+ padding: 5%;
 }
 
 figure figcaption.center{
@@ -88,12 +90,13 @@ ul.rig {
  list-style: none;
  font-size: 0px;
  color: #979797;
- margin-left: -2.5%; /* should match li left margin */
+ margin-left: -30.5%; /* should match li left margin */
+ margin-right: -20.5%;
 }
 ul.rig li{
  display: inline-block;
  padding: 10px;
- margin: 0 0 2.5% 2.5%;
+ margin: 0 0 4.5% 4.5%;
  background: #fff;
  border: 1px solid #ddd;
  font-size: 16px;
@@ -144,14 +147,13 @@ ul.rig.columns-4 li{
 vertical-align: bottom;
 text-decoration: none;
 color: #FFFFFF;
-background-color: #C8C8C8;
+background-color: #BABABA;
 display: inline-block;
 height: 40px;
 width: 150px;
 text-align: center;
 font-size: 1.7em;
 float: left;
-margin: 0px auto;
 }
 
 #pageNumber a:hover{
@@ -159,6 +161,28 @@ background-color: #979797;
 }
 
 canvas {
- width: 180px;
- height: 180px;
+ width: 300px;
+ height: 300px;
 }
+
+input[type='submit']{
+    color: #FFF;
+    background-color: #979797;
+    border:1px solid white;
+    font-size: 1em;
+    font-weight: 800;
+    float: right;
+    margin: 0px 10px;
+
+}
+
+input[type='submit']:hover{
+   color: #979797;
+    background-color: #FFF;
+    cursor: pointer;
+    }
+
+input[type='submit'].deleteImage{
+    float: right;
+}
+

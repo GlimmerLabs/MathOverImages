@@ -149,6 +149,14 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path: /embed
+  //   embedable or standalone images
+  app.get('/embed/:imageid', function(req,res) {
+    var embed = require("../functions/embed.js");
+    embed.buildPage(req, res, database);
+  });
+
+  // --------------------------------------------------
   // Path: /expert
   //   The expert UI
   app.get('/expert', function(req,res) {
@@ -215,20 +223,24 @@ module.exports = function(app,passport,database) {
     albums.allImagesinAlbum(req, res, database);
   });
 
-    app.post('/image/:imageid', function(req,res) {
-	if(req.body.commentSubmit != null) {
-	    var image = require("../functions/image.js");
-	    image.saveComment(req, res, database);
-	}
-	else if(req.body.delete != null) {
-	    var image = require("../functions/image.js");
-	    image.deleteImage(req, res, database);
-	}
-	else if (req.body.add != null){
-	    var image = require("../functions/image.js");
-	    image.addtoAlbum(req, res, database);
-	};
-    });
+  app.post('/image/:imageid', function(req,res) {
+    if(req.body.commentSubmit != null) {
+      var image = require("../functions/image.js");
+      image.saveComment(req, res, database);
+    }
+    else if(req.body.delete != null) {
+      var image = require("../functions/image.js");
+      image.deleteImage(req, res, database);
+    }
+    else if (req.body.add != null){
+      var image = require("../functions/image.js");
+      image.addtoAlbum(req, res, database);
+    }
+    else if (req.body.profile != null){
+      var image = require("../functions/image.js");
+      image.setProfilePicture(req, res, database);
+    };
+  });
 
   // --------------------------------------------------
   // Path: /images/tutorial
@@ -273,7 +285,7 @@ module.exports = function(app,passport,database) {
   app.get('/logout', function(req,res) {
     req.session.loggedIn = false;
     req.session.user = null;
-    res.redirect('/');
+    res.redirect('back');
   });
 
   // --------------------------------------------------
@@ -294,12 +306,6 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path: /tutorial
   //   Various tutorials.
-  app.get('/tutorial', function(req, res) {
-    res.render('../public/views/tutorialGUI1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
 
   app.get('/tutorial/gui', function(req, res) {
     res.redirect('/tutorial/gui/start');
@@ -323,19 +329,6 @@ module.exports = function(app,passport,database) {
     tutorial.intro(req,res);
   });
 
-  app.get('/tutorial/introToMIST', function(req, res) {
-      res.render('../public/views/tutorialIntro1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
-
-  app.get('/tutorial/workspace', function(req, res) {
-      res.render('../public/views/tutorialGUI1.jade', {
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
-  });
 
   // --------------------------------------------------
   // Path: /user
@@ -365,7 +358,9 @@ module.exports = function(app,passport,database) {
   // Path: /signup
   //   Signup page
   app.get('/signup', function(req,res) {
-    res.render('../public/views/signup.jade');
+    res.render('../public/views/signup.jade', {
+      prior:{}
+    });
   });
 
   app.post('/signup', function(req,res) {
