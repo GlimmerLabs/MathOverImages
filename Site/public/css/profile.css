@@ -1,13 +1,12 @@
 @import url("/css/styles.css");
 
 #bio {
- padding: 2%;
- width: 20%;
+ padding: 20%;
+ width: 100%;
  font-size: 1.5em;
  color: #979797;
- margin: 0% 0%;
- position: fixed;
- margin: 4% 40%;
+ float: left;
+ margin: -700px 300px;
 }
 
 #featuredImage {
@@ -95,6 +94,7 @@ input[type='submit']:hover {
 width: 25px;
 height: 25px;
 float: left;
+
 }
 
 figcaption.bio-view {
