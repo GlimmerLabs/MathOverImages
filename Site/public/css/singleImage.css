@@ -124,7 +124,12 @@ tr.comment {
   text-align: left;
 }
 
+td.comment {
+  min-width: 60%;
+}
+
 th.user {
+  margin: 0;
   valign: top;
   vertical-align: top;
   text-align: right;
@@ -208,3 +213,5 @@ th.user a {
 }
 
 /*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
+
+
