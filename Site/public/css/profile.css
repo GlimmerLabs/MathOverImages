@@ -2,10 +2,12 @@
 
 #bio {
  padding: 2%;
- width: 50%;
- float: left;
+ width: 20%;
  font-size: 1.5em;
  color: #979797;
+ margin: 0% 0%;
+ position: fixed;
+ margin: 4% 40%;
 }
 
 #featuredImage {
@@ -17,7 +19,7 @@ h1.imageTitle {
  color: #4A4A4A;
  font-size: 2em;
  margin: 0 auto;
- font-weight: normal;
+ font-weight: normal;  
  text-align: center;
 }
 
@@ -29,11 +31,6 @@ figure {
  width: 400px;
 }
 
-#contactUser {
- float: left;
- padding: 20px;
-}
-
 textarea{
  resize: none;
  color: #111111;
@@ -43,26 +40,6 @@ textarea{
  box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
 }
 
-#contactUser textarea {
- border-radius: 3px;
- border: 1px solid #979797;
- -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
- box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
- width: 500px;
- height: 50px;
- color: #BBBBBB;
-}
-
-#contactUser input {
- display: block;
- float: right;
- color: #FFF;
- background-color: #D8D8D8;
- border:1px solid white;
- font-size: 1.5em;
- font-weight: 800;
- padding: 3px 20px;
-}
 
 input:hover {
  color: #D8D8D8;
@@ -91,7 +68,7 @@ input:hover {
  text-decoration: none;
  float: right;
  background-color: #EFDC5C;
- margin: 0px 6%;
+ margin: 0px 8.5%;
 }
 
 .settings:hover {
