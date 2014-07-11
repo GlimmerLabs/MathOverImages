@@ -43,11 +43,8 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
 
   // Parse the expression
   try {
-    /*console.log("Trying to parse the expression");
-    var validStrings = MIST.builtins.functions.keys().concat(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', 't.s', 't.m', 't.h', 't.d', 'x', 'y', '(', ')', ',']);
-    console.log("expression:", this.exp, "validStrings:", validStrings);
-    this.exp = MIST.sanitize(MIST.createSanitizer.apply(null, validStrings), this.exp);
-    console.log("Expression post-sanitization: "+this.exp);*/
+    var builtins = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sine)|(?:sin)|(?:square)|(?:sum)|(?:wrapsum)|(?:wsum)|[0-9xy().,]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:x)|(?:y)/g
+    this.exp = MIST.sanitize(builtins, this.exp);
     this.expParsed = MIST.parse(this.exp);
   }
   catch (err) {
