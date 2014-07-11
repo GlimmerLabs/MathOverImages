@@ -213,6 +213,22 @@ th.user a {
   visibility: visible;
 }
 
+#image-sharing {
+  margin: 0 auto; 
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#image-fb-share {
+  margin:0 5px 0 10px;
+}
+
+#image-tweet {
+margin: 0 auto 0 5px;
+}
 /*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
 
 
