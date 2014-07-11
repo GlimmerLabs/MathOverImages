@@ -24,15 +24,7 @@ workToolGroup.on('click', function(){
 
 
 lineToolGroup.on('click', function() {
-  if (lineToolOn) {
-    if (makingLine) {
-     removeLine(currLine);
-     makingLine = false; 
-     lineLayer.draw();
-   }
-    enableWorkTool();
-  } 
-  else {
+  if (!lineToolOn) {
     lineToolGroup.children[0].setAttr('shadowEnabled', true);
     lineToolOn = true;
     disableTool(workToolGroup);
@@ -42,10 +34,7 @@ lineToolGroup.on('click', function() {
 });
 
 deleteToolGroup.on('click', function() {
-  if (deleteToolOn) {
-    enableWorkTool();
-  } 
-  else {
+  if (!deleteToolOn) {
     if (makingLine) {
       removeLine(currLine);
       makingLine = false; 
