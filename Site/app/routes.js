@@ -424,6 +424,13 @@ module.exports = function(app,passport,database) {
     });
   });
 
+  app.get('/challenges2', function(req,res) {
+    res.render("../public/views/challenges.jade", {
+      loggedIn:req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
   // --------------------------------------------------
   // Path: /video
   //   Page for creating (something)
