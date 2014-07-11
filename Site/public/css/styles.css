@@ -222,7 +222,11 @@ footer p {
 }
 
 #fb-root {
-  margin: 0 auto 0 5px; 
+  margin: 0 5px 0 5px; 
+}
+
+#twitter-follow {
+	margin: 0 auto 0 5px;
 }
 
 #sharing {
