@@ -760,7 +760,24 @@ peekType = function(tokens) {
   else
     return tokens[0].type;
 } // peekType
-
+/*MIST.createSanitizer = function() {
+  var resultingRE = ""
+  for(var i = 0; i<arguments.length-1;i++) {
+    resultingRE += "(?:"+arguments[i]+")|"
+  }
+  resultingRE += "(?:"+arguments[arguments.length - 1]+")"
+  var evaluated = new RegExp(resultingRE, "g");
+  return evaluated
+}
+MIST.sanitize = function(RE, string) {
+  var result = "";
+  var current = RE.exec(string);
+  while (current != null) {
+    result += current[0];
+    var current = RE.exec(string);
+  }
+  return result
+}*/
 MIST.parse = function(str) {
   var kernel = function(tokens) {
     // This should never happen, but let's be safe.
