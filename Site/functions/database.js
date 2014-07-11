@@ -1167,13 +1167,13 @@ module.exports.canDeleteComment= (function (userid, commentId, callback) {
     else if (result[0]) // User is a moderator or an admin
       callback(true, null);
     else
-      module.exports.query("SELECT userid FROM comments, images WHERE comments.onImage=images.imageid AND images.userid='" + userid + "'AND comments.commentId='" + commentId + "';", function(result, error){
+      module.exports.query("SELECT postedBy FROM comments, images WHERE comments.onImage=images.imageid AND images.userid='" + userid + "'AND comments.commentId='" + commentId + "';", function(result, error){
         if (error)
           callback(false, error);
         else if (result[0]) // User owns the image
           callback(true, null);
         else
-          module.exports.query("SELECT userid FROM comments WHERE postedBy='" + userid +"' AND commentId='" + commentId + "';", function (result, error){
+          module.exports.query("SELECT postedBy FROM comments WHERE postedBy='" + userid +"' AND commentId='" + commentId + "';", function (result, error){
             if (error)
               callback(false, error);
             else if (result[0]) // User is the comment poster.
