@@ -149,6 +149,14 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path: /embed
+  //   embedable or standalone images
+  app.get('/embed/:imageid', function(req,res) {
+    var embed = require("../functions/embed.js");
+    embed.buildPage(req, res, database);
+  });
+
+  // --------------------------------------------------
   // Path: /expert
   //   The expert UI
   app.get('/expert', function(req,res) {
