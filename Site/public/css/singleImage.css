@@ -214,7 +214,7 @@ th.user a {
 }
 
 #image-sharing {
-  margin: 0 auto 0 auto; 
+  margin: 0 auto; 
   display: -webkit-flex;
   -webkit-flex-direction: row;
   display: flex;

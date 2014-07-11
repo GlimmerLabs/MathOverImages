@@ -1134,7 +1134,7 @@ module.exports.functionSearch = (function(searchString, callback){
 /* Comment moderation functions */
 // flag comments
 // callback(success, error);
-module.exports.flagComment = (function(commentId, flaggedByID){
+module.exports.flagComment = (function(commentId, flaggedByID,callback){
   commentId = sanitize(commentId);
   flaggedByID = sanitize(flaggedByID);
   // Check to see if user has flagged this comment already
@@ -1144,7 +1144,7 @@ module.exports.flagComment = (function(commentId, flaggedByID){
     else if (result[0])
       callback(false, "User has already flagged this comment.");
     else // user has not already flagged this comment.
-      module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commendId) VALUES('" + flaggedByID + "','" + commentId + "';", function(results, error){
+      module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commentId) VALUES('" + flaggedByID + "','" + commentId + "');", function(results, error){
         if (error)
           callback(false, error);
         else
@@ -1167,13 +1167,13 @@ module.exports.canDeleteComment= (function (userid, commentId, callback) {
     else if (result[0]) // User is a moderator or an admin
       callback(true, null);
     else
-      module.exports.query("SELECT userid FROM comments, images WHERE comments.onImage=images.imageid AND images.userid='" + userid + "'AND comments.commentId='" + commentId + "';", function(result, error){
+      module.exports.query("SELECT postedBy FROM comments, images WHERE comments.onImage=images.imageid AND images.userid='" + userid + "'AND comments.commentId='" + commentId + "';", function(result, error){
         if (error)
           callback(false, error);
         else if (result[0]) // User owns the image
           callback(true, null);
         else
-          module.exports.query("SELECT userid FROM comments WHERE postedBy='" + userid +"' AND commentId='" + commentId + "';", function (result, error){
+          module.exports.query("SELECT postedBy FROM comments WHERE postedBy='" + userid +"' AND commentId='" + commentId + "';", function (result, error){
             if (error)
               callback(false, error);
             else if (result[0]) // User is the comment poster.

@@ -1,0 +1,36 @@
+extends ./partials/framework
+block title
+  title MIST Galleries
+block extraMetas
+block extraLinks
+
+block stylesheets
+  link(rel='stylesheet', href='/css/challenges.css')
+
+block content
+  div(id='main')
+    div(id='top')
+      div(id='pageTitleGeneral')
+        h1 challenges
+      div(id='subviews')
+        if (type === "difficulty")
+          a(href='#' class='subview' id='selected') random
+        else
+          a(href='#' class='subview') random
+        if (type === "color")
+          a(href='#' class='subview' id='selected') recent
+        else
+          a(href='#' class='subview') recent
+        if (type === "animated")
+          a(href='#' class='subview' id='selected') top rated
+        else
+          a(href='#' class='subview') top rated
+        if (type === "top rated")
+          a(href='#' class='subview' id='selected') featured
+        else
+          a(href='#' class='subview') featured
+    div(id='gallery')
+      div(id='images')
+        
+      div(id='pageNumber')
+        
