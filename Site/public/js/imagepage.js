@@ -56,6 +56,13 @@ $(document).ready(function() {
         break;
     } // switch
   }; // document.body.onkeypress
+
+  var metaImage = canvas.toDataURL();
+  var meta = document.createElement('meta');
+  meta.setAttribute('property', 'og:image');
+  meta.setAttribute('content', metaImage);
+  document.getElementsByTagName('head')[0].appendChild(meta);
+
 });
 
 var flagComment = (function(commentId, callback){
@@ -77,3 +84,4 @@ var deleteComment = (function(commentId, callback){
     callback(response);
   });
 });
+
