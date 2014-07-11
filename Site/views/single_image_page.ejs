@@ -1,35 +1,54 @@
+<% var title= image.title + " by " + image.username + "on MIST" %>
 <% include head.ejs %>
-<h1>Horizon</h1>
-   <h2>Fri, 11 Jul 2014 21:47:25 GMT</h2>
-   <figure data-imageid='899'>
+<h1><%- image.title %></h1>
+   <h2><%- image.modifiedAt.toUTCString() %></h2>
+   <figure data-imageid=<%-"'" + image.imageid + "'" %>>
     <canvas id="canvas" width="400" height="400"></canvas>
-    <figcaption class="left starred">★1</figcaption>
+    <figcaption class=<%- liked ? "'left starred'" : "'left unstarred'" %>>★<%- image.rating %></figcaption>
     <div id="image-sharing">
-     <div id="image-fb-share" data-href="http://glimmer.grinnell.edu/image/899" data-type="button" class="fb-share-button"></div>
-     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text="Check out &quot;Horizon&quot; by darkchocolate59 on @MISTbyGlimmer" data-url="http://glimmer.grinnell.edu/image/899" class="twitter-share-button">
+     <div id="image-fb-share" data-href=<%-"http://glimmer.grinnell.edu/image/" + image.imageid %> data-type="button" class="fb-share-button"></div>
+     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= <%- '\'Check out "' + image.title + '" by ' + image.username + ' on @MISTbyGlimmer\''%> data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
       <Tweet>      </Tweet></a>
-     <a href="/user/darkchocolate59">
-      <figcaption class="right">darkchocolate59</figcaption>
+     <a href=<%- "\"/user/" + image.username + "\"" %>>
+      <figcaption class="right"><%- image.username %></figcaption>
      </a>
     </div>
    </figure>
-   <p id="code" class="code">rgb(cos(y),sum(cos(y),x),x)</p>
+   <p id="code" class="code"><%- image.code %></p>
    <table id="comments">
+    <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment">
      <th class="user">
-      <a href="/user/alexthemitchell">alexthemitchell</a>
+      <a href=<%- "\"/user/" + comments[i].username + "\"" %>><%- comments[i].username %></a>
      </th>
-     <td class="comment">Kinda looks like a lens flare.</td>
-     <td class="comment">Fri, 11 Jul 2014 21:53:20 GMT</td>
+     <td class="comment"><%- comments[i].comment %></td>
+     <td class="comment"><%- comments[i].postedAt.toUTCString() %></td>
     </tr>
+    <% } %>
+    <% if (user) {%>
     <div id="add">
      <ul>
-      <li>+ add to album<ul></ul></li>
+      <li>+ add to album
+       <ul>
+        <% for (var i=0; i < albums.length; i++) {%>
+              <form method='POST'>
+                <li>albums[i].name</li>
+               <input type='hidden' value=<%-"\"" + albums[i].albumid + "\"" %> name='add' />
+               <input type='submit'value='select' class='select' />
+               </form>
+        <% } %>
+       </ul>
+      </li>
      </ul>
     </div>
+
+
     <tr id="leaveComment" class="comment">
      <th class="user">
-      <a href="/user/alexthemitchell">alexthemitchell</a></th>
-     <td class="comment"><form method="POST"><textarea name="newComment" required="required" placeholder="leave a comment"></textarea><input type="submit" value="submit" name="commentSubmit"></form></td></tr></table>
+      <a href=<%"\"/user/" + user.username + "\"" %>>user.username</a>
+     </th>
+     <td class="comment"><form method="POST"><textarea name="newComment" required="required" placeholder="leave a comment"></textarea><input type="submit" value="submit" name="commentSubmit"></form></td></tr>
+<% } %>
+</table>
 
 <% include foot.ejs %>

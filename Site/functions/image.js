@@ -5,40 +5,39 @@
 module.exports.buildPage =  function(req, res, database) {
   database.imageInfo(req.params.imageid, function(image, error){
     if(error)
-      res.end(error)
-      else
-        database.hasLiked((req.session.user) ? req.session.user.userid : null, image.imageid, function(liked, error) {
-          if(error)
-            res.end(error)
-            else {
-              database.commentInfo(image.imageid, function(comment, error){
-                if (error)
-                  res.end(error)
-                  else if (req.session.user != null){
-                    database.albumsInfo(req.session.user.userid, function(albums, error){
-                      if(error)
-                        res.end(error);
-                      else
-                        res.render('single_image_page.ejs', {
-                          title: image.title + " by " + image.username + "ON MIST",
-                          comment:comment,
-                          user: req.session.user,
-                          image: image,
-                          liked: liked
-                        });
-                    });
-                  }
+      res.end(error);
+    else
+      database.hasLiked((req.session.user) ? req.session.user.userid : null, image.imageid, function(liked, error) {
+        if(error)
+          res.end(error);
+        else {
+          database.commentInfo(image.imageid, function(comment, error){
+            if (error)
+              res.end(error);
+            else if (req.session.user != null){
+              database.albumsInfo(req.session.user.userid, function(albums, error){
+                if(error)
+                  res.end(error);
                 else
                   res.render('single_image_page.ejs', {
-                    title: image.title + " by " + image.username + "ON MIST",
-                    comment:comment,
+                    comments:comment,
                     user: req.session.user,
                     image: image,
-                    liked: liked
+                    liked: liked,
+                    albums: albums
                   });
               });
             }
-        });
+            else
+              res.render('single_image_page.ejs', {
+                comments:comment,
+                user: req.session.user,
+                image: image,
+                liked: liked
+              });
+          });
+        }
+      });
   });
 };
 
