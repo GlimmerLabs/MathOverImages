@@ -67,3 +67,13 @@ var flagComment = (function(commentId, callback){
     callback(response);
   });
 });
+
+var deleteComment = (function(commentId, callback){
+  var data = {
+    action: "deleteComment",
+    commentId: commentId
+  };
+  $.post("/api", data, function(response){
+    callback(response);
+  });
+});
