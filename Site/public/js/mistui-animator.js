@@ -43,13 +43,13 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
 
   // Parse the expression
   try {
-    var builtins = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sine)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:x)|(?:y)/g
+    var builtins = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:x)|(?:y)/g
     this.exp = MIST.sanitize(builtins, this.exp);
     this.expParsed = MIST.parse(this.exp);
   }
   catch (err) {
     this.log(err);
-    throw err;
+    // throw err;
   }
 } // Constructor
 
