@@ -76,6 +76,11 @@ If you click on a menu button when the workTool is not activated, the workTool w
 menuButtonLayer.on('click', function(){
   if (!workToolOn) {
     enableWorkTool();
+    if(makingLine) {
+      removeLine(currLine);
+      makingLine = false;
+      lineLayer.draw();
+    }
   }
 });
 
@@ -106,6 +111,11 @@ menuButtonLayer.on('click', function(){
       dragLayer.draw();
       dragShape = newGroup;
       currShape = newGroup;
+    }
+    else {
+      removeLine(currLine);
+      makingLine = false;
+      lineLayer.draw();
     }
   });
 
