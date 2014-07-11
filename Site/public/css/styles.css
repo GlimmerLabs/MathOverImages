@@ -68,6 +68,9 @@ header nav li:hover {
  color: #9B9B9B;
  cursor: pointer;
 }
+
+
+
 /* End of Header */
 
 #pageTitle {
@@ -215,8 +218,20 @@ footer nav {
 }
 
 footer p {
- margin: 0 auto;
- width:160px;
+ margin: 0 5px 0 auto;
+}
+
+#fb-root {
+  margin: 0 auto 0 5px; 
+}
+
+#sharing {
+  margin: 0 auto; 
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 footer {
