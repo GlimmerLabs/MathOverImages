@@ -14,6 +14,7 @@ html(lang='en')
     link(rel="shortcut icon" href="/logos/favicon.ico")
     block extraLinks
   body
+    script(type='text/javascript' src='/js/sharing-tools.js')
     header
       div(id='headerLogo')
         a(href='/')
@@ -39,9 +40,12 @@ html(lang='en')
             li(id='cancel') cancel
 
     block content
-
+      
     footer
-      p ©2014 Glimmer Labs
+      div(id="sharing")
+        p ©2014 Glimmer Labs
+        div(id="fb-root")
+          div(class="fb-like", data-href="https://facebook.com/MISTbyGlimmer", data-width="450", data-layout="button_count", data-action="like", data-show-faces="true", data-share="false")
       nav
         ul
           li: a(href='/create') create
