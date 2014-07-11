@@ -13,7 +13,7 @@
 */
 workToolGroup.on('click', function(){
   if (makingLine) {
-    currLine.destroy();
+    removeLine(currLine);
     makingLine = false;
     lineLayer.draw();
   }
@@ -24,15 +24,7 @@ workToolGroup.on('click', function(){
 
 
 lineToolGroup.on('click', function() {
-  if (lineToolOn) {
-    if (makingLine) {
-     currLine.destroy();
-     makingLine = false; 
-     lineLayer.draw();
-   }
-    enableWorkTool();
-  } 
-  else {
+  if (!lineToolOn) {
     lineToolGroup.children[0].setAttr('shadowEnabled', true);
     lineToolOn = true;
     disableTool(workToolGroup);
@@ -42,12 +34,9 @@ lineToolGroup.on('click', function() {
 });
 
 deleteToolGroup.on('click', function() {
-  if (deleteToolOn) {
-    enableWorkTool();
-  } 
-  else {
+  if (!deleteToolOn) {
     if (makingLine) {
-      currLine.destroy();
+      removeLine(currLine);
       makingLine = false; 
       lineLayer.draw();
     }
@@ -68,6 +57,11 @@ undoGroup.on('mousedown', function() {
 
 undoGroup.on('mouseup', function() {
   if (currIndex > 0) {
+    if (makingLine) {
+      removeLine(currLine);
+      makingLine = false; 
+      lineLayer.draw();
+    }
     undoButton.setAttr('shadowEnabled', false);
     undoAction(actionArray[currIndex - 1]);
     currIndex--;
@@ -87,6 +81,11 @@ redoGroup.on('mousedown', function() {
 
 redoGroup.on('mouseup', function() {
   if (totalIndex > currIndex) {
+    if (makingLine) {
+      removeLine(currLine);
+      makingLine = false; 
+      lineLayer.draw();
+    }
     redoButton.setAttr('shadowEnabled', false);
     redoAction(actionArray[currIndex]);
     currIndex++;
