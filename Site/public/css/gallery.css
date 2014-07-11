@@ -147,7 +147,7 @@ ul.rig.columns-4 li{
 vertical-align: bottom;
 text-decoration: none;
 color: #FFFFFF;
-background-color: #C8C8C8;
+background-color: #BABABA;
 display: inline-block;
 height: 40px;
 width: 150px;
@@ -181,3 +181,8 @@ input[type='submit']:hover{
     background-color: #FFF;
     cursor: pointer;
     }
+
+input[type='submit'].deleteImage{
+    float: right;
+}
+
