@@ -361,3 +361,39 @@ handlers.omnisearch = (function (info, req, res) {
       res.end(JSON.stringify(resultObject));
   });
 });
+
+/*
+Flag comments for Moderator review
+action: flagComment
+commentId, the comment to flag
+*/
+handlers.flagComment = (function (info, req, res) {
+  if (!req.session.loggedIn)
+    fail(res, "User not logged in")
+    database.flagComment(info.commentId, req.session.user.userid, function(success, error){
+      if (error)
+        fail(res, JSON.stringify(error));
+      else if (success)
+        res.end("Comment " + info.commentId + " flagged.");
+      else
+        fail(res, "Unknown error");
+    });
+});
+
+/*
+Delete comments from the database.
+action: deleteComment
+commentId, the comment to delete
+*/
+handlers.deleteComment = (function (info, req, res) {
+  if (!req.session.loggedIn)
+    fail(res, "User Not logged in")
+    database.deleteComment(req.session.user.userid, info.commentId, function(success, error){
+      if (error)
+        fail(res, JSON.stringify(error));
+      else if (success)
+        res.end("Comment " + info.commentId + " deleted.");
+      else
+        fail(res, "Unknown error");
+    });
+});
