@@ -24,7 +24,7 @@ module.exports.gui = function(req, res) {
  */
 module.exports.intro =  function(req, res) {
   // The list of pages in the introduction, in order
-  var pages = ['start', 'world', 'black', 'white', 'grey', 'x', 'y', 
+  var pages = ['start', 'world', 'black', 'white', 'grey', 'x', 'y',
       'xtimesy', 'next'];
   tutorialPage(req, res, "/tutorial/intro/", req.params.page, pages)
 } // intro
@@ -61,7 +61,7 @@ var tutorialPage = function(req, res, path, page, pages) {
   console.log(view);
 
   // And render the page
-  res.render(view, { next: next, prev: prev, page: index+1, 
-      count: pages.length });
+  res.render(view, { next: next, prev: prev, page: index+1,
+                    count: pages.length, user: req.session.user, loggedIn: req.session.loggedIn });
 }; // tutorialPage
 
