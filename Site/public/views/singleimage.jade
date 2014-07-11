@@ -29,11 +29,12 @@ block content
     tr(class='comment')
       th(class='user'): a(href='/user/'+ comment[i].username)= comment[i].username
       td(class='comment')!= comment[i].comment
+      td(class='comment')!= comment[i].postedAt.toGMTString()
    if loggedIn
     if (image.userid === user.userid)
      form(method='POST')
       input(type='hidden' value= image.imageid name='profile')
-      input(type='submit' class='profile' value='set as profile picture')
+      input(type='submit' class='profile' value='set as featured image')
      form(method='POST')
       input(type='hidden' value= image.imageid name='delete')
       input(type='submit' class='delete' value='delete this image')
