@@ -1134,7 +1134,7 @@ module.exports.functionSearch = (function(searchString, callback){
 /* Comment moderation functions */
 // flag comments
 // callback(success, error);
-module.exports.flagComment = (function(commentId, flaggedByID){
+module.exports.flagComment = (function(commentId, flaggedByID,callback){
   commentId = sanitize(commentId);
   flaggedByID = sanitize(flaggedByID);
   // Check to see if user has flagged this comment already
@@ -1144,7 +1144,7 @@ module.exports.flagComment = (function(commentId, flaggedByID){
     else if (result[0])
       callback(false, "User has already flagged this comment.");
     else // user has not already flagged this comment.
-      module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commendId) VALUES('" + flaggedByID + "','" + commentId + "';", function(results, error){
+      module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commentId) VALUES('" + flaggedByID + "','" + commentId + "');", function(results, error){
         if (error)
           callback(false, error);
         else
