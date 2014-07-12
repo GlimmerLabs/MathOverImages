@@ -124,6 +124,15 @@ MIST.ui.Animator.prototype.frame = function() {
 } // frame
 
 /**
+ * Create a jpg and switch to that.
+ */
+MIST.ui.Animator.prototype.jpg = function() {
+  var data = canvas.toDataURL("image/jpeg");
+  console.log(data);
+  document.location = data;
+} // MIST.ui.Animator.prototype.jpg
+
+/**
  * Run the animation.
  */
 MIST.ui.Animator.prototype.run = function() {
