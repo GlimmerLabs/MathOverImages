@@ -1,10 +1,43 @@
 {
-  "name": "mist",
+  "name": "MIST",
   "version": "0.1.0",
-  "description": "Glimmer Labs' Mathematic Image Synthesizing Tool",
+  "description": "Glimmer Labs' Mathematical Image Synthesis Toolkit",
   "main": "server.js",
+  "contributors": [
+    {
+      "name": "Alex Mitchell",
+      "email": "mitchell17@grinnell.edu"
+    },
+    {
+      "name": "Sam Rebelsky",
+      "email": "rebelsky@grinnell.edu"
+    },
+    {
+      "name": "Amanda Hinchman-Dominguez",
+      "email": "hinchman17@grinnell.edu"
+    },
+    {
+      "name": "Eileen Fordham",
+      "email": "fordhame17@grinnell.edu"
+    },
+    {
+      "name": "Victoria Tsou",
+      "email": "tsouvict@grinnell.edu"
+    },
+    {
+      "name": "Earnest Wheeler",
+      "email": "wheelere@grinnell.edu"
+    },
+    {
+      "name": "Halley Freger",
+      "email": "fregerha17@grinnell.edu"
+    },
+    {
+      "name": "Zoe Wolter",
+      "email": "wolterzo@grinnell.edu"
+    }],
   "dependencies": {
-    "bcrypt-nodejs": "^0.0.3",
+    "bcrypt-nodejs": "latest",
     "body-parser": "^1.3.0",
     "compression": "^1.0.6",
     "connect-flash": "^0.1.1",
@@ -15,12 +48,6 @@
     "jade": "^1.3.1",
     "morgan": "^1.1.1",
     "mysql": "^2.3.2",
-    "nodemailer": "^0.6.5",
-    "passport": "^0.1.18",
-    "passport-facebook": "^1.0.3",
-    "passport-google-oauth": "^0.1.5",
-    "passport-local": "^1.0.0",
-    "passport-twitter": "^1.0.2",
     "validator": "^3.14.1"
   },
   "scripts": {
@@ -29,14 +56,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "../"
+    "url": "https://www.github.com/GlimmerLabs/MathOverImages"
+  },
+  "bugs": {
+    "url": "https://www.github.com/GlimmerLabs/MathOverImages/issues"
   },
   "keywords": [
     "MIST",
     "Glimmer",
     "Labs"
   ],
-  "author": "Glimmer Labs",
+  "author": "Glimmer Labs <rebelsky@cs.grinnell.edu",
   "license": "GNU LESSER GENERAL PUBLIC LICENSE",
   "readme": "DEVELOPERS"
 }
