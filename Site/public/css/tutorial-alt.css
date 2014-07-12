@@ -32,7 +32,32 @@ h2 {
   width: 25%;
 }
 
-a.clickPrevious{
+/**
+ * We use the inverse of our normal box strategy for the next/prev
+ * buttons.
+ */
+a.next {
+  color: #979797;
+  background-color:#FFF;
+  padding: 2px;
+  float: right;
+  position: static;
+  bottom: 0px;
+  right: 10%;
+  text-align: right;
+  text-decoration: none;
+  width: 100%;
+  font-size: 1.2em;
+}
+
+a.next:hover {
+  color: #FFFFFF;
+  background-color: #979797;
+}
+
+a.prev {
+  color: #979797;
+  background-color:#FFF;
   padding: 2px;
   float: left;
   position: static;
@@ -41,34 +66,13 @@ a.clickPrevious{
   align-self: flex-end;
   text-align: left;
   text-decoration: none;
-  color: #FFFFFF;
-  background-color: #979797;
   width: 100%;
   font-size: 1.2em;
 }
 
-a.clickNext{
-  padding: 2px;
-  float: right;
-  position: static;
-  bottom: 0px;
-  right: 10%;
-  text-align: right;
-  text-decoration: none;
+a.prev:hover {
   color: #FFFFFF;
   background-color: #979797;
-  width: 100%;
-  font-size: 1.2em;
-}
-
-a.clickNext:hover{
-  background-color:#FFF;
-  color: #979797;
-}
-
-a.clickPrevious:hover{
-  background-color:#FFF;
-  color: #979797;
 }
 
 img.image18 {
