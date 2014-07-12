@@ -442,6 +442,16 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path: /welcome
+  //   About MIST
+  app.get('/welcome', function(req,res) {
+    res.render('../public/views/welcome.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  // --------------------------------------------------
   // Default Route
   app.use(function(req, res, next){
     var fourohfour = require("../functions/404.js");
