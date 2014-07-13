@@ -1,5 +1,5 @@
 /**
- * mistui-animation.js
+ * mistui-animator.js
  *   Some support for animating/rendering images in MIST.
  */
 
@@ -128,9 +128,24 @@ MIST.ui.Animator.prototype.frame = function() {
  */
 MIST.ui.Animator.prototype.jpg = function() {
   var data = canvas.toDataURL("image/jpeg");
-  console.log(data);
   document.location = data;
 } // MIST.ui.Animator.prototype.jpg
+
+/**
+ * Create a jpeg and put it in the body of the page.
+ */
+MIST.ui.Animator.prototype.jpgBody = function() {
+  // Convert the canvas to an image.
+  var data = canvas.toDataURL("image/jpeg");
+  var img = document.createElement("img");
+  img.src = data;
+  // Remove the children
+  while (document.body.children.length > 0) {
+    document.body.removeChild(document.body.children[0]);
+  } // while
+  // And add the image
+  document.body.appendChild(img);
+}
 
 /**
  * Run the animation.
