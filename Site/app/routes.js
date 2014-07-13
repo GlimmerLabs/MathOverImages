@@ -17,7 +17,9 @@ var functions = require("../functions/functions.js");
 var gallery = require("../functions/gallery.js");
 var image = require("../functions/image.js");
 var index = require("../functions/index.js");
+var jpg = require("../functions/jpg.js");
 var login = require("../functions/login.js");
+var png = require("../functions/png.js");
 var signup = require("../functions/signup.js");
 var tutorial = require("../functions/tutorial.js");
 var username = require("../functions/username.js");
@@ -198,6 +200,61 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path: /hack
+  //   Sam's hack of the day
+  app.get('/hack', function(req,res) {
+    var rgb = function(r,g,b) {
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
+    var Canvas = require("canvas");
+    var canvas = new Canvas(200,200);
+    var ctx = canvas.getContext("2d");
+/*
+    var region = ctx.createImageData(canvas.width, canvas.height);
+    for (var i = 0; i < region.data.length; i += 4) {
+      region.data[i+0] = 100;
+      region.data[i+1] = 100;
+      region.data[i+2] = 100;
+      region.data[i+3] = 0;
+    } // for
+    ctx.putImageData(region, 0, 0);
+ */
+    for (var row = 0; row < canvas.width; row++) {
+      for (var col = 0; col < canvas.height; col++) {
+        ctx.fillStyle = rgb(row,0,255-col);;
+        ctx.fillRect(col, row, 1, 1);
+      } // for col
+    } // for row
+    ctx.strokeStyle = '#ff0000';
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.lineTo(200,200);
+    ctx.stroke();
+
+    /*
+    var stream = canvas.toDataURL("image/png");
+    res.send(stream);
+     */
+     /*
+    var stream = canvas.toDataURL("image/png");
+    res.set('Content-Type','image/png');
+    stream = stream.replace(/[^,]*,/,'');
+    var tmp = base64_decode(stream);
+    console.log(tmp);
+     */
+    var stream = canvas.createJPEGStream();
+    res.set('Content-Type','image/png');
+    stream.on('data', function(chunk) {
+      console.log(chunk);
+      res.send(chunk);
+    });
+    stream.on('end', function() {
+      console.log("DONE");
+    });
+  });
+
+  // --------------------------------------------------
   // Path: /help
   //   The list of available hlep pages
   app.get('/help', function(req,res) {
@@ -245,6 +302,13 @@ module.exports = function(app,passport,database) {
   //   Tutorial Screenshots
   app.get('/images/tutorial/:file', function(req,res) {
     res.sendfile('./public/images/tutorial/' + req.params.file);
+  });
+
+  // --------------------------------------------------
+  // Path: /jpg
+  //   Create a jpg
+  app.get('/jpg/:imageid', function(req,res) {
+    jpg.buildPage(req, res, database, req.query);
   });
 
   // --------------------------------------------------
@@ -296,6 +360,13 @@ module.exports = function(app,passport,database) {
     if(req.body.aboutSubmit != null) {
       username.changeAboutSection(req, res, database);
     }
+  });
+
+  // --------------------------------------------------
+  // Path: /png
+  //   Create a png
+  app.get('/png/:imageid', function(req,res) {
+    png.build(req, res, database, req.query);
   });
 
   // --------------------------------------------------
