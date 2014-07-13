@@ -18,7 +18,7 @@ if (!MIST.ui) { MIST.ui = {}; }
  * The pattern to identify builtins (or lack thereof).  Used for the
  * simple validation strategy.
  */
-var builtinsPattern = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)/g
+var builtinsPattern = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,\-]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:m.x)|(?:m.y)/g
 
 // +--------------+--------------------------------------------------
 // | Constructors |
@@ -46,7 +46,7 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
   
    // When was the last time we drew a frame?  (Used primarily when we
    // need to re-render a particular frame.)
-  this.time = { t:0, m:0 };
+  this.time = { t:0, m:0, h:0, d:0 };
  
   // Set up the bounds (which also sets up the render width and height)
   this.bounds(0, 0, canvas.width, canvas.height);
@@ -60,6 +60,18 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
     this.log(err);
     // throw err;
   }
+
+  // Set up a mouse listener for the canvas
+  console.log("Setting onmousemove");
+  canvas.onmousemove = function(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var x = evt.clientX - rect.left;
+    var y = evt.clientY - rect.top;
+    var scaledX = (x * 2.0/canvas.width) - 1;
+    var scaledY = (y * 2.0/canvas.height) - 1;
+    setMouse(scaledX,scaledY);
+  }; // onmousemove
+  console.log("Set onmousemove");
 } // Constructor
 
 // +---------+-------------------------------------------------------
@@ -213,8 +225,9 @@ MIST.ui.Animator.prototype.start = function()
     } // for
   } // if (this.params != "")
 
-  // Get the remaining info
-  this.on = this.exp.indexOf("t.") > -1;       // HACK!
+  // Get the remaining info.  // Hack
+  this.on = (this.exp.indexOf("t.") > -1) || (this.exp.indexOf("m.") > -1);
+  console.log("On",this.on);
   this.run();
 }; // start
 
