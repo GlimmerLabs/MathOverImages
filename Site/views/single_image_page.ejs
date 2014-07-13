@@ -1,4 +1,5 @@
 <% var title= image.title + " by " + image.username + "on MIST" %>
+<% var css= '<link rel="stylesheet" href="/css/singleImage.css">' %>
 <% include head.ejs %>
 <h1><%- image.title %></h1>
    <h2><%- image.modifiedAt.toUTCString() %></h2>
