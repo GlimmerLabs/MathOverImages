@@ -10,10 +10,20 @@
 // try { MIST: } catch (err) { MIST = {}; }
 if (!MIST.ui) { MIST.ui = {}; }
 
+// +---------+---------------------------------------------------------
+// | Globals |
+// +---------+
+
+/**
+ * The pattern to identify builtins (or lack thereof).  Used for the
+ * simple validation strategy.
+ */
+var builtinsPattern = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)/g
+
 // +--------------+--------------------------------------------------
 // | Constructors |
 // +--------------+
-var builtins = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)/g
+
 /**
  * Create a new animator *without* rendering the frame.
  */
@@ -43,7 +53,7 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
 
   // Parse the expression
   try {
-    this.exp = MIST.sanitize(builtins, this.exp);
+    this.exp = MIST.sanitize(builtinsPattern, this.exp);
     this.expParsed = MIST.parse(this.exp);
   }
   catch (err) {
