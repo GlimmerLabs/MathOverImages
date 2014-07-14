@@ -3,7 +3,27 @@
  *   Information on mapping various URLs to functions or files.
  */
 
+// +-----------------------------+-------------------------------------
+// | Additional Javascript Files |
+// +-----------------------------+
+
+var accountSettings =  require ("../functions/accountSettings.js");
+var albumContents = require("../functions/albumContents.js");
+var albums = require("../functions/albums.js");
+var api = require("../functions/api.js");
+var challenge = require("../functions/challenge.js");
+var embed = require("../functions/embed.js");
+var fourohfour = require("../functions/404.js");
+var functions = require("../functions/functions.js");
+var gallery = require("../functions/gallery.js");
+var image = require("../functions/image.js");
+var index = require("../functions/index.js");
+var jpg = require("../functions/jpg.js");
+var login = require("../functions/login.js");
+var png = require("../functions/png.js");
+var signup = require("../functions/signup.js");
 var tutorial = require("../functions/tutorial.js");
+var username = require("../functions/username.js");
 
 // +-------+---------------------------------------------------------
 // | Notes |
@@ -51,7 +71,6 @@ module.exports = function(app,passport,database) {
   // Path: /
   //   HOME PAGE
   app.get('/', function(req, res) {
-    var index = require("../functions/index.js");
     index.buildRandomPage(req, res, database);
     //    res.render('../public/views/index.jade',{
     //      loggedIn: req.session.loggedIn,
@@ -73,11 +92,9 @@ module.exports = function(app,passport,database) {
   // Path: /accountSettings
   //   Account settings
   app.get('/accountSettings', function(req,res) {
-    var accountSettings =  require ("../functions/accountSettings.js");
     accountSettings.buildPage(req, res, database);
   });
   app.post('/accountSettings', function(req,res) {
-    var accountSettings =  require ("../functions/accountSettings.js");
     if(req.body.usernameSubmit != null) {
       accountSettings.changeUsername(req, res, database);
     } else if (req.body.passwordSubmit != null) {
@@ -91,28 +108,23 @@ module.exports = function(app,passport,database) {
   // Path: /albums
   //   Albums page
   app.get('/user/:username/albums', function(req,res) {
-    var albums = require("../functions/albums.js");
     albums.buildPage(req, res, database);
   });
   app.get('/user/:username/albums/:albumid', function(req,res) {
-    var albumContents = require("../functions/albumContents.js");
     albumContents.buildPage(req, res, database);
   });
 
   app.post('/user/:username/albums/:albumid', function(req,res) {
     if (req.body.deleteImage != null) {
-      var albumContents = require("../functions/albumContents.js");
       albumContents.deleteFromAlbums(req, res, database);
     }
     else if (req.body.deleteWholeAlbum != null) {
-      var albumContents = require("../functions/albumContents.js");
       albumContents.deleteAlbum(req, res, database);
     };
   });
 
   app.post('/user/:username/albums', function (req,res) {
     if(req.body.newAlbumSubmit != null) {
-      var albums = require("../functions/albums.js");
       albums.createAlbum(req, res, database);
     };
   });
@@ -120,9 +132,25 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path: /api
   //   Dynamic content distribution - return raw data through AJAX
-  var api = require("../functions/api.js");
   app.post('/api', function(req,res) { api.run(req.body, req, res); });
   app.get('/api', function(req,res) { api.run(req.query, req, res); });
+
+  // --------------------------------------------------
+  // Path: /challenge
+  //   Challenges (create, add, edit, view, etc.)
+  app.post('/challenge/add', function(req,res) {
+    console.log("Trying to add");
+    challenge.add(req, res, database, req.body);
+  });
+  app.get('/challenge/create', function(req,res) {
+    challenge.create(req, res, database);
+  });
+  app.get('/challenge/edit/:id', function(req,res) {
+    challenge.edit(req, res, database);
+  });
+  app.get('/challenge/view/:id', function(req,res) {
+    challenge.view(req, res, database);
+  });
 
   // --------------------------------------------------
   // Path: /create
@@ -152,7 +180,6 @@ module.exports = function(app,passport,database) {
   // Path: /embed
   //   embedable or standalone images
   app.get('/embed/:imageid', function(req,res) {
-    var embed = require("../functions/embed.js");
     embed.buildPage(req, res, database);
   });
 
@@ -171,7 +198,6 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/gallery/random', function(req, res) {
-    var gallery = require("../functions/gallery.js");
     gallery.buildRandomPage(req, res, database);
   });
 
@@ -180,7 +206,6 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/gallery/recent/:pageNumber', function(req, res) {
-    var gallery = require("../functions/gallery.js");
     gallery.buildRecentsPage(req, res, database);
   });
 
@@ -189,8 +214,62 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/gallery/toprated/:pageNumber', function(req, res) {
-    var gallery = require("../functions/gallery.js");
     gallery.buildTopRatedPage(req, res, database);
+  });
+
+  // --------------------------------------------------
+  // Path: /hack
+  //   Sam's hack of the day
+  app.get('/hack', function(req,res) {
+    var rgb = function(r,g,b) {
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
+    var Canvas = require("canvas");
+    var canvas = new Canvas(200,200);
+    var ctx = canvas.getContext("2d");
+/*
+    var region = ctx.createImageData(canvas.width, canvas.height);
+    for (var i = 0; i < region.data.length; i += 4) {
+      region.data[i+0] = 100;
+      region.data[i+1] = 100;
+      region.data[i+2] = 100;
+      region.data[i+3] = 0;
+    } // for
+    ctx.putImageData(region, 0, 0);
+ */
+    for (var row = 0; row < canvas.width; row++) {
+      for (var col = 0; col < canvas.height; col++) {
+        ctx.fillStyle = rgb(row,0,255-col);;
+        ctx.fillRect(col, row, 1, 1);
+      } // for col
+    } // for row
+    ctx.strokeStyle = '#ff0000';
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.lineTo(200,200);
+    ctx.stroke();
+
+    /*
+    var stream = canvas.toDataURL("image/png");
+    res.send(stream);
+     */
+     /*
+    var stream = canvas.toDataURL("image/png");
+    res.set('Content-Type','image/png');
+    stream = stream.replace(/[^,]*,/,'');
+    var tmp = base64_decode(stream);
+    console.log(tmp);
+     */
+    var stream = canvas.createJPEGStream();
+    res.set('Content-Type','image/png');
+    stream.on('data', function(chunk) {
+      console.log(chunk);
+      res.send(chunk);
+    });
+    stream.on('end', function() {
+      console.log("DONE");
+    });
   });
 
   // --------------------------------------------------
@@ -214,30 +293,24 @@ module.exports = function(app,passport,database) {
   // Path: /image
   //   Image page
   app.get('/image/:imageid', function(req,res) {
-    var image = require("../functions/image.js");
     image.buildPage(req, res, database);
   });
 
   app.get('/user/:username/images', function(req,res) {
-    var albums = require("../functions/albums.js");
     albums.allImagesinAlbum(req, res, database);
   });
 
   app.post('/image/:imageid', function(req,res) {
     if(req.body.commentSubmit != null) {
-      var image = require("../functions/image.js");
       image.saveComment(req, res, database);
     }
     else if(req.body.delete != null) {
-      var image = require("../functions/image.js");
       image.deleteImage(req, res, database);
     }
     else if (req.body.add != null){
-      var image = require("../functions/image.js");
       image.addtoAlbum(req, res, database);
     }
     else if (req.body.profile != null){
-      var image = require("../functions/image.js");
       image.setProfilePicture(req, res, database);
     };
   });
@@ -247,6 +320,13 @@ module.exports = function(app,passport,database) {
   //   Tutorial Screenshots
   app.get('/images/tutorial/:file', function(req,res) {
     res.sendfile('./public/images/tutorial/' + req.params.file);
+  });
+
+  // --------------------------------------------------
+  // Path: /jpg
+  //   Create a jpg
+  app.get('/jpg/:imageid', function(req,res) {
+    jpg.buildPage(req, res, database, req.query);
   });
 
   // --------------------------------------------------
@@ -268,7 +348,6 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/login', function(req,res) {
-    var login = require("../functions/login.js");
     login.buildPage(req, res, database);
   });
 
@@ -292,15 +371,20 @@ module.exports = function(app,passport,database) {
   // Path: /me
   //   User profile page, current user
   app.get('/me', function(req, res) {
-    var username = require("../functions/username.js");
     username.goToMyProfile(req, res, database);
   });
 
   app.post('/me', function(req,res) {
     if(req.body.aboutSubmit != null) {
-      var username = require("../functions/username.js");
       username.changeAboutSection(req, res, database);
     }
+  });
+
+  // --------------------------------------------------
+  // Path: /png
+  //   Create a png
+  app.get('/png/:imageid', function(req,res) {
+    png.build(req, res, database, req.query);
   });
 
   // --------------------------------------------------
@@ -334,7 +418,6 @@ module.exports = function(app,passport,database) {
   // Path: /user
   //   User profile pages
   app.get('/user/:username', function(req, res) {
-    var username = require("../functions/username.js");
     username.buildPage(req, res, database);
   });
 
@@ -342,7 +425,6 @@ module.exports = function(app,passport,database) {
     if ((req.session.user != null) &&
         (req.session.user.username === req.params.username)) {
       if(req.body.aboutSubmit != null) {
-        var username = require("../functions/username.js");
         username.changeAboutSection(req, res);
       }}
   });
@@ -364,7 +446,6 @@ module.exports = function(app,passport,database) {
   });
 
   app.post('/signup', function(req,res) {
-    var signup = require("../functions/signup.js");
     signup.buildPage(req, res, database);
   });
 
@@ -372,7 +453,6 @@ module.exports = function(app,passport,database) {
   // Path: /user
   //   User profile pages
   app.get('/user/:username', function(req, res) {
-    var username = require("../functions/username.js");
     username.buildPage(req, res, database);
   });
 
@@ -381,7 +461,6 @@ module.exports = function(app,passport,database) {
     if ((req.session.user != null) &&
         (req.session.user.username === req.params.username)) {
       if(req.body.aboutSubmit != null) {
-        var username = require("../functions/username.js");
         username.changeAboutSection(req, res, database);
       }}
   });
@@ -390,7 +469,6 @@ module.exports = function(app,passport,database) {
   // Path: /user/*/albums
   //    User albums page
   app.get('/user/:username/albums', function(req,res) {
-    var albums = require("../functions/albums.js");
     albums.buildPage(req, res, database);
   });
 
@@ -398,7 +476,6 @@ module.exports = function(app,passport,database) {
   // Path: /user/*/functions
   //    User functions page
   app.get('/user/:username/functions', function(req,res) {
-    var functions = require("../functions/functions.js");
     functions.buildPage(req, res, database);
   });
 
@@ -442,9 +519,18 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
+  // Path: /welcome
+  //   About MIST
+  app.get('/welcome', function(req,res) {
+    res.render('../public/views/welcome.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
+  // --------------------------------------------------
   // Default Route
   app.use(function(req, res, next){
-    var fourohfour = require("../functions/404.js");
     fourohfour.buildPage(req,res,database);
   });
 };

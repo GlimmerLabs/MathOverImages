@@ -12,8 +12,9 @@
 width: 150px;
 height: 150px;
 }
+
 table{
 margin: 50px 300px 50px 100px;
-float: left;
+clear: left;
 padding: 30px;
 }
