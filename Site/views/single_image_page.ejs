@@ -1,5 +1,8 @@
 <% var title= image.title + " by " + image.username + " on MIST" %>
+<% var jpgURL= "http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=800&height=800" %>
+
 <% var css= '<link rel="stylesheet" href="/css/singleImage.css">' %>
+<% var meta= '<meta property="og:image" content=<%- jpgURL %> />' %>
 <% include head.ejs %>
 <h1><%- image.title %></h1>
    <h2><%- image.modifiedAt.toUTCString() %></h2>
