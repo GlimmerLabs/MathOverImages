@@ -79,6 +79,7 @@ header nav li:hover {
   display: inline-block;
 }
 .menu{
+    
     position: relative;
     margin: 0px;
     list-style: none;
@@ -88,20 +89,34 @@ header nav li:hover {
 .menu li{
     display: block;
     padding: 5px 5px 5px 5px;
-    background-color: #ccc;
+    background-color: #555;
     width: 100%;
     z-index: 1;
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 #000;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+
 }
+
+.menu li:hover{
+    background-color: #666;
+}
+
 .menu li.title{
     display: block;
     padding: 5px 5px 5px 5px;
     background-color: #999;
     text-align: center;
     width: 100%;
+    text-shadow: none;
 }
 .menu li.line{
     height: 0px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #555;
     padding: 0px 5px 0px 5px;
 }
 /*
