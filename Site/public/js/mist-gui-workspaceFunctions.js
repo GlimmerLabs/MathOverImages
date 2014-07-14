@@ -314,6 +314,32 @@ var showLoadWorkspaceDialog = function() {
   $("#load-workspace").dialog("open");
 } // showLoadWorkspaceDialog
 
+/**
+ * add a success dialog box to the html
+ */
+var addSuccessDialog = function(title, imageid) {
+  // Build the element
+  var dialog = document.createElement("div");
+  dialog.id = "success-message";
+  dialog.title = "Image Saved";
+  // dialog.innerHTML='<form><fieldset><label for="workspace-name">Workspace</label><select id="workspace-name"></select></fieldset></form>';
+  dialog.innerHTML='<p>Your image \''+title+'\' has been successfully saved!'+
+  '\nYou can view your image <a href=/image/'+imageid+'>here</a></p>';
+  document.body.appendChild(dialog);
+
+  // Turn it into a JQuery dialog
+  $("#success-message").dialog({
+    autoOpen: false,
+    resizable: false,
+    width: "50%",
+    modal: true,
+    buttons: {
+      "Okay": function() {
+        $("#success-message").dialog("close");
+      } // okay
+    } // buttons
+  });
+}
 
 // +-------------------+-----------------------------------------------
 // | Session Functions |
