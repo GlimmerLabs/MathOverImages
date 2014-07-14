@@ -24,12 +24,13 @@ block content
       a(href='' class='subview' id='selected') albums
       a(href='/challenges' class='subview') challenges
     div(id='createAlbum')
+      a(href='/user/'+ profileBeingViewed + '/images/')
+        h1.all all images >
       if loggedIn && (user.username===profileBeingViewed)
         form(method='POST')
           textarea(name='newAlbum' required= 'required' placeholder='enter new album name' cols='5' rows='5')
+          br
           input(type='submit'  value='create new album' class='album')
-      a(href='/user/'+ profileBeingViewed + '/images/')
-        h1.all All Images >
     div(id = 'albums')
       - for(var i=0; i < albums.length; i++)
         figure
