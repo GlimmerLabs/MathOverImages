@@ -47,7 +47,6 @@ var workspaceToArray = function() {
 var jsonToWorkspace = function(json) {
   var layout = JSON.parse(json);
   restore(layout);
-  console.log("layout", layout);
   MIST.displayLayout(layout, { addVal:addVal, addOp:addOp, addEdge:addLine });
 } // JSONtoWorkspace
 
@@ -212,9 +211,11 @@ var saveImage = function(title, code, isPublic, codeVisible, replace) {
   var data = "action=saveimage&title="+title+"&code="+code+ 
       "&public="+isPublic+"&codeVisible="+codeVisible+
       "&license=GPL"+((replace) ? "&replace=true" : "");
-  request.open("POST", "/api", true);
+  request.open("POST", "/api", false);
   request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   request.send(data);
+  console.log(request.responseText.substring(11, 14));
+  return request.responseText.substring(11,14);
 }
 
 /**
