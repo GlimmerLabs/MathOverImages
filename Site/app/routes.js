@@ -11,6 +11,7 @@ var accountSettings =  require ("../functions/accountSettings.js");
 var albumContents = require("../functions/albumContents.js");
 var albums = require("../functions/albums.js");
 var api = require("../functions/api.js");
+var challenge = require("../functions/challenge.js");
 var embed = require("../functions/embed.js");
 var fourohfour = require("../functions/404.js");
 var functions = require("../functions/functions.js");
@@ -133,6 +134,23 @@ module.exports = function(app,passport,database) {
   //   Dynamic content distribution - return raw data through AJAX
   app.post('/api', function(req,res) { api.run(req.body, req, res); });
   app.get('/api', function(req,res) { api.run(req.query, req, res); });
+
+  // --------------------------------------------------
+  // Path: /challenge
+  //   Challenges (create, add, edit, view, etc.)
+  app.post('/challenge/add', function(req,res) {
+    console.log("Trying to add");
+    challenge.add(req, res, database, req.body);
+  });
+  app.get('/challenge/create', function(req,res) {
+    challenge.create(req, res, database);
+  });
+  app.get('/challenge/edit/:id', function(req,res) {
+    challenge.edit(req, res, database);
+  });
+  app.get('/challenge/view/:id', function(req,res) {
+    challenge.view(req, res, database);
+  });
 
   // --------------------------------------------------
   // Path: /create

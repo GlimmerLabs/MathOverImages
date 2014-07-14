@@ -1,0 +1,19 @@
+<% var title= challenge.name %>
+<% var css= '<link rel="stylesheet" href="/css/styles.css">' %>
+<% include head.ejs %>
+
+<div id="main">
+  <div id="pageTitleGeneral">
+    <h1>Challenges</h1>
+  </div>
+  <div id="subTitle">
+    <h2><%- challenge.name %></h2>
+     <p style="pre-wrap"> 
+       <%- challenge.description %>
+     </p>
+     <canvas id="canvas" width=400 height=400/>
+     <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
+  </div>
+</div>
+
+<% include foot.ejs %>
