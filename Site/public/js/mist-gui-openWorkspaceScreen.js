@@ -1,13 +1,3 @@
-var popOpenWsRectWidth = width * .4;
-var popOpenWsRectHeight = height * .16;
-var popOpenWsGroupX = (width - popOpenWsRectWidth) / 2;
-var popOpenWsGroupY = (height - popOpenWsRectHeight) / 2;
-
-var popOpenWsButtonShiftX = popTextShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
-var popOpenWsButtonWidth = ((popOpenWsRectWidth / 2) - (3 * popOpenWsButtonShiftX)) / 2;
-var popOpenWsButtonHeight = popOpenWsRectWidth * .06;
-
-
 var openWsGroup = new Kinetic.Group({
 	x: popSaveWsGroupX,
 	y: popSaveWsGroupY,
