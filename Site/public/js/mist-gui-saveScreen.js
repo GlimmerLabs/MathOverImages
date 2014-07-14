@@ -87,6 +87,7 @@ nameEditText.drawMethod = function(){
 screenLayer.draw()
 };
 
+// ERROR TEXT
 var popErrorText = new Kinetic.Text({
   x: popTextShiftX,
   y: popTextShiftY + (popTextHeight * 2.2),
