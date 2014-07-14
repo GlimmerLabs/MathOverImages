@@ -7,7 +7,7 @@ html(lang='en')
 
     block extraMetas
     block stylesheets
-
+    link(rel='stylesheet' type='text/css' href='/css/searchMenu.css')
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
     script(type='text/javascript' src="/js/main.js")
     script(type='text/javascript' src="/js/analytics.js")
@@ -19,6 +19,9 @@ html(lang='en')
       div(id='headerLogo')
         a(href='/')
           img(src='/logos/header.png')
+      form(id='search' action='/search')
+        input(type='search' name='searchQuery' id='searchBar')
+        ul(class='menu' id='searchResults')
       nav
         ul
           span(class='main')

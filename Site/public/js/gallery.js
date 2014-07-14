@@ -50,7 +50,10 @@ function setup(i) {
 function setupCanvas(canvas) {
   if (!canvas) return;
   var canvasId = canvas.id;
-  var i = eval(canvasId.replace("canvas",""));
+  var i = parseInt(canvasId.replace("canvas",""));
+  if (isNaN(i)) {
+    return;
+  }
   var codeId = "code" + i;
   var code = document.getElementById(codeId);
 

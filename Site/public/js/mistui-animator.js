@@ -230,7 +230,6 @@ MIST.ui.Animator.prototype.start = function()
 
   // Get the remaining info.  // Hack
   this.on = (this.exp.indexOf("t.") > -1) || (this.exp.indexOf("m.") > -1);
-  console.log("On",this.on);
   this.run();
 }; // start
 
