@@ -169,7 +169,13 @@ input[type='submit']:hover{
     cursor: pointer;
     }
 
-input[type='submit'].deleteImage{
+input[type='submit'].delete{
     float: right;
+    background-color: #BC1414;
 }
 
+input[type='submit'].delete:hover{
+    float: right;
+    background-color: #FFF;
+    color: #BC1414;
+}
