@@ -36,6 +36,9 @@ $(document).ready(function() {
     var char = String.fromCharCode(code);
     console.log("Pressed '" + char + "'");
     switch (char) {
+      case "j":
+        animator.jpg();
+        break;
       case "s":
         if (animator.on) {
           animator.stop();
@@ -56,13 +59,6 @@ $(document).ready(function() {
         break;
     } // switch
   }; // document.body.onkeypress
-
-  var metaImage = canvas.toDataURL();
-  var meta = document.createElement('meta');
-  meta.setAttribute('property', 'og:image');
-  meta.setAttribute('content', metaImage);
-  document.getElementsByTagName('head')[0].appendChild(meta);
-
 });
 
 var flagComment = (function(commentId, callback){

@@ -27,24 +27,6 @@
  clear: left;
 }
 
-/*
-#images {
- width: 90%;
- margin: auto;
- clear: both;
-
-}
-
-#images figure {
- width:19%;
- float: left;
- margin: 50px;
-}
-
-#images figure img{
- width: 5%
-}
-*/
 .starred, .unstarred{
  display: inline-block;
   cursor: pointer;
@@ -85,6 +67,8 @@ h2{
 figcaption.right a:visited {
     color: inherit;
 }
+
+/*create responsive grid of photos; used tutorial found at http://alijafarian.com/responsive-image-grids-using-css/ */
 
 ul.rig {
  list-style: none;
@@ -142,6 +126,9 @@ ul.rig.columns-4 li{
   margin: 0 0 20px;
  }
 }
+
+/*end of photo grid*/
+
 
 #pageNumber a{
 vertical-align: bottom;

@@ -1,5 +1,5 @@
 /**
- * mistui-animation.js
+ * mistui-animator.js
  *   Some support for animating/rendering images in MIST.
  */
 
@@ -10,10 +10,20 @@
 // try { MIST: } catch (err) { MIST = {}; }
 if (!MIST.ui) { MIST.ui = {}; }
 
+// +---------+---------------------------------------------------------
+// | Globals |
+// +---------+
+
+/**
+ * The pattern to identify builtins (or lack thereof).  Used for the
+ * simple validation strategy.
+ */
+var builtinsPattern = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,\-]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:m.x)|(?:m.y)/g
+
 // +--------------+--------------------------------------------------
 // | Constructors |
 // +--------------+
-var builtins = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)/g
+
 /**
  * Create a new animator *without* rendering the frame.
  */
@@ -36,20 +46,32 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
   
    // When was the last time we drew a frame?  (Used primarily when we
    // need to re-render a particular frame.)
-  this.time = { t:0, m:0 };
+  this.time = { t:0, m:0, h:0, d:0 };
  
   // Set up the bounds (which also sets up the render width and height)
   this.bounds(0, 0, canvas.width, canvas.height);
 
   // Parse the expression
   try {
-    this.exp = MIST.sanitize(builtins, this.exp);
+    this.exp = MIST.sanitize(builtinsPattern, this.exp);
     this.expParsed = MIST.parse(this.exp);
   }
   catch (err) {
     this.log(err);
     // throw err;
   }
+
+  // Set up a mouse listener for the canvas
+  console.log("Setting onmousemove");
+  canvas.onmousemove = function(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var x = evt.clientX - rect.left;
+    var y = evt.clientY - rect.top;
+    var scaledX = (x * 2.0/canvas.width) - 1;
+    var scaledY = (y * 2.0/canvas.height) - 1;
+    setMouse(scaledX,scaledY);
+  }; // onmousemove
+  console.log("Set onmousemove");
 } // Constructor
 
 // +---------+-------------------------------------------------------
@@ -118,10 +140,39 @@ MIST.ui.Animator.prototype.frame = function() {
   } // if (paramInfo)
 
   // Make the frame
-  this.time = MIST.render(this.expParsed, this.context, this.canvas, 
-      this.renderWidth, this.renderHeight, this.left, this.top,
-      this.width, this.height);
+  try {
+    this.time = MIST.render(this.expParsed, this.context, this.canvas, 
+        this.renderWidth, this.renderHeight, this.left, this.top,
+        this.width, this.height);
+  }
+  catch(err) {
+    this.log(err);
+  }
 } // frame
+
+/**
+ * Create a jpg and switch to that.
+ */
+MIST.ui.Animator.prototype.jpg = function() {
+  var data = canvas.toDataURL("image/jpeg");
+  document.location = data;
+} // MIST.ui.Animator.prototype.jpg
+
+/**
+ * Create a jpeg and put it in the body of the page.
+ */
+MIST.ui.Animator.prototype.jpgBody = function() {
+  // Convert the canvas to an image.
+  var data = canvas.toDataURL("image/jpeg");
+  var img = document.createElement("img");
+  img.src = data;
+  // Remove the children
+  while (document.body.children.length > 0) {
+    document.body.removeChild(document.body.children[0]);
+  } // while
+  // And add the image
+  document.body.appendChild(img);
+}
 
 /**
  * Run the animation.
@@ -179,8 +230,9 @@ MIST.ui.Animator.prototype.start = function()
     } // for
   } // if (this.params != "")
 
-  // Get the remaining info
-  this.on = this.exp.indexOf("t.") > -1;       // HACK!
+  // Get the remaining info.  // Hack
+  this.on = (this.exp.indexOf("t.") > -1) || (this.exp.indexOf("m.") > -1);
+  console.log("On",this.on);
   this.run();
 }; // start
 
