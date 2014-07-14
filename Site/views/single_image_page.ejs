@@ -20,12 +20,13 @@
    <p id="code" class="code"><%- image.code %></p>
    <table id="comments">
     <% for (var i = 0; i < comments.length; i++) { %>
-    <tr class="comment">
+    <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
      <th class="user">
       <a href=<%- "\"/user/" + comments[i].username + "\"" %>><%- comments[i].username %></a>
      </th>
      <td class="comment"><%- comments[i].comment %></td>
      <td class="comment"><%- comments[i].postedAt.toUTCString() %></td>
+     <td class='deleteComment'></td>
     </tr>
     <% } %>
     <% if (user) {%>
