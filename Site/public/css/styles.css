@@ -72,7 +72,41 @@ header nav li:hover {
 
 
 /* End of Header */
-
+/*
+  Provide styling for searchbar in header
+*/
+#search {
+  display: inline-block;
+}
+.menu{
+    position: relative;
+    margin: 0px;
+    list-style: none;
+    width: 100%;
+    left: 0px;
+}
+.menu li{
+    display: block;
+    padding: 5px 5px 5px 5px;
+    background-color: #ccc;
+    width: 100%;
+    z-index: 1;
+}
+.menu li.title{
+    display: block;
+    padding: 5px 5px 5px 5px;
+    background-color: #999;
+    text-align: center;
+    width: 100%;
+}
+.menu li.line{
+    height: 0px;
+    border-bottom: 1px solid black;
+    padding: 0px 5px 0px 5px;
+}
+/*
+  End of searchbar styling
+*/
 #pageTitle {
  height:100px;
  min-width:400px;
