@@ -26,26 +26,26 @@ var valueConstantColor = '#F17C9D';
 
 var funNames = ['add', 'wrapsum', 'multiply', 'average', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'rgb'];
 var functions = {
-	add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionMultColor},
-	multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionMultColor},
-	negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg', color: functionSingleColor},
-	sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin', color: functionSingleColor},
-	cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos', color: functionSingleColor},
-	absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs', color: functionSingleColor},
-	average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg', color: functionMultColor},
-	sign:      {rep: 'sign', max: 1,  min: 1, prefix: 'sign', color: functionSingleColor},
-	wrapsum:   {rep: 'wsum', max: 20,  min: 2, prefix: 'wsum', color: functionMultColor},
-	rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor}
+  add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionMultColor},
+  multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionMultColor},
+  negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg', color: functionSingleColor},
+  sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin', color: functionSingleColor},
+  cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos', color: functionSingleColor},
+  absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs', color: functionSingleColor},
+  average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg', color: functionMultColor},
+  sign:      {rep: 'sign', max: 1,  min: 1, prefix: 'sign', color: functionSingleColor},
+  wrapsum:   {rep: 'wsum', max: 20,  min: 2, prefix: 'wsum', color: functionMultColor},
+  rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor}
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 var values = {
-	x:        {rep: 'x',   max: 20, min: 2, color: valueXYColor},
-	y:        {rep: 'y',   max: 20, min: 2, color: valueXYColor},
-	second:   {rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
-	minute:   {rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
-	hour:     {rep: 't.h', max: 1,  min: 1,	color: valueTimeColor},
-	day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-	constant: {rep: '#',    max: 20, min: 2, color: valueConstantColor}
+  x:        {rep: 'x',   max: 20, min: 2, color: valueXYColor},
+  y:        {rep: 'y',   max: 20, min: 2, color: valueXYColor},
+  second:   {rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
+  minute:   {rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
+  hour:     {rep: 't.h', max: 1,  min: 1, color: valueTimeColor},
+  day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
+  constant: {rep: '#',    max: 20, min: 2, color: valueConstantColor}
 }
 
 var imageBoxSideLength = width / 80;
