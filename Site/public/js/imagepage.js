@@ -36,6 +36,9 @@ $(document).ready(function() {
     var char = String.fromCharCode(code);
     console.log("Pressed '" + char + "'");
     switch (char) {
+      case "j":
+        animator.jpg();
+        break;
       case "s":
         if (animator.on) {
           animator.stop();

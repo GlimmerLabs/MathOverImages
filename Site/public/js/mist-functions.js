@@ -70,7 +70,7 @@ MIST.expType = function(exp,context) {
   // Long term: Scan through the expression.
   // Short term: Look at the top-level operation
   if (exp instanceof MIST.App) {
-    if (exp.operation == "rgb") {
+    if ((exp.operation == "rgb") || (exp.operation == "MIST.rgb")) {
       return MIST.TYPE.RGB;
     }
     else if (exp.operation == "hsv") {
@@ -777,7 +777,8 @@ MIST.sanitize = function(RE, string) {
   }
   return result
 }
-MIST.parse = function(str) {
+MIST.parse = function(str,prefix) {
+  if (!prefix) { prefix=""; }
   var kernel = function(tokens) {
     // This should never happen, but let's be safe.
     if (tokens.length == 0) {
@@ -815,7 +816,7 @@ MIST.parse = function(str) {
         } // if there's a comma
       } // while
       tokens.shift();
-      return new MIST.App(tok.text, children);
+      return new MIST.App(prefix + tok.text, children);
     } // if it's a function call
   
     // Otherwise, it's a singleton
