@@ -22,7 +22,7 @@
     <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
      <th class="user">
-      <a href=<%- "\"/user/" + comments[i].username + "\"" %>><%- comments[i].username %></a>
+      <a href='<%= "/user/" + comments[i].username %>'><%- comments[i].username %></a>
      </th>
      <td class="comment"><%- comments[i].comment %></td>
      <td class="comment"><%- comments[i].postedAt.toUTCString() %></td>

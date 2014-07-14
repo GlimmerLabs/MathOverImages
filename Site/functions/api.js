@@ -273,7 +273,14 @@ handlers.saveimage = function(info, req, res){
             fail(res, "Error: "+error);
           }
           else {
-            res.end();
+            database.query("SELECT imageid FROM images WHERE userid="+req.session.user.userid+" AND title='"+info.title+"';",
+                            function(rows, error) {
+                              if(rows[0]) {
+                                res.send(rows[0]);
+                              } else {
+                                fail(res, "Error: " + error);
+                              }
+                            })
           }
         });
       } // If name is not in table
