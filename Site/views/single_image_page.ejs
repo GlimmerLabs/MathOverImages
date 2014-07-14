@@ -20,22 +20,23 @@
    <p id="code" class="code"><%- image.code %></p>
    <table id="comments">
     <% for (var i = 0; i < comments.length; i++) { %>
-    <tr class="comment">
+    <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
      <th class="user">
       <a href=<%- "\"/user/" + comments[i].username + "\"" %>><%- comments[i].username %></a>
      </th>
      <td class="comment"><%- comments[i].comment %></td>
      <td class="comment"><%- comments[i].postedAt.toUTCString() %></td>
+     <td class='deleteComment'></td>
     </tr>
     <% } %>
     <% if (user) {%>
     <% if (image.userid === user.userid) {%>
      <form method='POST'>
-      <input type='hidden' value= <%"\"" + image.imageid + "\"" %> name='profile' />
+      <input type='hidden' value= <%- '"' + image.imageid + '"' %> name='profile' />
       <input type='submit' class='profile' value='set as featured image' />
       </form>
      <form method='POST'>
-      <input type='hidden' value= <%"\"" + image.imageid + "\"" %> name='delete' />
+      <input type='hidden' value= <%- '"' + image.imageid + '"' %> name='delete' />
       <input type='submit' class='delete' value='delete this image' />
       </form>
     <% } %>
@@ -45,9 +46,9 @@
        <ul>
         <% for (var i=0; i < albums.length; i++) {%>
               <form method='POST'>
-                <li>albums[i].name</li>
-               <input type='hidden' value=<%-"\"" + albums[i].albumid + "\"" %> name='add' />
-               <input type='submit'value='select' class='select' />
+                <li><%= albums[i].name  %></li>
+                <input type='hidden' value= <%= albums[i].albumid %> name='add' />
+                <input type='submit' value='select' class='select' />
                </form>
         <% } %>
        </ul>

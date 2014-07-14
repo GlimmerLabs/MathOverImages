@@ -32,32 +32,32 @@
   * - replace
   */
   var actionToObject = function(action, group) {
-  	// If it's a function or value.
-  	if (isFunction(group) || isValue(group)) {
-  		var obj = {
-  			type: 'node',
-  			id: group._id.toString(), 
-  			action: action,
-  			x1: group.x(),
-  			y1: group.y(),
-  			connections: []
-  		};
+    // If it's a function or value.
+    if (isFunction(group) || isValue(group)) {
+      var obj = {
+        type: 'node',
+        id: group._id.toString(), 
+        action: action,
+        x1: group.x(),
+        y1: group.y(),
+        connections: []
+      };
       var child = 0;
-  		if (action == 'delete') {
-  			// Remember all the outgoing edges we're deleting.
-  			for (var i = 0; i < group.attrs.lineOut.length; i++) {
+      if (action == 'delete') {
+        // Remember all the outgoing edges we're deleting.
+        for (var i = 0; i < group.attrs.lineOut.length; i++) {
                  obj['connections'][child++] = actionToObject('delete', group.attrs.lineOut[i]);
              }
-  			// Remember all the incoming edges we're deleting.
-  			if (isFunction(group)) {
-  				for (var i = OUTLET_OFFSET; i < group.children.length; i++) {
-  					var lineIn = group.children[i].attrs.lineIn;
-  					if (lineIn != null && lineIn != undefined) {
-  						obj['connections'][child++] = actionToObject('delete', lineIn);
-  					} // if lineIn is not null
-  				} // for each incoming edge
-  			} // if there are incoming edge
-  		} // if we're deleting things
+        // Remember all the incoming edges we're deleting.
+        if (isFunction(group)) {
+          for (var i = OUTLET_OFFSET; i < group.children.length; i++) {
+            var lineIn = group.children[i].attrs.lineIn;
+            if (lineIn != null && lineIn != undefined) {
+              obj['connections'][child++] = actionToObject('delete', lineIn);
+            } // if lineIn is not null
+          } // for each incoming edge
+        } // if there are incoming edge
+      } // if we're deleting things
         else if (action == 'replace') {
             var oldGroup = arguments[2]
             obj.oldGroup = oldGroup;
@@ -73,23 +73,23 @@
               }
             }
           }   // if we're replacing things
-  	} // if it's a function or value
-  	// If it's a line
-  	else if (isLine(group)) {
-  		var obj = {
-  			type: 'line',
-  			id: group._id.toString(),
-  			action: action,
-  			source: group.attrs.source,
-  			sink: group.attrs.outlet.parent,
+    } // if it's a function or value
+    // If it's a line
+    else if (isLine(group)) {
+      var obj = {
+        type: 'line',
+        id: group._id.toString(),
+        action: action,
+        source: group.attrs.source,
+        sink: group.attrs.outlet.parent,
             sinkIndex: group.attrs.outlet.attrs.outletIndex
         };
         if (action == 'replace') {
             var oldLine = arguments[2];
             obj.deleteLine = actionToObject('delete', oldLine);
         }
-  	} // if it's a line
-  	return obj; 	
+    } // if it's a line
+    return obj;   
   };
 
 /**
