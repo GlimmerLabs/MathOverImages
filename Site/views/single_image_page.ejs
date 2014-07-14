@@ -5,14 +5,14 @@
 <% include head.ejs %>
 <h1><%- image.title %></h1>
    <h2><%- image.modifiedAt.toUTCString() %></h2>
-   <figure data-imageid=<%-"'" + image.imageid + "'" %>>
+   <figure data-imageid=<%= image.imageid %>>
     <canvas id="canvas" width="400" height="400"></canvas>
-    <figcaption class=<%- liked ? "'left starred'" : "'left unstarred'" %>>★<%- image.rating %></figcaption>
+    <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
     <div id="image-sharing">
-     <div id="image-fb-share" data-href=<%-"http://glimmer.grinnell.edu/image/" + image.imageid %> data-type="button" class="fb-share-button"></div>
-     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= <%- '\'Check out "' + image.title + '" by ' + image.username + ' on @MISTbyGlimmer\''%> data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
+     <div id="image-fb-share" data-href="<%= 'http://glimmer.grinnell.edu/image/' + image.imageid %>" data-type="button" class="fb-share-button"></div>
+     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out \"" + image.title + "\" by " + image.username + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
       <Tweet>      </Tweet></a>
-     <a href=<%- "\"/user/" + image.username + "\"" %>>
+     <a href="<%='/user/' + image.username %>">
       <figcaption class="right"><%- image.username %></figcaption>
      </a>
     </div>
@@ -61,7 +61,7 @@
 
     <tr id="leaveComment" class="comment">
      <th class="user">
- <a href=<%-"\"/user/" + user.username + "\"" %>><%-user.username%></a>
+ <a href=<%="/user/" + user.username %>><%-user.username%></a>
      </th>
      <td class="comment"><form method="POST"><textarea name="newComment" required="required" placeholder="leave a comment"></textarea><input type="submit" value="submit" name="commentSubmit"></form></td></tr>
 <% } %>
