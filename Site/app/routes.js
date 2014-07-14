@@ -419,6 +419,17 @@ module.exports = function(app,passport,database) {
     tutorial.intro(req,res);
   });
 
+  app.get('/tutorial/rgb', function(req, res) {
+    res.redirect('/tutorial/rgb/intro-to-rgb');
+  });
+
+  app.get('/tutorial/rgb/', function(req, res) {
+    res.redirect('/tutorial/rgb/00');
+  });
+
+  app.get('/tutorial/rgb/:page', function(req, res) {
+    tutorial.rgb(req,res);
+  });
 
   // --------------------------------------------------
   // Path: /user

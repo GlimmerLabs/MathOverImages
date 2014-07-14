@@ -2,23 +2,27 @@
  * Functions related to the album.
  */
 var setLikes = function(imageArray, userID, database, callback) {
-  var imageArrayClone = imageArray.slice(0, imageArray.length);
-  var errorsArray = [];
-  var likes = {counter: 1, likes: []};
-  for(var image = 0; image < imageArrayClone.length; image++) {
-    (function(currentIndex){
-      database.hasLiked(userID, imageArrayClone[currentIndex].imageid, function(liked, error) {
-        likes.likes[currentIndex] = liked;
-        likes.counter++;
-        if(likes.counter == imageArray.length) {
-          for(var i=0;i<likes.likes.length;i++) {
-            imageArrayClone[i].liked = likes.likes[i];
+  if(imageArray.length == 0)
+    callback([]);
+  else {
+    var imageArrayClone = imageArray.slice(0, imageArray.length);
+    var errorsArray = [];
+    var likes = {counter: 0, likes: []};
+    for(var image = 0; image < imageArrayClone.length; image++) {
+      (function(currentIndex){
+        database.hasLiked(userID, imageArrayClone[currentIndex].imageid, function(liked, error) {
+          likes.likes[currentIndex] = liked;
+          likes.counter++;
+          if(likes.counter >= imageArray.length) {
+            for(var i=0;i<likes.likes.length;i++) {
+              imageArrayClone[i].liked = likes.likes[i];
+            }
+            callback(imageArrayClone, errorsArray);
           }
-          callback(imageArrayClone, errorsArray);
-        }
-        errorsArray.push(error);
-      });
-    })(image);
+          errorsArray.push(error);
+        });
+      })(image);
+    }
   }
 }
 module.exports.buildPage =  function(req, res, database) {

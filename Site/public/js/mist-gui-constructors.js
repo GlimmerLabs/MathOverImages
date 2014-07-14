@@ -304,6 +304,9 @@ var addOp = function(funName, x, y) {
   op.setAttr("visible",true);
   addOutlet(op);
   addOutlet(op);
+  if (funName == "rgb") {
+    addOutlet(op);
+  }
   applyDragBounds(op);
   workLayer.add(op);
   insertToTable(op);
