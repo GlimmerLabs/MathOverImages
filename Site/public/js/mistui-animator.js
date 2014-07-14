@@ -140,9 +140,14 @@ MIST.ui.Animator.prototype.frame = function() {
   } // if (paramInfo)
 
   // Make the frame
-  this.time = MIST.render(this.expParsed, this.context, this.canvas, 
-      this.renderWidth, this.renderHeight, this.left, this.top,
-      this.width, this.height);
+  try {
+    this.time = MIST.render(this.expParsed, this.context, this.canvas, 
+        this.renderWidth, this.renderHeight, this.left, this.top,
+        this.width, this.height);
+  }
+  catch(err) {
+    this.log(err);
+  }
 } // frame
 
 /**
