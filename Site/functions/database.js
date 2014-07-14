@@ -1098,7 +1098,7 @@ module.exports.commentSearch = (function(searchString, callback){
 */
 module.exports.albumSearch = (function(searchString, callback){
   searchString = sanitize(searchString);
-  module.exports.query("SELECT * FROM albums WHERE name LIKE '%" + searchString + "%';", function (results, error){
+  module.exports.query("SELECT albums.*, users.username FROM albums,users WHERE name LIKE '%" + searchString + "%' AND albums.userid=users.userid;", function (results, error){
     if (error)
       callback(null, error);
     else
