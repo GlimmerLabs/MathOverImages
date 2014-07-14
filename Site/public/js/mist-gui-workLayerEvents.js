@@ -40,15 +40,15 @@ There are 3 different modes:
         if (!shape.attrs.expanded) {
           renderCanvas(parent);
           shape.attrs.expanded = true;
-        }
+        } // if the image box is not expanded
         else {
           shape.attrs.expanded = false;
           animation = false;
           setTimeout(function() {collapseCanvas(parent)}, 50);
-        }
+        } // else the image box is expanded already
         setTimeout(function() {workLayer.draw()}, 50);
-      }
-    }
+      } // if clicked on an image box
+    } // if the work tool is enabled
     else if (lineToolOn) {
       if (makingLine) {
         var outlet;

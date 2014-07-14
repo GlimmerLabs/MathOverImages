@@ -25,7 +25,7 @@ module.exports.buildPage =  function(req, res, database) {
                     image: image,
                     liked: liked,
                     albums: albums
-                  });
+                  }); // if user logged in, can comment
               });
             }
             else
