@@ -32,11 +32,11 @@
     <% if (user) {%>
     <% if (image.userid === user.userid) {%>
      <form method='POST'>
-      <input type='hidden' value= <%= image.imageid %> name='profile' />
+      <input type='hidden' value= <%- '"' + image.imageid + '"' %> name='profile' />
       <input type='submit' class='profile' value='set as featured image' />
       </form>
      <form method='POST'>
-      <input type='hidden' value= <%= image.imageid %> name='delete' />
+      <input type='hidden' value= <%- '"' + image.imageid + '"' %> name='delete' />
       <input type='submit' class='delete' value='delete this image' />
       </form>
     <% } %>
