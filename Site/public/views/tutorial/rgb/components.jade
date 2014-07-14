@@ -1,0 +1,23 @@
+<!--provides an introduction to the concept of rgb via a text tutorial-->
+
+extends ../../partials/tutorial
+block title
+  title An Introduction to Working with RGB
+block mainhead
+  h1 tutorial / color
+block subhead
+  h2 Components
+block narrative
+  p.
+    As you could probably guess, the three components of the function affect
+    the outcome of the color. If the rgb function is given 1, 1 and 1, it will
+    interpret these numbers as pure white since in our [-1,1] world these are
+    our highest values. Given -1,-1 and -1, rgb would show pitch black.
+    Within the limits of our world, adding more of any of the three components
+    will change the 'amount' of that color in the mixture.
+  p.
+    Seen to the right is an image rendered as purple with a red value of 1,
+    a green value of 0 and a blue value of 1.
+block illustration
+  canvas(id="canvas",class="world",width=300,height=300)
+  p(id="code" class="code ") rgb(1,0,1)
