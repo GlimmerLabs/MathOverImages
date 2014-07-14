@@ -21,6 +21,7 @@ var index = require("../functions/index.js");
 var jpg = require("../functions/jpg.js");
 var login = require("../functions/login.js");
 var png = require("../functions/png.js");
+var search= require("../functions/search.js");
 var signup = require("../functions/signup.js");
 var tutorial = require("../functions/tutorial.js");
 var username = require("../functions/username.js");
@@ -388,8 +389,7 @@ module.exports = function(app,passport,database) {
   });
 
   app.get('/search', function(req, res) {
-    var search= require("../functions/search.js");
-    search.buildpage(req, res, database);
+    search.buildPage(req, res, database);
   }); 
 
 
