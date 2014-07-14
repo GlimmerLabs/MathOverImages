@@ -21,7 +21,6 @@ $(document).ready(function() {
     canvas.width = $(window).width() + 1;
     canvas.height = $(window).height() + 1;
     window.onresize = function(evt) {
-      console.log("resizing");
       canvas.width = $(window).width();
       canvas.height = $(window).height();
       animator.width = canvas.width;
@@ -34,7 +33,6 @@ $(document).ready(function() {
   document.body.onkeypress=function(evt) {
     var code = evt.which || evt.keyCode || evt.charCode;
     var char = String.fromCharCode(code);
-    console.log("Pressed '" + char + "'");
     switch (char) {
       case "j":
         animator.jpg();
