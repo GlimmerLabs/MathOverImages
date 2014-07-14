@@ -227,7 +227,7 @@ module.exports = function(app,passport,database) {
     var Canvas = require("canvas");
     var canvas = new Canvas(200,200);
     var ctx = canvas.getContext("2d");
-/*
+    /*
     var region = ctx.createImageData(canvas.width, canvas.height);
     for (var i = 0; i < region.data.length; i += 4) {
       region.data[i+0] = 100;
@@ -254,7 +254,7 @@ module.exports = function(app,passport,database) {
     var stream = canvas.toDataURL("image/png");
     res.send(stream);
      */
-     /*
+    /*
     var stream = canvas.toDataURL("image/png");
     res.set('Content-Type','image/png');
     stream = stream.replace(/[^,]*,/,'');
@@ -386,6 +386,12 @@ module.exports = function(app,passport,database) {
   app.get('/png/:imageid', function(req,res) {
     png.build(req, res, database, req.query);
   });
+
+  app.get('/search', function(req, res) {
+    var search= require("../functions/search.js");
+    search.buildpage(req, res, database);
+  }); 
+
 
   // --------------------------------------------------
   // Path: /tutorial

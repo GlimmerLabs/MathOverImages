@@ -62,7 +62,6 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
   }
 
   // Set up a mouse listener for the canvas
-  console.log("Setting onmousemove");
   canvas.onmousemove = function(evt) {
     var rect = canvas.getBoundingClientRect();
     var x = evt.clientX - rect.left;
@@ -71,7 +70,6 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
     var scaledY = (y * 2.0/canvas.height) - 1;
     setMouse(scaledX,scaledY);
   }; // onmousemove
-  console.log("Set onmousemove");
 } // Constructor
 
 // +---------+-------------------------------------------------------
@@ -232,7 +230,6 @@ MIST.ui.Animator.prototype.start = function()
 
   // Get the remaining info.  // Hack
   this.on = (this.exp.indexOf("t.") > -1) || (this.exp.indexOf("m.") > -1);
-  console.log("On",this.on);
   this.run();
 }; // start
 
