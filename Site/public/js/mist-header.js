@@ -18,3 +18,5 @@
  */
 
 var MIST = {};
+
+try { module.exports = MIST; } catch (err) { }
