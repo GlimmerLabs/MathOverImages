@@ -390,12 +390,23 @@ module.exports = function(app,passport,database) {
   app.get('/search', function(req, res) {
     var search= require("../functions/search.js");
     search.buildpage(req, res, database);
-  }); 
+  });
 
 
   // --------------------------------------------------
   // Path: /tutorial
   //   Various tutorials.
+
+  app.get('/tutorial/animation', function(req, res) {
+    res.redirect('/tutorial/animation/intro-to-animation');
+  });
+  app.get('/tutorial/animation/', function(req, res) {
+    res.redirect('/tutorial/animation/00');
+  });
+  app.get('/tutorial/animation/:page', function(req, res) {
+    tutorial.animation(req, res);
+  });
+
 
   app.get('/tutorial/gui', function(req, res) {
     res.redirect('/tutorial/gui/start');
@@ -406,6 +417,7 @@ module.exports = function(app,passport,database) {
   app.get('/tutorial/gui/:page', function(req, res) {
     tutorial.gui(req, res);
   });
+
 
   app.get('/tutorial/intro', function(req, res) {
     res.redirect('/tutorial/intro/start');
@@ -418,6 +430,7 @@ module.exports = function(app,passport,database) {
   app.get('/tutorial/intro/:page', function(req, res) {
     tutorial.intro(req,res);
   });
+
 
   app.get('/tutorial/rgb', function(req, res) {
     res.redirect('/tutorial/rgb/intro-to-rgb');
