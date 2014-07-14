@@ -71,11 +71,6 @@ a.clickPrevious:hover{
   color: #979797;
 }
 
-img.image18 {
-  border: 1px black solid;
-  margin:2% 15%;
-}
-
 div.tutorial {
   display: flex;
   justify-content: space-between;
