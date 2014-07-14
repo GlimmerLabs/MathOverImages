@@ -79,7 +79,7 @@ function createNewMenu(result) {
 function appendMenuTitle(title) {
   var titleElement = document.createElement("li");
   titleElement.className = 'title';
-  titleElement.innerText = title;
+  titleElement.textContent= title;
   searchResults.appendChild(titleElement);
 }
 function addMenuChildren(children, valueToDisplay, generateURL) {
@@ -104,7 +104,7 @@ function appendMenuText(text, url) {
   var link = document.createElement("a");
   link.href = url;
   var textElement = document.createElement("li");
-  textElement.innerText = (text.length > 13) ? text.slice(0, 14) + "..." : text;
+  textElement.textContent = (text.length > 13) ? text.slice(0, 14) + "..." : text;
   link.appendChild(textElement)
   searchResults.appendChild(link);
 }
