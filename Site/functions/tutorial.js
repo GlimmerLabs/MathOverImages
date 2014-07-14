@@ -29,6 +29,15 @@ module.exports.intro =  function(req, res) {
   tutorialPage(req, res, "/tutorial/intro/", req.params.page, pages)
 } // intro
 
+/**
+ * rgb - Render a page in the rgb tutorial.
+ */
+module.exports.rgb =  function(req, res) {
+  // The list of pages in the introduction, in order
+  var pages = ['intro-to-rgb', 'components','example'];
+  tutorialPage(req, res, "/tutorial/rgb/", req.params.page, pages)
+} // rgb
+
 // +-----------------+-------------------------------------------------
 // | Local Utilities |
 // +-----------------+
