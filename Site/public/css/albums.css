@@ -40,6 +40,8 @@ form input[type='image']{
 .all {
     color: #979797;
     font-size: 1.3em;
+    padding: 7px;
+    margin: 0px auto;
 }
 
 .all:hover{
@@ -62,7 +64,7 @@ input[type='submit'].album:hover{
     }
 
 textarea{
- width: 150px;
+ width: 160px;
  height:20px;
  resize: none;
  color: #111111;
@@ -75,5 +77,4 @@ textarea{
 
 #createAlbum {
     float: right;
-    margin: 20px 100px;
 }
