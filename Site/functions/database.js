@@ -711,7 +711,7 @@ module.exports.albumOwnerInfo=(function(albumid, callback) {
 
 module.exports.commentInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
-  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment FROM images, comments, users WHERE comments.active='1' AND comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
+  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment, comments.commentId FROM images, comments, users WHERE comments.active='1' AND comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -1098,7 +1098,7 @@ module.exports.commentSearch = (function(searchString, callback){
 */
 module.exports.albumSearch = (function(searchString, callback){
   searchString = sanitize(searchString);
-  module.exports.query("SELECT * FROM albums WHERE name LIKE '%" + searchString + "%';", function (results, error){
+  module.exports.query("SELECT albums.*, users.username FROM albums,users WHERE name LIKE '%" + searchString + "%' AND albums.userid=users.userid;", function (results, error){
     if (error)
       callback(null, error);
     else
