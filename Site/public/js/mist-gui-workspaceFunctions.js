@@ -214,7 +214,6 @@ var saveImage = function(title, code, isPublic, codeVisible, replace) {
   request.open("POST", "/api", false);
   request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   request.send(data);
-  console.log(request.responseText.substring(11, 14));
   return request.responseText.substring(11,14);
 }
 
