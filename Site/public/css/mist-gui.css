@@ -1,14 +1,20 @@
 @import url("/css/styles.css");
-
+/**
+ * set background color, size, and border of workspace
+ * center workspace
+ */
 #container {
     background-color: rgb(241, 248, 255);
     width: 900px;
     height: 600px;
     border: 3px solid black;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
+/*
+ * center help text below canvas. align center.
+ */
 #gui-help {
-	margin: 0 auto 0 auto;
-	display: block;
+	margin: 10px auto 0 auto;
+	text-align:center;
 }
