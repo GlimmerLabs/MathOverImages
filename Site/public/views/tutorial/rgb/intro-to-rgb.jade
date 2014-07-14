@@ -1,0 +1,24 @@
+<!--provides an introduction to the concept of rgb via a text tutorial-->
+
+extends ../../partials/tutorial
+block title
+  title An Introduction to Working with RGB
+block mainhead
+  h1 tutorial / color
+block subhead
+  h2 Nice to meet you, RGB
+block narrative
+  p.
+    What is the RGB function? From what you could probably gather, it makes
+    images way cooler than black and white.  RGB is defined by three
+    components: red, green, and blue.  These components are the primary
+    colors in a pixel on your screen  that can be mixed by varying degrees
+    so that other colors can be made.  It helps to think about RGB in terms
+    of mixing light rather than mixing paint colors in that the more you add,
+    the closer you get to white light.
+  p.
+    To the right is an example of how these various components can be
+    combined to form gorgeous colors on the canvas.
+block illustration
+  canvas(id="canvas",class="world",width=300,height=300)
+  p(id="code" class="code") rgb(.08,-.34,.5)

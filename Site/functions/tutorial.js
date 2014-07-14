@@ -7,6 +7,15 @@
 // +--------------------+
 
 /**
+ * gui - Render a page in the animation tutorial.
+ */
+module.exports.animation =  function(req, res) {
+  // The list of pages in the introduction, in order
+  var pages = ['intro-to-animation','example'];
+  tutorialPage(req, res, "/tutorial/animation/", req.params.page, pages)
+} // animation
+
+/**
  * gui - Render a page in the GUI tutorial.
  */
 module.exports.gui = function(req, res) {

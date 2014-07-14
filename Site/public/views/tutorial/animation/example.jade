@@ -1,0 +1,21 @@
+<!--Page 2 of animation tutorial-->
+
+extends ../../partials/tutorial
+block title
+  title An Introduction to Working with Animation
+block mainhead
+  h1 tutorial / animation
+block subhead
+  h2 An Example
+block narrative
+  p.
+    Here you can see a more complicated usage of the time values: specifically
+    the t.m value being multiplied by 30 to achieve a frequency faster
+    than a minute interval but slower than a second.
+  p.
+    This type of application can be modified with the sin/cos functions and
+    other types of mutiplication to create unique images when combined with
+    the other functions in our workspace.
+block illustration
+  canvas(id="canvas",class="world",width=300,height=300)
+  p(id="code" class="code ") mult(sin(mult(t.m,30)),x)
