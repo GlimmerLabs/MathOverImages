@@ -98,8 +98,18 @@ input[type='submit']:hover {
     cursor: pointer;
 }
 
+input[type='submit'].profile{
+    font-size: 1em;
+}
+
 input[type='submit'].delete{
     font-size: 1em;
+    background-color: #BC1414;
+}
+
+input[type='submit'].delete:hover{
+    color: #BC1414;
+    background-color: #FFFFFF;
 }
 
 input[type='submit'].select{
