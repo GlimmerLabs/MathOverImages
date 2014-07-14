@@ -1,0 +1,25 @@
+<!--Intro to animation tutorial-->
+
+extends ../../partials/tutorial
+block title
+  title An Introduction to Working with Animation
+block mainhead
+  h1 tutorial / animation
+block subhead
+  h2 How to work with Animation
+block narrative
+  p.
+    As you have probably seen, it is not unusual for an image rendered in the
+    create workspace to be a moving piece of art. This is thanks to the four
+    time values t.s, t.m, t.h and t.d that can be included in any function
+    on the workspace. Respectively, these four values range through the
+    [-1, 1] limits in our world every Second, Minute, Hour and Day.
+  p.
+    To the right you can see how a simple time value can be rendered similar to
+    the x and y values - as an image all on its own, changing from white to
+    black on the time scale indicated.
+  p.
+    Shown is the t.s value.
+block illustration
+  canvas(id="canvas",class="world",width=300,height=300)
+  p(id="code" class="code ") t.s
