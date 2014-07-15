@@ -99,6 +99,7 @@ function addMenuSubmit() {
   var submit = document.createElement("input");
   submit.type = "submit";
   submit.value = "See More >>";
+  submit.className = "more";
   var li = document.createElement("li");
   li.appendChild(submit);
   searchResults.appendChild(li);
