@@ -18,9 +18,9 @@
     </div>
    </figure>
    <p id="code" class="code"><%- image.code %></p>
-      <% if(image.code.indexOf(/(?:t\.)|(?:m\.)/) != -1) { %>
-        <button id="animator">stop</button>
-      <% } %>
+      <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
+      <button id="animator">stop</button>
+<% } %>
       <button id="jpeg">jpeg</button>
    <table id="comments">
     <% for (var i = 0; i < comments.length; i++) { %>
