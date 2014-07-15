@@ -1,6 +1,6 @@
 /**
 * challenge.js
-*   Functions for handling hcallenge pages.
+*   Functions for handling challenge pages.
 */
 
 // +-----------+-------------------------------------------------------
@@ -106,7 +106,15 @@ module.exports.create = function(req, res, database) {
   res.render('create-challenge.ejs', {
     user: req.session.user
   });
-}; // create 
+}; // create
+
+module.exports.gallery = function(req, res, database) {
+  res.render('challenge-gallery', {
+    user: req.session.user,
+      challenge: {},
+      type: "basic"
+  });
+}; // gallery
 
 /**
  * The page for showing challenges.
