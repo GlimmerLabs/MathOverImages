@@ -1142,7 +1142,7 @@ module.exports.flagComment = (function(commentId, flaggedByID,callback){
     if (error){
       callback(false, error);
     }
-    else if (flaggedAlready){
+    else if (!flaggedAlready){
       module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commentId) VALUES('" + flaggedByID + "','" + commentId + "');", function(results, error){
         if (error)
           callback(false, error);
