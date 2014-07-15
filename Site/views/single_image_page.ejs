@@ -18,7 +18,10 @@
     </div>
    </figure>
    <p id="code" class="code"><%- image.code %></p>
-      <button id="animator">stop</button>
+      <% if(image.code.indexOf(/(?:t\.)|(?:m\.)/) != -1) { %>
+        <button id="animator">stop</button>
+      <% } %>
+      <button id="jpeg">jpeg</button>
    <table id="comments">
     <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
