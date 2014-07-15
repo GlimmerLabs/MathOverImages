@@ -723,7 +723,7 @@ module.exports.albumOwnerInfo=(function(albumid, callback) {
 
 module.exports.commentInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
-  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment, comments.commentId FROM images, comments, users WHERE comments.active='1' AND comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
+  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment, comments.commentId, user.userid FROM images, comments, users WHERE comments.active='1' AND comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else

@@ -2,8 +2,11 @@ $(document).ready(function(){
   // Search functions
   var searchResults = document.getElementById("searchResults");
   var searchBar = document.getElementById("searchBar");
-  searchBar.onkeypress = function() {
-    if(this.value.length >= 2) {
+  searchBar.onkeydown = function(e) {
+    var keycode = e.which || e.keyCode || e.charCode;
+    var deleteKeyPressed = keycode == 46 || keycode == 8;
+    if((this.value.length >= 2 && !deleteKeyPressed) || (this.value.length > 3)) {
+      console.log(this.value, this.value.length);
       omnisearch(this.value, createNewMenu)
     }
     else {
@@ -79,7 +82,7 @@ function createNewMenu(result) {
 function appendMenuTitle(title) {
   var titleElement = document.createElement("li");
   titleElement.className = 'title';
-  titleElement.innerText = title;
+  titleElement.textContent= title;
   searchResults.appendChild(titleElement);
 }
 function addMenuChildren(children, valueToDisplay, generateURL) {
@@ -104,7 +107,7 @@ function appendMenuText(text, url) {
   var link = document.createElement("a");
   link.href = url;
   var textElement = document.createElement("li");
-  textElement.innerText = (text.length > 13) ? text.slice(0, 14) + "..." : text;
+  textElement.textContent = (text.length > 13) ? text.slice(0, 14) + "..." : text;
   link.appendChild(textElement)
   searchResults.appendChild(link);
 }
