@@ -22,6 +22,8 @@
       <button id="animator">stop</button>
 <% } %>
       <button id="jpeg">jpeg</button>
+Pixels: 50<input id="pixels" type="range" min="50" max="400" value="400" step ="50" >400
+</div>
    <table id="comments">
     <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
