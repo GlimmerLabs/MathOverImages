@@ -1,29 +1,23 @@
-var nodemailer = require('nodemailer');
-var auth = require('./auth');
+var validate = require('validator');
 
-var smtpTransport = nodemailer.createTransport("SMTP", {
-    service: auth["mail-service"],
-    auth: {
-	user: auth["mail-user"],
-	pass: auth["mail-password"]
-    }
+// Thanks http://www.davidpirek.com/blog/run-shell-from-nodejs-function for the runShell command
+var runShell = function(command){
+
+  var sys = require('sys'),
+      exec = require('child_process').exec;
+
+  function puts(error, stdout, stderr) {
+    sys.puts(stdout);
+  }
+
+  exec(command, puts);
+}
+
+
+
+// Example.
+module.exports.sendMail = (function(to, subject, message){
+  runShell("echo '" + message + "' | mailx -a 'Content-type: text/html;' -s '" + subject + "' " + to);
 });
 
-module.exports.sendMail = (function (to, from, replyTo, subject, html){
-    var mailOptions = {
-	from: from,
-	to: to,
-	subject: subject,
-	html: html,
-	generateTextFromHTML: true
-    }
-    smtpTransport.sendMail(mailOptions, function(error, response){
-	if(error)
-	    console.log(error);
-	else
-	    console.log("Sent: " + response.message);
 
-    });
-
-
-});
