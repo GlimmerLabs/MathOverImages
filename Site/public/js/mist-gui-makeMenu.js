@@ -148,7 +148,7 @@ var addScrollArrows = function(type) {
     width: arrowWidth,
     height: menuHeight,
     fill: arrowBoxFill,
-    opacity: .3
+    opacity: .1
   });
   leftArrow.add(leftArrowBox);
   var leftArrowTri = new Kinetic.Shape({
@@ -163,7 +163,7 @@ var addScrollArrows = function(type) {
     x: width/250,
     y: menuHeight / 2,
     fill: arrowFill,
-    opacity: .5
+    opacity: .2
   });
   leftArrow.add(leftArrowTri);
 
@@ -173,6 +173,7 @@ var addScrollArrows = function(type) {
     y: 0,
     direction: 'right',
     type: type,
+    functional: false,
     visible: false
   });
   var rightArrowBox = new Kinetic.Rect({
@@ -181,7 +182,7 @@ var addScrollArrows = function(type) {
     width: arrowWidth,
     height: menuHeight,
     fill: arrowBoxFill,
-    opacity: .3
+    opacity: .1
   });
   rightArrow.add(rightArrowBox);
 
@@ -197,7 +198,7 @@ var addScrollArrows = function(type) {
     x: width / 65,
     y: menuHeight / 2,
     fill: arrowFill,
-    opacity: .5
+    opacity: .2
   });
   rightArrow.add(rightArrowTri);
 
@@ -214,16 +215,18 @@ menuArrowLayer.add(functionsArrows['left'], functionsArrows['right']);
  * showScrollArrows changes visibility of the scroll arrows to true depending 
  * on the type given. type is either 'values' or 'functions'
  */
-var showScrollArrows = function(type) {
-  if (type == 'values') {
-    valuesArrows['left'].setAttr('visible', true);
-    valuesArrows['right'].setAttr('visible', true);
-  }
-  else {
-    functionsArrows['left'].setAttr('visible', true);
-    functionsArrows['right'].setAttr('visible', true);
-  }
-  menuArrowLayer.draw();
+ var showScrollArrows = function(type) {
+  setTimeout(function() {
+    if (type == 'values') {
+      valuesArrows['left'].setAttr('visible', true);
+      valuesArrows['right'].setAttr('visible', true);
+    }
+    else {
+      functionsArrows['left'].setAttr('visible', true);
+      functionsArrows['right'].setAttr('visible', true);
+    }
+    menuArrowLayer.draw();
+  }, 1000);
 };
 
 /**
@@ -241,6 +244,65 @@ var hideScrollArrows = function(type) {
   }
   menuArrowLayer.draw();
 };
+/**
+ * updateArrows changes the opacity of the arrows based on if they are functional.
+ */
+ var updateArrows = function(type) {
+  console.log('updateArrows '+type);
+  setTimeout(function() {
+    if (type == 'values') {
+      var leftArrow = valuesArrows['left'];
+      var rightArrow = valuesArrows['right'];
+      if (canMoveRight('values')) {
+        leftArrow.setAttr('functional', true);
+        leftArrow.children[0].setAttr('opacity', .3);
+        leftArrow.children[1].setAttr('opacity', .5);
+      } // if left functional
+      else {
+        leftArrow.setAttr('functional', false);
+        leftArrow.children[0].setAttr('opacity', .1);
+        leftArrow.children[1].setAttr('opacity', .2);
+      } // else left non-functional
+
+      if (canMoveLeft('values')) {
+        rightArrow.setAttr('functional', true);
+        rightArrow.children[0].setAttr('opacity', .3);
+        rightArrow.children[1].setAttr('opacity', .5);
+      } // if right functional
+      else {
+        rightArrow.setAttr('functional', false);
+        rightArrow.children[0].setAttr('opacity', .1);
+        rightArrow.children[1].setAttr('opacity', .2);
+      } // else right non-funcitonal
+    } // if values
+    else if (type == 'functions') {
+      var leftArrow = functionsArrows['left'];
+      var rightArrow = functionsArrows['right']; 
+      if (canMoveRight('functions')) {
+        leftArrow.setAttr('functional', true);
+        leftArrow.children[0].setAttr('opacity', .3);
+        leftArrow.children[1].setAttr('opacity', .5);
+      } // if left functional
+      else {
+        leftArrow.setAttr('functional', false);
+        leftArrow.children[0].setAttr('opacity', .1);
+        leftArrow.children[1].setAttr('opacity', .2);
+      } // else left non-functional
+
+      if (canMoveLeft('functions')) {
+        rightArrow.setAttr('functional', true);
+        rightArrow.children[0].setAttr('opacity', .3);
+        rightArrow.children[1].setAttr('opacity', .5);
+      } // if right functional
+      else {
+        rightArrow.setAttr('functional', false);
+        rightArrow.children[0].setAttr('opacity', .1);
+        rightArrow.children[1].setAttr('opacity', .2);
+      } // else right non-funcitonal
+    } // else if functions
+    menuArrowLayer.draw();
+  }, 1050);
+}; // updateArrows
 
 //LEFT CORNER BUTTONS
 var bottomCover = new Kinetic.Rect({
@@ -248,7 +310,8 @@ var bottomCover = new Kinetic.Rect({
   y:0,
   width: menuCornerWidth,
   height: menuHeight,
-  fill:'#F1F8FF'
+  fill:'#F1F8FF',
+  name: 'cover'
 });
  var makeMenuButton = function(text, x, y) {
   var newGroup = new Kinetic.Group({
