@@ -1138,18 +1138,37 @@ module.exports.flagComment = (function(commentId, flaggedByID,callback){
   commentId = sanitize(commentId);
   flaggedByID = sanitize(flaggedByID);
   // Check to see if user has flagged this comment already
-  module.exports.query("SELECT flaggedBy FROM flaggedComments WHERE flaggedBy='" + flaggedByID + "' AND commentId = '" + commentId + "';", function(result, error){
-    if (error)
+  module.exports.hasFlaggedComment(flaggedByID, commentId, function(flaggedAlready, error){
+    if (error){
       callback(false, error);
-    else if (result[0])
-      callback(false, "User has already flagged this comment.");
-    else // user has not already flagged this comment.
+    }
+    else if (flaggedAlready){
       module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commentId) VALUES('" + flaggedByID + "','" + commentId + "');", function(results, error){
         if (error)
           callback(false, error);
         else
           callback(true, null);
       });
+    }
+    else {
+      callback(false, "User has already flagged this comment");
+    }
+  });
+});
+
+module.exports.hasFlaggedComment = (function(userid, commentId,callback){
+  commentId = sanitize(commentId);
+  userid = sanitize(userid);
+  module.exports.query("SELECT flaggedBy FROM flaggedComments WHERE flaggedBy='" + flaggedByID + "' AND commentId = '" + commentId + "';", function(result, error){
+    if (error) {
+      callback(false, error);
+    }
+    else if (result[0]) {
+      callback(true, null);
+    }
+    else {
+      callback(false, null);
+    }
   });
 });
 
