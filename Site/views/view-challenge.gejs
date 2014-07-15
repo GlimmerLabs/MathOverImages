@@ -3,7 +3,7 @@ title
 css
   <link rel="stylesheet" href="/css/styles.css">
 head1
-  Challenges
+  challenges
 body
   <div id="subTitle">
     <h2><%- challenge.name %></h2>
