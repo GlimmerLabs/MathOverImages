@@ -81,7 +81,7 @@ var valSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
 var numVals = valNames.length;
 var valMenuXSpacing = (valSpaceWidth - (numVals * functionTotalSideLength)) / (numVals + 1);
 var functSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
-var numFuncts = funNames.length; 
+var numFuncts = 7; 
 var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionTotalSideLength)) / (numFuncts + 1);
 var menuYspacing = width * 11/360;
 var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
@@ -198,6 +198,7 @@ var OUTLET_OFFSET = 3;
  * 2. The menu layer holds the buttons that users can click on to drag a new node into
  *    the work area.
  * 3. The menuButton layer holds the super buttons that are used to expand the menus.
+ * 4. The menuArrowLayer holds the arrows for the scrolling menus. 
  * 4. The menuControlLayer contains the buttons to save/open/reset the workspace
  * 5. The toolboxLayer holds the draggable toolbox
  * 6. The work layer holds all active nodes that are either connected or available to
@@ -214,6 +215,7 @@ var OUTLET_OFFSET = 3;
  var lineLayer = new Kinetic.Layer();
  var menuLayer = new Kinetic.Layer();
  var menuButtonLayer = new Kinetic.Layer();
+ var menuArrowLayer = new Kinetic.Layer();
  var menuControlLayer = new Kinetic.Layer();
  var toolboxLayer = new Kinetic.Layer();
  var workLayer = new Kinetic.Layer();
