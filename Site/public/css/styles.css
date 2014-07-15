@@ -120,7 +120,7 @@ header nav li:hover {
     padding: 0px 5px 0px 5px;
 }
 
-input[type='submit']{
+input[type='submit'].more{
     font-size: 1em;
     font-weight: 100;
     border: none;
@@ -131,7 +131,7 @@ input[type='submit']{
     transition: all 0.2s;
 }
 
-input[type='submit']:hover{
+input[type='submit'].more:hover{
     background-color: #555;
     cursor: pointer;
     text-shadow: 0 -1px 0 #000;
