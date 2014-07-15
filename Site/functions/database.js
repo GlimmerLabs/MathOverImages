@@ -475,6 +475,18 @@ module.exports.changeAboutSection = (function (userid, newAbout, callback){
 
 });//database.changeAboutSection(userid, newAbout);
 
+// change albumName
+module.exports.changeAlbumName = (function (userid, newAlbumName, albumid, callback){
+  newAbout = sanitize(newAbout);
+  userid = sanitize(userid);
+  module.exports.query("UPDATE albums SET name='" + newAlbumName +"' WHERE userid= '" + userid + "' AND albumid= '"+ albumid +"';", function (rows, error){
+    if (error)
+      callback(false, error);
+    else
+      callback(true, error);
+  });
+});//database.changeAlbumName(userid, newAlbumName, albumid);
+
 /*
   Procedure:
   database.logIn(user, password, callback(user, error));

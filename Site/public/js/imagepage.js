@@ -16,6 +16,31 @@
 var animator;
 
 $(document).ready(function() {
+  var animate = document.getElementById('animator');
+  try {
+    animate.addEventListener('click', function(event) {
+      if (animator.on) {
+        animator.stop();
+        this.textContent = "start";
+        }
+       else {
+         animator.start();
+         this.textContent = "stop";
+       }
+   })
+}
+catch(err){}
+
+var jpeg=document.getElementById('jpeg');
+  try {
+    var jpeg=document.getElementById('jpeg');
+      jpeg.addEventListener('click', function(event) {
+          animator.jpg();
+      })
+  }
+  catch(err){}
+
+
   var canvas = document.getElementById("canvas");
   if (canvas.className == "fullscreen") {
     canvas.width = $(window).width() + 1;
