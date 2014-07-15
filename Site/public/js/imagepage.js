@@ -43,14 +43,16 @@ $(document).ready(function() {
   }
   for(var i=0; i<deletes.length; i++) {
     deletes[i].onclick = function() {
-      var id = this.parentNode.id.replace("comment", "");
-      (function(comment) {
-        deleteComment(id, function(res) {
-          if(res.indexOf("deleted") != -1) {
-            comment.parentNode.removeChild(comment);
-          }
-        });
-      })(this.parentNode)
+      if(confirm("Are you sure you want to delete this comment?")) {
+        var id = this.parentNode.id.replace("comment", "");
+        (function(comment) {
+          deleteComment(id, function(res) {
+            if(res.indexOf("deleted") != -1) {
+              comment.parentNode.removeChild(comment);
+            }
+          });
+        })(this.parentNode)
+      }
     }
   }
   animator = new MIST.ui.Animator(document.getElementById('code').innerHTML,
