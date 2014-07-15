@@ -10,7 +10,7 @@
     <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
     <div id="image-sharing">
      <div id="image-fb-share" data-href="<%= 'http://glimmer.grinnell.edu/image/' + image.imageid %>" data-type="button" class="fb-share-button"></div>
-     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out \"" + image.title + "\" by " + image.username + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
+     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out " + ((user&&user.userid===image.userid) ? "my image, \"" + image.title + "\"" : "\"" + image.title + "\" by " + image.username) + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
       <Tweet>      </Tweet></a>
      <a href="<%='/user/' + image.username %>">
       <figcaption class="right"><%- image.username %></figcaption>

@@ -317,21 +317,19 @@ var showLoadWorkspaceDialog = function() {
 /**
  * add a success dialog box to the html
  */
-var addSuccessDialog = function(title, imageid) {
+var addSuccessDialog = function() {
   // Build the element
   var dialog = document.createElement("div");
   dialog.id = "success-message";
   dialog.title = "Image Saved";
   // dialog.innerHTML='<form><fieldset><label for="workspace-name">Workspace</label><select id="workspace-name"></select></fieldset></form>';
-  dialog.innerHTML='<p>Your image \''+title+'\' has been successfully saved!'+
-  '\nYou can view your image <a href=/image/'+imageid+'>here</a></p>';
+  dialog.innerHTML='<p>Your image has been successfully saved!</p>';
   document.body.appendChild(dialog);
-
   // Turn it into a JQuery dialog
   $("#success-message").dialog({
     autoOpen: false,
     resizable: false,
-    width: "50%",
+    width: "30%",
     modal: true,
     buttons: {
       "Okay": function() {
@@ -340,6 +338,23 @@ var addSuccessDialog = function(title, imageid) {
     } // buttons
   });
 }
+
+/**
+ * show success dialog
+ */
+var showSuccessDialog = function(title, imageid) {
+  // Make sure that the dialog exists
+  if (!document.getElementById("success-message")) {
+    addSuccessDialog();
+  } // if the dialog does not exist
+  var dialog = document.getElementById("success-message");
+  dialog.innerHTML='<p>Your image \''+title+'\' has been successfully saved!'+
+  '<br><br>You can view your image <a href=/image/'+imageid+' target="_blank"><u>here'+
+  '</u></a> or visit to the <a href=/gallery/recent/1 target="_blank"><u>gallery'+
+  '</u></a> to see what other MIST users have been creating!</p>';
+  // Show the dialog
+  $("#success-message").dialog("open");
+} // showSuccessDialog
 
 // +-------------------+-----------------------------------------------
 // | Session Functions |
