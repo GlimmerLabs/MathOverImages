@@ -4,7 +4,7 @@
  * center workspace
  */
 #container {
-    background-color: rgb(241, 248, 255);
+    background-color: #F1F8FF;
     width: 900px;
     height: 600px;
     border: 3px solid black;
