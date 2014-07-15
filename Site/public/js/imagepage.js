@@ -16,6 +16,31 @@
 var animator;
 
 $(document).ready(function() {
+  var animate = document.getElementById('animator');
+  try {
+    animate.addEventListener('click', function(event) {
+      if (animator.on) {
+        animator.stop();
+        this.textContent = "start";
+        }
+       else {
+         animator.start();
+         this.textContent = "stop";
+       }
+   })
+}
+catch(err){}
+
+var jpeg=document.getElementById('jpeg');
+  try {
+    var jpeg=document.getElementById('jpeg');
+      jpeg.addEventListener('click', function(event) {
+          animator.jpg();
+      })
+  }
+  catch(err){}
+
+
   var canvas = document.getElementById("canvas");
   if (canvas.className == "fullscreen") {
     canvas.width = $(window).width() + 1;
@@ -27,10 +52,38 @@ $(document).ready(function() {
       animator.height = canvas.height;
     };
   }
+  var flags = document.getElementsByClassName("flagComment");
+  var deletes = document.getElementsByClassName("deleteComment");
+  for(var i=0; i<flags.length; i++) {
+    flags[i].onclick = function() {
+      var id = this.parentNode.id.replace("comment", "");
+      (function(clikedFlag) {
+        flagComment(id, function(res) {
+          if(res.indexOf("flagged") != -1) {
+            clickedFlag.className = 'flagComment flagged';
+          }
+        });
+      })(this)
+    }
+  }
+  for(var i=0; i<deletes.length; i++) {
+    deletes[i].onclick = function() {
+      if(confirm("Are you sure you want to delete this comment?")) {
+        var id = this.parentNode.id.replace("comment", "");
+        (function(comment) {
+          deleteComment(id, function(res) {
+            if(res.indexOf("deleted") != -1) {
+              comment.parentNode.removeChild(comment);
+            }
+          });
+        })(this.parentNode)
+      }
+    }
+  }
   animator = new MIST.ui.Animator(document.getElementById('code').innerHTML,
     "", {}, canvas);
   animator.start();
-  document.body.onkeypress=function(evt) {
+  canvas.onkeypress=function(evt) {
     var code = evt.which || evt.keyCode || evt.charCode;
     var char = String.fromCharCode(code);
     switch (char) {
