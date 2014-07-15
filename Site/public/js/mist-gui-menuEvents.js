@@ -17,24 +17,25 @@ On click of value menu button:
         moveFunctionsButtonRight();
         moveFunctionNodesRight();
         expandValueNodes();
-
         valueExpanded = true;
+        showScrollArrows('values');
     } // if functions are also not expanded
     else {
       moveFunctionsButtonRight();
       moveFunctionNodesRight();
       expandValueNodes();
-
       valueExpanded = true;
+      showScrollArrows('values');
       functionExpanded = false;
+      hideScrollArrows('functions');
       } // else functions were already expanded
   } // if values are not expanded
   else {
     moveValueNodesIn();
     moveFunctionNodesIn();  
     moveFunctionsButtonLeft();
-
     valueExpanded = false;
+    hideScrollArrows('values');
   } // else values were already expanded
 });
 /*
@@ -53,6 +54,7 @@ On click of function menu button:
       if (!valueExpanded) {
         expandFunctionNodes();
         functionExpanded = true;
+        showScrollArrows('functions');
     } // functions and values not expanded
     else {
       moveValueNodesIn();
@@ -60,13 +62,16 @@ On click of function menu button:
       expandFunctionNodes();
 
       functionExpanded = true;
+      showScrollArrows('functions');
       valueExpanded = false;
+      hideScrollArrows('values');
     } // functions not expanded, values expanded
   }
   else {
     moveFunctionNodesIn();
 
     functionExpanded = false;
+    hideScrollArrows('functions');
     } // functions are expanded
   });
 
@@ -84,6 +89,77 @@ menuButtonLayer.on('click', function(){
   }
 });
 
+// MENU ARROW LAYER EVENTS
+/**
+ * - on mouseover
+ * - on mouseout
+ * - on mousedown
+ * - on mouseup
+ */
+menuArrowLayer.on('mouseover', function(evt) {
+  var group = evt.target.getParent();
+  var box = group.children[0];
+  var arrow = group.children[1];
+  box.setAttr('opacity', .7);
+  arrow.setAttr('opacity', .9);
+  menuArrowLayer.draw();
+});
+
+menuArrowLayer.on('mouseout', function(evt) {
+  var group = evt.target.getParent();
+  var box = group.children[0];
+  var arrow = group.children[1];
+  box.setAttr('opacity', .3);
+  arrow.setAttr('opacity', .5);
+  menuArrowLayer.draw();
+});
+
+menuArrowLayer.on('mousedown', function(evt) {
+  var group = evt.target.getParent();
+  var box = group.children[0];
+  var arrow = group.children[1];
+  box.setAttr('opacity', 1);
+  arrow.setAttr('opacity', 1);
+  menuArrowLayer.draw();
+});
+var scrolling;
+menuArrowLayer.on('mouseup', function(evt) {
+  var group = evt.target.getParent();
+  var box = group.children[0];
+  var arrow = group.children[1];
+  box.setAttr('opacity', .7);
+  arrow.setAttr('opacity', .9);
+  menuArrowLayer.draw();
+  if(!scrolling)
+  if (group.attrs.type=='functions') {
+    if (group.attrs.direction == 'left' && menuFunctions[0].x() 
+      < (menuCornerWidth + 2 * buttonWidth + functMenuXSpacing)) {
+      shiftFunctionNodesRight();
+      scrolling = true;
+      setTimeout(function() {scrolling = false}, 1000)
+    } // if right arrow 
+    else if (group.attrs.direction == 'right' && 
+      menuFunctions[menuFunctions.length - 1].x() > width) {
+      shiftFunctionNodesLeft();
+      scrolling = true;
+      setTimeout(function() {scrolling = false}, 1000);
+    } // else left arrow
+  } // if functions arrow
+  else {
+    if (group.attrs.direction == 'left' && menuValues[0].x() < 
+      (menuCornerWidth + buttonWidth + valMenuXSpacing)) {
+      shiftValueNodesRight();
+      scrolling = true;
+      setTimeout(function() {scrolling = false}, 1000);
+    } // if right arrow
+    else if (group.attrs.direction == 'right' && 
+      menuValues[menuValues.length - 1].x() > width) {
+      shiftValueNodesLeft();
+      scrolling = true;
+      setTimeout(function() {scrolling = false}, 1000);
+    } // else left arrow
+  } // else values arrow
+});
 //MENU LAYER EVENTS
 /*
 - on mousedown
