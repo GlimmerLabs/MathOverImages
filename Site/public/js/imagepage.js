@@ -83,7 +83,7 @@ var jpeg=document.getElementById('jpeg');
   animator = new MIST.ui.Animator(document.getElementById('code').innerHTML,
     "", {}, canvas);
   animator.start();
-  document.body.onkeypress=function(evt) {
+  canvas.onkeypress=function(evt) {
     var code = evt.which || evt.keyCode || evt.charCode;
     var char = String.fromCharCode(code);
     switch (char) {
