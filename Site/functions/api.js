@@ -83,7 +83,7 @@ var handlers = {};
 */
 handlers.deletews = function(info, req, res) {
   // Make sure that they are logged in.
-  if (!req.session.loggedIn) {
+  if (!req.session.user) {
     fail(res,"You must be logged in to delete a workspace.");
     return;
   } // if they are not logged in
@@ -117,7 +117,7 @@ handlers.deletews = function(info, req, res) {
 *   name: string naming the workspace
 */
 handlers.getws = function(info, req, res) {
-  if (!req.session.loggedIn) {
+  if (!req.session.user) {
     fail(res, "You must be logged in to retrieve a workspace.");
   } // if they are not logged in
   else if (info.id) {
@@ -149,7 +149,7 @@ handlers.getws = function(info, req, res) {
 * List the workspaces.
 */
 handlers.listws = function(info, req, res) {
-  if (!req.session.loggedIn) {
+  if (!req.session.user) {
     fail(res, "Could not list workspaces because you're not logged in");
   }
   else {
@@ -178,7 +178,7 @@ handlers.listws = function(info, req, res) {
 *   replace: true or false [optional]
 */
 handlers.savews = function(info, req, res) {
-  if (!req.session.loggedIn) {
+  if (!req.session.user) {
     fail(res, "Could not save workspace because you're not logged in");
   }
   else if (!info.name) {
@@ -236,7 +236,7 @@ public: BOOL
 replace: BOOL [optional]
 */
 handlers.saveimage = function(info, req, res){
-  if (!req.session.loggedIn) {
+  if (!req.session.user) {
     fail(res, "Could not save image because you're not logged in");
   }
   else if (!info.title) {
@@ -294,7 +294,7 @@ action: imageexists
 title: The title of the image
 */
 handlers.imageexists = function(info, req, res) {
-  if (!req.session.loggedIn) {
+  if (!req.session.user) {
     res.send("logged out");
   } else {
     database.imageExists(req.session.user.userid, info.title, function(exists) {
@@ -309,7 +309,7 @@ action: wsexists
 title: The title of the image
 */
 handlers.wsexists = function(info, req, res) {
-  if (!req.session.loggedIn) {
+  if (!req.session.user) {
     res.send("logged out");
   } else {
     database.wsExists(req.session.user.userid, info.name, function(exists) {
@@ -344,7 +344,7 @@ imageid, to like or unlike
 */
 
 handlers.toggleLike = function(info, req, res) {
-  if (!req.session.loggedIn)
+  if (!req.session.user)
     fail(res, "User is not logged in.");
   else
     database.toggleLike(req.session.user.userid, info.imageid, function(success, error){
@@ -375,7 +375,7 @@ action: flagComment
 commentId, the comment to flag
 */
 handlers.flagComment = (function (info, req, res) {
-  if (!req.session.loggedIn)
+  if (!req.session.user)
     fail(res, "User not logged in")
     database.flagComment(info.commentId, req.session.user.userid, function(success, error){
       if (error)
@@ -393,7 +393,7 @@ action: deleteComment
 commentId, the comment to delete
 */
 handlers.deleteComment = (function (info, req, res) {
-  if (!req.session.loggedIn)
+  if (!req.session.user)
     fail(res, "User Not logged in")
     database.deleteComment(req.session.user.userid, info.commentId, function(success, error){
       if (error)
