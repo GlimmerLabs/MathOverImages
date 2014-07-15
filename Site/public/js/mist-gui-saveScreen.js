@@ -87,6 +87,7 @@ nameEditText.drawMethod = function(){
 screenLayer.draw()
 };
 
+// ERROR TEXT
 var popErrorText = new Kinetic.Text({
   x: popTextShiftX,
   y: popTextShiftY + (popTextHeight * 2.2),
@@ -318,7 +319,7 @@ popSaveButtonGroup.on('mouseup', function(){
   } // if user is not logged in
   else {
     var renderFunction = currShape.attrs.renderFunction;
-    saveImage(newName, renderFunction, true, true, true);
+    var imageid = saveImage(newName, renderFunction, true, true, true);
     popErrorText.setAttr('text', '');
     cover.setAttr('visible', false);
     popSaveGroup.setAttr('visible', false);
@@ -327,6 +328,7 @@ popSaveButtonGroup.on('mouseup', function(){
     setTimeout(function(){
       renderLayer.draw();
     }, 50);
+    showSuccessDialog(newName, imageid);
   } // else valid name is enters
   screenLayer.draw();
 });

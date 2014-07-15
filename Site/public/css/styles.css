@@ -77,8 +77,10 @@ header nav li:hover {
 */
 #search {
   display: inline-block;
+  padding: 1.3%;
 }
 .menu{
+    
     position: relative;
     margin: 0px;
     list-style: none;
@@ -88,22 +90,53 @@ header nav li:hover {
 .menu li{
     display: block;
     padding: 5px 5px 5px 5px;
-    background-color: #ccc;
+    background-color: #555;
     width: 100%;
     z-index: 1;
+    color: #FFFFFF;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    text-shadow: 0 -1px 0 #000;
 }
+
+.menu li:hover{
+    background-color: #666;
+}
+
 .menu li.title{
     display: block;
     padding: 5px 5px 5px 5px;
-    background-color: #999;
+    background-color: #979797;
     text-align: center;
     width: 100%;
+    text-shadow: none;
 }
 .menu li.line{
     height: 0px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #555;
     padding: 0px 5px 0px 5px;
 }
+
+input[type='submit']{
+    font-size: 1em;
+    font-weight: 100;
+    border: none;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+input[type='submit']:hover{
+    background-color: #555;
+    cursor: pointer;
+    text-shadow: 0 -1px 0 #000;
+}
+
 /*
   End of searchbar styling
 */
