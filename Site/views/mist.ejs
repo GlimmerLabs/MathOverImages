@@ -1,35 +1,3 @@
-<% var title = function() { %>
-  <% challenge.name %>
-<% } %>
-<% var css = function() { %>
-  <link rel="stylesheet" href="/css/styles.css">
-<% } %>
-<% var head1 = function() { %>
-  challenges
-<% } %>
-<% var body = function() { %>
->>>>>>> bece496664afa0f312e645c1babd75b9cb895100
-  <div id="subTitle">
-    <h2><%- challenge.name %></h2>
-     <p style="pre-wrap"> 
-       <%- challenge.description %>
-     </p>
-     <canvas id="canvas" width=400 height=400/>
-     <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
-  </div>
-<% } %>
-<% component = function(code,pre,post) { %>
-  <% try { var tmp=eval(code); %>
-    <%- pre %>
-    <% if (typeof(tmp) ==  "function") { %>
-      <% tmp(); %>
-    <% } else { %>
-      <%- tmp %>
-    <% } %>
-    <%- post %>
-  <% } catch(err) { %>
-  <% } %>
-<% } %>
 <!DOCTYPE html>
 <html lang="en">
  <head>

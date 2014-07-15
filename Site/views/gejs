@@ -1,0 +1,118 @@
+#!/usr/bin/perl
+
+# +-----------+-------------------------------------------------------
+# | Libraries |
+# +-----------+
+
+use Getopt::Long;
+
+# +---------+---------------------------------------------------------
+# | Globals |
+# +---------+
+
+# The program name.  (Used in error messages.)
+my $program = "gejs";
+# The template for building ejs files.
+my $template = "template.ejs";
+# The place where output goes.  Set to nothing for stdout.
+my $outfile = "";
+# Do we take input from stding?
+my $stdin = "";
+# Where the input comes from
+my $in = STDIN;
+# Where the output goes
+my $out = STDOUT;
+# One line of input
+my $line;
+# The filehandle for the template
+my $tp;
+
+# +------+------------------------------------------------------------
+# | Main |
+# +------+
+
+# Get the options
+GetOptions ("template=s" => \$template,
+            "outfile=s" => \$outfile,
+            "" => \$stdin)
+or die("$program: error in command line arguments\n");
+
+# Grab the input
+if ($stdin) {
+  if ($#ARGV != -1) {
+    die("$program: Cannot use stdin and inputfile.");
+  }
+}
+elsif ($#ARGV < 0) {
+  die("$program: No input file specified.");
+}
+elsif ($#ARGV > 0) {
+  die("$program only supports one input file.");
+}
+else {
+  my $infile = $ARGV[0];
+  if (! -f $infile) {
+    die("$program: input file $infile does not exist");
+  } # If the input file does not exist
+  open($in, "<", "$infile") or
+    die("$program: could not open $infile");
+}
+
+# Make sure that the template exists.
+if (! -f $template) {
+  die("$program: template file $template does not exist");
+}
+
+# Prepare the output
+if ($outfile) {
+  open($out, ">", $outfile);
+} # if $outfile
+
+# Run through the file
+$entry = 0;
+while ($line = <$in>) {
+  # Check if the line seems to represent a new entry
+  if ($line =~ m/^[a-zA-z]/) {
+    if ($entry) {
+      print $out "<% } %>\n";
+    } # if
+    chomp($line);
+    print $out "<% var $line = function() { %>\n";
+    $entry = true;
+  } # if the line represents a new entry
+  else {
+    print $out $line;
+  } # 
+} # while
+if ($entry) {
+  print $out "<% } %>\n"
+}
+if (!$stdin) {
+  close($infile);
+}
+
+# Print the amazing component function
+print $out <<"COMPONENT";
+<% component = function(code,pre,post) { %>
+  <% try { var tmp=eval(code); %>
+    <%- pre %>
+    <% if (typeof(tmp) ==  "function") { %>
+      <% tmp(); %>
+    <% } else { %>
+      <%- tmp %>
+    <% } %>
+    <%- post %>
+  <% } catch(err) { %>
+  <% } %>
+<% } %>
+COMPONENT
+
+# Print the template
+open($tp, "<", "$template");
+while ($line = <$tp>) {
+  print $out $line;
+} # while
+
+if ($outfile) {
+  close($out);
+}
