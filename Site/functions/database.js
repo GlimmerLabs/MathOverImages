@@ -1159,7 +1159,7 @@ module.exports.flagComment = (function(commentId, flaggedByID,callback){
 module.exports.hasFlaggedComment = (function(userid, commentId,callback){
   commentId = sanitize(commentId);
   userid = sanitize(userid);
-  module.exports.query("SELECT flaggedBy FROM flaggedComments WHERE flaggedBy='" + flaggedByID + "' AND commentId = '" + commentId + "';", function(result, error){
+  module.exports.query("SELECT flaggedBy FROM flaggedComments WHERE flaggedBy='" + userid + "' AND commentId = '" + commentId + "';", function(result, error){
     if (error) {
       callback(false, error);
     }
