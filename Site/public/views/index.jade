@@ -42,4 +42,5 @@ block content
             canvas(id='canvas'+i width='150' height='150')
             input(type='hidden' id='code'+i value=images[i].code)
           figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
-      figure(id="seemore"): a(href='/gallery') See more in gallery
+      p(class='warning').
+        WARNING: Some of the images rendered on this site may feature flashing animations and patterns. For those with a history of epilepsy, viewer discretion is advised.
