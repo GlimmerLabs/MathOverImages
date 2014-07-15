@@ -27,8 +27,17 @@
      </th>
      <td class="comment"><%- comments[i].comment %></td>
      <td class="comment"><%- comments[i].postedAt.toUTCString() %></td>
+<<<<<<< HEAD
      <td class='deleteComment'></td>
 
+=======
+     <% if(user) { %>
+       <td class='flagComment <%= (comments[i].flagged) ? 'flaggedComment' : ''%>'>&#9873</td>
+       <% if(user.type == "A" || user.type == "M" || user.userid == comments[i].userid || user.userid == image.userid) { %>
+      <td class='deleteComment'>X</td>
+       <% } %>
+     <% } %>
+>>>>>>> 62fa8dabb453462d125798edc23d018d23c234f1
     </tr>
     <% } %>
     <% if (user) {%>
@@ -64,6 +73,6 @@
  <a href=<%="/user/" + user.username %>><%-user.username%></a>
      </th>
      <td class="comment"><form method="POST"><textarea name="newComment" required="required" placeholder="leave a comment"></textarea><input type="submit" value="submit" name="commentSubmit"></form></td></tr>
-<% } %>
+    <% } %>
 </table>
 <% include foot.ejs %>

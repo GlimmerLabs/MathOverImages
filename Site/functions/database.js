@@ -1154,7 +1154,7 @@ module.exports.flagComment = (function(commentId, flaggedByID,callback){
     if (error){
       callback(false, error);
     }
-    else if (flaggedAlready){
+    else if (!flaggedAlready){
       module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commentId) VALUES('" + flaggedByID + "','" + commentId + "');", function(results, error){
         if (error)
           callback(false, error);
@@ -1234,3 +1234,28 @@ module.exports.deleteComment= (function(userid, commentId, callback){
 });
 
 /* End comment moderation functions */
+
+module.exports.setToken = (function (userid, token, callback){
+  module.exports.query("UPDATE users SET token='" + token +"' WHERE userid='" + userid + "';", function(result, error){
+    if (error){
+      callback(false, error);
+    }
+    else {
+      callback(true, null);
+    }
+  });
+});
+
+module.exports.checkToken = (function (userid, token, callback){
+  module.exports.query("SELECT token FROM users WHERE userid='" + userid + "';", function(result, error){
+    if (error){
+      callback(false, error);
+    }
+    else if (result[0].token === token){
+      callback(true, null);
+    }
+    else {
+      callback(false, "Token does not match.");
+    }
+  });
+});
