@@ -39,7 +39,7 @@ var database = require('./functions/database.js');
 // require(./functions/passport')(passport); // pass passport for configuration
 app.use(compress());
 app.use(morgan('dev')); //log every request to the console
-app.use(cookieParser()); // read cookie information (for auth)
+app.use(cookieParser(auth["session-secret"])); // read cookie information (for auth)
 app.use(bodyParser.urlencoded({
   extended: true
 })); // get info from html forms
