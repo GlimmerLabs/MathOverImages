@@ -1,0 +1,15 @@
+title
+  <% challenge.name %>
+css
+  <link rel="stylesheet" href="/css/styles.css">
+head1
+  Challenges
+body
+  <div id="subTitle">
+    <h2><%- challenge.name %></h2>
+     <p style="pre-wrap"> 
+       <%- challenge.description %>
+     </p>
+     <canvas id="canvas" width=400 height=400/>
+     <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
+  </div>
