@@ -1,7 +1,31 @@
-
 /**
  * Functions related to the images.
  */
+// setFlags sets the flagged property of every comment in a given array
+var setFlags = function(commentArray, userID, database, callback) {
+  if(commentArray.length == 0)
+    callback([]);
+  else {
+    var errorsArray = [];
+    var commentArrayClone = commentArray.slice(0, commentArray.length);
+    var flags = {counter: 0, flags: []};
+    for(var i = 0; i < commentArrayClone.length; i++) {
+      (function(currentIndex){
+        database.hasFlaggedComment(userID, commentArrayClone[currentIndex].commentId, function(flagged, error) {
+          flags.flags[currentIndex] = flagged;
+          flags.counter++;
+          if(flags.counter == commentArray.length) {
+            for(var j=0;j<flags.flags.length;j++) {
+              commentArrayClone[j].flagged = flags.flags[j];
+            }
+            callback(commentArrayClone, errorsArray);
+          }
+          errorsArray.push(error);
+        });
+      })(i);
+    }
+  }
+}
 module.exports.buildPage =  function(req, res, database) {
   database.imageInfo(req.params.imageid, function(image, error){
     if(error)
@@ -18,23 +42,31 @@ module.exports.buildPage =  function(req, res, database) {
               database.albumsInfo(req.session.user.userid, function(albums, error){
                 if(error)
                   res.end(error);
-                else
-                  res.render('single_image_page.ejs', {
-                    comments:comment,
-                    user: req.session.user,
-                    image: image,
-                    liked: liked,
-                    albums: albums
-                  }); // if user logged in, can comment
+                else {
+                  var userid = (req.session.user) ? req.session.user.userid : null;
+                  setFlags(comment, userid, database, function(comments) {
+                    res.render('single_image_page.ejs', {
+                      comments: comments,
+                      user: req.session.user,
+                      image: image,
+                      liked: liked,
+                      albums: albums
+                    }); // if user logged in, can comment
+                  });
+                } // 
+              });  // database.albumsInfo
+            } // if there is a user
+            else {
+              var userid = (req.session.user) ? req.session.user.userid : null;
+              setFlags(comment, userid, database, function(comments) {
+                res.render('single_image_page.ejs', {
+                  comments: comments,
+                  user: req.session.user,
+                  image: image,
+                  liked: liked
+                });
               });
             }
-            else
-              res.render('single_image_page.ejs', {
-                comments:comment,
-                user: req.session.user,
-                image: image,
-                liked: liked
-              });
           });
         }
       });
