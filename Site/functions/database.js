@@ -711,7 +711,7 @@ module.exports.albumOwnerInfo=(function(albumid, callback) {
 
 module.exports.commentInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
-  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment, comments.commentId FROM images, comments, users WHERE comments.active='1' AND comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
+  module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment, comments.commentId, users.userid FROM images, comments, users WHERE comments.active='1' AND comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else
@@ -1138,18 +1138,37 @@ module.exports.flagComment = (function(commentId, flaggedByID,callback){
   commentId = sanitize(commentId);
   flaggedByID = sanitize(flaggedByID);
   // Check to see if user has flagged this comment already
-  module.exports.query("SELECT flaggedBy FROM flaggedComments WHERE flaggedBy='" + flaggedByID + "' AND commentId = '" + commentId + "';", function(result, error){
-    if (error)
+  module.exports.hasFlaggedComment(flaggedByID, commentId, function(flaggedAlready, error){
+    if (error){
       callback(false, error);
-    else if (result[0])
-      callback(false, "User has already flagged this comment.");
-    else // user has not already flagged this comment.
+    }
+    else if (flaggedAlready){
       module.exports.query ("INSERT INTO flaggedComments (flaggedBy, commentId) VALUES('" + flaggedByID + "','" + commentId + "');", function(results, error){
         if (error)
           callback(false, error);
         else
           callback(true, null);
       });
+    }
+    else {
+      callback(false, "User has already flagged this comment");
+    }
+  });
+});
+
+module.exports.hasFlaggedComment = (function(userid, commentId,callback){
+  commentId = sanitize(commentId);
+  userid = sanitize(userid);
+  module.exports.query("SELECT flaggedBy FROM flaggedComments WHERE flaggedBy='" + flaggedByID + "' AND commentId = '" + commentId + "';", function(result, error){
+    if (error) {
+      callback(false, error);
+    }
+    else if (result[0]) {
+      callback(true, null);
+    }
+    else {
+      callback(false, null);
+    }
   });
 });
 
