@@ -44,6 +44,7 @@ var slider=document.getElementById('pixels');
     slider.addEventListener('change', function(event) {
     var sliderVal=document.getElementById('pixels').value;
 	animator.setResolution(sliderVal, sliderVal);
+	animator.frame();
       })
   }
   catch(err){}
