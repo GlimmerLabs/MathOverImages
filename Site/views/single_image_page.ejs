@@ -3,6 +3,7 @@
 <% var css= '<link rel="stylesheet" href="/css/singleImage.css">' %>
 <% var meta= '<meta property="og:image" content=' + jpgURL + '/>' %>
 <% include head.ejs %>
+  <script type="text/javascript" src="/js/imagepage.js"></script>
 <h1><%- image.title %></h1>
    <h2><%- image.modifiedAt.toUTCString() %></h2>
    <figure data-imageid=<%= image.imageid %>>
