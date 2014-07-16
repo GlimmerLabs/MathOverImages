@@ -37,8 +37,8 @@ html(lang='en')
           form(method='POST' action='/login' class='hidden')
             input(type='text' placeholder='username' name='username' required ='required')
             input(type='password' placeholder='password' name='password' require = 'required')
-            li
-              label Remember Me
+            li(id='rememberMeContainer')
+              label(id='rememberMe') Remember Me
                 input(type='checkbox' name='stayLoggedIn')
             li(id='login') login
             li: a(href='/signup') signup
