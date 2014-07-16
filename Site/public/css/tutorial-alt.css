@@ -117,3 +117,7 @@ span.progress {
   width: 20px;
 }
 
+#rgb-image {
+  width: 300px;
+  margin-bottom: 100px;
+}
