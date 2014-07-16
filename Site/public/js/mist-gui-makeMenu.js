@@ -248,7 +248,6 @@ var hideScrollArrows = function(type) {
  * updateArrows changes the opacity of the arrows based on if they are functional.
  */
  var updateArrows = function(type) {
-  console.log('updateArrows '+type);
   setTimeout(function() {
     if (type == 'values') {
       var leftArrow = valuesArrows['left'];
