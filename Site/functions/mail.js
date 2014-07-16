@@ -15,10 +15,8 @@ var runShell = function(command){
   exec(command, puts);
 }
 
-
-
 var sendMail = (function(to, subject, message){
-  message = message.replace(/"/g, "\"").replace(/!/g, "&#33;");
+  message = message.replace(/\"/g, '\\"').replace(/!/g, "&#33;");
   console.log('echo "' + message + '" | mailx -a "Content-type: text/html;" -s "' + subject + '" ' + to);
   runShell('echo "' + message + '" | mailx -a "Content-type: text/html;" -s "' + subject + '" ' + to);
 });
