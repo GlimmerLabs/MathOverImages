@@ -143,3 +143,24 @@ var isUndoTool = function(target) {
  		return false;
  	}
  };
+
+ /**
+  * canMoveRight tests if either the functions or values in the menu can be moved 
+  * to the right and returns a boolean.
+  */
+var canMoveRight = function(type) {
+  return ((type == 'values' && 
+    menuValues[0].x() < (menuCornerWidth + buttonWidth + valMenuXSpacing)) ||
+    (type == 'functions' && 
+    menuFunctions[0].x() < (menuCornerWidth + 2 * buttonWidth + functMenuXSpacing)))
+};
+/**
+ * canMoveLeft tests if either the functions or values in the menu can be moved
+ * to the left and returns a boolean.
+ */
+var canMoveLeft = function(type) {
+	return ((type == 'values' &&
+	  menuValues[menuValues.length - 1].x() > width) ||
+      (type == 'functions' && 
+	  menuFunctions[menuFunctions.length - 1].x() > width))
+};
