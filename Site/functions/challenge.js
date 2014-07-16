@@ -1,6 +1,6 @@
 /**
 * challenge.js
-*   Functions for handling hcallenge pages.
+*   Functions for handling challenge pages.
 */
 
 // +-----------+-------------------------------------------------------
@@ -106,7 +106,36 @@ module.exports.create = function(req, res, database) {
   res.render('create-challenge.ejs', {
     user: req.session.user
   });
-}; // create 
+}; // create
+
+module.exports.gallery = function(req, res, database, info) {
+  var level = info.level ? info.level : "Beginning";
+  var color = info.color ? info.color : "Greyscale";
+  var animation = info.animation ? info.animation : "Static";
+  var category = level + ", " + color + ", " + animation;
+  var query = "SELECT challenges.id, challenges.name, challenges.code FROM challengecategories,challenges WHERE challengecategories.description='" + category + "' and challengecategories.id = challenges.categoryid ORDER BY challenges.position;";
+  console.log(query);
+  database.query(query, function(rows, error) {
+    // Sanity check
+    if (error) {
+      res.send(error);
+      return;
+    }
+    // We got a result, so render it
+    res.render('challenge-gallery', {
+      user: req.session.user,
+        challenge: {},
+        level: level,
+        color: color,
+        animation: animation,
+        sample: [
+          { id:1, name:"First", code:"x" },
+          { id:9, name:"Second", code:"y" }
+        ],
+        challenges: rows
+    }); // res.render
+  }); // database.query
+}; // gallery
 
 /**
  * The page for showing challenges.
@@ -117,10 +146,15 @@ module.exports.view = function(req, res, database) {
      id + ";";
   console.log(query);
   database.query(query, function(rows, error) {
+    // Sanity check
     if (error) {
       res.send(error);
       return;
-    }
+    } // if (error)
+    if (rows.length == 0) {
+      res.send("Challenge " + id + " does not exist.");
+      return;
+    } // if (rows.length == 0)
     var challenge = rows[0];
     console.log(challenge);
     res.render('view-challenge.ejs', {

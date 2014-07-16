@@ -4,15 +4,9 @@
  * center workspace
  */
 #container {
-    background-color: rgb(241, 248, 255);
-    width: 900;
-    height: 600;
-    /*
-    width: 80%;
-    height: 100%;
-    min-width: 600px;
-    min-height: 400px;
-    */
+    background-color: #F1F8FF;
+    width: 900px;
+    height: 600px;
     border: 3px solid black;
     margin: 0 auto;
 }

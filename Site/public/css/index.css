@@ -113,8 +113,10 @@
   font-size: 1.5em;
 }
 
-p.warning{
-    position: relative;
-    vertical-align: baseline;
+
+#epilepticWarning{
+  text-align: center;
+  display: block;
+
 }
 

@@ -4,8 +4,11 @@
 <% var css = function() { %>
   <link rel="stylesheet" href="/css/styles.css">
 <% } %>
+<% var js = function() { %>
+  <script type="text/javascript" src="/js/imagepage.js"></script>
+<% } %>
 <% var head1 = function() { %>
-  Challenges
+  challenges
 <% } %>
 <% var body = function() { %>
   <div id="subTitle">
@@ -59,6 +62,10 @@
    <div id="headerLogo">
     <a href="/"><img src="/logos/header.png"></a>
    </div>
+   <form id='search' action='/search'>
+    <input type='search' name='searchQuery' id='searchBar'/>
+    <ul class='menu' id='searchResults'></ul>
+   </form>
    <nav>
     <ul>
      <span class="main">

@@ -118,7 +118,200 @@ var borderLine = new Kinetic.Line({
   menuLayer.add(menuValues[i]);
  }
 
+//SCROLLING MENU BUTTONS
+var arrowWidth = width / 50;
+var arrowBoxFill = 'gray';
+var arrowFill = 'black';
+var triX = width / 90;
+var triY = width / 60;
+/**
+ * addScrollArrows creates and returns an array of two groups 
+ * (left arrow and right arrow)
+ * takes "type" (either functions or values)
+ */
+var addScrollArrows = function(type) {
+  var leftX = (type=='values') ? valuesButton.x() + buttonWidth : 
+    functionsButton.x() + buttonWidth;
+  var rightX = (type=='values') ? width - buttonWidth - arrowWidth : 
+    width - arrowWidth
+  /* make left arrow group */  
+  var leftArrow = new Kinetic.Group({
+    x: leftX,
+    y: 0,
+    direction: 'left',
+    type: type,
+    visible: false
+  });
+  var leftArrowBox = new Kinetic.Rect({
+    x: 0,
+    y: 0,
+    width: arrowWidth,
+    height: menuHeight,
+    fill: arrowBoxFill,
+    opacity: .1
+  });
+  leftArrow.add(leftArrowBox);
+  var leftArrowTri = new Kinetic.Shape({
+    sceneFunc: function(context) {
+      context.beginPath();
+      context.moveTo(0,0);
+      context.lineTo(triX, -triY);
+      context.lineTo(triX, triY);
+      context.closePath();
+      context.fillStrokeShape(this);
+    },
+    x: width/250,
+    y: menuHeight / 2,
+    fill: arrowFill,
+    opacity: .2
+  });
+  leftArrow.add(leftArrowTri);
+
+  /* make right arrow group */
+  var rightArrow = new Kinetic.Group({
+    x: rightX,
+    y: 0,
+    direction: 'right',
+    type: type,
+    functional: false,
+    visible: false
+  });
+  var rightArrowBox = new Kinetic.Rect({
+    x: 0,
+    y: 0,
+    width: arrowWidth,
+    height: menuHeight,
+    fill: arrowBoxFill,
+    opacity: .1
+  });
+  rightArrow.add(rightArrowBox);
+
+  var rightArrowTri = new Kinetic.Shape({
+    sceneFunc: function(context) {
+      context.beginPath();
+      context.moveTo(0,0);
+      context.lineTo(-triX, -triY);
+      context.lineTo(-triX, triY);
+      context.closePath();
+      context.fillStrokeShape(this);
+    },
+    x: width / 65,
+    y: menuHeight / 2,
+    fill: arrowFill,
+    opacity: .2
+  });
+  rightArrow.add(rightArrowTri);
+
+  return {left: leftArrow, right: rightArrow};
+};
+/* create arrow bars */
+var valuesArrows = addScrollArrows('values');
+var functionsArrows = addScrollArrows('functions');
+/* add arrows to menuArrowLayer */
+menuArrowLayer.add(valuesArrows['left'], valuesArrows['right']);
+menuArrowLayer.add(functionsArrows['left'], functionsArrows['right']);
+
+/**
+ * showScrollArrows changes visibility of the scroll arrows to true depending 
+ * on the type given. type is either 'values' or 'functions'
+ */
+ var showScrollArrows = function(type) {
+  setTimeout(function() {
+    if (type == 'values') {
+      valuesArrows['left'].setAttr('visible', true);
+      valuesArrows['right'].setAttr('visible', true);
+    }
+    else {
+      functionsArrows['left'].setAttr('visible', true);
+      functionsArrows['right'].setAttr('visible', true);
+    }
+    menuArrowLayer.draw();
+  }, 1000);
+};
+
+/**
+ * hideScrollArrows changes visibility of the scroll arrows to false depending 
+ * on the type given. type is either 'values' or 'functions'
+ */
+var hideScrollArrows = function(type) {
+  if (type == 'values') {
+    valuesArrows['left'].setAttr('visible', false);
+    valuesArrows['right'].setAttr('visible', false);
+  }
+  else {
+    functionsArrows['left'].setAttr('visible', false);
+    functionsArrows['right'].setAttr('visible', false);
+  }
+  menuArrowLayer.draw();
+};
+/**
+ * updateArrows changes the opacity of the arrows based on if they are functional.
+ */
+ var updateArrows = function(type) {
+  setTimeout(function() {
+    if (type == 'values') {
+      var leftArrow = valuesArrows['left'];
+      var rightArrow = valuesArrows['right'];
+      if (canMoveRight('values')) {
+        leftArrow.setAttr('functional', true);
+        leftArrow.children[0].setAttr('opacity', .3);
+        leftArrow.children[1].setAttr('opacity', .5);
+      } // if left functional
+      else {
+        leftArrow.setAttr('functional', false);
+        leftArrow.children[0].setAttr('opacity', .1);
+        leftArrow.children[1].setAttr('opacity', .2);
+      } // else left non-functional
+
+      if (canMoveLeft('values')) {
+        rightArrow.setAttr('functional', true);
+        rightArrow.children[0].setAttr('opacity', .3);
+        rightArrow.children[1].setAttr('opacity', .5);
+      } // if right functional
+      else {
+        rightArrow.setAttr('functional', false);
+        rightArrow.children[0].setAttr('opacity', .1);
+        rightArrow.children[1].setAttr('opacity', .2);
+      } // else right non-funcitonal
+    } // if values
+    else if (type == 'functions') {
+      var leftArrow = functionsArrows['left'];
+      var rightArrow = functionsArrows['right']; 
+      if (canMoveRight('functions')) {
+        leftArrow.setAttr('functional', true);
+        leftArrow.children[0].setAttr('opacity', .3);
+        leftArrow.children[1].setAttr('opacity', .5);
+      } // if left functional
+      else {
+        leftArrow.setAttr('functional', false);
+        leftArrow.children[0].setAttr('opacity', .1);
+        leftArrow.children[1].setAttr('opacity', .2);
+      } // else left non-functional
+
+      if (canMoveLeft('functions')) {
+        rightArrow.setAttr('functional', true);
+        rightArrow.children[0].setAttr('opacity', .3);
+        rightArrow.children[1].setAttr('opacity', .5);
+      } // if right functional
+      else {
+        rightArrow.setAttr('functional', false);
+        rightArrow.children[0].setAttr('opacity', .1);
+        rightArrow.children[1].setAttr('opacity', .2);
+      } // else right non-funcitonal
+    } // else if functions
+    menuArrowLayer.draw();
+  }, 1050);
+}; // updateArrows
+
 //LEFT CORNER BUTTONS
+var bottomCover = new Kinetic.Rect({
+  x:0,
+  y:0,
+  width: menuCornerWidth,
+  height: menuHeight,
+  fill:'#F1F8FF',
+  name: 'cover'
+});
  var makeMenuButton = function(text, x, y) {
   var newGroup = new Kinetic.Group({
     x: x,
@@ -153,6 +346,7 @@ var openButton = makeMenuButton('Open Workspace', menuOffset, (2*menuOffset) + m
 var saveButton = makeMenuButton('Save Workspace', menuOffset, (3*menuOffset) + 
   (2*menuControlHeight));
 
+menuControlLayer.add(bottomCover);
 menuControlLayer.add(resetButton);
 menuControlLayer.add(openButton);
 menuControlLayer.add(saveButton);
