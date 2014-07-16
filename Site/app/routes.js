@@ -152,14 +152,8 @@ module.exports = function(app,passport,database) {
   app.get('/challenges/view/:id', function(req,res) {
     challenge.view(req, res, database);
   });
-  app.get('/challenges2', function(req,res) {
-    challenge.gallery(req, res, database);
-  });
   app.get('/challenges', function(req,res) {
-    res.render('../public/views/soon.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
+    challenge.gallery(req, res, database, req.query);
   });
 
   // --------------------------------------------------
