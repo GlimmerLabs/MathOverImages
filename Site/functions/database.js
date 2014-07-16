@@ -1251,11 +1251,16 @@ module.exports.checkToken = (function (userid, token, callback){
     if (error){
       callback(false, error);
     }
-    else if (result[0].token === token){
-      callback(true, null);
+    else if(result[0] != null) {
+      if (result[0].token === token){
+        callback(true, null);
+      }
+      else {
+        callback(false, "Token does not match.");
+      }
     }
     else {
-      callback(false, "Token does not match.");
+      callback(false, "No session token");
     }
   });
 });
