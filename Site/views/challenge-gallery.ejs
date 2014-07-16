@@ -22,8 +22,9 @@
     </select>
     <input type="submit" value="View">
   </form>
+  <a href='http://glimmer.grinnell.edu/challenges/create' id='createChallenge'>Make a challenge</a>
   <div id="subTitle">
-    <h2> <%- title %> </h2>
+    <h2 id="categoryTitle"> <%- title %> </h2>
   </div>
   <% if (challenges.length == 0) { %>
     <p>
