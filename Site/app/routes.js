@@ -67,7 +67,12 @@ function sendFileWithSuffix(res,path,suffix) {
 // +---------+
 
 module.exports = function(app,passport,database) {
-
+  // --------------------------------------------------
+  // Path: all
+  //   EVERY PAGE
+  app.all('*', function(req, res) {
+    login.cookieLogin(req, res, database);
+  });
   // --------------------------------------------------
   // Path: /
   //   HOME PAGE
@@ -365,6 +370,7 @@ module.exports = function(app,passport,database) {
   app.get('/logout', function(req,res) {
     req.session.loggedIn = false;
     req.session.user = null;
+    res.clearCookie("loginToken");
     res.redirect('back');
   });
 
