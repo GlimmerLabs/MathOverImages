@@ -68,7 +68,15 @@ header nav li:hover {
  color: #9B9B9B;
  cursor: pointer;
 }
-
+#rememberMeContainer:hover label { /* Make it so "Remember Me" li doesn't change when hovering on the right of the text*/
+  color: #E1E1E1;
+}
+#rememberMe { /*Make it so "Remember Me" has the pointer cursor*/
+  cursor: pointer;
+}
+#rememberMe:hover { /*Make it so "Remember Me" doesn't change color when hovered over*/
+  color: #E1E1E1;
+}
 
 
 /* End of Header */
