@@ -43,8 +43,7 @@ var slider=document.getElementById('pixels');
   try {
     slider.addEventListener('change', function(event) {
     var sliderVal=document.getElementById('pixels').value;
-        animator.renderWidth = sliderVal;
-        animator.renderHeight = sliderVal;
+	animator.setResolution(sliderVal, sliderVal);
       })
   }
   catch(err){}
