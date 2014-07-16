@@ -180,13 +180,6 @@ module.exports = function(app,passport,database) {
   });
 
   // --------------------------------------------------
-  // Path: /sitemap.xml
-  //   The site map
-  app.get('/sitemap.xml', function(req,res) {
-    res.sendfile('./sitemap.xml');
-  });
-
-  // --------------------------------------------------
   // Path: /embed
   //   embedable or standalone images
   app.get('/embed/:imageid', function(req,res) {
@@ -323,6 +316,13 @@ module.exports = function(app,passport,database) {
     else if (req.body.profile != null){
       image.setProfilePicture(req, res, database);
     };
+  });
+
+  // --------------------------------------------------
+  // Path: /images/gui-key
+  //   Tutorial Screenshots
+  app.get('/images/gui-key/:file', function(req,res) {
+    res.sendfile('./public/images/gui-key/' + req.params.file);
   });
 
   // --------------------------------------------------
@@ -486,6 +486,13 @@ module.exports = function(app,passport,database) {
 
   app.post('/signup', function(req,res) {
     signup.buildPage(req, res, database);
+  });
+
+  // --------------------------------------------------
+  // Path: /sitemap.xml
+  //   The site map
+  app.get('/sitemap.xml', function(req,res) {
+    res.sendfile('./sitemap.xml');
   });
 
   // --------------------------------------------------
