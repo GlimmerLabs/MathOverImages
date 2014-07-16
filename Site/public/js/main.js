@@ -2,11 +2,8 @@ $(document).ready(function(){
   // Search functions
   var searchResults = document.getElementById("searchResults");
   var searchBar = document.getElementById("searchBar");
-  searchBar.onkeydown = function(e) {
-    var keycode = e.which || e.keyCode || e.charCode;
-    var deleteKeyPressed = keycode == 46 || keycode == 8;
-    if((this.value.length >= 2 && !deleteKeyPressed) || (this.value.length > 3)) {
-      console.log(this.value, this.value.length);
+  searchBar.onkeyup = function(e) {
+    if(this.value.length >= 3) {
       omnisearch(this.value, createNewMenu)
     }
     else {
