@@ -1,27 +1,59 @@
 /**
  * Login post
  */
-var bcrypt = require('bcrypt-nodejs'); // import bcypt for generating sessionTokens
 function generateSessionToken(userid, callback) {
-  callback(bcrypt(Math.random() + "" + Math.random() + "" + userid));
+  callback(Math.random() + "" + Math.random() + "uid:" + userid);
+}
+function addSessionTokenForUser(userid, res, database) {
+  generateSessionToken(userid, function(token) {
+    database.setToken(userid, token, function(success, error) {
+      if(success) {
+        var oneMonthFromNow = new Date();
+        oneMonthFromNow.setMonth(oneMonthFromNow.getMonth()+1);
+        res.cookie("loginToken", token, {signed: true, expires: oneMonthFromNow});
+      }
+      res.redirect('back');
+    });
+  });
+}
+module.exports.cookieLogin = function(req, res, database) {
+  var loginToken = req.signedCookies.loginToken;
+  if(!req.session.user) {
+    if(loginToken) {
+      var userid = loginToken.split("uid:")[1];
+      database.checkToken(userid, loginToken, function(setToken, error) {
+        if(setToken) {
+          database.getUser(userid, function(user, error) {
+            if(!error) {
+              req.session.loggedIn = true;
+              req.session.user = user;
+            }
+            req.next();
+          });
+        }
+        else {
+          req.next();
+        }
+      });
+    }
+    else {
+      req.next();
+    }
+  }
+  else {
+    req.next();
+  }
 }
 module.exports.buildPage = function (req, res, database) {
   database.logIn(req.body.username, req.body.password, function(user, error){
     if(!error) {
       req.session.loggedIn = true;
       req.session.user = user;
-      console.log(user);
-      res.redirect('back');
       if(req.body.stayLoggedIn == "on") {
-        generateSessionToken(user.userid, function(token) {
-          database.setToken(user.userid, token, function(success, error) {
-            if(success) {
-              var oneMonthFromNow = new Date();
-              oneMonthFromNow.setMonth(oneMonthFromNow.getMonth()+1);
-              res.cookie("loginToken", token, {signed: true, expires: oneMonthFromNow});
-            }
-          });
-        });
+        addSessionTokenForUser(user.userid, res, database);
+      }
+      else {
+        res.redirect('back');
       }
     }
     else {

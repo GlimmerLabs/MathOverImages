@@ -34,13 +34,17 @@ block content
       a(href='/gallery' id='gallery')
          ='gallery'
     div(id='galleryImages')
-      p(class='info').
-        Some of the following images animate when you move the mouse over them.
+      p(class='info')
+        | Images with   
+        img(src='/icons/time.png' width ='25 px' height='25 px')
+        |    will animate when you hover over them
       - for (var i=0; i < images.length; i++)
         figure
           a(href='/image/' + images[i].imageid)
             canvas(id='canvas'+i width='150' height='150')
             input(type='hidden' id='code'+i value=images[i].code)
+          if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1)
+              img(src='/icons/time.png' width ='20 px' height='20 px')
           figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
     div(id='epilepticWarning')
       p(class='warning').

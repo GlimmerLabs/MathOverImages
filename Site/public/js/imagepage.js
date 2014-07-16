@@ -44,6 +44,7 @@ var slider=document.getElementById('pixels');
     slider.addEventListener('change', function(event) {
     var sliderVal=document.getElementById('pixels').value;
 	animator.setResolution(sliderVal, sliderVal);
+	animator.frame();
       })
   }
   catch(err){}
@@ -64,7 +65,7 @@ var slider=document.getElementById('pixels');
   for(var i=0; i<flags.length; i++) {
     flags[i].onclick = function() {
       var id = this.parentNode.id.replace("comment", "");
-      (function(clikedFlag) {
+      (function(clickedFlag) {
         flagComment(id, function(res) {
           if(res.indexOf("flagged") != -1) {
             clickedFlag.className = 'flagComment flagged';

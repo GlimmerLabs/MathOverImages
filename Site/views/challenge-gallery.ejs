@@ -1,29 +1,55 @@
-<% var title= challenge.name %>
+<% var title= level + ", " + color + ", " + animation + " challenges" %>
 <% var css= '<link rel="stylesheet" href="/css/challenges.css">' %>
 <% include head.ejs %>
-
+<script type="text/javascript" src="/js/gallery.js"></script>
 <div id="main">
   <div id="pageTitleGeneral">
-    <h1>challenges 2</h1>
+    <h1>challenges</h1>
   </div>
-  <div id="categories">
-    <select class="category" id="level">
-      <option value="Any">Any</option>
-      <option value="Beginning">Beginning</option>
-      <option value="Intermediate">Intermediate</option>
-      <option value="Advanced">Advanced</option>
+  <form id="categories" method="get" action="/challenges">
+    <select class="category" id="level" name="level">
+      <option value="Beginning" <%= (level=="Beginning") ? "selected" : ""%>>Beginning</option>
+      <option value="Intermediate" <%= (level=="Intermediate") ? "selected" : "" %>>Intermediate</option>
+      <option value="Advanced" <%= (level=="Advanced") ? "selected" : "" %>>Advanced</option>
     </select>
-    <select class="category" id="color">
-      <option value="Any">Any</option>
-      <option value="RGB">RGB</option>
-      <option value="Greyscale">Greyscale</option>
+    <select class="category" id="color" name="color">
+      <option value="Greyscale" <%= (color=="Greyscale") ? "selected" : "" %>>Greyscale</option>
+      <option value="RGB" <%= (color=="RGB") ? "selected" : "" %>>RGB</option>
     </select>
-    <select class="category" id="animation">
-      <option value="Any">Any</option>
-      <option value="Static">Static</option>
-      <option value="Animated">Animated</option>
+    <select class="category" id="animation" name="animation">
+      <option value="Static" <%= (animation=="Static") ? "selected" : "" %>>Static</option>
+      <option value="Animated" <%= (animation=="Animated") ? "selected" : "" %>>Animated</option>
     </select>
+    <input type="submit" value="View">
+  </form>
+  <a href='http://glimmer.grinnell.edu/challenges/create' id='createChallenge'>Make a challenge</a>
+  <div id="subTitle">
+    <h2 id="categoryTitle"> <%- title %> </h2>
   </div>
+  <% if (challenges.length == 0) { %>
+    <p>
+      Sorry, there are no <%- title %>.
+    </p>
+  <% } else { %>
+    <div id="gallery">
+      <div id="images">
+        <ul class="rig columns-3">
+          <% for (var i = 0; i < challenges.length; i++) { %>
+            <% var c = challenges[i]; %>
+            <li>
+              <figure>
+                <p class="challengeName"><%- c.name %></p>
+                <a href="/challenges/view/<%-c.id %>">
+                  <canvas id="canvas<%-i%>" width="300px" height="300px"/>
+                </a>
+                  <input id="code<%-i%>" type="hidden" value="<%-c.code%>"></input>
+              </figure>
+            </li>
+          <% } %>
+        </ul>
+      </div> <!-- images -->
+    </div> <!-- gallery -->
+  <% } // if there are challenges %>
 </div>
 
 <% include foot.ejs %>

@@ -67,16 +67,17 @@ function sendFileWithSuffix(res,path,suffix) {
 // +---------+
 
 module.exports = function(app,passport,database) {
-
+  // --------------------------------------------------
+  // Path: all
+  //   EVERY PAGE
+  app.all('*', function(req, res) {
+    login.cookieLogin(req, res, database);
+  });
   // --------------------------------------------------
   // Path: /
   //   HOME PAGE
   app.get('/', function(req, res) {
     index.buildRandomPage(req, res, database);
-    //    res.render('../public/views/index.jade',{
-    //      loggedIn: req.session.loggedIn,
-    //      user: req.session.user
-    //    });
   });
 
   // --------------------------------------------------
@@ -152,14 +153,8 @@ module.exports = function(app,passport,database) {
   app.get('/challenges/view/:id', function(req,res) {
     challenge.view(req, res, database);
   });
-  app.get('/challenges2', function(req,res) {
-    challenge.gallery(req, res, database);
-  });
   app.get('/challenges', function(req,res) {
-    res.render('../public/views/soon.jade',{
-      loggedIn: req.session.loggedIn,
-      user: req.session.user
-    });
+    challenge.gallery(req, res, database, req.query);
   });
 
   // --------------------------------------------------
@@ -374,6 +369,7 @@ module.exports = function(app,passport,database) {
   app.get('/logout', function(req,res) {
     req.session.loggedIn = false;
     req.session.user = null;
+    res.clearCookie("loginToken");
     res.redirect('back');
   });
 

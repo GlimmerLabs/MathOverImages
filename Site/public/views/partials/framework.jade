@@ -20,6 +20,7 @@ html(lang='en')
           img(src='/logos/header.png')
       form(id='search' action='/search')
         input(type='search' name='searchQuery' id='searchBar')
+        input(type='image' src='/icons/search.png' value='submit' width= '20px' height= '20px')
         ul(class='menu' id='searchResults')
       nav
         ul
@@ -37,10 +38,12 @@ html(lang='en')
           form(method='POST' action='/login' class='hidden')
             input(type='text' placeholder='username' name='username' required ='required')
             input(type='password' placeholder='password' name='password' require = 'required')
+            li(id='rememberMeContainer')
+              label(id='rememberMe') Remember Me
+                input(type='checkbox' name='stayLoggedIn')
             li(id='login') login
             li: a(href='/signup') signup
             li(id='cancel') cancel
-
     block content
       
     footer

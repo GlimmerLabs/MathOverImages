@@ -57,27 +57,21 @@
 
 #galleryImages {
  width: 80%;
-        margin-left: auto;
-        margin-right: auto;
+ margin-left: auto;
+ margin-right: auto;
  /* margin: 0 auto; */
         margin-top: 20px;
  clear: both;
- text-align:center;
 }
 
 #galleryImages figure {
         min-width: 150px;
         width: 150px;
  float: left;
-        padding: 8px;
+        padding: 20px;
  margin-left: auto;
  margin-right: auto;
         margin-top: 8px;
-}
-
-#galleryImages figure img {
- height: 140px;
- width: 140px;
 }
 
 #gallery h1 {
@@ -93,6 +87,10 @@
 
 #galleryImages a:hover {
  color: #666;
+}
+
+#galleryImages p.info{
+  text-align: center;
 }
 
 #figset {
@@ -117,6 +115,7 @@
 #epilepticWarning{
   text-align: center;
   display: block;
+  padding-top: 10px;
 
 }
 
