@@ -24,10 +24,11 @@ var valueXYColor = '#EFDC5C';
 var valueTimeColor = '#FD9E54';
 var valueConstantColor = '#F17C9D';
 
-var funNames = ['add', 'wrapsum', 'multiply', 'average', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'rgb'];
+var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
 var functions = {
   add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionMultColor},
   multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionMultColor},
+  square:    {rep: 'sqr', max: 1, min: 1, prefix: 'square', color: functionSingleColor},
   negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg', color: functionSingleColor},
   sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin', color: functionSingleColor},
   cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos', color: functionSingleColor},
@@ -35,7 +36,8 @@ var functions = {
   average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg', color: functionMultColor},
   sign:      {rep: 'sign', max: 1,  min: 1, prefix: 'sign', color: functionSingleColor},
   wrapsum:   {rep: 'wsum', max: 20,  min: 2, prefix: 'wsum', color: functionMultColor},
-  rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor}
+  rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor},
+  mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionSingleColor}
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 var values = {
@@ -81,7 +83,7 @@ var valSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
 var numVals = valNames.length;
 var valMenuXSpacing = (valSpaceWidth - (numVals * functionTotalSideLength)) / (numVals + 1);
 var functSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
-var numFuncts = funNames.length; 
+var numFuncts = 7; 
 var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionTotalSideLength)) / (numFuncts + 1);
 var menuYspacing = width * 11/360;
 var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
@@ -198,6 +200,7 @@ var OUTLET_OFFSET = 3;
  * 2. The menu layer holds the buttons that users can click on to drag a new node into
  *    the work area.
  * 3. The menuButton layer holds the super buttons that are used to expand the menus.
+ * 4. The menuArrowLayer holds the arrows for the scrolling menus. 
  * 4. The menuControlLayer contains the buttons to save/open/reset the workspace
  * 5. The toolboxLayer holds the draggable toolbox
  * 6. The work layer holds all active nodes that are either connected or available to
@@ -214,6 +217,7 @@ var OUTLET_OFFSET = 3;
  var lineLayer = new Kinetic.Layer();
  var menuLayer = new Kinetic.Layer();
  var menuButtonLayer = new Kinetic.Layer();
+ var menuArrowLayer = new Kinetic.Layer();
  var menuControlLayer = new Kinetic.Layer();
  var toolboxLayer = new Kinetic.Layer();
  var workLayer = new Kinetic.Layer();

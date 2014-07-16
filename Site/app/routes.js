@@ -73,10 +73,6 @@ module.exports = function(app,passport,database) {
   //   HOME PAGE
   app.get('/', function(req, res) {
     index.buildRandomPage(req, res, database);
-    //    res.render('../public/views/index.jade',{
-    //      loggedIn: req.session.loggedIn,
-    //      user: req.session.user
-    //    });
   });
 
   // --------------------------------------------------

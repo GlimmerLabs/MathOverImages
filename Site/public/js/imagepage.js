@@ -33,13 +33,20 @@ catch(err){}
 
 var jpeg=document.getElementById('jpeg');
   try {
-    var jpeg=document.getElementById('jpeg');
       jpeg.addEventListener('click', function(event) {
           animator.jpg();
       })
   }
   catch(err){}
 
+var slider=document.getElementById('pixels');
+  try {
+    slider.addEventListener('change', function(event) {
+    var sliderVal=document.getElementById('pixels').value;
+	animator.setResolution(sliderVal, sliderVal);
+      })
+  }
+  catch(err){}
 
   var canvas = document.getElementById("canvas");
   if (canvas.className == "fullscreen") {

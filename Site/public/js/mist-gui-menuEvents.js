@@ -17,24 +17,27 @@ On click of value menu button:
         moveFunctionsButtonRight();
         moveFunctionNodesRight();
         expandValueNodes();
-
         valueExpanded = true;
+        showScrollArrows('values');
+        updateArrows('values');
     } // if functions are also not expanded
     else {
       moveFunctionsButtonRight();
       moveFunctionNodesRight();
       expandValueNodes();
-
       valueExpanded = true;
+      showScrollArrows('values');
+      updateArrows('values');
       functionExpanded = false;
+      hideScrollArrows('functions');
       } // else functions were already expanded
   } // if values are not expanded
   else {
     moveValueNodesIn();
     moveFunctionNodesIn();  
     moveFunctionsButtonLeft();
-
     valueExpanded = false;
+    hideScrollArrows('values');
   } // else values were already expanded
 });
 /*
@@ -53,20 +56,24 @@ On click of function menu button:
       if (!valueExpanded) {
         expandFunctionNodes();
         functionExpanded = true;
+        showScrollArrows('functions');
+        updateArrows('functions');
     } // functions and values not expanded
     else {
       moveValueNodesIn();
       moveFunctionsButtonLeft();
       expandFunctionNodes();
-
       functionExpanded = true;
+      showScrollArrows('functions');
+      updateArrows('functions');
       valueExpanded = false;
+      hideScrollArrows('values');
     } // functions not expanded, values expanded
   }
   else {
     moveFunctionNodesIn();
-
     functionExpanded = false;
+    hideScrollArrows('functions');
     } // functions are expanded
   });
 
@@ -84,6 +91,85 @@ menuButtonLayer.on('click', function(){
   }
 });
 
+// MENU ARROW LAYER EVENTS
+/**
+ * - on mouseover
+ * - on mouseout
+ * - on mousedown
+ * - on mouseup
+ */
+menuArrowLayer.on('mouseover', function(evt) {
+  var group = evt.target.getParent();
+  if (group.attrs.functional) {
+    var box = group.children[0];
+    var arrow = group.children[1];
+    box.setAttr('opacity', .7);
+    arrow.setAttr('opacity', .9);
+    menuArrowLayer.draw();
+  }
+});
+
+menuArrowLayer.on('mouseout', function(evt) {
+  var group = evt.target.getParent();
+  if (group.attrs.functional) {
+    var box = group.children[0];
+    var arrow = group.children[1];
+    box.setAttr('opacity', .3);
+    arrow.setAttr('opacity', .5);
+    menuArrowLayer.draw();
+  }
+});
+
+menuArrowLayer.on('mousedown', function(evt) {
+  var group = evt.target.getParent();
+  if (group.attrs.functional) {
+    var box = group.children[0];
+    var arrow = group.children[1];
+    box.setAttr('opacity', 1);
+    arrow.setAttr('opacity', 1);
+    menuArrowLayer.draw();
+  }
+});
+var scrolling;
+menuArrowLayer.on('mouseup', function(evt) {
+  var group = evt.target.getParent();
+  if (group.attrs.functional) {
+    var box = group.children[0];
+    var arrow = group.children[1];
+    var direction = group.attrs.direction;
+    box.setAttr('opacity', .7);
+    arrow.setAttr('opacity', .9);
+    menuArrowLayer.draw();
+    if(!scrolling) {
+      if (group.attrs.type =='functions') {
+        if (direction == 'left') {
+          shiftFunctionNodesRight();
+          scrolling = true;
+          setTimeout(function() {scrolling = false}, 1000)
+        } // if right arrow 
+        else if (direction == 'right') {
+          shiftFunctionNodesLeft();
+          scrolling = true;
+          setTimeout(function() {scrolling = false}, 1000);
+        } // else left arrow
+        updateArrows('functions');
+      } // if functions arrow
+      else {
+        if (direction == 'left') {
+          shiftValueNodesRight();
+          scrolling = true;
+          setTimeout(function() {scrolling = false}, 1000);
+        } // if right arrow
+        else if (group.attrs.direction == 'right') {
+          shiftValueNodesLeft();
+          scrolling = true;
+          setTimeout(function() {scrolling = false}, 1000);
+        } // else left arrow
+        updateArrows('values');
+      } // else values arrow
+    } // if not scrolling
+  } // if functional
+});
 //MENU LAYER EVENTS
 /*
 - on mousedown
@@ -170,34 +256,42 @@ toggleTag.on('mouseup', function(){
 
 // CONTROL MENU EVENTS 
 menuControlLayer.on('mouseover', function(evt) {
-  var parent = evt.target.getParent();
-  var shape = parent.children[0];
-  shape.setAttr('fill', menuControlSelect);
-  menuControlLayer.draw();
+  if (evt.target.name() != 'cover') {
+    var parent = evt.target.getParent();
+    var shape = parent.children[0];
+    shape.setAttr('fill', menuControlSelect);
+    menuControlLayer.draw();
+  }
 });
 
-menuControlLayer.on('mouseout', function(evt){
-  var parent = evt.target.getParent();
-  var shape = parent.children[0];
-  shape.setAttrs({
-    fill: menuControlColor,
-    shadowEnabled: false
-  });
-  menuControlLayer.draw();
+menuControlLayer.on('mouseout', function(evt) {
+  if (evt.target.name() != 'cover') {
+    var parent = evt.target.getParent();
+    var shape = parent.children[0];
+    shape.setAttrs({
+      fill: menuControlColor,
+      shadowEnabled: false
+    });
+    menuControlLayer.draw();
+  }
 });
 
-menuControlLayer.on('mousedown', function(evt){
-  var parent = evt.target.getParent();
-  var shape = parent.children[0];
-  shape.setAttr('shadowEnabled', true);
-  menuControlLayer.draw();
+menuControlLayer.on('mousedown', function(evt) {
+  if (evt.target.name() != 'cover') {
+    var parent = evt.target.getParent();
+    var shape = parent.children[0];
+    shape.setAttr('shadowEnabled', true);
+    menuControlLayer.draw();
+  }
 });
 
-menuControlLayer.on('mouseup', function(evt){
-  var parent = evt.target.getParent();
-  var shape = parent.children[0];
-  shape.setAttr('shadowEnabled', false);
-  menuControlLayer.draw();
+menuControlLayer.on('mouseup', function(evt) {
+  if (evt.target.name()!= 'cover') {
+    var parent = evt.target.getParent();
+    var shape = parent.children[0];
+    shape.setAttr('shadowEnabled', false);
+    menuControlLayer.draw();
+  }
 });
 
 resetButton.on('mouseup', function(){
