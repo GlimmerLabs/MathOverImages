@@ -24,7 +24,7 @@ var valueXYColor = '#EFDC5C';
 var valueTimeColor = '#FD9E54';
 var valueConstantColor = '#F17C9D';
 
-var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'rgb', 'mistif'];
+var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
 var functions = {
   add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionMultColor},
   multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionMultColor},
@@ -37,7 +37,7 @@ var functions = {
   sign:      {rep: 'sign', max: 1,  min: 1, prefix: 'sign', color: functionSingleColor},
   wrapsum:   {rep: 'wsum', max: 20,  min: 2, prefix: 'wsum', color: functionMultColor},
   rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor},
-  mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionRGBcolor}
+  mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionSingleColor}
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
 var values = {
