@@ -37,10 +37,12 @@ html(lang='en')
           form(method='POST' action='/login' class='hidden')
             input(type='text' placeholder='username' name='username' required ='required')
             input(type='password' placeholder='password' name='password' require = 'required')
+            li
+              label Remember Me
+                input(type='checkbox' name='stayLoggedIn')
             li(id='login') login
             li: a(href='/signup') signup
             li(id='cancel') cancel
-
     block content
       
     footer
