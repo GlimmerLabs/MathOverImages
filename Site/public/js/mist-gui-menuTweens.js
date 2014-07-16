@@ -13,6 +13,22 @@
 			moveValue.play();
 		}
 	};
+	/* move valueGroups to the right */
+	var shiftValueNodesRight = function() {
+		for (var i = 0; i < menuValues.length; i++) {
+			var target = menuValues[i];
+			var moveValue = makeMenuTween(target, target.x() + valSpaceWidth - valMenuXSpacing, true);
+			moveValue.play();
+		}
+	};
+	/* move valueGroups to the left */
+	var shiftValueNodesLeft = function() {
+		for (var i = 0; i < menuValues.length; i++) {
+			var target = menuValues[i];
+			var moveValue = makeMenuTween(target, target.x() - valSpaceWidth + valMenuXSpacing, true);
+			moveValue.play();
+		}
+	};
 	/* move the functionGroups to their original position. */
 	var moveFunctionNodesIn = function() {
 		for (var i = 0; i < menuFunctions.length; i++) {
@@ -43,4 +59,20 @@
 	var moveFunctionsButtonLeft = function() {
 		var moveButton = makeMenuTween(functionsButton, menuCornerWidth + buttonWidth, true)
 		moveButton.play();
+	};
+	/* move functionGroups to the right */
+	var shiftFunctionNodesRight = function() {
+		for (var i = 0; i < menuFunctions.length; i++) {
+			var target = menuFunctions[i];
+			var moveValue = makeMenuTween(target, target.x() + functSpaceWidth - functMenuXSpacing, true);
+			moveValue.play();
+		}
+	};
+	/* move functionGroups to the left */
+	var shiftFunctionNodesLeft = function() {
+		for (var i = 0; i < menuFunctions.length; i++) {
+			var target = menuFunctions[i];
+			var moveValue = makeMenuTween(target, target.x() - functSpaceWidth + functMenuXSpacing, true);
+			moveValue.play();
+		}
 	};

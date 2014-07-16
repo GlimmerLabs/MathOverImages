@@ -11,6 +11,7 @@ var stage = new Kinetic.Stage({
  stage.add(lineLayer);
  stage.add(menuLayer);
  stage.add(menuButtonLayer);
+ stage.add(menuArrowLayer);
  stage.add(menuControlLayer);
  stage.add(workLayer);
  stage.add(borderLayer);

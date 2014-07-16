@@ -13,28 +13,18 @@ block content
       div(id='pageTitleGeneral')
         h1 challenges
       div(id='subviews')
-        if (type === "admin challenges")
-          a(href='#' class='subview selected') admin challenges
+        if (type === "basic")
+          a(href='#' class='subview selected') basic
         else
-          a(href='#' class='subview') admin challenges
-        if (type === "difficulty")
-          a(href='#' class='subview selected') random
+          a(href='#' class='subview') basic
+        if (type === "intermediate")
+          a(href='#' class='subview selected') intermediate
         else
-          a(href='#' class='subview') random
-        if (type === "color")
-          a(href='#' class='subview selected') recent
+          a(href='#' class='subview') intermediate
+        if (type === "advanced")
+          a(href='#' class='subview selected') advanced
         else
-          a(href='#' class='subview') recent
-        if (type === "animated")
-          a(href='#' class='subview selected') top rated
-        else
-          a(href='#' class='subview') top rated
-        if (type === "top rated")
-          a(href='#' class='subview selected') featured
-        else
-          a(href='#' class='subview') featured
-    div(id='gallery')
-      div(id='images')
-
-      div(id='pageNumber')
+          a(href='#' class='subview') advanced
+    div(id = 'challenges')
+    div(id='pageNumber')
         

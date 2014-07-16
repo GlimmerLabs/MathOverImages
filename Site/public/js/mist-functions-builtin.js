@@ -178,3 +178,11 @@ var wsum = wrapsum;
 MIST.wrapsum = wrapsum;
 MIST.wsum = wrapsum;
 BUILTIN("wrapsum", "wsum", "Sum 2 or more values, wrapping around from 1 to -1 (or vice versa) if the sum is too large or too small", "...", 2, 20, "GENERAL");
+
+var mistif = function(test, pos, neg) {
+  if (test >= 0) 
+    return pos;
+  else
+    return neg;
+};
+BUILTIN("mistif", "if", "if test is greater than or equal to zero, return pos, if test is less than zero, return neg", "test, pos, neg", 3, 3, "GENERAL");

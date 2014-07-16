@@ -78,10 +78,6 @@ module.exports = function(app,passport,database) {
   //   HOME PAGE
   app.get('/', function(req, res) {
     index.buildRandomPage(req, res, database);
-    //    res.render('../public/views/index.jade',{
-    //      loggedIn: req.session.loggedIn,
-    //      user: req.session.user
-    //    });
   });
 
   // --------------------------------------------------
@@ -144,18 +140,21 @@ module.exports = function(app,passport,database) {
   // --------------------------------------------------
   // Path: /challenge
   //   Challenges (create, add, edit, view, etc.)
-  app.post('/challenge/add', function(req,res) {
+  app.post('/challenges/add', function(req,res) {
     console.log("Trying to add");
     challenge.add(req, res, database, req.body);
   });
-  app.get('/challenge/create', function(req,res) {
+  app.get('/challenges/create', function(req,res) {
     challenge.create(req, res, database);
   });
-  app.get('/challenge/edit/:id', function(req,res) {
+  app.get('/challenges/edit/:id', function(req,res) {
     challenge.edit(req, res, database);
   });
-  app.get('/challenge/view/:id', function(req,res) {
+  app.get('/challenges/view/:id', function(req,res) {
     challenge.view(req, res, database);
+  });
+  app.get('/challenges', function(req,res) {
+    challenge.gallery(req, res, database, req.query);
   });
 
   // --------------------------------------------------
@@ -530,19 +529,7 @@ module.exports = function(app,passport,database) {
     });
   });
 
-  app.get('/challenges', function(req,res) {
-    res.render("../public/views/soon.jade", {
-      loggedIn:req.session.loggedIn,
-      user: req.session.user
-    });
-  });
 
-  app.get('/challenges2', function(req,res) {
-    res.render("../public/views/challenges.jade", {
-      loggedIn:req.session.loggedIn,
-      user: req.session.user
-    });
-  });
 
   // --------------------------------------------------
   // Path: /video
