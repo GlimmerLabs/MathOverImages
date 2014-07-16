@@ -43,7 +43,7 @@ module.exports.intro =  function(req, res) {
  */
 module.exports.rgb =  function(req, res) {
   // The list of pages in the introduction, in order
-  var pages = ['intro-to-rgb', 'components','example'];
+  var pages = ['intro-to-rgb', 'components','example','example2'];
   tutorialPage(req, res, "/tutorial/rgb/", req.params.page, pages)
 } // rgb
 
