@@ -179,3 +179,7 @@ input[type='submit'].delete:hover{
     background-color: #FFF;
     color: #BC1414;
 }
+
+.run{
+   float: right;
+}

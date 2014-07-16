@@ -45,7 +45,11 @@ block content
                 a(href='/image/' + images[i].imageid)
                   canvas(id='canvas'+i width='300px' height='300px')
                   input(type='hidden' id='code'+i value=images[i].code)
+                if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1)
+                  .run
+                    img(src='/icons/time.png' width ='20px' height='20 px')
                 a(href='/user/'+ images[i].username): figcaption(class='right')= images[i].username
+
                 if(images[i].liked)
                   figcaption(class='left starred')= "★" + images[i].rating
                 else

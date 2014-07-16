@@ -1,6 +1,22 @@
+/**
+* mail.js
+* Send email and other mail related services
+*/
+
 var validate = require('validator');
 var database = require('./database');
 var fs = require('fs');
+var bcrypt = require('bcrypt-nodejs');
+
+/**
+* enterUserInfo replaces templating in HTML files with actual values.
+*/
+var enterUserInfo = (function(user, template) {
+  return (template.replace(/(?:{{ FORENAME }})/g, user.forename)
+          .replace(/(?:{{ SURNAME }})/g, user.surname)
+          .replace(/(?:{{ EMAIL }})/g, user.email)
+          .replace(/(?:{{ USERNAME }})/g, user.username))
+});
 
 // Thanks http://www.davidpirek.com/blog/run-shell-from-nodejs-function for the runShell command
 var runShell = function(command){
@@ -15,32 +31,53 @@ var runShell = function(command){
   exec(command, puts);
 }
 
-
-
-var sendMail = (function(to, subject, message){
-  message = message.replace(/"/g, "\"").replace(/!/g, "&#33;");
-  console.log('echo "' + message + '" | mailx -a "Content-type: text/html;" -s "' + subject + '" ' + to);
-  runShell('echo "' + message + '" | mailx -a "Content-type: text/html;" -s "' + subject + '" ' + to);
+/**
+* sendMail executes the actual send command. As it uses mailx, the "from" header will be based on its configuration
+* callback(success, error)
+*/
+var sendMail = (function(to, subject, message, callback){
+  if (!validate.isEmail(to)){
+    callback(false, "sendMail: First parameter must be a valid email address");
+  }
+  else {
+    message = (message.replace(/\'/g, "'\\''")
+               .replace(/!/g, "&#33;")
+              .replace(/\n/g, " "));
+    console.log("echo '" + message + "' | mailx -a 'Content-type: text/html;' -s '" + subject + "' " + to);
+    runShell("echo '" + message + "' | mailx -a 'Content-type: text/html;' -s '" + subject + "' " + to);
+    callback(true, null);
+  }
 });
 
-var validateEmail = (function(user){
-  fs.readFile("public/emails/validateEmail.html", function (error, data){
-    if (error){
-      console.log(error);
-    }
-    else {
-      var email = data.toString();
-      email = enterUserInfo(user, email).replace(/(?:{{ LINK }})/g, 'http://www.google.com');
-      sendMail(user.email, user.forename + ", validate your email address for MIST", email);
-    }
+/**
+* validateEmail sends an email to a user about how they may verify their email address.
+* callback(success, error);
+*/
+var validateEmail = (function(user, callback){
+  bcrypt.hash(user.forename + user.surname + user.hashedPassword + user.email, null, null, function(err,token) {
+    var userid = database.sanitize(user.userid);
+    database.query("INSERT INTO verifications (userid, token) VALUES ('"+ userid + "','" + token +"');", function(result, error){
+      if (error){
+        callback(false, error);
+      }
+      else {
+        fs.readFile("public/emails/validateEmail.html", function (error, data){
+          if (error){
+            callback(false, error);
+          }
+          else {
+            var link = "http://glimmer.grinnell.edu/verify?id=" + user.userid +"&token=" + token;
+            var message = data.toString();
+            message = (enterUserInfo(user, message)
+                       .replace(/(?:{{ LINK }})/g, link));
+            sendMail(user.email, user.forename + ", validate your email address for MIST", message, callback);
+          }
+        });
+      }
+    });
   });
 });
 
-var enterUserInfo = (function(user, template) {
-  return (template.replace(/(?:{{ FORENAME }})/g, user.forename)
-          .replace(/(?:{{ SURNAME }})/g, user.surname)
-          .replace(/(?:{{ EMAIL }})/g, user.email)
-          .replace(/(?:{{ USERNAME }})/g, user.username))
-});
+
 
 module.exports.validateEmail = validateEmail;

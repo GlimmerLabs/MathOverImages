@@ -1,5 +1,33 @@
-@import url("/css/styles.css");
 
-#categories{
+@import url("/css/gallery.css");
+
+form#categories{
   float: right;
+}
+
+select{
+  font-size: 0.9em;
+}
+
+#categoryTitle{
+  margin: 0px;
+}
+#createChallenge{
+  float: right;
+  position: static;
+  bottom: 0px;
+  text-align: center;
+  text-decoration: none;
+  color: #FFFFFF;
+  background-color: #979797;
+  padding: 0px 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-right: 10px;
+  margin-left: 18%;
+  margin-top: 35px;
+}
+#createChallenge:hover {
+  background-color:#FFF;
+  color: #979797;
 }

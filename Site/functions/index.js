@@ -4,7 +4,7 @@
 var filedatabase;
 module.exports.buildRandomPage = (function(req, res, database) {
   filedatabase=database;
-  module.exports.getRandomImages (7, function(images, error){
+  module.exports.getRandomImages (6, function(images, error){
     res.render('../public/views/index.jade',{
       loggedIn: req.session.loggedIn,
       user: req.session.user,
