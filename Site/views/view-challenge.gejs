@@ -2,8 +2,10 @@ title
   <% challenge.name %>
 css
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/mist-gui.css">
 js
   <script type="text/javascript" src="/js/imagepage.js"></script>
+
 head1
   challenges
 body
