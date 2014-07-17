@@ -34,9 +34,9 @@ Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" st
      <td class="comment"><%- comments[i].comment %></td>
      <script>
       var old= new Date("<%=comments[i].postedAt%>")
-      var timePosted= Date.UTC(old.getUTCFullYear(), old.getUTCMonth(), old.getUTCDate(), old.getUTCHours(), old.getUTCMinutes(), old.getUTCSeconds())/1000;
+      var timePosted= Date.UTC(old.getFullYear(), old.getMonth(), old.getDate(), old.getHours(), old.getMinutes(), old.getSeconds())/1000;
       var now= new Date();
-      var rightNow = new Date (now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())/1000;
+      var rightNow = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())/1000;
       var secs= rightNow-timePosted;
       var dateSentence;
       if ((secs / 31536000) >= 1){
