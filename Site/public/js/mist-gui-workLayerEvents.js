@@ -54,7 +54,6 @@ There are 3 different modes:
         var outlet;
         if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
           removeLine(currLine);
-
           makingLine = false;
         } // if the target of the connection is the source, or forming the connection would cause a cycle
         else if (isOutlet(shape)) {
