@@ -66,29 +66,14 @@ module.exports.buildPage = function (req, res, database) {
 module.exports.validatePage = function (req, res, database) {
   var token = database.sanitize(req.query.token);
   var userid= database.sanitize(req.query.id);
-  database.query("SELECT * FROM verifications WHERE userid='" + userid + "' AND token ='" + token + "';", function(results, error){
+  database.verifyEmail(userid, token, function (success, error){
     if (error){
       res.end(JSON.stringify(error));
-    }
-    else if (!results[0]){
-      res.end ("no match");
+      console.log(error);
     }
     else {
-      database.query("DELETE FROM verifications WHERE userid='" + userid + "' AND token ='" + token + "';", function(results, error){
-        if (error){
-          res.end(JSON.stringify(error));
-        }
-        else {
-          database.query("UPDATE users SET verified='1' WHERE userid = '" + userid + "';", function(results, error){
-            if (error){
-              res.end(JSON.stringify(error));
-            }
-            else{
-              res.end("success");
-            }
-          });
-        }
-      })
+      res.send(success);
+      res.end();
     }
   });
 };
