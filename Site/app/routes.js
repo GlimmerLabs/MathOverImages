@@ -523,10 +523,9 @@ module.exports = function(app,passport,database) {
 
   // --------------------------------------------------
   // Path: /verify
-  //   Page for verifying users (not implemented)
+  //   Page for verifying users' email address
   app.get('/verify', function(req,res) {
-    // TODO: VERIFY user
-    res.redirect('/login');
+    login.validatePage(req, res, database);
   });
 
   app.get('/badges', function(req,res) {

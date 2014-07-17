@@ -84,6 +84,40 @@ div.comment h1.op a{
   resize: none;
 }
 
+/* Flag Comment and Delete Comment Styling */
+.flagComment {
+  display: inline;
+  background-color: gray;
+  border: 1px solid black;
+  border-radius: .25em;
+  cursor: pointer;
+}
+.flagComment:hover {
+  box-shadow: black 1px 1px;
+}
+.deleteComment {
+  display: inline;
+  background-color: gray;
+  border: 1px solid black;
+  border-radius: .25em;
+  cursor: pointer;
+  padding-left: .2em;
+  padding-right: .2em;
+  color: #a00;
+  margin-left: 2px;
+}
+.deleteComment:hover {
+  box-shadow: black 1px 1px;
+}
+td.flagged {
+  cursor: default;
+  color: #a00;
+}
+td.flagged:hover {
+  box-shadow: none;
+}
+/* End Flag Comment and Delete Comment Styling */
+
 input[type='submit'] {
   color: #FFF;
   background-color: #979797;

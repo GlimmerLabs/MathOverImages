@@ -53,11 +53,8 @@ There are 3 different modes:
       if (makingLine) {
         var outlet;
         if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
-          currLine.attrs.source.attrs.lineOut.splice(currLine.attrs.source.attrs.lineOut.length - 1, 1);
-          currLine.destroy();
-          if (isOutlet(shape)) {
-            shape.scale({ x: 1, y: 1 });
-          } // if the shape was an outlet
+          removeLine(currLine);
+
           makingLine = false;
         } // if the target of the connection is the source, or forming the connection would cause a cycle
         else if (isOutlet(shape)) {
@@ -218,6 +215,7 @@ workLayer.on('mouseover', function(evt) {
   var parent = shape.parent;
   if (workToolOn || lineToolOn) {
     if (isImageBox(shape) && shape.attrs.expanded) {
+      /*
       animation = true;
       var frame = function() {
         renderCanvas(shape.getParent());
@@ -226,6 +224,10 @@ workLayer.on('mouseover', function(evt) {
         } // if animation is still enabled
       }
       frame();
+      */
+      if (parent.attrs.animator) {
+        parent.attrs.animator.start();
+      } // if the animator is non null
     } // if the mouseover object is an expanded imageBox
     if (makingLine) {
       var outlet;
@@ -246,7 +248,7 @@ workLayer.on('mouseover', function(evt) {
           outlet = parent.children[OUTLET_OFFSET];
         } // if the function can only have 1 input
       } // if the mouseover object is part of a function
-      if (outlet && outlet.parent != currLine.attrs.source) {
+      if (outlet && outlet.parent != currLine.attrs.source && !isCycle(currLine.attrs.source, outlet.parent)) {
         outlet.scale({
           x: 1.5,
           y: 1.5
@@ -306,7 +308,12 @@ workLayer.on('mouseout', function(evt) {
   var parent = shape.getParent();
   if (workToolOn || lineToolOn) {
     if (isImageBox(shape) && shape.attrs.expanded) {
+      /*
       animation = false;
+       */
+      if (parent.attrs.animator) {
+        parent.attrs.animator.stop();
+      }
     } // if the mouseout object is an expanded imageBox
     if (makingLine) {
       var outlet;
