@@ -1273,7 +1273,7 @@ module.exports.checkToken = (function (userid, token, callback){
 // Callback(token, error)
 module.exports.addVerifyToken = (function (user, callback) {
   bcrypt.hash(user.forename + user.surname + user.hashedPassword + user.email, null, null, function(err,token) {
-    var userid = database.sanitize(user.userid);
+    var userid = module.exports.sanitize(user.userid);
     module.exports.query("INSERT INTO verifications (userid, token) VALUES ('"+ userid + "','" + token +"');", function(result, error){
       if (error){
         callback(null, error);
