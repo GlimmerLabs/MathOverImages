@@ -1284,3 +1284,33 @@ module.exports.addVerifyToken = (function (user, callback) {
     });
   });
 });
+
+// Callback(success, error)
+module.exports.verifyEmail = (function (userid, token, callback){
+  module.exports.query("SELECT * FROM verifications WHERE userid='" + userid + "' AND token ='" + token + "';", function(results, error){
+    if (error){ // Database I/O error
+      callback(false, error);
+    }
+    else if (!results[0]){ // Userid does not match token, or has already been validated
+      callback(false, null);
+    }
+    else { // Verify Email
+      module.exports.query("DELETE FROM verifications WHERE userid='" + userid + "' AND token ='" + token + "';", function(results, error){
+        if (error){ // Database I/O error
+          callback(false, error);
+        }
+        else {
+          module.exports.query("UPDATE users SET verified='1' WHERE userid = '" + userid + "';", function(results, error){
+            if (error){
+              callback(false, error);
+            }
+            else{
+              callback(true, null);
+            }
+          });
+        }
+      })
+    }
+  });
+
+});
