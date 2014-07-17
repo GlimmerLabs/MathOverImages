@@ -133,21 +133,14 @@
     <% component('head1',
                  '<div id="pageTitleGeneral"><h1>',
                  '</h1></div>') %>
-
     <% component("body") %>
-    <table id="gui-and-key">
-        <tr>
-          <td>
-            <div id="container">
-              <script type="text/javascript" src="/js/mist-gui-initializeStage.js"></script>
-              <script type="text/javascript" src="/js/mist-gui-workLayerEvents.js"></script>
-              <script>
-                stage.draw()
-              </script>
-            </div>
-          </td>
-        </tr>
-    </table>
+     <div id="container">
+       <script type="text/javascript" src="/js/mist-gui-initializeStage.js"></script>
+       <script type="text/javascript" src="/js/mist-gui-workLayerEvents.js"></script>
+       <script>
+         stage.draw()
+       </script>
+     </div>
   </div>
   <footer>
    <p>©2014 Glimmer Labs</p>
