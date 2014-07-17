@@ -215,6 +215,7 @@ workLayer.on('mouseover', function(evt) {
   var parent = shape.parent;
   if (workToolOn || lineToolOn) {
     if (isImageBox(shape) && shape.attrs.expanded) {
+      /*
       animation = true;
       var frame = function() {
         renderCanvas(shape.getParent());
@@ -223,6 +224,10 @@ workLayer.on('mouseover', function(evt) {
         } // if animation is still enabled
       }
       frame();
+      */
+      if (parent.attrs.animator) {
+        parent.attrs.animator.start();
+      } // if the animator is non null
     } // if the mouseover object is an expanded imageBox
     if (makingLine) {
       var outlet;
@@ -303,7 +308,12 @@ workLayer.on('mouseout', function(evt) {
   var parent = shape.getParent();
   if (workToolOn || lineToolOn) {
     if (isImageBox(shape) && shape.attrs.expanded) {
+      /*
       animation = false;
+       */
+      if (parent.attrs.animator) {
+        parent.attrs.animator.stop();
+      }
     } // if the mouseout object is an expanded imageBox
     if (makingLine) {
       var outlet;
