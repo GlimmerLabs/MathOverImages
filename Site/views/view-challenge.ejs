@@ -1,12 +1,8 @@
-<% var title = function() { %>
-  <% challenge.name %>
-<% } %>
+<% var title = challenge.name %>
 <% var css = function() { %>
   <link rel="stylesheet" href="/css/challenge-gui.css">
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   <link rel="stylesheet" href="/css/jquery-override.css">
-
-
 <% } %>
 <% var js = function() { %>
   <script type="text/javascript" src="/js/imagepage.js"></script>
@@ -20,8 +16,6 @@
      <p style="pre-wrap"> 
        <%- challenge.description %>
      </p>
-     <canvas id="canvas" width=400 height=400/>
-     <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
   </div>
 <% } %>
 <% component = function(code,pre,post) { %>
@@ -136,14 +130,18 @@
                  '<div id="pageTitleGeneral"><h1>',
                  '</h1></div>') %>
     <% component("body") %>
-     <div id="container">
-       <script type="text/javascript" src="/js/mist-gui-initializeStage.js"></script>
-       <script type="text/javascript" src="/js/mist-gui-workLayerEvents.js"></script>
-       <script>
-         stage.draw()
-       </script>
-     </div>
-  </div>
+      <div id="image-and-gui">
+        <canvas id="canvas" width=400 height=400></canvas>
+        <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
+        <div id="container">
+          <script type="text/javascript" src="/js/mist-gui-initializeStage.js"></script>
+          <script type="text/javascript" src="/js/mist-gui-workLayerEvents.js"></script>
+          <script>
+            stage.draw()
+          </script>
+        </div>
+      </div>
+    </div>
   <footer>
    <p>©2014 Glimmer Labs</p>
    <div id="sharing">
