@@ -4,48 +4,31 @@
  * center workspace
  */
 #container {
-  float: right;
+  margin: 0 0 0 40px;
   background-color: #F1F8FF;
+  min-width: 800px;
   width: 800px;
   height: 534px;
   border: 3px solid black;
 }
 
-#gui-and-key {
-  margin: 0 auto;
+#image-and-gui {
+  margin: 0 auto; 
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-/*
- * center help text below canvas. align center.
- */
-#gui-help {
-  margin: 10px auto 0 auto;
-  text-align: center;
+#canvas {
+  min-width: 400px;
+  min-height: 400px;
+  max-width: 400px;
+  max-height: 400px;
+  border: 1px solid black;
 }
 
-/** KEY TABLE **/
-#key {
-  margin-left: 10px;
-  padding: 10px;
-  border: 2px solid black;
-}
-
-.key-description {
-  min-width: 200px;
-  width: 200px;
-  text-align: left;
-  font-size: 12px;
-}
-
-.key-image {
-  width: 65px;
-  padding: 3px;
-}
-
-#value-key td {
-  border-bottom: 2px solid #A1A1A1;
-}
-
-#rgb-function-key td {
-  border-bottom: 2px solid #A1A1A1;
+#challenge-subTitle {
+  margin: 0 auto 0 30px;
 }
