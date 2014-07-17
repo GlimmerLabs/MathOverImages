@@ -8,23 +8,23 @@
 <h2><%- image.modifiedAt.toUTCString() %></h2>
 <figure data-imageid=<%= image.imageid %>>
   <canvas id="canvas" width="400" height="400"></canvas>
-  <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
   <div id="image-sharing">
+    <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
     <div id="image-fb-share" data-href="<%= 'http://glimmer.grinnell.edu/image/' + image.imageid %>" data-type="button" class="fb-share-button"></div>
     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out " + ((user&&user.userid===image.userid) ? "my image, \"" + image.title + "\"" : "\"" + image.title + "\" by " + image.username) + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
       <Tweet>      </Tweet>
     </a>
-  </div> <!-- image-sharing -->
   <a href="<%='/user/' + image.username %>">
     <figcaption class="right"><%- image.username %></figcaption>
   </a>
-<div id="image-controls" style="clear: left;">
-  <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
+  </div> <!-- image-sharing -->
+  <div id="image-controls">
+    <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
     <button id="animator">stop</button>
   <% } %>
-  <button id="jpeg">jpeg</button>
-  Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1" style="width: 80px;"> 400px
-</div> <!-- image-controls -->
+    <button id="jpeg">jpeg</button>
+    Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1" style="width: 80px;"> 400px
+  </div> <!-- image-controls -->
 </figure>
 <p id="code" class="code"><%- image.code %></p>
 <table id="comments">
