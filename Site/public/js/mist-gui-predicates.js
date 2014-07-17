@@ -131,6 +131,10 @@ var isUndoTool = function(target) {
  	if (isRenderable(group)) {
  		findRenderFunction(group);
  		group.children[2].setAttr('visible', true);
+ 		if (group.attrs.animator) {
+ 			group.attrs.animator = null;
+ 			renderCanvas(group);
+ 		}
  		return true;
  	} 
  	else {

@@ -316,7 +316,6 @@ var removeShadow = function(group) {
   }
   assertRenderable(newNode);
   updateForward(newNode);
-  //setOutletOpacity(newNode);
   lineLayer.draw();
   workLayer.draw();
  };
