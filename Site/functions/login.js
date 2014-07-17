@@ -62,3 +62,18 @@ module.exports.buildPage = function (req, res, database) {
     }
   });
 };
+
+module.exports.validatePage = function (req, res, database) {
+  var token = database.sanitize(req.query.token);
+  var userid= database.sanitize(req.query.id);
+  database.verifyEmail(userid, token, function (success, error){
+    if (error){
+      res.end(JSON.stringify(error));
+      console.log(error);
+    }
+    else {
+      res.send(success);
+      res.end();
+    }
+  });
+};
