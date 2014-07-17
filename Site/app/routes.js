@@ -348,7 +348,9 @@ module.exports = function(app,passport,database) {
     if (req.session.loggedIn)
       res.redirect('/');
     else {
-      res.render("../public/views/login.jade");
+      res.render("../public/views/login.jade", {
+        flashMessage: "Welcome back to MIST! Enter your username and password to begin"
+      });
     }
   });
 
