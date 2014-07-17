@@ -286,8 +286,7 @@ margin: 0 auto 0 5px;
 	font-family:arial;
 	font-size:21px;
 	font-style:normal;
-	height:35px;
-	width:98px;
+	width:110px;
 }
 .animations:hover {
 	background-color:#dfdfdf;
@@ -297,7 +296,27 @@ margin: 0 auto 0 5px;
 padding-top:20px;
 }
 
+#reso{
+padding-top:10px;
+font-family: 'Open Sans';
+font-size: 15px;
+color: rgb(119, 119, 119);
+}
 
+input[type=range] {
+    -webkit-appearance:none !important;
+    background-color: rgb(157, 150, 142);
+    width: 300px;
+    height:4px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+     -webkit-appearance: none;
+    background-color: grey;
+    opacity: 0.5;
+    width: 10px;
+    height: 26px;
+}
 /* This button was generated using CSSButtonGenerator.com */
 
 /*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
