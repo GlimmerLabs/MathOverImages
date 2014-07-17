@@ -3,103 +3,107 @@
 <% var css= '<link rel="stylesheet" href="/css/singleImage.css">' %>
 <% var meta= '<meta property="og:image" content=' + jpgURL + '/>' %>
 <% include head.ejs %>
-  <script type="text/javascript" src="/js/imagepage.js"></script>
+<script type="text/javascript" src="/js/imagepage.js"></script>
 <h1><%- image.title %></h1>
-   <h2><%- image.modifiedAt.toUTCString() %></h2>
-   <figure data-imageid=<%= image.imageid %>>
-    <canvas id="canvas" width="400" height="400"></canvas>
-    <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
-    <div id="image-sharing">
-     <div id="image-fb-share" data-href="<%= 'http://glimmer.grinnell.edu/image/' + image.imageid %>" data-type="button" class="fb-share-button"></div>
-     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out " + ((user&&user.userid===image.userid) ? "my image, \"" + image.title + "\"" : "\"" + image.title + "\" by " + image.username) + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
-      <Tweet>      </Tweet></a>
-     <a href="<%='/user/' + image.username %>">
-      <figcaption class="right"><%- image.username %></figcaption>
-     </a>
-    </div>
-   </figure>
-   <p id="code" class="code"><%- image.code %></p>
-      <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
-      <button id="animator">stop</button>
-<% } %>
-      <button id="jpeg">jpeg</button>
-Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1" > 400px
-</div>
-   <table id="comments">
-    <% for (var i = 0; i < comments.length; i++) { %>
+<h2><%- image.modifiedAt.toUTCString() %></h2>
+<figure data-imageid=<%= image.imageid %>>
+  <canvas id="canvas" width="400" height="400"></canvas>
+  <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
+  <div id="image-sharing">
+    <div id="image-fb-share" data-href="<%= 'http://glimmer.grinnell.edu/image/' + image.imageid %>" data-type="button" class="fb-share-button"></div>
+    <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out " + ((user&&user.userid===image.userid) ? "my image, \"" + image.title + "\"" : "\"" + image.title + "\" by " + image.username) + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
+      <Tweet>      </Tweet>
+    </a>
+  </div> <!-- image-sharing -->
+  <a href="<%='/user/' + image.username %>">
+    <figcaption class="right"><%- image.username %></figcaption>
+  </a>
+<div id="image-controls" style="clear: left;">
+  <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
+    <button id="animator">stop</button>
+  <% } %>
+  <button id="jpeg">jpeg</button>
+  Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1" style="width: 80px;"> 400px
+</div> <!-- image-controls -->
+</figure>
+<p id="code" class="code"><%- image.code %></p>
+<table id="comments">
+  <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
-     <th class="user">
-      <a href='<%= "/user/" + comments[i].username %>'><%- comments[i].username %></a>
-     </th>
-     <td class="comment"><%- comments[i].comment %></td>
-     <script>
-      var date1= new Date("<%=comments[i].postedAt%>")
-      var timePosted= Math.floor(date1.getTime()/1000);
-      var rightNow = Math.floor(new Date().getTime()/1000);
-      var secs= rightNow-timePosted;
-      var dateSentence;
-      if ((secs / 31536000) >= 1){
-      secs= Math.floor(secs / 31536000);
-      dateSentence= secs.toString() + ' year(s) ago';
-}     
-      else if ((secs / 2678400) >= 1){
-      secs=Math.floor(secs / 2678400);
-      dateSentence= secs.toString() + ' months(s) ago';
-}
-      else if ((secs / 604800) >= 1){
-      secs=Math.floor(secs / 604800);
-      dateSentence= secs.toString() + ' week(s) ago';
-      }
-      else if ((secs / 86400) >= 1){
-      secs=Math.floor(secs / 86400);
-      dateSentence= secs.toString() + ' days(s) ago';
-}
-	else
-	dateSentence = 'a few seconds ago';
-</script>
-     <td class="comment"><script>document.write(dateSentence)</script></td>
-     <td class='deleteComment'></td>
-     <% if(user) { %>
-       <td class='flagComment <%= (comments[i].flagged) ? 'flaggedComment' : ''%>'>&#9873</td>
-       <% if(user.type == "A" || user.type == "M" || user.userid == comments[i].userid || user.userid == image.userid) { %>
-      <td class='deleteComment'>X</td>
-       <% } %>
-     <% } %>
-    </tr>
-    <% } %>
-    <% if (user) {%>
-    <% if (image.userid === user.userid) {%>
-     <form method='POST'>
-      <input type='hidden' value= <%= image.imageid %> name='profile' />
-      <input type='submit' class='profile' value='set as featured image' />
-      </form>
-     <form method='POST'>
-      <input type='hidden' value= <%= image.imageid %> name='delete' />
-      <input type='submit' class='delete' value='delete this image' />
-      </form>
-    <% } %>
-    <div id="add">
-     <ul>
-      <li>+ add to album
-       <ul>
-        <% for (var i=0; i < albums.length; i++) {%>
-              <form method='POST'>
-                <li><%= albums[i].name %>
-                <input type='hidden' value= <%= albums[i].albumid %> name='add' />
-                <input type='submit' value='select' class='select' />
-                </li>
-               </form>
+      <th class="user">
+        <a href='<%= "/user/" + comments[i].username %>'><%- comments[i].username %></a>
+      </th>
+      <td class="comment"><%- comments[i].comment %></td>
+      <script>
+        var date1= new Date("<%=comments[i].postedAt%>")
+        var timePosted= Math.floor(date1.getTime()/1000);
+        var rightNow = Math.floor(new Date().getTime()/1000);
+        var secs= rightNow-timePosted;
+        var dateSentence;
+        if ((secs / 31536000) >= 1) {
+          secs= Math.floor(secs / 31536000);
+          dateSentence= secs.toString() + ' year(s) ago';
+        }     
+        else if ((secs / 2678400) >= 1) {
+          secs=Math.floor(secs / 2678400);
+          dateSentence= secs.toString() + ' months(s) ago';
+        }
+        else if ((secs / 604800) >= 1) {
+          secs=Math.floor(secs / 604800);
+          dateSentence= secs.toString() + ' week(s) ago';
+        }
+        else if ((secs / 86400) >= 1) {
+          secs=Math.floor(secs / 86400);
+          dateSentence= secs.toString() + ' days(s) ago';
+        }
+        else {
+          dateSentence = 'a few seconds ago';
+        }
+      </script>
+      <td class="comment"><script>document.write(dateSentence)</script></td>
+      <td class='deleteComment'></td>
+      <% if(user) { %>
+        <td class='flagComment <%= (comments[i].flagged) ? 'flaggedComment' : ''%>'>&#9873</td>
+        <% if(user.type == "A" || user.type == "M" || user.userid == comments[i].userid || user.userid == image.userid) { %>
+          <td class='deleteComment'>X</td>
         <% } %>
-       </ul>
-      </li>
-     </ul>
-    </div>
+      <% } %>
+    </tr>
+  <% } // for %>
+  <% if (user) { %>
+    <% if (image.userid === user.userid) { %>
+      <form method='POST'>
+        <input type='hidden' value= <%= image.imageid %> name='profile' />
+        <input type='submit' class='profile' value='set as featured image' />
+      </form>
+      <form method='POST'>
+        <input type='hidden' value= <%= image.imageid %> name='delete' />
+        <input type='submit' class='delete' value='delete this image' />
+      </form>
+    <% } // if it's the user's image%>
+    <div id="add">
+      <ul>
+        <li>+ add to album
+          <ul>
+            <% for (var i=0; i < albums.length; i++) {%>
+              <li><%= albums[i].name %>
+                <form method='POST'>
+                  <input type='hidden' value= <%= albums[i].albumid %> name='add' />
+                  <input type='submit' value='select' class='select' />
+                </form>
+              </li>
+            <% } // for %>
+          </ul>
+        </li>
+      </ul>
+    </div> <!-- add -->
 
     <tr id="leaveComment" class="comment">
-     <th class="user">
- <a href=<%="/user/" + user.username %>><%-user.username%></a>
-     </th>
-     <td class="comment"><form method="POST"><textarea name="newComment" required="required" placeholder="leave a comment"></textarea><input type="submit" value="submit" name="commentSubmit"></form></td></tr>
-    <% } %>
+      <th class="user">
+        <a href=<%="/user/" + user.username %>><%-user.username%></a>
+      </th>
+      <td class="comment"><form method="POST"><textarea name="newComment" required="required" placeholder="leave a comment"></textarea><input type="submit" value="submit" name="commentSubmit"></form></td>
+    </tr>
+  <% } %>
 </table>
 <% include foot.ejs %>
