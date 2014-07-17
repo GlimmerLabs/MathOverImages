@@ -3,16 +3,37 @@ funBarComment.destroy();
 funBarSaveFunGroup.destroy();
 funBarSaveImGroup.destroy();
 
+/**
+ * submitChallenge sends an ajax request to the api to check if the currShape
+ * satisfies the challenge.
+ * This function assumes that the url ends with the form .../view/[challengeid]
+ */
+var submitChallenge = function() {
+  // Parse url to get the challenge ID
+  var url = document.URL;
+  var i = url.length;
+  while (i > 0 && url[--i] != '/');
+  var id = url.substring(i+1);
+  
+  var request = new XMLHttpRequest();
+  var data = "action=submitchallenge&code=" + currText + "&id=" + id;
+  request.open("POST", "/api", false);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  request.send(data);
+  return eval(request.responseText);
+}
+
+
 /** add button for submitting challenges **/
 
 //challenge text
 var submitChallText = new Kinetic.Text ({
-	x: funBarOffset,
-	y: funBarOffset,
-	text: 'submit challenge',
-	fontSize: funBarFontSize,
-	fontFamily: globalFont,
-	fill: 'black'
+  x: funBarOffset,
+  y: funBarOffset,
+  text: 'submit challenge',
+  fontSize: funBarFontSize,
+  fontFamily: globalFont,
+  fill: 'black'
 });
 
 var textWidth = submitChallText.width();
@@ -23,20 +44,20 @@ var submitButtonX = funBarOffset + funBarTextAreaWidth + submitXoffset;
 var submitButtonY = (funBarHeight - funBarTextAreaHeight) / 2;
 
 var submitChallGroup = new Kinetic.Group ({
-	x: submitButtonX,
-	y: submitButtonY
+  x: submitButtonX,
+  y: submitButtonY
 });
 
 var submitChallRect = new Kinetic.Rect ({
-	x: 0,
-	y: 0,
-	width: submitButtonWidth,
-	height: funBarTextAreaHeight,
-	fill: valueMenuColor,
-	stroke: 'black',
-  	strokeWidth: 1,
-  	shadowColor: 'black',
-  	shadowEnabled: false,
+  x: 0,
+  y: 0,
+  width: submitButtonWidth,
+  height: funBarTextAreaHeight,
+  fill: valueMenuColor,
+  stroke: 'black',
+    strokeWidth: 1,
+    shadowColor: 'black',
+    shadowEnabled: false,
 });
 
 submitChallGroup.add(submitChallRect, submitChallText);
@@ -51,8 +72,8 @@ submitChallGroup.on('mouseover', function() {
 
 submitChallGroup.on('mouseout', function() {
   submitChallRect.setAttrs({
-  	fill: valueMenuColor,
-  	shadowEnabled: false
+    fill: valueMenuColor,
+    shadowEnabled: false
   });
   funBarLayer.draw();
 });
