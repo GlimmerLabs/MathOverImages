@@ -1,4 +1,3 @@
-var width = 900;
 var height = 2 * width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';
@@ -21,7 +20,8 @@ var valueSideLength = functionTotalSideLength / 1.414;
 var valueMenuColor = '#F2937C';
 var valueMenuColorLight = '#FDE6DD';
 var valueXYColor = '#EFDC5C';
-var valueTimeColor = '#FD9E54';
+var valueTimeColor = '#FD9E54'
+var valueMouseColor = '#E46868';
 var valueConstantColor = '#F17C9D';
 
 var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
@@ -39,7 +39,7 @@ var functions = {
   rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor},
   mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionSingleColor}
 }
-var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant', 'mouseX', 'mouseY'];
+var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'mouseX', 'mouseY', 'constant'];
 var values = {
   x:        {rep: 'x', color: valueXYColor},
   y:        {rep: 'y', color: valueXYColor},
@@ -48,8 +48,8 @@ var values = {
   hour:     {rep: 't.h', color: valueTimeColor},
   day:      {rep: 't.d', color: valueTimeColor},
   constant: {rep: '#', color: valueConstantColor},
-  mouseX:   {rep: 'm.x', color: valueTimeColor},
-  mouseY:   {rep: 'm.y', color: valueTimeColor}
+  mouseX:   {rep: 'm.x', color: valueMouseColor},
+  mouseY:   {rep: 'm.y', color: valueMouseColor}
 }
 
 var imageBoxSideLength = width / 80;
@@ -82,16 +82,23 @@ var menuHeight = width / 9;
 var menuCornerWidth = width / 6;
 var buttonWidth = width / 10;
 var valSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
-var numVals = 7;//valNames.length;
+var numVals = 6;//valNames.length;
 var valMenuXSpacing = (valSpaceWidth - (numVals * functionTotalSideLength - 4)) / (numVals + 1);
 var functSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
-var numFuncts = 7; 
+var numFuncts = 6; 
 var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionTotalSideLength)) / (numFuncts + 1);
 var menuYspacing = width * 11/360;
 var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
 var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
 var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
 var menuAnimDuration = 1;
+
+//SCROLLING MENU BUTTONS
+var arrowWidth = width / 50;
+var arrowBoxFill = 'gray';
+var arrowFill = 'black';
+var triX = width / 90;
+var triY = width / 60;
 
 //CORNER BUTTONS
 var menuOffset = 10;
@@ -116,8 +123,8 @@ var funBarOffset = funBarHeight * .17;
 var funBarTextAreaWidth = funBarWidth * .75;
 var funBarTextAreaHeight = funBarHeight * .66;
 var funBarTextOffset = funBarOffset* 1.5;
-var funBarDisplayFontSize = 22; 
-var funBarFontSize = 12;
+var funBarDisplayFontSize = width / 40.9; 
+var funBarFontSize = width / 75;
 var funBarIconOffset = funBarWidth / 16;
 var funBarIconSideLength = funBarHeight / 4;
 var funBarIconTextWidth = width / 18;
@@ -138,7 +145,7 @@ var popCanvasShiftY = popSaveGroupY + (popRectWidth - popCanvasSide) / 2;
 var popTextShiftX = (popRectWidth - popCanvasSide) / 2;
 var popTextShiftY = ((popRectWidth - popCanvasSide) / 1.5) + popCanvasSide;
 var popTextWidth = popCanvasSide;
-var popTextFontSize = 16;
+var popTextFontSize = width / 56.25;
 var popTextHeight = 2 * popTextFontSize;
 
 var nameTextShift = width / 18;

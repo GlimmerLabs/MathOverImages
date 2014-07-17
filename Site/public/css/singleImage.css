@@ -273,6 +273,33 @@ th.user a {
 #image-tweet {
 margin: 0 auto 0 5px;
 }
+.animations {
+	background-color:#ededed;
+	border-top-left-radius:13px;
+	border-top-right-radius:13px;
+	border-bottom-right-radius:13px;
+	border-bottom-left-radius:13px;
+	text-indent:0;
+	border:2px solid #dcdcdc;
+	display:inline-block;
+	color:#777777;
+	font-family:arial;
+	font-size:21px;
+	font-style:normal;
+	height:35px;
+	width:98px;
+}
+.animations:hover {
+	background-color:#dfdfdf;
+}
+
+#settings{
+padding-top:20px;
+}
+
+
+/* This button was generated using CSSButtonGenerator.com */
+
 /*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
 
 

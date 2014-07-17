@@ -348,7 +348,9 @@ module.exports = function(app,passport,database) {
     if (req.session.loggedIn)
       res.redirect('/');
     else {
-      res.render("../public/views/login.jade");
+      res.render("../public/views/login.jade", {
+        flashMessage: "Welcome back to MIST! Enter your username and password to begin"
+      });
     }
   });
 
@@ -526,6 +528,9 @@ module.exports = function(app,passport,database) {
   //   Page for verifying users' email address
   app.get('/verify', function(req,res) {
     login.validatePage(req, res, database);
+  });
+   app.post('/verify', function(req,res) {
+    res.redirect("/login");
   });
 
   app.get('/badges', function(req,res) {
