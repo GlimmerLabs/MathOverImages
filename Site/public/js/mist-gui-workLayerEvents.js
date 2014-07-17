@@ -53,11 +53,8 @@ There are 3 different modes:
       if (makingLine) {
         var outlet;
         if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
-          currLine.attrs.source.attrs.lineOut.splice(currLine.attrs.source.attrs.lineOut.length - 1, 1);
-          currLine.destroy();
-          if (isOutlet(shape)) {
-            shape.scale({ x: 1, y: 1 });
-          } // if the shape was an outlet
+          removeLine(currLine);
+
           makingLine = false;
         } // if the target of the connection is the source, or forming the connection would cause a cycle
         else if (isOutlet(shape)) {
@@ -246,7 +243,7 @@ workLayer.on('mouseover', function(evt) {
           outlet = parent.children[OUTLET_OFFSET];
         } // if the function can only have 1 input
       } // if the mouseover object is part of a function
-      if (outlet && outlet.parent != currLine.attrs.source) {
+      if (outlet && outlet.parent != currLine.attrs.source && !isCycle(currLine.attrs.source, outlet.parent)) {
         outlet.scale({
           x: 1.5,
           y: 1.5
