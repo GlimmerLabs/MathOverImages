@@ -1,4 +1,4 @@
-var width = 700;
+var width = 800;
 var height = 2 * width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';
@@ -60,7 +60,7 @@ var renderSideLength = width / 18;
 
 var editableTextWidth = width / 15;
 var editableTextHeight = width / 30;
-var editableTextFont = 13;
+var editableTextFont = width / 69;
 
 var variableColor = {r: 197, g: 231, b: 109, a: .5};
 var variableStrokeColor = '#A1C447';
@@ -94,7 +94,7 @@ var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
 var menuAnimDuration = 1;
 
 //CORNER BUTTONS
-var menuOffset = widht / 90;
+var menuOffset = width / 90;
 var menuControlHeight = menuHeight / 5;
 var menuControlColor = '#7FA7E7';
 var menuControlSelect = '#9EBDF0'; 
