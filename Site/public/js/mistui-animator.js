@@ -58,17 +58,17 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
 
   // The number of frames per second.
   this.fps = 30;
-   
+
   // Are we animating the image?
   this.on = true;
-  
+
   // The increments used for variables.
   this.increments = [19,23,29,31,37,41,43,47,53,59,61,67,71].map(function (val) { return val/3000; });
-  
+
    // When was the last time we drew a frame?  (Used primarily when we
    // need to re-render a particular frame.)
   this.time = { t:0, m:0, h:0, d:0 };
- 
+
   // Set up the bounds (which also sets up the render width and height)
   this.bounds(0, 0, canvas.width, canvas.height);
 
@@ -150,7 +150,7 @@ MIST.ui.Animator.prototype.frame = function() {
 
   // Make the frame
   try {
-    this.time = MIST.render(this.expParsed, this.context, this.canvas, 
+    this.time = MIST.render(this.expParsed, this.context, this.canvas,
         this.renderWidth, this.renderHeight, this.left, this.top,
         this.width, this.height);
   }
@@ -187,9 +187,9 @@ MIST.ui.Animator.prototype.jpgBody = function() {
  * Run the animation.
  */
 MIST.ui.Animator.prototype.run = function() {
-  var runner = function(animator) { 
+  var runner = function(animator) {
     return function() { return animator.run(); }
-   }; 
+   };
 
   // Build one frame
   this.frame();
@@ -243,7 +243,7 @@ MIST.ui.Animator.prototype.start = function()
   // Get the remaining info.  // Hack
   this.on = (this.exp.indexOf("t.") > -1) || (this.exp.indexOf("m.") > -1);
   // Set up a mouse listener for the canvas
-  canvas.onmousemove = makeMouseMoveHandler(this);
+  this.canvas.onmousemove = makeMouseMoveHandler(this);
   // And go
   this.run();
 }; // start
