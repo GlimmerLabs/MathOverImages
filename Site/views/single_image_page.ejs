@@ -32,7 +32,32 @@ Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" st
       <a href='<%= "/user/" + comments[i].username %>'><%- comments[i].username %></a>
      </th>
      <td class="comment"><%- comments[i].comment %></td>
-     <td class="comment"><%- comments[i].postedAt.toUTCString() %></td>
+     <script>
+      var date1= new Date("<%=comments[i].postedAt%>")
+      var timePosted= Math.floor(date1.getTime()/1000);
+      var rightNow = Math.floor(new Date().getTime()/1000);
+      var secs= rightNow-timePosted;
+      var dateSentence;
+      if ((secs / 31536000) >= 1){
+      secs= Math.floor(secs / 31536000);
+      dateSentence= secs.toString() + ' year(s) ago';
+}     
+      else if ((secs / 2678400) >= 1){
+      secs=Math.floor(secs / 2678400);
+      dateSentence= secs.toString() + ' months(s) ago';
+}
+      else if ((secs / 604800) >= 1){
+      secs=Math.floor(secs / 604800);
+      dateSentence= secs.toString() + ' week(s) ago';
+      }
+      else if ((secs / 86400) >= 1){
+      secs=Math.floor(secs / 86400);
+      dateSentence= secs.toString() + ' days(s) ago';
+}
+	else
+	dateSentence = 'a few seconds ago';
+</script>
+     <td class="comment"><script>document.write(dateSentence)</script></td>
      <td class='deleteComment'></td>
      <% if(user) { %>
        <td class='flagComment <%= (comments[i].flagged) ? 'flaggedComment' : ''%>'>&#9873</td>
