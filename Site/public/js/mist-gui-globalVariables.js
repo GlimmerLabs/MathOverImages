@@ -60,7 +60,7 @@ var renderSideLength = width / 18;
 
 var editableTextWidth = width / 15;
 var editableTextHeight = width / 30;
-var editableTextFont = 13;
+var editableTextFont = width / 69;
 
 var variableColor = {r: 197, g: 231, b: 109, a: .5};
 var variableStrokeColor = '#A1C447';
