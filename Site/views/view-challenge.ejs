@@ -2,7 +2,11 @@
   <% challenge.name %>
 <% } %>
 <% var css = function() { %>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/challenge-gui.css">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="/css/jquery-override.css">
+
+
 <% } %>
 <% var js = function() { %>
   <script type="text/javascript" src="/js/imagepage.js"></script>
@@ -54,6 +58,40 @@
   <script type="text/javascript" src="/js/analytics.js"></script>
   <script type="text/javascript" src="/js/sharing-tools.js"></script>
   <script type="text/javascript" src="/js/imagepage.js"></script>
+  <script type="text/javascript" src="https://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script type="text/javascript" src="/js/mist-utils.js"></script>
+  <script type="text/javascript" src="/js/mist-functions.js"></script>
+  <script type="text/javascript" src="/js/mist-layout.js"></script>
+  <script type="text/javascript" src="/js/mist-functions-layout.js"></script>
+  <script type="text/javascript" src="/js/mist-functions-builtin.js"></script>
+  <script type="text/javascript" src="/js/mist-render.js"></script>
+  <script type="text/javascript" src="/js/mistui-dialogs.js"></script>
+  <script type="text/javascript" src="/js/mistui-help.js"></script>
+  <script type="text/javascript" src="/js/mistui-menus.js"></script>
+  <script type="text/javascript" src="/js/mistui-animator.js"></script>
+  <script type="text/javascript" src="/js/challenge-gui-variables.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-utilityFunctions.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-predicates.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-menuTweens.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-constructors.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-EditableText.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-workspaceFunctions.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-makeMenu.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-makeToolbox.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-makeFunctionBar.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-menuEvents.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-dragLayerEvents.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-lineLayerEvents.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-toolboxEvents.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-changingWorkspace.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-workspaceFunctions.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-saveScreen.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-saveWorkspaceScreen.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-openWorkspaceScreen.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-funBarEvents.js"></script>
+  <script type="text/javascript" src="/js/mist-gui-makeLabels.js"></script>
+
   <% component("js") %>
  </head>
 
@@ -97,7 +135,19 @@
                  '</h1></div>') %>
 
     <% component("body") %>
-
+    <table id="gui-and-key">
+        <tr>
+          <td>
+            <div id="container">
+              <script type="text/javascript" src="/js/mist-gui-initializeStage.js"></script>
+              <script type="text/javascript" src="/js/mist-gui-workLayerEvents.js"></script>
+              <script>
+                stage.draw()
+              </script>
+            </div>
+          </td>
+        </tr>
+    </table>
   </div>
   <footer>
    <p>©2014 Glimmer Labs</p>

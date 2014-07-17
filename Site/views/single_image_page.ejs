@@ -58,7 +58,6 @@ Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" st
 	dateSentence = 'a few seconds ago';
 </script>
      <td class="comment"><script>document.write(dateSentence)</script></td>
-     <td class='deleteComment'></td>
      <% if(user) { %>
        <td class='flagComment <%= (comments[i].flagged) ? 'flaggedComment' : ''%>'>&#9873</td>
        <% if(user.type == "A" || user.type == "M" || user.userid == comments[i].userid || user.userid == image.userid) { %>
