@@ -118,12 +118,7 @@ var borderLine = new Kinetic.Line({
   menuLayer.add(menuValues[i]);
  }
 
-//SCROLLING MENU BUTTONS
-var arrowWidth = width / 50;
-var arrowBoxFill = 'gray';
-var arrowFill = 'black';
-var triX = width / 90;
-var triY = width / 60;
+
 /**
  * addScrollArrows creates and returns an array of two groups 
  * (left arrow and right arrow)

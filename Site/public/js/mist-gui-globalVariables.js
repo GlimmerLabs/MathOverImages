@@ -1,4 +1,3 @@
-var width = 900;
 var height = 2 * width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';
@@ -94,6 +93,13 @@ var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
 var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
 var menuAnimDuration = 1;
 
+//SCROLLING MENU BUTTONS
+var arrowWidth = width / 50;
+var arrowBoxFill = 'gray';
+var arrowFill = 'black';
+var triX = width / 90;
+var triY = width / 60;
+
 //CORNER BUTTONS
 var menuOffset = 10;
 var menuControlHeight = menuHeight / 5;
@@ -117,8 +123,8 @@ var funBarOffset = funBarHeight * .17;
 var funBarTextAreaWidth = funBarWidth * .75;
 var funBarTextAreaHeight = funBarHeight * .66;
 var funBarTextOffset = funBarOffset* 1.5;
-var funBarDisplayFontSize = 22; 
-var funBarFontSize = 12;
+var funBarDisplayFontSize = width / 40.9; 
+var funBarFontSize = width / 75;
 var funBarIconOffset = funBarWidth / 16;
 var funBarIconSideLength = funBarHeight / 4;
 var funBarIconTextWidth = width / 18;
@@ -139,7 +145,7 @@ var popCanvasShiftY = popSaveGroupY + (popRectWidth - popCanvasSide) / 2;
 var popTextShiftX = (popRectWidth - popCanvasSide) / 2;
 var popTextShiftY = ((popRectWidth - popCanvasSide) / 1.5) + popCanvasSide;
 var popTextWidth = popCanvasSide;
-var popTextFontSize = 16;
+var popTextFontSize = width / 56.25;
 var popTextHeight = 2 * popTextFontSize;
 
 var nameTextShift = width / 18;
