@@ -21,7 +21,8 @@ var valueSideLength = functionTotalSideLength / 1.414;
 var valueMenuColor = '#F2937C';
 var valueMenuColorLight = '#FDE6DD';
 var valueXYColor = '#EFDC5C';
-var valueTimeColor = '#FD9E54';
+var valueTimeColor = '#FD9E54'
+var valueMouseColor = '#E46868';
 var valueConstantColor = '#F17C9D';
 
 var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
@@ -39,7 +40,7 @@ var functions = {
   rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor},
   mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionSingleColor}
 }
-var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant', 'mouseX', 'mouseY'];
+var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'mouseX', 'mouseY', 'constant'];
 var values = {
   x:        {rep: 'x', color: valueXYColor},
   y:        {rep: 'y', color: valueXYColor},
@@ -48,8 +49,8 @@ var values = {
   hour:     {rep: 't.h', color: valueTimeColor},
   day:      {rep: 't.d', color: valueTimeColor},
   constant: {rep: '#', color: valueConstantColor},
-  mouseX:   {rep: 'm.x', color: valueTimeColor},
-  mouseY:   {rep: 'm.y', color: valueTimeColor}
+  mouseX:   {rep: 'm.x', color: valueMouseColor},
+  mouseY:   {rep: 'm.y', color: valueMouseColor}
 }
 
 var imageBoxSideLength = width / 80;
@@ -60,7 +61,7 @@ var renderSideLength = width / 18;
 
 var editableTextWidth = width / 15;
 var editableTextHeight = width / 30;
-var editableTextFont = 13;
+var editableTextFont = width / 69;
 
 var variableColor = {r: 197, g: 231, b: 109, a: .5};
 var variableStrokeColor = '#A1C447';
@@ -82,10 +83,10 @@ var menuHeight = width / 9;
 var menuCornerWidth = width / 6;
 var buttonWidth = width / 10;
 var valSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
-var numVals = 7;//valNames.length;
+var numVals = 6;//valNames.length;
 var valMenuXSpacing = (valSpaceWidth - (numVals * functionTotalSideLength - 4)) / (numVals + 1);
 var functSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
-var numFuncts = 7; 
+var numFuncts = 6; 
 var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionTotalSideLength)) / (numFuncts + 1);
 var menuYspacing = width * 11/360;
 var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
