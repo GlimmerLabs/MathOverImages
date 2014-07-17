@@ -18,13 +18,14 @@
      </a>
     </div>
    </figure>
-   <p id="code" class="code"><%- image.code %></p>
+ <div id="settings">
       <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
-      <button id="animator">stop</button>
+      <button id="animator" class="animations" >stop</button>
 <% } %>
-      <button id="jpeg">jpeg</button>
+      <button id="jpeg" class="animations">jpeg</button>
 Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1" > 400px
-</div>
+ </div>
+   <p id="code" class="code"><%- image.code %></p>
    <table id="comments">
     <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
