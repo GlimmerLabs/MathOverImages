@@ -54,7 +54,7 @@
       text: functions[funName].rep,
       fontFamily: globalFont,
       fill: 'black',
-      fontSize: 16,
+      fontSize: width / 56.25,
       x: 0,
       y: functionTotalSideLength/2 - functionHalfStrokeWidth,
       width: functionTotalSideLength,
