@@ -14,6 +14,6 @@ body
      <p style="pre-wrap">
        <%- challenge.description %>
      </p>
-     <canvas id="canvas" width=400 height=400/>
-     <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
   </div>
+  <canvas id="canvas" width=400 height=400/>
+  <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
