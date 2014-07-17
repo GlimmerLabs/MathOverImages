@@ -115,7 +115,7 @@
       text: values[valName].rep,
       fontFamily: globalFont,
       fill: 'black',
-      fontSize: 16,
+      fontSize: width / 56.25,
       x: 0,
       y: valueSideLength/2,
       width: functionRectSideLength,
