@@ -648,7 +648,7 @@ module.exports.getIDforUsername = (function (username, callback) {
 
 module.exports.imageInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
-  module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid, images.userid FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
+  module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid, images.userid, images.featured FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
     if (error)
       callback(null, error);
     else if (!rows[0])
