@@ -42,7 +42,7 @@ var sendMail = (function(to, subject, message, callback){
   else {
     message = (message.replace(/\'/g, "'\\''")
                .replace(/!/g, "&#33;")
-              .replace(/\n/g, " "));
+               .replace(/\n/g, " "));
     console.log("echo '" + message + "' | mailx -a 'Content-type: text/html;' -s '" + subject + "' " + to);
     runShell("echo '" + message + "' | mailx -a 'Content-type: text/html;' -s '" + subject + "' " + to);
     callback(true, null);
@@ -54,30 +54,25 @@ var sendMail = (function(to, subject, message, callback){
 * callback(success, error);
 */
 var validateEmail = (function(user, callback){
-  bcrypt.hash(user.forename + user.surname + user.hashedPassword + user.email, null, null, function(err,token) {
-    var userid = database.sanitize(user.userid);
-    database.query("INSERT INTO verifications (userid, token) VALUES ('"+ userid + "','" + token +"');", function(result, error){
-      if (error){
-        callback(false, error);
-      }
-      else {
-        fs.readFile("public/emails/validateEmail.html", function (error, data){
-          if (error){
-            callback(false, error);
-          }
-          else {
-            var link = "http://glimmer.grinnell.edu/verify?id=" + user.userid +"&token=" + token;
-            var message = data.toString();
-            message = (enterUserInfo(user, message)
-                       .replace(/(?:{{ LINK }})/g, link));
-            sendMail(user.email, user.forename + ", validate your email address for MIST", message, callback);
-          }
-        });
-      }
-    });
+  database.addVerifyToken(user, function(token, error){
+    if (error){
+      calback(false, error);
+    }
+    else {
+      fs.readFile("public/emails/validateEmail.html", function (error, data){
+        if (error){
+          callback(false, error);
+        }
+        else {
+          var link = "http://glimmer.grinnell.edu/verify?id=" + user.userid +"&token=" + token;
+          var message = data.toString();
+          message = (enterUserInfo(user, message)
+                     .replace(/(?:{{ LINK }})/g, link));
+          sendMail(user.email, user.forename + ", validate your email address for MIST", message, callback);
+        }
+      });
+    }
   });
 });
-
-
 
 module.exports.validateEmail = validateEmail;

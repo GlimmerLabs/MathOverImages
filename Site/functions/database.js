@@ -1235,6 +1235,7 @@ module.exports.deleteComment= (function(userid, commentId, callback){
 
 /* End comment moderation functions */
 
+/* Cookie token getter/setter */
 module.exports.setToken = (function (userid, token, callback){
   module.exports.query("UPDATE users SET token='" + token +"' WHERE userid='" + userid + "';", function(result, error){
     if (error){
@@ -1262,5 +1263,24 @@ module.exports.checkToken = (function (userid, token, callback){
     else {
       callback(false, "No session token");
     }
+  });
+});
+
+/* End Cookie token getter/setter */
+
+
+
+// Callback(token, error)
+module.exports.addVerifyToken = (function (user, callback) {
+  bcrypt.hash(user.forename + user.surname + user.hashedPassword + user.email, null, null, function(err,token) {
+    var userid = database.sanitize(user.userid);
+    module.exports.query("INSERT INTO verifications (userid, token) VALUES ('"+ userid + "','" + token +"');", function(result, error){
+      if (error){
+        callback(null, error);
+      }
+      else {
+        callback(token, null);
+      }
+    });
   });
 });
