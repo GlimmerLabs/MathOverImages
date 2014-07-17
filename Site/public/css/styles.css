@@ -90,7 +90,7 @@ header nav li:hover {
 
 }
 .menu{
-    
+
     position: relative;
     margin: 0px;
     list-style: none;
@@ -208,9 +208,10 @@ input[type='submit'].more:hover{
  display:block;
  text-align: left;
  border: 10px solid white;
+  width: 100%;
  color: #7B7B7B;
  border-radius: 15px;
- margin:0 -110px;
+ margin:0 auto;
 }
 
 
@@ -301,7 +302,7 @@ footer p {
 }
 
 #fb-root {
-  margin: 0 5px 0 auto; 
+  margin: 0 5px 0 auto;
 }
 
 #google-follow {
@@ -313,7 +314,7 @@ footer p {
 }
 
 #sharing {
-  margin: 0 auto; 
+  margin: 0 auto;
   display: -webkit-flex;
   -webkit-flex-direction: row;
   display: flex;
