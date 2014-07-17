@@ -33,9 +33,10 @@ Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" st
      </th>
      <td class="comment"><%- comments[i].comment %></td>
      <script>
-      var date1= new Date("<%=comments[i].postedAt%>")
-      var timePosted= Math.floor(date1.getTime()/1000);
-      var rightNow = Math.floor(new Date().getTime()/1000);
+      var old= new Date("<%=comments[i].postedAt%>")
+      var timePosted= Date.UTC(old.getUTCFullYear(), old.getUTCMonth(), old.getUTCDate(), old.getUTCHours(), old.getUTCMinutes(), old.getUTCSeconds())/1000;
+      var now= new Date();
+      var rightNow = new Date (now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())/1000;
       var secs= rightNow-timePosted;
       var dateSentence;
       if ((secs / 31536000) >= 1){
@@ -44,7 +45,7 @@ Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" st
 }     
       else if ((secs / 2678400) >= 1){
       secs=Math.floor(secs / 2678400);
-      dateSentence= secs.toString() + ' months(s) ago';
+      dateSentence= secs.toString() + ' month(s) ago';
 }
       else if ((secs / 604800) >= 1){
       secs=Math.floor(secs / 604800);
@@ -52,7 +53,15 @@ Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" st
       }
       else if ((secs / 86400) >= 1){
       secs=Math.floor(secs / 86400);
-      dateSentence= secs.toString() + ' days(s) ago';
+      dateSentence= secs.toString() + ' day(s) ago';
+}
+      else if ((secs / 3600) >= 1){
+      secs=Math.floor(secs / 3600);
+      dateSentence= secs.toString() + ' hour(s) ago';
+}
+      else if ((secs / 60) >= 1){
+      secs=Math.floor(secs / 60);
+      dateSentence= secs.toString() + ' minute(s) ago';
 }
 	else
 	dateSentence = 'a few seconds ago';
