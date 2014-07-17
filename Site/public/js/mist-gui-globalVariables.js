@@ -93,6 +93,13 @@ var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
 var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
 var menuAnimDuration = 1;
 
+//SCROLLING MENU BUTTONS
+var arrowWidth = width / 50;
+var arrowBoxFill = 'gray';
+var arrowFill = 'black';
+var triX = width / 90;
+var triY = width / 60;
+
 //CORNER BUTTONS
 var menuOffset = 10;
 var menuControlHeight = menuHeight / 5;
