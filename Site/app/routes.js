@@ -529,6 +529,9 @@ module.exports = function(app,passport,database) {
   app.get('/verify', function(req,res) {
     login.validatePage(req, res, database);
   });
+   app.post('/verify', function(req,res) {
+    res.redirect("/login");
+  });
 
   app.get('/badges', function(req,res) {
     res.render("../public/views/soon.jade", {
