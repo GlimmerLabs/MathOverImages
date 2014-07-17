@@ -1235,6 +1235,7 @@ module.exports.deleteComment= (function(userid, commentId, callback){
 
 /* End comment moderation functions */
 
+/* Cookie token getter/setter */
 module.exports.setToken = (function (userid, token, callback){
   module.exports.query("UPDATE users SET token='" + token +"' WHERE userid='" + userid + "';", function(result, error){
     if (error){
@@ -1263,4 +1264,53 @@ module.exports.checkToken = (function (userid, token, callback){
       callback(false, "No session token");
     }
   });
+});
+
+/* End Cookie token getter/setter */
+
+
+
+// Callback(token, error)
+module.exports.addVerifyToken = (function (user, callback) {
+  bcrypt.hash(user.forename + user.surname + user.hashedPassword + user.email, null, null, function(err,token) {
+    var userid = module.exports.sanitize(user.userid);
+    module.exports.query("INSERT INTO verifications (userid, token) VALUES ('"+ userid + "','" + token +"');", function(result, error){
+      if (error){
+        callback(null, error);
+      }
+      else {
+        callback(token, null);
+      }
+    });
+  });
+});
+
+// Callback(success, error)
+module.exports.verifyEmail = (function (userid, token, callback){
+  module.exports.query("SELECT * FROM verifications WHERE userid='" + userid + "' AND token ='" + token + "';", function(results, error){
+    if (error){ // Database I/O error
+      callback(false, error);
+    }
+    else if (!results[0]){ // Userid does not match token, or has already been validated
+      callback(false, null);
+    }
+    else { // Verify Email
+      module.exports.query("DELETE FROM verifications WHERE userid='" + userid + "' AND token ='" + token + "';", function(results, error){
+        if (error){ // Database I/O error
+          callback(false, error);
+        }
+        else {
+          module.exports.query("UPDATE users SET verified='1' WHERE userid = '" + userid + "';", function(results, error){
+            if (error){
+              callback(false, error);
+            }
+            else{
+              callback(true, null);
+            }
+          });
+        }
+      })
+    }
+  });
+
 });

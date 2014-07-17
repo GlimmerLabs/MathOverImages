@@ -20,6 +20,27 @@ if (!MIST.ui) { MIST.ui = {}; }
  */
 var builtinsPattern = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,\-]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:m.x)|(?:m.y)|(?:mistif)/g
 
+// +---------+---------------------------------------------------------
+// | Helpers |
+// +---------+
+
+/**
+ * Make the mouse handler with a particular animator.
+ */
+function makeMouseMoveHandler(animator) {
+  return function(evt) {
+    var rect = animator.canvas.getBoundingClientRect();
+    var x = evt.clientX - rect.left - animator.left;
+    var y = evt.clientY - rect.top - animator.top;
+    var scaledX = (x * 2.0/animator.width) - 1;
+    var scaledY = (y * 2.0/animator.height) - 1;
+    if ((scaledX < -1) || (scaledX > 1) || (scaledY < -1) || (scaledY > 1)) {
+      return;
+    }
+    setMouse(scaledX,scaledY);
+  }; // function
+} // makeMouseMoveHandler
+
 // +--------------+--------------------------------------------------
 // | Constructors |
 // +--------------+
@@ -60,16 +81,6 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
     this.log(err);
     // throw err;
   }
-
-  // Set up a mouse listener for the canvas
-  canvas.onmousemove = function(evt) {
-    var rect = canvas.getBoundingClientRect();
-    var x = evt.clientX - rect.left;
-    var y = evt.clientY - rect.top;
-    var scaledX = (x * 2.0/canvas.width) - 1;
-    var scaledY = (y * 2.0/canvas.height) - 1;
-    setMouse(scaledX,scaledY);
-  }; // onmousemove
 } // Constructor
 
 // +---------+-------------------------------------------------------
@@ -210,6 +221,7 @@ MIST.ui.Animator.prototype.setResolution = function(width,height) {
  */
 MIST.ui.Animator.prototype.stop = function() {
   this.on = false;
+  this.canvas.onmousemove = undefined;
 }; // stop
 
 /**
@@ -230,6 +242,9 @@ MIST.ui.Animator.prototype.start = function()
 
   // Get the remaining info.  // Hack
   this.on = (this.exp.indexOf("t.") > -1) || (this.exp.indexOf("m.") > -1);
+  // Set up a mouse listener for the canvas
+  canvas.onmousemove = makeMouseMoveHandler(this);
+  // And go
   this.run();
 }; // start
 

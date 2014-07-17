@@ -160,7 +160,7 @@ var canMoveRight = function(type) {
  */
 var canMoveLeft = function(type) {
 	return ((type == 'values' &&
-	  menuValues[menuValues.length - 1].x() > width) ||
+	  menuValues[menuValues.length - 1].x() > width - buttonWidth) ||
       (type == 'functions' && 
 	  menuFunctions[menuFunctions.length - 1].x() > width))
 };
