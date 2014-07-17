@@ -39,15 +39,17 @@ var functions = {
   rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor},
   mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionSingleColor}
 }
-var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant'];
+var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'constant', 'mouseX', 'mouseY'];
 var values = {
-  x:        {rep: 'x',   max: 20, min: 2, color: valueXYColor},
-  y:        {rep: 'y',   max: 20, min: 2, color: valueXYColor},
-  second:   {rep: 't.s', max: 1,  min: 1, color: valueTimeColor},
-  minute:   {rep: 't.m', max: 1,  min: 1, color: valueTimeColor},
-  hour:     {rep: 't.h', max: 1,  min: 1, color: valueTimeColor},
-  day:      {rep: 't.d', max: 1,  min: 1, color: valueTimeColor},
-  constant: {rep: '#',    max: 20, min: 2, color: valueConstantColor}
+  x:        {rep: 'x', color: valueXYColor},
+  y:        {rep: 'y', color: valueXYColor},
+  second:   {rep: 't.s', color: valueTimeColor},
+  minute:   {rep: 't.m', color: valueTimeColor},
+  hour:     {rep: 't.h', color: valueTimeColor},
+  day:      {rep: 't.d', color: valueTimeColor},
+  constant: {rep: '#', color: valueConstantColor},
+  mouseX:   {rep: 'm.x', color: valueTimeColor},
+  mouseY:   {rep: 'm.y', color: valueTimeColor}
 }
 
 var imageBoxSideLength = width / 80;
@@ -80,8 +82,8 @@ var menuHeight = width / 9;
 var menuCornerWidth = width / 6;
 var buttonWidth = width / 10;
 var valSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
-var numVals = valNames.length;
-var valMenuXSpacing = (valSpaceWidth - (numVals * functionTotalSideLength)) / (numVals + 1);
+var numVals = 7;//valNames.length;
+var valMenuXSpacing = (valSpaceWidth - (numVals * functionTotalSideLength - 4)) / (numVals + 1);
 var functSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
 var numFuncts = 7; 
 var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionTotalSideLength)) / (numFuncts + 1);
