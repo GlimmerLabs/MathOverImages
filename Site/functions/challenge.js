@@ -167,26 +167,40 @@ module.exports.view = function(req, res, database) {
 module.exports.submission = function(req, res, database) {
 //img1 - challenge
 //img2 - submission
-  var w1=img1.width;
-  var h1=img1.height;
-  var pixelData1=canvas.getContext('2d').getImageData(i, j, w1, h1);
-  var w2=img2.width;
-  var h2=img2.height;
-  var pixelData1=canvas.getContext('2d').getImageData(i, j, w2, h2);
   var similarity=0;
-  for (var i=0; i<pixelData1.length; i+=4)
-  {
-    var pixel1=[pixelData1[i], pixelData1[i+1], pixelData1[i+2]];
-    var pixel2=[pixelData2[i], pixelData2[i+1], pixelData2[i+2]];
-    var diffR=abs(pixel2[0]-pixel1[0]);
-    var diffG=abs(pixel2[1]-pixel1[1]);
-    var diffB=abs(pixel2[2]-pixel1[2]);
-    if (diffR < .01 && diffG < .01 && diffB < .01)
+  var compareIMG=function () { //positive match with 90% jpeg similarity
+    for (var i=0; i<pixelData1.length; i+=4)
     {
-      similarity++;
+      var w1=img1.width;
+      var h1=img1.height;
+      var w2=img2.width;
+      var h2=img2.height;
+      var pixelData1=canvas.getContext('2d').getImageData(i, j, w1, h1);
+      var pixelData1=canvas.getContext('2d').getImageData(i, j, w2, h2);
+      var pixel1=[pixelData1[i], pixelData1[i+1], pixelData1[i+2]];
+      var pixel2=[pixelData2[i], pixelData2[i+1], pixelData2[i+2]];
+      var diffR=abs(pixel2[0]-pixel1[0]);
+      var diffG=abs(pixel2[1]-pixel1[1]);
+      var diffB=abs(pixel2[2]-pixel1[2]);
+      if (diffR < .01 && diffG < .01 && diffB < .01)
+      {
+        similarity++;
+      }
     }
-  }
-  if (similarity >= (pixelData1.length*.9))
+    if (similarity >= (pixelData1.length*.9))
+    {
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
+  };
+  var compareCODE=function () { //positive match with EXACT code
+  var code1 = img1.code;
+  var code2 = img2.code;
+  similarity = code1.localeCompare(code2);
+  if (similarity == 0)
   {
     return 1;
   }
@@ -194,4 +208,5 @@ module.exports.submission = function(req, res, database) {
   {
     return 0;
   }
+  };
 };
