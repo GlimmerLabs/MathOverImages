@@ -4,8 +4,7 @@ var auth = require('./auth.js');  // Include private-strings that should not be 
 var mysql = require('mysql'); // Include the mysql library
 var bcrypt = require('bcrypt-nodejs'); // Include Blowfish Algorithm for hashing passwords
 var validate = require('validator'); // Include validation functions
-
-var mail = require('./mail');
+var mail = require('./mail.js');
 
 // Make a connection pool to handle concurrencies esp. that of async calls
 var pool = mysql.createPool({
@@ -254,7 +253,14 @@ module.exports.addUser =(function (forename, surname, password, email, username,
               if (!err){
                 module.exports.query("INSERT INTO users (forename, surname, hashedPassword, email, username, signupTime) VALUES ('" + forename + "','" + surname + "','" + hashedPassword +  "','" + email.toLowerCase() + "','" + username + "', UTC_TIMESTAMP);", function(results, error){
                   if (results) {
-                    callback(true,error);
+                    mail.validateEmail({
+                      forename: forename,
+                      surname: surname,
+                      hashedPassword: hashedPassword,
+                      email: email,
+                      username: username,
+                      userid: results.insertId
+                    }, callback);
                   }
                   else
                     callback(false,error);
@@ -648,7 +654,7 @@ module.exports.getIDforUsername = (function (username, callback) {
 
 module.exports.imageInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
-  module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid, images.userid FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
+  module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid, images.userid, images.featured FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
     if (error)
       callback(null, error);
     else if (!rows[0])

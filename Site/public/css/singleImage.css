@@ -84,6 +84,40 @@ div.comment h1.op a{
   resize: none;
 }
 
+/* Flag Comment and Delete Comment Styling */
+.flagComment {
+  display: inline;
+  background-color: gray;
+  border: 1px solid black;
+  border-radius: .25em;
+  cursor: pointer;
+}
+.flagComment:hover {
+  box-shadow: black 1px 1px;
+}
+.deleteComment {
+  display: inline;
+  background-color: gray;
+  border: 1px solid black;
+  border-radius: .25em;
+  cursor: pointer;
+  padding-left: .2em;
+  padding-right: .2em;
+  color: #a00;
+  margin-left: 2px;
+}
+.deleteComment:hover {
+  box-shadow: black 1px 1px;
+}
+td.flagged {
+  cursor: default;
+  color: #a00;
+}
+td.flagged:hover {
+  box-shadow: none;
+}
+/* End Flag Comment and Delete Comment Styling */
+
 input[type='submit'] {
   color: #FFF;
   background-color: #979797;
@@ -239,6 +273,52 @@ th.user a {
 #image-tweet {
 margin: 0 auto 0 5px;
 }
+.animations {
+	background-color:#ededed;
+	border-top-left-radius:13px;
+	border-top-right-radius:13px;
+	border-bottom-right-radius:13px;
+	border-bottom-left-radius:13px;
+	text-indent:0;
+	border:2px solid #dcdcdc;
+	display:inline-block;
+	color:#777777;
+	font-family:arial;
+	font-size:21px;
+	font-style:normal;
+	width:110px;
+}
+.animations:hover {
+	background-color:#dfdfdf;
+}
+
+#settings{
+padding-top:20px;
+}
+
+#reso{
+padding-top:10px;
+font-family: 'Open Sans';
+font-size: 15px;
+color: rgb(119, 119, 119);
+}
+
+input[type=range] {
+    -webkit-appearance:none !important;
+    background-color: rgb(157, 150, 142);
+    width: 300px;
+    height:4px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+     -webkit-appearance: none;
+    background-color: grey;
+    opacity: 0.5;
+    width: 10px;
+    height: 26px;
+}
+/* This button was generated using CSSButtonGenerator.com */
+
 /*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
 
 

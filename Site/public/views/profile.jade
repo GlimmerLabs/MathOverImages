@@ -56,8 +56,7 @@ block content
            canvas.style.border = '#C0C0C0 1px dashed';
    if viewingSelf
     div#bio
-     p.biography
-       =viewing.about
+     p.biography!= viewing.about
        input(type='image' id='edit-bio' src='/icons/edit_button.png' value='submit')
      form(method='POST' id='bio-form')
       textarea(name='aboutSection' cols='40' rows='5')!= viewing.about

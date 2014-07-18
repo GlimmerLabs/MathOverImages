@@ -2,8 +2,10 @@ title
   <% challenge.name %>
 css
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/mist-gui.css">
 js
   <script type="text/javascript" src="/js/imagepage.js"></script>
+
 head1
   challenges
 body
@@ -12,6 +14,6 @@ body
      <p style="pre-wrap">
        <%- challenge.description %>
      </p>
-     <canvas id="canvas" width=400 height=400/>
-     <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
   </div>
+  <canvas id="canvas" width=400 height=400/>
+  <p id="code" class="code" style="display:none;"><%- challenge.code %></p>

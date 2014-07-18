@@ -201,17 +201,26 @@ popSaveButtonGroup.add(popSaveButtonText);
 
 // rCanvas is the canvas used to render the image on the saveScreen
 var rCanvas = renderLayer.canvas._canvas;
+var rAnimator;
 
 /**
  * renderPopCanvas takes a renderFunction and renders that image on the save screen
  * at a resolution of (width * (2 / 9))
  */
 var renderPopCanvas = function(renderFunction) {
+  rAnimator = new MIST.ui.Animator(renderFunction, [], {}, 
+    rCanvas, function() { });
+  rAnimator.bounds(popCanvasShiftX, popCanvasShiftY, 
+                   popCanvasSide, popCanvasSide);
+  rAnimator.setResolution(popCanvasResolution, popCanvasResolution);
+  rAnimator.frame();
+  /*
   var mistObj = MIST.parse(renderFunction);
   MIST.render(mistObj, {}, rCanvas, 
     popCanvasResolution, popCanvasResolution, 
     popCanvasShiftX, popCanvasShiftY, 
     popCanvasSide, popCanvasSide);	
+*/
 }; // renderPopCanvas(renderFunction)
 
 /**
@@ -288,12 +297,14 @@ popCancelButtonGroup.on('mouseup', function(){
   cover.setAttr('visible', false);
   popSaveGroup.setAttr('visible', false);
   popErrorText.setAttr('text', '');
-  animation = false;
+  //animation = false;
   showThumbnails();
-  setTimeout(function(){
-    renderLayer.draw();
-  }, 50);
+  rAnimator.stop();
+  rAnimator = undefined;
   screenLayer.draw();
+  setTimeout(function(){
+      renderLayer.draw();
+    }, 50);
 });
 
 /**
@@ -324,7 +335,8 @@ popSaveButtonGroup.on('mouseup', function(){
     cover.setAttr('visible', false);
     popSaveGroup.setAttr('visible', false);
     showThumbnails();
-    animation = false;
+    rAnimator.stop()
+    rAnimator = undefined;
     setTimeout(function(){
       renderLayer.draw();
     }, 50);
@@ -342,6 +354,10 @@ var openSavePopUp = function() {
   popSaveGroup.setAttr('visible', true);
   var renderFunction = currShape.attrs.renderFunction;
   updatePopText(renderFunction);
+  renderPopCanvas(renderFunction);
+  rAnimator.start();
+  screenLayer.draw();
+  /*
   animation = true;
   screenLayer.draw();
   var frame = function() {
@@ -351,6 +367,7 @@ var openSavePopUp = function() {
     } // if animation
   } // frame()
   frame();
+  */
 }; // openSavePopUp()
 
 
