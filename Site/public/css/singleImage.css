@@ -44,8 +44,7 @@ figure img {
   cursor: pointer;
 }
 
-#comments {
-  width:50%;
+table#comments {
   margin: 0 auto;
 }
 
@@ -163,6 +162,12 @@ input[type='submit'].select:hover{
     color: #FFF;
 }
 
+table.comments {
+}
+
+tbody {
+}
+
 tr.comment {
   valign: top;
   vertical-align: top;
@@ -170,7 +175,10 @@ tr.comment {
 }
 
 td.comment {
-  min-width: 60%;
+  width: 60%;
+}
+
+td.date {
 }
 
 th.user {
