@@ -70,7 +70,7 @@ function createNewMenu(result) {
   addMenuChildren(images, "title", function(val) {return "/image/" + val.imageid});
   appendMenuTitle("Comments ("+comments.length+")");
   addMenuLine();
-  addMenuChildren(comments, "comment", function(val) {return "/image/" + val.onImage});
+  addMenuChildren(comments, "comment", function(val) {return "/image/" + val.onImage + "#comment" + val.commentId});
   appendMenuTitle("Albums ("+albums.length+")");
   addMenuLine();
   addMenuChildren(albums, "name", function(val) {return "/user/" + val.username +"/albums/" + val.albumid});

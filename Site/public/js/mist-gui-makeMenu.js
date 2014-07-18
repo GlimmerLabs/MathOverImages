@@ -118,12 +118,7 @@ var borderLine = new Kinetic.Line({
   menuLayer.add(menuValues[i]);
  }
 
-//SCROLLING MENU BUTTONS
-var arrowWidth = width / 50;
-var arrowBoxFill = 'gray';
-var arrowFill = 'black';
-var triX = width / 90;
-var triY = width / 60;
+
 /**
  * addScrollArrows creates and returns an array of two groups 
  * (left arrow and right arrow)
@@ -259,8 +254,8 @@ var hideScrollArrows = function(type) {
       } // if left functional
       else {
         leftArrow.setAttr('functional', false);
-        leftArrow.children[0].setAttr('opacity', .1);
-        leftArrow.children[1].setAttr('opacity', .2);
+        leftArrow.children[0].setAttr('opacity', 0);
+        leftArrow.children[1].setAttr('opacity', 0);
       } // else left non-functional
 
       if (canMoveLeft('values')) {
@@ -270,8 +265,8 @@ var hideScrollArrows = function(type) {
       } // if right functional
       else {
         rightArrow.setAttr('functional', false);
-        rightArrow.children[0].setAttr('opacity', .1);
-        rightArrow.children[1].setAttr('opacity', .2);
+        rightArrow.children[0].setAttr('opacity', 0);
+        rightArrow.children[1].setAttr('opacity', 0);
       } // else right non-funcitonal
     } // if values
     else if (type == 'functions') {
@@ -284,8 +279,8 @@ var hideScrollArrows = function(type) {
       } // if left functional
       else {
         leftArrow.setAttr('functional', false);
-        leftArrow.children[0].setAttr('opacity', .1);
-        leftArrow.children[1].setAttr('opacity', .2);
+        leftArrow.children[0].setAttr('opacity', 0);
+        leftArrow.children[1].setAttr('opacity', 0);
       } // else left non-functional
 
       if (canMoveLeft('functions')) {
@@ -295,8 +290,8 @@ var hideScrollArrows = function(type) {
       } // if right functional
       else {
         rightArrow.setAttr('functional', false);
-        rightArrow.children[0].setAttr('opacity', .1);
-        rightArrow.children[1].setAttr('opacity', .2);
+        rightArrow.children[0].setAttr('opacity', 0);
+        rightArrow.children[1].setAttr('opacity', 0);
       } // else right non-funcitonal
     } // else if functions
     menuArrowLayer.draw();

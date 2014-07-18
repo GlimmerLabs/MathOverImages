@@ -57,8 +57,9 @@ module.exports.buildPage = function (req, res, database) {
       }
     }
     else {
-      console.log(error);
-      res.redirect('/login'); //return error
+      res.render("../public/views/login.jade", {
+        flashMessage: "Invalid Credentials. Try again."
+      }); //return error
     }
   });
 };
@@ -68,12 +69,18 @@ module.exports.validatePage = function (req, res, database) {
   var userid= database.sanitize(req.query.id);
   database.verifyEmail(userid, token, function (success, error){
     if (error){
-      res.end(JSON.stringify(error));
       console.log(error);
+      res.render("../public/views/verify.jade", {
+        flashMessage: "There was an error verifying your email."
+      });
+    }
+    else if (success){
+      res.render("../public/views/verify.jade", {
+        flashMessage: "Email Confirmed! <a href='/login'>Log in</a> to begin!"
+      });
     }
     else {
-      res.send(success);
-      res.end();
+      res.redirect("/");
     }
   });
 };

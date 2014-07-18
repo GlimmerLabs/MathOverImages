@@ -151,9 +151,17 @@ var renderCanvas = function(group) {
   var canvasWidth = groupScale * box.width();
   var canvasHeight = groupScale * box.height();
   var mistObj = MIST.parse(group.attrs.renderFunction);
+  /*
   MIST.render(mistObj, {}, canvas, canvasWidth, canvasHeight, 
     canvasX, canvasY, 
     canvasWidth, canvasHeight);
+   */
+  var animator = new MIST.ui.Animator(group.attrs.renderFunction, [], {}, 
+    canvas, function() { });
+  animator.bounds(canvasX,canvasY,canvasWidth,canvasHeight);
+  animator.setResolution(canvasWidth,canvasHeight);
+  animator.frame();
+  group.attrs.animator = animator;
 };
 
 /**
@@ -162,6 +170,8 @@ var renderCanvas = function(group) {
  */
 var collapseCanvas = function(group){
   if (group.attrs.renderLayer) {
+    group.attrs.animator.stop();
+    group.attrs.animator = null;
     group.attrs.renderLayer.destroy();
     group.attrs.renderLayer = null;
     group.children[2].setAttrs({
@@ -306,7 +316,6 @@ var removeShadow = function(group) {
   }
   assertRenderable(newNode);
   updateForward(newNode);
-  //setOutletOpacity(newNode);
   lineLayer.draw();
   workLayer.draw();
  };
