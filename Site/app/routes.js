@@ -153,6 +153,9 @@ module.exports = function(app,passport,database) {
   app.get('/challenges/view/:id', function(req,res) {
     challenge.view(req, res, database);
   });
+  app.post('/challenges/view/:id', function(req,res) {
+    challenge.submission(req, res, database, req.body);
+  });
   app.get('/challenges', function(req,res) {
     challenge.gallery(req, res, database, req.query);
   });
