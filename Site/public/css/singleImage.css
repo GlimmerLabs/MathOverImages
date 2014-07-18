@@ -311,6 +311,10 @@ font-size: 15px;
 color: rgb(119, 119, 119);
 }
 
+div#image-controls {
+  background: rgb(224,224,224);
+}
+
 input[type=range] {
     -webkit-appearance:none !important;
     background-color: rgb(157, 150, 142);
