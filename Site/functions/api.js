@@ -286,7 +286,7 @@ handlers.saveimage = function(info, req, res){
       } // If name is not in table
     });
   }
-}// handlers.saveimage
+}; // handlers.saveimage
 
 /*
 check if an image exists
@@ -301,7 +301,7 @@ handlers.imageexists = function(info, req, res) {
       res.send(exists);
     });
   }
-}
+};
 
 /*
 check if an image exists
@@ -316,7 +316,7 @@ handlers.wsexists = function(info, req, res) {
       res.send(exists);
     });
   }
-}
+};
 
 /*
 store the ws in the session
@@ -326,7 +326,7 @@ code: the code for the workspace
 handlers.storews = function(info, req, res) {
   req.session.workspaceCode = info.code;
   res.end();
-}
+};
 
 /*
 return the ws stored in the session
@@ -335,7 +335,26 @@ action: returnws
 handlers.returnws = function(info, req, res) {
   res.send(req.session.workspaceCode);
   res.end();
-}
+};
+
+/*
+check if submitted code for a challenge matches the solution
+action: submitchallenge
+code: the code submitted by the client
+id: the id for the challenge
+*/
+handlers.submitchallenge = function (info, req, res) {
+  var query = "SELECT code FROM challenges WHERE id="+
+  database.sanitize(info.id)+";";
+  database.query(query, function(rows, error) {
+    if (error) {
+      fail(res, "Error: "+error);
+    }
+    else {
+      return;
+    }
+  });
+};
 
 /*
 Toggle the like on an image
@@ -404,3 +423,4 @@ handlers.deleteComment = (function (info, req, res) {
         fail(res, "Unknown error");
     });
 });
+
