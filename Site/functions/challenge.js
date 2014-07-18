@@ -50,7 +50,7 @@ module.exports.add = function(req, res, database, info) {
     } // if
   } // for
 
-  var iquery = "INSERT INTO challenges (" + fields.join(",") + 
+  var iquery = "INSERT INTO challenges (" + fields.join(",") +
       ") values (" + values.join(",") + ");";
   var squery = "SELECT id FROM challenges WHERE " + criteria.join(" and ") +
       " ORDER BY modifiedAt DESC LIMIT 1;"
@@ -190,8 +190,8 @@ module.exports.submission = function(req, res, database, info) {
     {
       for (var j=0; j<cols; j+=4) //x
       {
-        var pixel1=;
-        var pixel2=;
+        var pixel1=1;
+        var pixel2=2;
         var diffR=abs(pixel2[0]-pixel1[0]);
         var diffG=abs(pixel2[1]-pixel1[1]);
         var diffB=abs(pixel2[2]-pixel1[2]);
