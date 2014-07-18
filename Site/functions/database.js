@@ -1274,7 +1274,57 @@ module.exports.checkToken = (function (userid, token, callback){
 
 /* End Cookie token getter/setter */
 
+/* Featured image */
+module.exports.canChangeFeaturedImage = function(userid, callback) {
+  module.exports.query("SELECT type from users where userid='"+sanitize(userid)+"' and (type='A' or type='M');", function(rows) {
+    if(rows) {
+      callback(true);
+    }
+    else {
+      callback(false);
+    }
+  });
+}
+module.exports.addFeaturedImage = function(userid, imageid, callback) {
+  userid = sanitize(userid);
+  imageid = sanitize(imageid);
+  module.exports.canChangeFeaturedImage(userid, function(canChange) {
+    if(!canChange) {
+      callback(false, "User is neither an administrator or moderator.")
+    }
+    else {
+      module.exports.query("UPDATE images SET featured=1 where imageid='"+imageid+"';", function(rows, error) {
+        if(!error) {
+          callback(true, null);
+        } // If not error
+        else {
+          callback(false, error);
+        } // If error
+      }); // Module.exports.query
+    } // If can change
+  }); // Module.exports.canChangeFeaturedImages
+}
 
+module.exports.removeFeaturedImage = function(userid, imageid, callback) {
+  userid = sanitize(userid);
+  imageid = sanitize(imageid);
+  module.exports.canChangeFeaturedImage(userid, function(canChange) {
+    if(!canChange) {
+      callback(false, "User is neither an administrator or moderator.")
+    } // If can't change
+    else {
+      module.exports.query("UPDATE images SET featured=0 where imageid='"+imageid+"';", function(rows, error) {
+        if(!error) {
+          callback(true, null);
+        } // if not error
+        else {
+          callback(false, error);
+        } // if error
+      }); // Module.exports.query
+    } // If can change
+  }); // Module.exports.canChangeFeaturedImages
+}
+/* End Featured Image */
 
 // Callback(token, error)
 module.exports.addVerifyToken = (function (user, callback) {
