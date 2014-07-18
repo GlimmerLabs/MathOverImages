@@ -2,8 +2,8 @@
 <% var jpgURL= "\"http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=800&height=800\"" %>
 <% var css= '<link rel="stylesheet" href="/css/singleImage.css">' %>
 <% var meta= '<meta property="og:image" content=' + jpgURL + '/>' %>
+<% var js= '<script type="text/javascript" src="/js/imagepage.js"></script>' %>
 <% include head.ejs %>
-<script type="text/javascript" src="/js/imagepage.js"></script>
 <h1><%- image.title %></h1>
 <h2><%- image.modifiedAt.toUTCString() %></h2>
 <figure data-imageid=<%= image.imageid %>>
@@ -34,65 +34,6 @@
         <a href='<%= "/user/" + comments[i].username %>'><%- comments[i].username %></a>
       </th>
       <td class="comment"><%- comments[i].comment %></td>
-      <script>
-        /**
-         * Given a number of units and a type of unit, generate
-         * a string that describes the units.
-         */
-        function describeUnits(amt,unit) {
-          if (amt == 1) {
-            return "1 " + unit + " ago";
-          }
-          else {
-            return amt + " " + unit + "s ago";
-          }
-        } // describeUnits
-
-        /**
-         * Describe a date.  Given a date, return a string that summarizes
-         * the date (e.g., "2 weeks ago").
-         */
-        function describeDate(date) {
-          var tmp = new Date(date);
-          var timePosted = Date.UTC(tmp.getFullYear(), tmp.getMonth(), 
-              tmp.getDate(), tmp.getHours(), tmp.getMinutes(), 
-              tmp.getSeconds())/1000;
-          var now = new Date();
-          var rightNow = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 
-              now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), 
-              now.getUTCSeconds())/1000;
-          var dateSentence;
-          var secs = rightNow-timePosted;
-          var secsPerHour = 60 * 60;
-          var secsPerDay = secsPerHour * 24;;
-          var secsPerWeek = secsPerDay * 7;
-          var secsPerMonth = secsPerDay * 31;
-          var secsPerYear = secsPerDay * 365;
-          if ((secs/secsPerYear) >= 1) {
-            dateSentence = describeUnits(Math.floor(secs/secsPerYear), "year");
-          }     
-          else if ((secs/secsPerMonth) >= 1) {
-            dateSentence = describeUnits(Math.floor(secs/secsPerMonth), "month");
-          }
-          else if ((secs/secsPerWeek) >= 0.8) {
-            dateSentence = describeUnits(Math.round(secs/secsPerWeek), "week");
-          }
-          else if ((secs/secsPerDay) >= 1) {
-            dateSentence = describeUnits(Math.floor(secs/secsPerDay), "day");
-          }
-          else if ((secs/secsPerHour) >= 1) {
-            dateSentence = describeUnits(Math.floor(secs/secsPerHour), "hour");
-          }
-          else if ((secs/60) >= 1) {
-            dateSentence = describeUnits(Math.floor(secs/60), "minute");
-          }
-          else {
-            dateSentence = 'a few seconds ago';
-          }
-          console.log("DateSentence",dateSentence,"secs",secs);
-          return dateSentence;
-        } // describeDate
-      </script>
       <td class="date"><script>document.write(describeDate("<%= comments[i].postedAt %>"))</script></td>
       <td class='deleteComment'></td>
       <% if(user) { %>
