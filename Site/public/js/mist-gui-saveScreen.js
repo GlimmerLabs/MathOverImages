@@ -354,6 +354,7 @@ var openSavePopUp = function() {
   popSaveGroup.setAttr('visible', true);
   var renderFunction = currShape.attrs.renderFunction;
   updatePopText(renderFunction);
+  renderLayer.moveToTop();
   renderPopCanvas(renderFunction);
   rAnimator.start();
   screenLayer.draw();

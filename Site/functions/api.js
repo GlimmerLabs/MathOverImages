@@ -348,10 +348,10 @@ handlers.submitchallenge = function (info, req, res) {
   database.sanitize(info.id)+";";
   database.query(query, function(rows, error) {
     if (error) {
-      fail(res, "Error: "+error);
+      fail(res, "Error: " + error);
     }
     else {
-      return;
+      res.send(info.code==rows[0].code);
     }
   });
 };

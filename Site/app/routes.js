@@ -153,6 +153,9 @@ module.exports = function(app,passport,database) {
   app.get('/challenges/view/:id', function(req,res) {
     challenge.view(req, res, database);
   });
+  app.post('/challenges/view/:id', function(req,res) {
+    challenge.submission(req, res, database, req.body);
+  });
   app.get('/challenges', function(req,res) {
     challenge.gallery(req, res, database, req.query);
   });
@@ -193,6 +196,10 @@ module.exports = function(app,passport,database) {
   //   Galleries, including the random gallery
   app.get('/gallery', function(req,res) {
     res.redirect('/gallery/random');
+  });
+
+  app.get('/gallery/featured', function(req, res) {
+    gallery.buildFeaturedPage(req, res, database);
   });
 
   app.get('/gallery/random', function(req, res) {

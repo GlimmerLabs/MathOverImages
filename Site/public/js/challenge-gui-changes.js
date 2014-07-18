@@ -85,5 +85,13 @@ submitChallGroup.on('mousedown', function() {
 
 submitChallGroup.on('mouseup', function() {
   submitChallRect.setAttr('shadowEnabled', false);
+  var correct = submitChallenge();
+  // WHAT DO WE WANT TO DO WITH THIS INFORMATION:
+  if (correct) {
+    alert("Correct! You've completed the challenge!");
+  } // if correct
+  else {
+    alert("That's not quite right. Make sure the selected image matches the one on the left!")
+  } // else incorrect
   funBarLayer.draw();
 });
