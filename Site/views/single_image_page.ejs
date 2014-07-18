@@ -57,15 +57,15 @@
     <% } // if it's the user's image%>
     <% if(user.type == "A" || user.type == "M") { %>
       <% if(image.featured == 1) { %>
-        <div id="add" id="unfeatureImage">
+        <div id="add">
           <ul>
-            <li>- unfeature image</li>
+            <li id="unfeatureImage">- unfeature image</li>
           </ul>
         </div>
       <% } else { %>
-        <div id="add" id="featureImage">
+        <div id="add">
           <ul>
-            <li>+ feature image</li>
+            <li id="featureImage">+ feature image</li>
           </ul>
         </div>
       <% } %>
