@@ -23,10 +23,11 @@
     <button id="animator">stop</button>
   <% } %>
     <button id="jpeg">jpeg</button>
+    <button id="showcode">code</button>
     Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1" style="width: 80px;"> 400px
   </div> <!-- image-controls -->
 </figure>
-<p id="code" class="code"><%- image.code %></p>
+<p id="code" class="code" style="display:none;"><%- image.code %></p>
 <table id="comments">
   <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
