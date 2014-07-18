@@ -20,6 +20,11 @@ if (!MIST.ui) { MIST.ui = {}; }
  */
 var builtinsPattern = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,\-]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:m.x)|(?:m.y)|(?:mistif)/g
 
+/**
+ * The number of animators we've created.
+ */
+var _animatorCount_ = 0;
+
 // +---------+---------------------------------------------------------
 // | Helpers |
 // +---------+
@@ -49,6 +54,9 @@ function makeMouseMoveHandler(animator) {
  * Create a new animator *without* rendering the frame.
  */
 MIST.ui.Animator = function(exp, params, context, canvas, log) {
+  // Generate an id
+  this.id = ++_animatorCount_;
+
   // Remember parameters
   this.exp = exp;
   this.params = params;
@@ -242,6 +250,7 @@ MIST.ui.Animator.prototype.start = function()
 
   // Get the remaining info.  // Hack
   this.on = (this.exp.indexOf("t.") > -1) || (this.exp.indexOf("m.") > -1);
+
   // Set up a mouse listener for the canvas
   this.canvas.onmousemove = makeMouseMoveHandler(this);
   // And go
