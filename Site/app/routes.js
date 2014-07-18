@@ -198,6 +198,10 @@ module.exports = function(app,passport,database) {
     res.redirect('/gallery/random');
   });
 
+  app.get('/gallery/featured', function(req, res) {
+    gallery.buildFeaturedPage(req, res, database);
+  });
+
   app.get('/gallery/random', function(req, res) {
     gallery.buildRandomPage(req, res, database);
   });
