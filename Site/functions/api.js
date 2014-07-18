@@ -424,3 +424,37 @@ handlers.deleteComment = (function (info, req, res) {
     });
 });
 
+/*
+Sets featured property of image.
+action: setFeatured
+imageid: the image to feature
+state: the state to toggle it too
+*/
+handlers.setFeatured = (function (info, req, res) {
+  console.log("setFeatured called with:", info);
+  if (!req.session.user)
+    fail(res, "User Not logged in")
+  else {
+    if(info.state == 'true') {
+      database.addFeaturedImage(req.session.user.userid, info.imageid, function(response, err) {
+        if(err) {
+          res.end("Error: " + err)
+        }
+        else {
+          res.end("Success");
+        }
+      });
+    }
+    if(info.state == 'false') {
+      database.removeFeaturedImage(req.session.user.userid, info.imageid, function(response, err) {
+        if(err) {
+          res.end("Error: " + err)
+        }
+        else {
+          res.end("Success");
+        }
+      });
+    }
+  }
+});
+
