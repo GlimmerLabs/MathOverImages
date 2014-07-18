@@ -29,7 +29,7 @@ $(document).ready(function() {
     };
   } // if we are fullscreen
 
-  // Add the start/stop button
+  // Add the handler for the start/stop button
   var animate = document.getElementById('animator');
   try {
     animate.addEventListener('click', function(event) {
@@ -46,14 +46,29 @@ $(document).ready(function() {
   catch(err) {
   }
 
-  // Add the "make jpeg" button
+  // Add the handler for the "make jpeg" button
   var jpeg=document.getElementById('jpeg');
   try {
       jpeg.addEventListener('click', function(event) {
           animator.jpg();
       })
   }
-  catch(err){}
+  catch(err) {
+  }
+
+  // Add the handler for the "code" button
+  var btn=document.getElementById("showcode");
+  if (btn) {
+    btn.onclick = function(event) {
+      var code = document.getElementById("code");
+      if (code.style.display == "none") {
+        code.style.display = "block";
+      }
+      else {
+        code.style.display = "none";
+      }
+    } // btn.onclick
+  } // if (code)
 
   // Add the event listener for the slider
   var slider=document.getElementById('pixels');
