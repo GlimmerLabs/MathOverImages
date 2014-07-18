@@ -16,6 +16,24 @@
 var animator;
 
 $(document).ready(function() {
+  // Add feature and unfeature capability
+  try {
+    $("#featureImage").click(function() {
+      var imageid = this.getAttribute("data-imageid");
+      var changeTo = this.getAttribute("data-featureStatus");
+      var newFeatureStatus = (changeTo == 'false') ? true : false;
+      var newText = (changeTo == 'false') ? "+ feature image" : "- unfeature image";
+      var clicked = this;
+      var url = "/api?action=setFeatured&imageid="+imageid+"&state="+changeTo;
+      $.get(url, function(res) {
+        if(res=="Success") {
+          clicked.textContent = newText;
+          clicked.setAttribute("data-featureStatus", newFeatureStatus);
+        }
+      })
+    })
+  }
+  catch(err) {}
   // Support full size canvases
   var canvas = document.getElementById("canvas");
   if (canvas.className == "fullscreen") {
