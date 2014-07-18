@@ -225,8 +225,12 @@ workLayer.on('mouseover', function(evt) {
       frame();
       */
       if (parent.attrs.animator) {
+        parent.attrs.renderLayer.moveToTop();
         parent.attrs.animator.start();
       } // if the animator is non null
+      else {
+        console.log("No animator!");
+      }
     } // if the mouseover object is an expanded imageBox
     if (makingLine) {
       var outlet;
@@ -313,6 +317,9 @@ workLayer.on('mouseout', function(evt) {
       if (parent.attrs.animator) {
         parent.attrs.animator.stop();
       }
+      else {
+        console.log("No animator to stop");
+      } 
     } // if the mouseout object is an expanded imageBox
     if (makingLine) {
       var outlet;
