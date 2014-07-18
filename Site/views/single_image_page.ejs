@@ -36,7 +36,6 @@
       </th>
       <td class="comment"><%- comments[i].comment %></td>
       <td class="date"><script>document.write(describeDate("<%= comments[i].postedAt %>"))</script></td>
-      <td class='deleteComment'></td>
       <% if(user) { %>
         <td class='flagComment <%= (comments[i].flagged) ? 'flaggedComment' : ''%>'>&#9873</td>
         <% if(user.type == "A" || user.type == "M" || user.userid == comments[i].userid || user.userid == image.userid) { %>
