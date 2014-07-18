@@ -1320,3 +1320,35 @@ module.exports.verifyEmail = (function (userid, token, callback){
   });
 
 });
+
+
+/* Badge Functions */
+
+module.exports.makeBadge = (function(badgeName, badgeDescription, requirements, callback){
+  badgeName= sanitize(badgeName);
+  badgeDescription = sanitize(badgeDescription);
+  module.exports.query("INSERT INTO badges (name, description, requirements) VALUES ('" + badgeName + "', '" + badgeDescription + "', '" + requirements + "');", function(result, error){
+    if (error){
+      callback(false, error);
+    }
+    else{
+      callback(true, null);
+    }
+  });
+});
+
+module.exports.awardBadge = (function (userid, badgeid){
+  userid= sanitize(userid);
+  badgeid= sanitize(badgeid);
+  module.exports.query("INSERT INTO earnedBadges (userid, badgeid) VALUES('" + userid + "', '" + badgeid + "');", function(result, error){
+    if (error){
+      callback(false, error);
+    }
+    else{
+      callback(true, null);
+    }
+  });
+});
+
+
+/* End Badge Functions */
