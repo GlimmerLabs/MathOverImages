@@ -56,6 +56,21 @@
         <input type='submit' class='delete' value='delete this image' />
       </form>
     <% } // if it's the user's image%>
+    <% if(user.type == "A" || user.type == "M") { %>
+      <% if(image.featured == 1) { %>
+        <div id="add" id="unfeatureImage">
+          <ul>
+            <li>- unfeature image</li>
+          </ul>
+        </div>
+      <% } else { %>
+        <div id="add" id="featureImage">
+          <ul>
+            <li>+ feature image</li>
+          </ul>
+        </div>
+      <% } %>
+    <% } // If user is moderator or admin %>
     <div id="add">
       <ul>
         <li>+ add to album
