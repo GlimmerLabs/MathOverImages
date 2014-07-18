@@ -190,8 +190,8 @@ module.exports.submission = function(req, res, database, info) {
     {
       for (var j=0; j<cols; j+=4) //x
       {
-        var pixel1=;
-        var pixel2=;
+        var pixel1=[0,0,0];
+        var pixel2=[0,0,0];
         var diffR=abs(pixel2[0]-pixel1[0]);
         var diffG=abs(pixel2[1]-pixel1[1]);
         var diffB=abs(pixel2[2]-pixel1[2]);
