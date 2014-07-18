@@ -59,13 +59,13 @@
       <% if(image.featured == 1) { %>
         <div id="add">
           <ul>
-            <li id="unfeatureImage">- unfeature image</li>
+            <li id="featureImage" data-featureStatus="false">- unfeature image</li>
           </ul>
         </div>
       <% } else { %>
         <div id="add">
           <ul>
-            <li id="featureImage">+ feature image</li>
+            <li id="featureImage" data-featureStatus="true">+ feature image</li>
           </ul>
         </div>
       <% } %>
