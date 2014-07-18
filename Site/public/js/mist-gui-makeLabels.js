@@ -23,6 +23,8 @@ var menuValuesDescriptions = {
 	hour:     'goes through values -1 to 1 every hour',
 	day:      'goes through values -1 to 1 every day',
 	constant: 'enter your own number',
+	mouseX:   'takes the x-value of the position of the mouse on the image',
+	mouseY:   'takes the y-value of the position of the mouse on the image'
 }
 
 var toolboxDescriptions = {
