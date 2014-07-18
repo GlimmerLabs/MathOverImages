@@ -16,6 +16,20 @@
 var animator;
 
 $(document).ready(function() {
+  // Support full size canvases
+  var canvas = document.getElementById("canvas");
+  if (canvas.className == "fullscreen") {
+    canvas.width = $(window).width() + 1;
+    canvas.height = $(window).height() + 1;
+    window.onresize = function(evt) {
+      canvas.width = $(window).width();
+      canvas.height = $(window).height();
+      animator.width = canvas.width;
+      animator.height = canvas.height;
+    };
+  } // if we are fullscreen
+
+  // Add the start/stop button
   var animate = document.getElementById('animator');
   try {
     animate.addEventListener('click', function(event) {
@@ -28,10 +42,12 @@ $(document).ready(function() {
          this.textContent = "stop";
        }
    })
-}
-catch(err){}
+  }
+  catch(err) {
+  }
 
-var jpeg=document.getElementById('jpeg');
+  // Add the "make jpeg" button
+  var jpeg=document.getElementById('jpeg');
   try {
       jpeg.addEventListener('click', function(event) {
           animator.jpg();
@@ -39,7 +55,8 @@ var jpeg=document.getElementById('jpeg');
   }
   catch(err){}
 
-var slider=document.getElementById('pixels');
+  // Add the event listener for the slider
+  var slider=document.getElementById('pixels');
   try {
     slider.addEventListener('change', function(event) {
     var sliderVal=document.getElementById('pixels').value;
@@ -47,36 +64,26 @@ var slider=document.getElementById('pixels');
 	animator.frame();
       })
   }
-  catch(err){}
-
-  var canvas = document.getElementById("canvas");
-  if (canvas.className == "fullscreen") {
-    canvas.width = $(window).width() + 1;
-    canvas.height = $(window).height() + 1;
-    window.onresize = function(evt) {
-      canvas.width = $(window).width();
-      canvas.height = $(window).height();
-      animator.width = canvas.width;
-      animator.height = canvas.height;
-    };
+  catch(err){
   }
+
   var flags = document.getElementsByClassName("flagComment");
   var deletes = document.getElementsByClassName("deleteComment");
-  for(var i=0; i<flags.length; i++) {
+  for (var i=0; i<flags.length; i++) {
     flags[i].onclick = function() {
       var id = this.parentNode.id.replace("comment", "");
       (function(clickedFlag) {
         flagComment(id, function(res) {
-          if(res.indexOf("flagged") != -1) {
+          if (res.indexOf("flagged") != -1) {
             clickedFlag.className = 'flagComment flagged';
           }
         });
       })(this)
-    }
-  }
+    } // flags[i].onclick
+  } // for
   for(var i=0; i<deletes.length; i++) {
     deletes[i].onclick = function() {
-      if(confirm("Are you sure you want to delete this comment?")) {
+      if (confirm("Are you sure you want to delete this comment?")) {
         var id = this.parentNode.id.replace("comment", "");
         (function(comment) {
           deleteComment(id, function(res) {
@@ -85,9 +92,9 @@ var slider=document.getElementById('pixels');
             }
           });
         })(this.parentNode)
-      }
-    }
-  }
+      } // if confirmed
+    } // delete[i].onclick
+  } // for
   animator = new MIST.ui.Animator(document.getElementById('code').innerHTML,
     "", {}, canvas);
   animator.start();
@@ -120,6 +127,71 @@ var slider=document.getElementById('pixels');
   }; // document.body.onkeypress
 });
 
+// +----------------------+--------------------------------------------
+// | Additional Functions |
+// +----------------------+
+
+/**
+ * Given a number of units and a type of unit, generate
+ * a string that describes the units.
+ */
+var describeUnits = function(amt,unit) {
+  if (amt == 1) {
+    return "1 " + unit + " ago";
+  }
+  else {
+    return amt + " " + unit + "s ago";
+  }
+} // describeUnits
+
+/**
+ * Describe a date.  Given a date, return a string that summarizes
+ * the date (e.g., "2 weeks ago").
+ */
+var describeDate = function(date) {
+  var tmp = new Date(date);
+  var timePosted = Date.UTC(tmp.getFullYear(), tmp.getMonth(), 
+      tmp.getDate(), tmp.getHours(), tmp.getMinutes(), 
+      tmp.getSeconds())/1000;
+  var now = new Date();
+  var rightNow = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 
+      now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), 
+      now.getUTCSeconds())/1000;
+  var dateSentence;
+  var secs = rightNow-timePosted;
+  var secsPerHour = 60 * 60;
+  var secsPerDay = secsPerHour * 24;;
+  var secsPerWeek = secsPerDay * 7;
+  var secsPerMonth = secsPerDay * 31;
+  var secsPerYear = secsPerDay * 365;
+  if ((secs/secsPerYear) >= 1) {
+    dateSentence = describeUnits(Math.floor(secs/secsPerYear), "year");
+  }     
+  else if ((secs/secsPerMonth) >= 1) {
+    dateSentence = describeUnits(Math.floor(secs/secsPerMonth), "month");
+  }
+  else if ((secs/secsPerWeek) >= 0.8) {
+    dateSentence = describeUnits(Math.round(secs/secsPerWeek), "week");
+  }
+  else if ((secs/secsPerDay) >= 1) {
+    dateSentence = describeUnits(Math.floor(secs/secsPerDay), "day");
+  }
+  else if ((secs/secsPerHour) >= 1) {
+    dateSentence = describeUnits(Math.floor(secs/secsPerHour), "hour");
+  }
+  else if ((secs/60) >= 1) {
+    dateSentence = describeUnits(Math.floor(secs/60), "minute");
+  }
+  else {
+    dateSentence = 'a few seconds ago';
+  }
+  console.log("DateSentence",dateSentence,"secs",secs);
+  return dateSentence;
+} // describeDate
+
+/**
+ * Flag a comment for deletion.
+ */
 var flagComment = (function(commentId, callback){
   var data = {
     action: "flagComment",
@@ -128,8 +200,11 @@ var flagComment = (function(commentId, callback){
   $.post("/api", data, function(response){
     callback(response);
   });
-});
+}); // flagComment
 
+/**
+ * Delete a comment.
+ */
 var deleteComment = (function(commentId, callback){
   var data = {
     action: "deleteComment",
@@ -138,5 +213,5 @@ var deleteComment = (function(commentId, callback){
   $.post("/api", data, function(response){
     callback(response);
   });
-});
+}); // deleteComment
 
