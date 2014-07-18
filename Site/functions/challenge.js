@@ -162,51 +162,54 @@ module.exports.view = function(req, res, database) {
       challenge: challenge
     });
   });
-}; // view
+};
+module.exports.submission = function(req, res, database, info) {
+//need to set up sending of INFO
+  var info = [ // submission
+    ['userid', req.session.user.userid],
+    ['code', quote(database.sanitize(info.code))]
+  ];
 
-module.exports.submission = function(req, res, database) {
-//img1 - challenge
-//img2 - submission
-  var similarity=0;
-  var compareIMG=function () { //positive match with 90% jpeg similarity
-    for (var i=0; i<pixelData1.length; i+=4)
+  var id = database.sanitize(req.params.id); // challenge
+  var query2 = "SELECT code FROM challenges WHERE id=" + id + ";";
+  database.query(query2, function(rows, error) {
+//positive match with 90% jpeg similarity
+    if (error) {
+      res.send(error);
+      return;
+    } // if error
+    var similarity=0;
+    var code1=MIST.sanitize(builtinsPattern, info.code);
+    var code2=MIST.sanitize(builtinsPattern, rows[0]['code']);
+    var code1Parsed=MIST.parse(code1);
+    var code2Parsed=MIST.parse(code2);
+    //Find how MIST.render works with parsed code (mistui-animator.js)
+    var rows=img1.width;
+    var cols=img1.height;
+    for (var i=0; i<rows; i+=4) //y
     {
-      var w1=img1.width;
-      var h1=img1.height;
-      var w2=img2.width;
-      var h2=img2.height;
-      var pixelData1=canvas.getContext('2d').getImageData(i, j, w1, h1);
-      var pixelData1=canvas.getContext('2d').getImageData(i, j, w2, h2);
-      var pixel1=[pixelData1[i], pixelData1[i+1], pixelData1[i+2]];
-      var pixel2=[pixelData2[i], pixelData2[i+1], pixelData2[i+2]];
-      var diffR=abs(pixel2[0]-pixel1[0]);
-      var diffG=abs(pixel2[1]-pixel1[1]);
-      var diffB=abs(pixel2[2]-pixel1[2]);
-      if (diffR < .01 && diffG < .01 && diffB < .01)
+      for (var j=0; j<cols; j+=4) //x
       {
-        similarity++;
+        var pixel1=;
+        var pixel2=;
+        var diffR=abs(pixel2[0]-pixel1[0]);
+        var diffG=abs(pixel2[1]-pixel1[1]);
+        var diffB=abs(pixel2[2]-pixel1[2]);
+        // apply how MIST render works with code
+        if (diffR < .01 && diffG < .01 && diffB < .01)
+        {
+          similarity++;
+        }
       }
     }
     if (similarity >= (pixelData1.length*.9))
     {
-      return 1;
+      //res.redirect(); // need to redirect to a submission correct page
     }
     else
     {
-      return 0;
+      //res.redirect(); // need to redirect to a submission incorrect page
     }
-  };
-  var compareCODE=function () { //positive match with EXACT code
-  var code1 = img1.code;
-  var code2 = img2.code;
-  similarity = code1.localeCompare(code2);
-  if (similarity == 0)
-  {
-    return 1;
-  }
-  else
-  {
-    return 0;
-  }
-  };
+    console.log(code);
+  })
 };
