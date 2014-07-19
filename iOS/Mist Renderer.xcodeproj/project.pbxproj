@@ -1,0 +1,416 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D0820E7C1978437D00B10F9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0820E7B1978437D00B10F9A /* AppDelegate.swift */; };
+		D0820E7E1978437D00B10F9A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0820E7D1978437D00B10F9A /* ViewController.swift */; };
+		D0820E811978437D00B10F9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0820E7F1978437D00B10F9A /* Main.storyboard */; };
+		D0820E831978437D00B10F9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0820E821978437D00B10F9A /* Images.xcassets */; };
+		D0820E8F1978437D00B10F9A /* Mist_RendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0820E8E1978437D00B10F9A /* Mist_RendererTests.swift */; };
+		D0820E991978456500B10F9A /* mistRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0820E981978456500B10F9A /* mistRenderer.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D0820E891978437D00B10F9A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0820E6E1978437D00B10F9A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D0820E751978437D00B10F9A;
+			remoteInfo = "Mist Renderer";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D0820E761978437D00B10F9A /* Mist Renderer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mist Renderer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0820E7A1978437D00B10F9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0820E7B1978437D00B10F9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D0820E7D1978437D00B10F9A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D0820E801978437D00B10F9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D0820E821978437D00B10F9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D0820E881978437D00B10F9A /* Mist RendererTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mist RendererTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0820E8D1978437D00B10F9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0820E8E1978437D00B10F9A /* Mist_RendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mist_RendererTests.swift; sourceTree = "<group>"; };
+		D0820E981978456500B10F9A /* mistRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mistRenderer.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D0820E731978437D00B10F9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0820E851978437D00B10F9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D0820E6D1978437D00B10F9A = {
+			isa = PBXGroup;
+			children = (
+				D0820E781978437D00B10F9A /* Mist Renderer */,
+				D0820E8B1978437D00B10F9A /* Mist RendererTests */,
+				D0820E771978437D00B10F9A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D0820E771978437D00B10F9A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0820E761978437D00B10F9A /* Mist Renderer.app */,
+				D0820E881978437D00B10F9A /* Mist RendererTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D0820E781978437D00B10F9A /* Mist Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				D0820E7B1978437D00B10F9A /* AppDelegate.swift */,
+				D0820E7D1978437D00B10F9A /* ViewController.swift */,
+				D0820E7F1978437D00B10F9A /* Main.storyboard */,
+				D0820E981978456500B10F9A /* mistRenderer.swift */,
+				D0820E821978437D00B10F9A /* Images.xcassets */,
+				D0820E791978437D00B10F9A /* Supporting Files */,
+			);
+			path = "Mist Renderer";
+			sourceTree = "<group>";
+		};
+		D0820E791978437D00B10F9A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D0820E7A1978437D00B10F9A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D0820E8B1978437D00B10F9A /* Mist RendererTests */ = {
+			isa = PBXGroup;
+			children = (
+				D0820E8E1978437D00B10F9A /* Mist_RendererTests.swift */,
+				D0820E8C1978437D00B10F9A /* Supporting Files */,
+			);
+			path = "Mist RendererTests";
+			sourceTree = "<group>";
+		};
+		D0820E8C1978437D00B10F9A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D0820E8D1978437D00B10F9A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D0820E751978437D00B10F9A /* Mist Renderer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0820E921978437D00B10F9A /* Build configuration list for PBXNativeTarget "Mist Renderer" */;
+			buildPhases = (
+				D0820E721978437D00B10F9A /* Sources */,
+				D0820E731978437D00B10F9A /* Frameworks */,
+				D0820E741978437D00B10F9A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Mist Renderer";
+			productName = "Mist Renderer";
+			productReference = D0820E761978437D00B10F9A /* Mist Renderer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D0820E871978437D00B10F9A /* Mist RendererTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0820E951978437D00B10F9A /* Build configuration list for PBXNativeTarget "Mist RendererTests" */;
+			buildPhases = (
+				D0820E841978437D00B10F9A /* Sources */,
+				D0820E851978437D00B10F9A /* Frameworks */,
+				D0820E861978437D00B10F9A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D0820E8A1978437D00B10F9A /* PBXTargetDependency */,
+			);
+			name = "Mist RendererTests";
+			productName = "Mist RendererTests";
+			productReference = D0820E881978437D00B10F9A /* Mist RendererTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D0820E6E1978437D00B10F9A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Glimmer Labs";
+				TargetAttributes = {
+					D0820E751978437D00B10F9A = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					D0820E871978437D00B10F9A = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = D0820E751978437D00B10F9A;
+					};
+				};
+			};
+			buildConfigurationList = D0820E711978437D00B10F9A /* Build configuration list for PBXProject "Mist Renderer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D0820E6D1978437D00B10F9A;
+			productRefGroup = D0820E771978437D00B10F9A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D0820E751978437D00B10F9A /* Mist Renderer */,
+				D0820E871978437D00B10F9A /* Mist RendererTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D0820E741978437D00B10F9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0820E811978437D00B10F9A /* Main.storyboard in Resources */,
+				D0820E831978437D00B10F9A /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0820E861978437D00B10F9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D0820E721978437D00B10F9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0820E7E1978437D00B10F9A /* ViewController.swift in Sources */,
+				D0820E7C1978437D00B10F9A /* AppDelegate.swift in Sources */,
+				D0820E991978456500B10F9A /* mistRenderer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0820E841978437D00B10F9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0820E8F1978437D00B10F9A /* Mist_RendererTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D0820E8A1978437D00B10F9A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D0820E751978437D00B10F9A /* Mist Renderer */;
+			targetProxy = D0820E891978437D00B10F9A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D0820E7F1978437D00B10F9A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0820E801978437D00B10F9A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D0820E901978437D00B10F9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				METAL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D0820E911978437D00B10F9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				METAL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D0820E931978437D00B10F9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "Mist Renderer/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D0820E941978437D00B10F9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = "Mist Renderer/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		D0820E961978437D00B10F9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mist Renderer.app/Mist Renderer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Mist RendererTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		D0820E971978437D00B10F9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Mist Renderer.app/Mist Renderer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Mist RendererTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D0820E711978437D00B10F9A /* Build configuration list for PBXProject "Mist Renderer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0820E901978437D00B10F9A /* Debug */,
+				D0820E911978437D00B10F9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0820E921978437D00B10F9A /* Build configuration list for PBXNativeTarget "Mist Renderer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0820E931978437D00B10F9A /* Debug */,
+				D0820E941978437D00B10F9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D0820E951978437D00B10F9A /* Build configuration list for PBXNativeTarget "Mist RendererTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0820E961978437D00B10F9A /* Debug */,
+				D0820E971978437D00B10F9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D0820E6E1978437D00B10F9A /* Project object */;
+}
