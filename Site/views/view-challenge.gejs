@@ -1,5 +1,5 @@
 title
-  <%- challenge.title %>
+  Challenge: <%- challenge.title %>
 css
   <link rel="stylesheet" href="/css/challenge-gui.css">
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
