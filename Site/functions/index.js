@@ -2,9 +2,9 @@
  * Functions related to the index's gallery.
  */
 var filedatabase;
-module.exports.buildRandomPage = (function(req, res, database) {
+module.exports.buildFeaturedPage = (function(req, res, database) {
   filedatabase=database;
-  module.exports.getRandomImages (6, function(images, error){
+  module.exports.getFeaturedImages (6, function(images, error){
     res.render('../public/views/index.jade',{
       loggedIn: req.session.loggedIn,
       user: req.session.user,
@@ -29,8 +29,8 @@ module.exports.buildRandomPage = (function(req, res, database) {
   Post-conditions:
   None
 */
-module.exports.getRandomImages= (function(count, callback) {
-  filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users ORDER BY RAND() LIMIT " + count + ";", function(rows, error){
+module.exports.getFeaturedImages= (function(count, callback) {
+  filedatabase.query("SELECT images.*, users.username FROM images NATURAL JOIN users WHERE featured=1 ORDER BY RAND() LIMIT " + count + ";", function(rows, error){
     callback(rows, error);
   });
 });
