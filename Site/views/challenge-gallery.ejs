@@ -1,7 +1,7 @@
 <% var title= level + ", " + color + ", " + animation + " challenges" %>
 <% var css= '<link rel="stylesheet" href="/css/challenges.css">' %>
+<% var js= '<script type="text/javascript" src="/js/gallery.js"></script>' %>
 <% include head.ejs %>
-<script type="text/javascript" src="/js/gallery.js"></script>
 <div id="main">
   <div id="pageTitleGeneral">
     <h1>challenges</h1>
@@ -22,7 +22,7 @@
     </select>
     <input type="submit" value="View">
   </form>
-  <a href='http://glimmer.grinnell.edu/challenges/create' id='createChallenge'>Make a challenge</a>
+  <!-- <a href='/challenges/create' id='createChallenge'>Make a challenge</a> -->
   <div id="subTitle">
     <h2 id="categoryTitle"> <%- title %> </h2>
   </div>
@@ -38,7 +38,7 @@
             <% var c = challenges[i]; %>
             <li>
               <figure>
-                <p class="challengeName"><%- c.name %></p>
+                <p class="challengeName"><%- c.title %></p>
                 <a href="/challenges/view/<%-c.id %>">
                   <canvas id="canvas<%-i%>" width="300px" height="300px"/>
                 </a>

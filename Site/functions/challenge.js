@@ -113,7 +113,7 @@ module.exports.gallery = function(req, res, database, info) {
   var color = info.color ? info.color : "Greyscale";
   var animation = info.animation ? info.animation : "Static";
   var category = level + ", " + color + ", " + animation;
-  var query = "SELECT challenges.id, challenges.name, challenges.code FROM challengecategories,challenges WHERE challengecategories.description='" + category + "' and challengecategories.id = challenges.categoryid ORDER BY challenges.position;";
+  var query = "SELECT challenges.id, challenges.title, challenges.code FROM challengecategories,challenges WHERE challengecategories.description='" + category + "' and challengecategories.id = challenges.categoryid ORDER BY challenges.position;";
   console.log(query);
   database.query(query, function(rows, error) {
     // Sanity check
@@ -142,7 +142,7 @@ module.exports.gallery = function(req, res, database, info) {
  */
 module.exports.view = function(req, res, database) {
   var id = database.sanitize(req.params.id);
-  var query = "SELECT name,description,code FROM challenges WHERE id=" +
+  var query = "SELECT title,description,code FROM challenges WHERE id=" +
      id + ";";
   console.log(query);
   database.query(query, function(rows, error) {
@@ -208,8 +208,8 @@ module.exports.submission = function(req, res, database, info) {
     {
       for (var j=0; j<cols; j+=4) //x
       {
-        var pixel1=1;
-        var pixel2=2;
+        var pixel1=[0,0,0];
+        var pixel2=[0,0,0];
         var diffR=abs(pixel2[0]-pixel1[0]);
         var diffG=abs(pixel2[1]-pixel1[1]);
         var diffB=abs(pixel2[2]-pixel1[2]);

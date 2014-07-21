@@ -16,6 +16,24 @@
 var animator;
 
 $(document).ready(function() {
+  // Add feature and unfeature capability
+  try {
+    $("#featureImage").click(function() {
+      var imageid = this.getAttribute("data-imageid");
+      var changeTo = this.getAttribute("data-featureStatus");
+      var newFeatureStatus = (changeTo == 'false') ? true : false;
+      var newText = (changeTo == 'false') ? "+ feature image" : "- unfeature image";
+      var clicked = this;
+      var url = "/api?action=setFeatured&imageid="+imageid+"&state="+changeTo;
+      $.get(url, function(res) {
+        if(res=="Success") {
+          clicked.textContent = newText;
+          clicked.setAttribute("data-featureStatus", newFeatureStatus);
+        }
+      })
+    })
+  }
+  catch(err) {}
   // Support full size canvases
   var canvas = document.getElementById("canvas");
   if (canvas.className == "fullscreen") {
@@ -70,17 +88,25 @@ $(document).ready(function() {
     } // btn.onclick
   } // if (code)
 
+
   // Add the event listener for the slider
-  var slider=document.getElementById('pixels');
-  try {
-    slider.addEventListener('change', function(event) {
-    var sliderVal=document.getElementById('pixels').value;
-	animator.setResolution(sliderVal, sliderVal);
-	animator.frame();
-      })
-  }
-  catch(err){
-  }
+  var toggle=document.getElementById("toggle");
+  if(toggle) {
+  toggle.onclick = function (event) {
+     var slider=document.getElementById('reso');
+     if (slider.style.display == "none") {
+	   slider.style.display = "block";
+           slider.addEventListener('change', function(event) {
+           var sliderVal=document.getElementById('pixels').value;
+	   animator.setResolution(sliderVal, sliderVal);
+ 	   animator.frame();
+          })
+        }
+    else {
+        slider.style.display = "none";
+      }
+    } // btn.onclick
+  } // if (code)
 
   var flags = document.getElementsByClassName("flagComment");
   var deletes = document.getElementsByClassName("deleteComment");
