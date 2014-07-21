@@ -344,14 +344,14 @@ code: the code submitted by the client
 id: the id for the challenge
 */
 handlers.submitchallenge = function (info, req, res) {
-  var query = "SELECT code FROM challenges WHERE id="+
-  database.sanitize(info.id)+";";
+  var query = "SELECT code FROM challenges WHERE id="+database.sanitize(info.id)+";";
   database.query(query, function(rows, error) {
     if (error) {
       fail(res, "Error: " + error);
     }
     else {
-      res.send(info.code==rows[0].code);
+      var answer = rows[0].code.replace(/ /g, "");
+      res.send(info.code==answer);
     }
   });
 };
