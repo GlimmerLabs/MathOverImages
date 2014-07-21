@@ -23,15 +23,15 @@ block content
       a(href='/badges' class='subview') badges
       a(href='' class='subview' id='selected') albums
       a(href='/challenges' class='subview') challenges
-    div(id='createAlbum')
-      a(href='/user/'+ profileBeingViewed + '/images/')
-        h1.all all images >
-      if loggedIn && (user.username===profileBeingViewed)
-        form(method='POST')
-          textarea(name='newAlbum' required= 'required' placeholder='enter new album name' cols='5' rows='5')
-          br
-          input(type='submit'  value='create new album' class='album' name='newAlbumSubmit')
+    if loggedIn && (user.username===profileBeingViewed)
+      form(method='POST')
+        textarea(name='newAlbum' required= 'required' placeholder='enter new album name' cols='5' rows='5')
+        br
+        input(type='submit'  value='create new album' class='album' name='newAlbumSubmit')
     div(id = 'albums')
+      figure
+        a(href='/user/'+ profileBeingViewed + '/images/')
+          h1.all all images >
       - for(var i=0; i < albums.length; i++)
         figure
           a(href='/user/' + profileBeingViewed + '/albums/' + albums[i].albumid)
