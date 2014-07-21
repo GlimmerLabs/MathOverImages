@@ -32,6 +32,7 @@ module.exports.add = function(req, res, database, info) {
     ['userid', req.session.user.userid],
     ['createdAt', "now()"],
     ['modifiedAt', "now()"],
+    ['title', quote(database.sanitize(info.title))],
     ['name', quote(database.sanitize(info.name))],
     ['description', quote(database.sanitize(info.description))],
     ['code', quote(database.sanitize(info.code))],
@@ -66,7 +67,7 @@ module.exports.add = function(req, res, database, info) {
     if (rows.length != 0) {
       var id = rows[0]['id'];
       console.log("ID",id);
-      res.redirect('/challenge/view/' + id);
+      res.redirect('/challenges/view/' + id);
       return;
     } // if it's already in the database
 
@@ -86,7 +87,7 @@ module.exports.add = function(req, res, database, info) {
         } // if error
         var id = rows[0]['id'];
         console.log("ID",id);
-        res.redirect('/challenge/view/' + id);
+        res.redirect('/challenges/view/' + id);
       }) // get the id
     }); // insert
   }); // check if it's there already
