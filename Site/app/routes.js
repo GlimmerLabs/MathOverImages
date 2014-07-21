@@ -77,7 +77,7 @@ module.exports = function(app,passport,database) {
   // Path: /
   //   HOME PAGE
   app.get('/', function(req, res) {
-    index.buildRandomPage(req, res, database);
+    index.buildFeaturedPage(req, res, database);
   });
 
   // --------------------------------------------------
