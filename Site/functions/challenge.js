@@ -163,6 +163,8 @@ module.exports.view = function(req, res, database) {
     });
   });
 };
+
+/*
 module.exports.submission = function(req, res, database, info) {
 //need to set up sending of INFO
   var info = [ // submission
@@ -171,8 +173,8 @@ module.exports.submission = function(req, res, database, info) {
   ];
 
   var id = database.sanitize(req.params.id); // challenge
-  var query2 = "SELECT code FROM challenges WHERE id=" + id + ";";
-  database.query(query2, function(rows, error) {
+  var query = "SELECT code FROM challenges WHERE id=" + id + ";";
+  database.query(query, function(rows, error) {
 //positive match with 90% jpeg similarity
     if (error) {
       res.send(error);
@@ -186,6 +188,22 @@ module.exports.submission = function(req, res, database, info) {
     //Find how MIST.render works with parsed code (mistui-animator.js)
     var rows=img1.width;
     var cols=img1.height;
+    var d = new Date();
+    var t = {
+      s: d.getMilliseconds()/500 - 1,
+      m: (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1,
+      h: (d.getMinutes()*60 + d.getSeconds())/1800 - 1,
+      d: (d.getHours()*60 + d.getMinutes())/720 - 1
+    };
+    var m = {
+      x: MIST.mouseX,
+      y: MIST.mouseY,
+      X: MIST.clickX,
+      Y: MIST.clickY
+    };
+    var fun1 = MIST.expToRGB("untitled image", code1Parsed, context); // NEED CONTEXT VARIABLE
+    // Evaluate the function
+    var rgb = fun(x,y,t,m);
     for (var i=0; i<rows; i+=4) //y
     {
       for (var j=0; j<cols; j+=4) //x
@@ -213,3 +231,4 @@ module.exports.submission = function(req, res, database, info) {
     console.log(code);
   })
 };
+*/
