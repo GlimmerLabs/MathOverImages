@@ -859,14 +859,20 @@ module.exports.toggleLike=(function (userid, imageid, callback) {
           callback(false, error);
         else
           module.exports.query("SELECT rating FROM images WHERE imageid='" + imageid + "';", function(results, error){
-            if (error)
+            if (error){
               callback(false, error);
-            else module.exports.query("UPDATE images SET rating='" + (results[0].rating - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, err){
-              if (err)
-                callback(false, err);
-              else
-                callback("Unliked", null);
-            }); // Update images table with new rating
+            }
+            else if (!results[0]){
+              callback(false, "Image does not exist");
+            }
+            else {
+              module.exports.query("UPDATE images SET rating='" + (results[0].rating - 1) +"' WHERE imageid= '" + imageid + "';", function(updated, err){
+                if (err)
+                  callback(false, err);
+                else
+                  callback("Unliked", null);
+              });// Update images table with new rating
+            }
           }); // Find current rating of image
       }); // Delete rating from table
   }); // Check if rating exists
