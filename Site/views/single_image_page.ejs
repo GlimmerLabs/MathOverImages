@@ -4,6 +4,20 @@
 <% var meta= '<meta property="og:image" content=' + jpgURL + '/>' %>
 <% var js= '<script type="text/javascript" src="/js/imagepage.js"></script>' %>
 <% include head.ejs %>
+  <% if (user) { %>
+    <% if (image.userid === user.userid) { %>
+     <div id='imageSettings'>
+      <form method='POST'>
+        <input type='hidden' value= <%= image.imageid %> name='profile' />
+        <input type='submit' class='profile' value='set as featured image' />
+      </form>
+      <form method='POST'>
+        <input type='hidden' value= <%= image.imageid %> name='delete' />
+        <input type='submit' class='delete' value='delete this image' />
+      </form>
+     </div>
+    <% } // if it's the user's image%>
+  <% } // if it's the user's image%>
 <h1><%- image.title %></h1>
 <h2><%- image.modifiedAt.toUTCString() %></h2>
 <figure>
@@ -48,16 +62,6 @@
     </tr>
   <% } // for %>
   <% if (user) { %>
-    <% if (image.userid === user.userid) { %>
-      <form method='POST'>
-        <input type='hidden' value= <%= image.imageid %> name='profile' />
-        <input type='submit' class='profile' value='set as featured image' />
-      </form>
-      <form method='POST'>
-        <input type='hidden' value= <%= image.imageid %> name='delete' />
-        <input type='submit' class='delete' value='delete this image' />
-      </form>
-    <% } // if it's the user's image%>
     <% if(user.type == "A" || user.type == "M") { %>
       <% if(image.featured == 1) { %>
         <div id="add">
