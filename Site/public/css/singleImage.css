@@ -336,6 +336,11 @@ input[type=range]::-webkit-slider-thumb {
     width: 10px;
     height: 26px;
 }
+
+#imageSettings{
+display:flex;
+}
+
 /* This button was generated using CSSButtonGenerator.com */
 
 /*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
