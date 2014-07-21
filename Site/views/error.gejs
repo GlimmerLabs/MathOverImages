@@ -1,0 +1,15 @@
+title
+  ERROR <%- error %>
+css
+  <link rel="stylesheet" href="/css/styles.css">
+head1
+  error
+head2
+  <%- error %>
+body
+  <p style="clear:left;">
+    <%- errortext %>
+  </p>
+  <p>
+    Please contact us and let us know what you were doing when this error appeared.  Thanks!
+  </p>
