@@ -30,7 +30,7 @@ var submitChallenge = function() {
 var submitChallText = new Kinetic.Text ({
   x: funBarOffset,
   y: funBarOffset,
-  text: 'submit challenge',
+  text: 'submit solution',
   fontSize: funBarFontSize,
   fontFamily: globalFont,
   fill: 'black'
@@ -132,7 +132,8 @@ submitChallGroup.on('mouseup', function() {
     alert("Correct! You've completed the challenge!");
   } // if correct
   else {
-    alert("That's not quite right. Make sure the selected image matches the one on the left!")
+    // alert("That's not quite right. Make sure the selected image matches the one on the left.")
+    alert("Sorry, submitting solutions is not yet implemented.");
   } // else incorrect
   }
   funBarLayer.draw();
