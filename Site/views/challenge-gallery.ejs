@@ -39,7 +39,7 @@
             <li>
               <figure>
                 <p class="challengeName"><%- c.title %></p>
-                <a href="/challenges/view/<%-c.id %>">
+                <a href="/challenges/view/<%- c.name %>">
                   <canvas id="canvas<%-i%>" width="300px" height="300px"/>
                 </a>
                   <input id="code<%-i%>" type="hidden" value="<%-c.code%>"></input>

@@ -116,7 +116,7 @@ module.exports.gallery = function(req, res, database, info) {
   var color = info.color ? info.color : "Greyscale";
   var animation = info.animation ? info.animation : "Static";
   var category = level + ", " + color + ", " + animation;
-  var query = "SELECT challenges.id, challenges.title, challenges.code FROM challengecategories,challenges WHERE challengecategories.description='" + category + "' and challengecategories.id = challenges.categoryid ORDER BY challenges.position;";
+  var query = "SELECT challenges.id, challenges.name, challenges.title, challenges.code FROM challengecategories,challenges WHERE challengecategories.description='" + category + "' and challengecategories.id = challenges.categoryid ORDER BY challenges.position;";
   console.log(query);
   database.query(query, function(rows, error) {
     // Sanity check
