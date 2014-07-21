@@ -20,11 +20,14 @@
   </div> <!-- image-sharing -->
   <div id="image-controls">
     <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
-    <button id="animator">stop</button>
+    <button id="animator" class="animations">stop</button>
   <% } %>
-    <button id="jpeg">jpeg</button>
-    <button id="showcode">code</button>
-    Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1" style="width: 80px;"> 400px
+    <button id="jpeg" class="animations">jpeg</button>
+    <button id="showcode" class="animations">code</button>
+    <button id="toggle" class="animations">resolution</button>
+      <div id="reso" style="display:none;">
+      1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1"> 400px
+      </div>
   </div> <!-- image-controls -->
 </figure>
 <p id="code" class="code" style="display:none;"><%- image.code %></p>

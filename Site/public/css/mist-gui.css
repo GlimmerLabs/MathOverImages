@@ -13,6 +13,11 @@
 
 #gui-and-key {
 	margin: 0 auto;
+	display: -webkit-flex;
+  	-webkit-flex-direction: row;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
 }
 
 /*
@@ -24,8 +29,11 @@
 }
 
 /** KEY TABLE **/
-#key {
+#gui-accordion {
 	margin-left: 10px;
+}
+#key {
+	margin-left: 0;
 	padding: 10px;
 	border: 2px solid black;
 }
