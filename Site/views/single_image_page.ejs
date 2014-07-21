@@ -6,9 +6,9 @@
 <% include head.ejs %>
 <h1><%- image.title %></h1>
 <h2><%- image.modifiedAt.toUTCString() %></h2>
-<figure data-imageid=<%= image.imageid %>>
+<figure>
   <canvas id="canvas" width="400" height="400"></canvas>
-  <div id="image-sharing">
+  <div id="image-sharing" data-imageid=<%= image.imageid %>>
     <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
     <div id="image-fb-share" data-href="<%= 'http://glimmer.grinnell.edu/image/' + image.imageid %>" data-type="button" class="fb-share-button"></div>
     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out " + ((user&&user.userid===image.userid) ? "my image, \"" + image.title + "\"" : "\"" + image.title + "\" by " + image.username) + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
