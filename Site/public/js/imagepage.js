@@ -105,7 +105,7 @@ $(document).ready(function() {
     else {
         slider.style.display = "none";
       }
-    } // btn.onclick
+    } // toggle.onclick
   } // if (code)
 
   var flags = document.getElementsByClassName("flagComment");
