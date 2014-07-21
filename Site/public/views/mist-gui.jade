@@ -5,6 +5,7 @@ block extraMetas
 block extraLinks
   script(type='text/javascript' src='https://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js')
   script(type='text/javascript' src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
+  script(type='text/javascript' src='/js/mist-gui-jquery-functions.js')
   script(type='text/javascript' src='/js/mist-utils.js')
   script(type='text/javascript' src='/js/mist-functions.js')
   script(type='text/javascript' src='/js/mist-layout.js')
@@ -46,61 +47,60 @@ block stylesheets
 
 block content
   div(id='main')
-    table(id='gui-and-key')
-      tr
-        td
-          div(id='container')
-          script(type='text/javascript' src='/js/mist-gui-initializeStage.js')
-          script(type='text/javascript' src='/js/mist-gui-workLayerEvents.js')
-          script.
-            stage.draw()
-        td
-          table(id='key')
-            tr(id='value-key')
-              td 
-                img(src='/images/gui-key/value.png' class='key-image')
-              td(class='key-description')
-                | <b> value </b> 
-                | <br>Can be rendered individually or can be an input to a function.
-            tr(id='mult-function-key')
-              td 
-                img(src='/images/gui-key/mult-function.png' class='key-image')
-              td(class='key-description')
-                | <b> multiple input function </b> 
-                | <br>Must have 2 inputs, can have up to 20.
-            tr(id='fixed-function-key')
-              td 
-                img(src='/images/gui-key/fixed-function.png' class='key-image')
-              td(class='key-description')
-                | <b> fixed input function </b> 
-                | <br>Number of inputs is unchanging.
-            tr(id='rgb-function-key')
-              td 
-                img(src='/images/gui-key/rgb-function.png' class='key-image')
-              td(class='key-description')
-                | <b> rgb (color) function </b> 
-                | <br>Takes three inputs (Red,Green, and Blue) and returns a color 
-                | based on the values for R, G, and B.
-            tr(id='function-outlet-key')
-              td 
-                img(src='/images/gui-key/function-input.png' class='key-image')
-              td(class='key-description')
-                | <b> function input </b> 
-                | <br>Where you connect an input to a function. 
-            tr(id='connection-key')
-              td 
-                img(src='/images/gui-key/connection2.png' class='key-image')
-              td(class='key-description')
-                | <b> connection </b> 
-                | <br>Can be between a value and a function or a function and a 
-                | function.
-            tr(id='image-box-key')
-              td 
-                img(src='/images/gui-key/image-box2.png' class='key-image')
-              td(class='key-description')
-                | <b> image box </b> 
-                | <br>Appears on all values and on functions when they are 
-                | renderable. Click to see the resulting image.
+    div(id='gui-and-key')
+      div(id='container')
+        script(type='text/javascript' src='/js/mist-gui-initializeStage.js')
+        script(type='text/javascript' src='/js/mist-gui-workLayerEvents.js')
+        script.
+          stage.draw()
+      div(id="gui-accordion")
+        h3 Workspace Key
+        table(id='key')
+          tr(id='value-key')
+            td 
+              img(src='/images/gui-key/value.png' class='key-image')
+            td(class='key-description')
+              | <b> value </b> 
+              | <br>Can be rendered individually or can be an input to a function.
+          tr(id='mult-function-key')
+            td 
+              img(src='/images/gui-key/mult-function.png' class='key-image')
+            td(class='key-description')
+              | <b> multiple input function </b> 
+              | <br>Must have 2 inputs, can have up to 20.
+          tr(id='fixed-function-key')
+            td 
+              img(src='/images/gui-key/fixed-function.png' class='key-image')
+            td(class='key-description')
+              | <b> fixed input function </b> 
+              | <br>Number of inputs is unchanging.
+          tr(id='rgb-function-key')
+            td 
+              img(src='/images/gui-key/rgb-function.png' class='key-image')
+            td(class='key-description')
+              | <b> rgb (color) function </b> 
+              | <br>Takes three inputs (Red,Green, and Blue) and returns a color 
+              | based on the values for R, G, and B.
+          tr(id='function-outlet-key')
+            td 
+              img(src='/images/gui-key/function-input.png' class='key-image')
+            td(class='key-description')
+              | <b> function input </b> 
+              | <br>Where you connect an input to a function. 
+          tr(id='connection-key')
+            td 
+              img(src='/images/gui-key/connection2.png' class='key-image')
+            td(class='key-description')
+              | <b> connection </b> 
+              | <br>Can be between a value and a function or a function and a 
+              | function.
+          tr(id='image-box-key')
+            td 
+              img(src='/images/gui-key/image-box2.png' class='key-image')
+            td(class='key-description')
+              | <b> image box </b> 
+              | <br>Appears on all values and on functions when they are 
+              | renderable. Click to see the resulting image.
     p(id="gui-help")
       | New to MIST? Having Trouble? Read our 
       | <a href='/tutorial/gui'>create tutorial</a>

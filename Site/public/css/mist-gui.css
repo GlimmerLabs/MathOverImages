@@ -6,6 +6,7 @@
 #container {
     background-color: #F1F8FF;
     width: 900px;
+    min-width: 900px;
     height: 600px;
     border: 3px solid black;
     margin: 0 auto;
@@ -13,6 +14,11 @@
 
 #gui-and-key {
 	margin: 0 auto;
+	display: -webkit-flex;
+  	-webkit-flex-direction: row;
+  	display: flex;
+  	flex-direction: row;
+  	align-items: flex-start;
 }
 
 /*
@@ -24,8 +30,16 @@
 }
 
 /** KEY TABLE **/
-#key {
+#gui-accordion {
 	margin-left: 10px;
+}
+
+/** set width of accordion header equal to the width of the table */
+.ui-accordion-header {
+	width: 255px;
+}
+#key {
+	margin-left: 0;
 	padding: 10px;
 	border: 2px solid black;
 }

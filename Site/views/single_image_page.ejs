@@ -6,9 +6,9 @@
 <% include head.ejs %>
 <h1><%- image.title %></h1>
 <h2><%- image.modifiedAt.toUTCString() %></h2>
-<figure data-imageid=<%= image.imageid %>>
+<figure>
   <canvas id="canvas" width="400" height="400"></canvas>
-  <div id="image-sharing">
+  <div id="image-sharing" data-imageid=<%= image.imageid %>>
     <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
     <div id="image-fb-share" data-href="<%= 'http://glimmer.grinnell.edu/image/' + image.imageid %>" data-type="button" class="fb-share-button"></div>
     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out " + ((user&&user.userid===image.userid) ? "my image, \"" + image.title + "\"" : "\"" + image.title + "\" by " + image.username) + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
@@ -20,11 +20,14 @@
   </div> <!-- image-sharing -->
   <div id="image-controls">
     <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
-    <button id="animator">stop</button>
+    <button id="animator" class="animations">stop</button>
   <% } %>
-    <button id="jpeg">jpeg</button>
-    <button id="showcode">code</button>
-    Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1" style="width: 80px;"> 400px
+    <button id="jpeg" class="animations">jpeg</button>
+    <button id="showcode" class="animations">code</button>
+    <button id="toggle" class="animations">resolution</button>
+      <div id="reso" style="display:none;">
+      1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1"> 400px
+      </div>
   </div> <!-- image-controls -->
 </figure>
 <p id="code" class="code" style="display:none;"><%- image.code %></p>
@@ -36,7 +39,6 @@
       </th>
       <td class="comment"><%- comments[i].comment %></td>
       <td class="date"><script>document.write(describeDate("<%= comments[i].postedAt %>"))</script></td>
-      <td class='deleteComment'></td>
       <% if(user) { %>
         <td class='flagComment <%= (comments[i].flagged) ? 'flaggedComment' : ''%>'>&#9873</td>
         <% if(user.type == "A" || user.type == "M" || user.userid == comments[i].userid || user.userid == image.userid) { %>
@@ -56,6 +58,21 @@
         <input type='submit' class='delete' value='delete this image' />
       </form>
     <% } // if it's the user's image%>
+    <% if(user.type == "A" || user.type == "M") { %>
+      <% if(image.featured == 1) { %>
+        <div id="add">
+          <ul>
+            <li id="featureImage" data-featureStatus="false" data-imageid='<%=image.imageid%>'>- unfeature image</li>
+          </ul>
+        </div>
+      <% } else { %>
+        <div id="add">
+          <ul>
+            <li id="featureImage" data-featureStatus="true" data-imageid='<%=image.imageid%>'>+ feature image</li>
+          </ul>
+        </div>
+      <% } %>
+    <% } // If user is moderator or admin %>
     <div id="add">
       <ul>
         <li>+ add to album

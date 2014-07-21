@@ -29,6 +29,11 @@ figure img {
   width: 400px;
 }
 
+p.code{
+margin-top: 10px;
+margin-bottom: 20px;
+}
+
  .starred, .unstarred{
   display: inline-block;
   cursor: pointer;
@@ -46,6 +51,7 @@ figure img {
 
 table#comments {
   margin: 0 auto;
+  padding-top: 20px;
 }
 
 div.comment {
@@ -281,6 +287,13 @@ th.user a {
 #image-tweet {
 margin: 0 auto 0 5px;
 }
+
+#settings {
+display:inline-flex;
+margin-left: 1150px;
+}
+
+
 .animations {
 	background-color:#ededed;
 	border-top-left-radius:13px;
@@ -294,14 +307,14 @@ margin: 0 auto 0 5px;
 	font-family:arial;
 	font-size:21px;
 	font-style:normal;
-	width:110px;
 }
 .animations:hover {
 	background-color:#dfdfdf;
 }
 
-#settings{
-padding-top:20px;
+#image-controls{
+padding-top:15px;
+padding-bottom:10px;
 }
 
 #reso{
@@ -312,14 +325,12 @@ color: rgb(119, 119, 119);
 }
 
 input[type=range] {
-    -webkit-appearance:none !important;
     background-color: rgb(157, 150, 142);
-    width: 300px;
+    width: 200px;
     height:4px;
 }
 
 input[type=range]::-webkit-slider-thumb {
-     -webkit-appearance: none;
     background-color: grey;
     opacity: 0.5;
     width: 10px;
