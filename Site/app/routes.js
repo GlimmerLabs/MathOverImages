@@ -469,7 +469,7 @@ module.exports = function(app,passport,database) {
     if (req.session.user != null) {
       if(req.session.user.username === req.params.username) {
         if(req.body.aboutSubmit != null) {
-          username.changeAboutSection(req, res);
+          username.changeAboutSection(req, res, database);
         }
       }
     }
