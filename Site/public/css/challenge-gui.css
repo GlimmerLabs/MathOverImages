@@ -12,23 +12,32 @@
   border: 3px solid black;
 }
 
+/**
+ * Set up the image and the GUI.
+ *   * Side-by-side (if possible)
+ *   * TOp aligned
+ */
 #image-and-gui {
-  margin: 0 auto; 
-  display: -webkit-flex;
-  -webkit-flex-direction: row;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+#image-and-gui div {
+  vertical-align: top;
+  display: inline-block;
+}
+
+/**
+ * The canvas has a black border for ease of reading
+ */
 #canvas {
-  min-width: 400px;
-  min-height: 400px;
-  max-width: 400px;
-  max-height: 400px;
   border: 1px solid black;
 }
 
+/**
+ * ???
+ */
 #challenge-subTitle {
   margin: 0 auto 0 30px;
 }
