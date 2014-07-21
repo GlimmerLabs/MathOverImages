@@ -3,6 +3,8 @@
 *   Functions for handling challenge pages.
 */
 
+var utils = require('./utils.js');
+
 // +-----------+-------------------------------------------------------
 // | Utilities |
 // +-----------+
@@ -143,27 +145,65 @@ module.exports.gallery = function(req, res, database, info) {
  */
 module.exports.view = function(req, res, database) {
   var id = database.sanitize(req.params.id);
-  var query = "SELECT title,description,code FROM challenges WHERE id=" +
-     id + ";";
+
+  // First try to query by name
+  var query = "SELECT title,description,code FROM challenges WHERE name='" 
+      + id + "';";
   console.log(query);
   database.query(query, function(rows, error) {
-    // Sanity check
+    // Sanity check 1
     if (error) {
-      res.send(error);
+      utils.error(req, res, "Database problem", error);
       return;
     } // if (error)
-    if (rows.length == 0) {
-      res.send("Challenge " + id + " does not exist.");
+
+    // Make sure that we have a row.
+    if (rows.length > 0) {
+      console.log("Rendering by name", rows[0]);
+      res.render('view-challenge.ejs', {
+        user: req.session.user,
+        challenge: rows[0]
+      }); // render
       return;
-    } // if (rows.length == 0)
-    var challenge = rows[0];
-    console.log(challenge);
-    res.render('view-challenge.ejs', {
-      user: req.session.user,
-      challenge: challenge
-    });
-  });
+    } // if (rows.length > 0)
+
+    // If it's not a number, we can't search by numeric id
+    if (isNaN(id)) {
+      utils.error(req, res, "Unknown challenge", "Challenge " + id + 
+        " does not exist");
+    } // if isNaN(id)
+
+    // OKay, if we got to here, we didn't generate a page, so we should
+    // try the other query
+    var query = "SELECT title,description,code FROM challenges WHERE id=" 
+      + id + ";";
+    console.log(query);
+    database.query(query, function(rows, error) {
+      // Sanity check 1
+      if (error) {
+        utils.error(req, res, "Database problem", error);
+        return;
+      } // if (error)
+
+      // Make sure that we have a row.
+      if (rows.length > 0) {
+        console.log("Rendering by id", rows[0]);
+        res.render('view-challenge.ejs', {
+          user: req.session.user,
+          challenge: rows[0]
+        }); // render
+        return;
+      } // if (rows.length > 0)
+
+      // If we got to here, we couldn't find the challenge.
+      utils.error(req, res, "Unknown challenge", "Challenge " + id + 
+          " does not exist.");
+    }); // inner database.query
+  }); // outer database.query
+
+  return;
 };
+
 module.exports.submission = function(req, res, database, info) {
 //need to set up sending of INFO
   var info = [ // submission
