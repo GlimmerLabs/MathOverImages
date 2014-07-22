@@ -3,14 +3,27 @@
 # A simple script for updating the site
 
 # First, we pull changes from git
+echo "*** PULLING CHANGES ***";
 git pull
 
 # Next, we make the compound Javascript files
+echo "*** REBUILDING JS FILES ***";
 pushd Site/public/js
 make
 popd
 
-# Update node dependencies
-pushd Site/
-npm install
+# We also make the computed ejs files
+echo "*** BUILDING EJS FILES ***";
+pushd Site/views
+make
 popd
+
+# Update node dependencies
+echo "*** UPDATING NODE ***";
+pushd Site/
+# npm install
+popd
+
+# Remind the user to restart
+echo ""
+echo "*** UPDATED; PLEASE RESTART ***"
