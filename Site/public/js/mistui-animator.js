@@ -134,7 +134,6 @@ MIST.ui.Animator.prototype.coords = function() {
   context.textBaseline="top";
   context.fillText("+1", this.left+(this.width/2), this.top+this.height+5);
 }; // coords
-
 /**
  * Do one frame of the animation.
  */

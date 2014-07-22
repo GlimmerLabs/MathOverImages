@@ -156,6 +156,7 @@ input[type='submit'].select{
     font-weight: 100;
     float: right;
     border: none;
+    margin-top: -22px;
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     -ms-transition: all 0.2s;
@@ -226,6 +227,7 @@ th.user a {
   display: inline-block;
   margin-right: -4px;
   position: relative;
+  width: 200px;
   padding: 15px 20px;
   background: #fff;
   cursor: pointer;
@@ -336,6 +338,11 @@ input[type=range]::-webkit-slider-thumb {
     width: 10px;
     height: 26px;
 }
+
+#imageSettings{
+display:flex;
+}
+
 /* This button was generated using CSSButtonGenerator.com */
 
 /*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
