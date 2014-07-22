@@ -56,6 +56,7 @@ try { MIST = MIST; } catch (err) { MIST = new Object(); }
 // +----------------------+------------------------------------------
 // | Types of Expressions |
 // +----------------------+
+
 MIST.TYPE = {};
 
 MIST.TYPE.RGB = "RGB";
@@ -387,23 +388,37 @@ MIST.App.prototype.toString = function() {
 };
 
 /**
- * Print the application, indented by some number of spaces.
+ * Print the application, with all but the first line indented by
+ * indent and with the last line followed by suffix.
  */
-MIST.App.prototype.prettyPrint = function(indent) {
+MIST.App.prototype.prettyPrint = function(indent,suffix) {
   if (!indent) { indent = ""; }
+  if (!suffix) { suffix = "\n"; }
+  var arity = this.operands.length;
+  var newindent = indent + nspaces(this.operation.length+1);
 
-  if (this.operands.length == 0) {
-    return indent + this.operation + "()\n";
-  }
-  else { // if there are operands
-    var newindent = indent + nspaces(this.operation.length);
-    var pp = function(val) { return val.prettyPrint(newindent+" ") };
-    return indent + this.operation 
-       + "(\n" 
-           + this.operands.map(pp).join(",")
-           + newindent + ")\n";
+  // If there are no operands
+  if (arity == 0) {
+    return this.operation + "()" + suffix;
+  } // if there are no operands
+
+  // If there's only one operand
+  else if (arity == 1) {
+    return this.operation + "(" + this.operands[0].prettyPrint(newindent, ")"+suffix);
+  } // if there's only one operand
+
+  // If there are more than one operand
+  else { 
+    var result = this.operation + "(";
+    result += this.operands[0].prettyPrint(newindent, ",\n");
+    for (var i = 1; i < arity-1; i++) {
+      result += newindent + this.operands[i].prettyPrint(newindent, ",\n");
+    } // for
+    result += newindent + this.operands[arity-1].prettyPrint(newindent, ")" + suffix);
+    return result;
   } // has operands
-};
+}; // MIST.App.prettyPrint
+
 
 // +-----------------+-----------------------------------------------
 // | Class: MIST.Fun |
@@ -470,11 +485,12 @@ MIST.Val.prototype.toString = function() {
 }; // MIST.Val.prototype.toString
 
 /**
- * Print nicely indented.
+ * Print a value.
  */
-MIST.Val.prototype.prettyPrint = function(indent) {
+MIST.Val.prototype.prettyPrint = function(indent,suffix) {
   if (!indent) { indent = ""; }
-  return indent + this.name + "\n";
+  if (!suffix) { suffix = "\n"; }
+  return this.name + suffix;
 }; // MIST.Val.prettyPrint
 
 // +-----------------------+-----------------------------------------
@@ -1184,3 +1200,6 @@ var fun2 = new MIST.Fun(["i"],
                                     new MIST.Val("x"),
                                     new MIST.Val("i")));
 
+var pp = function(str) {
+  console.log(MIST.parse(str).prettyPrint());
+}
