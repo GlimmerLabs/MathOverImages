@@ -88,6 +88,11 @@ textarea{
 	background-color:#dfdfdf;
 }
 
-#albumMaker {
-padding-top: 10px;
+#createNew {
+    padding-top: 40px;
+    position: absolute;
+    top: 150px;
+    left: 30px;
+    
+
 }
