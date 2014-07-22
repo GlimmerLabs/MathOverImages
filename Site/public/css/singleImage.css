@@ -342,6 +342,30 @@ input[type=range]::-webkit-slider-thumb {
 display:flex;
 }
 
+/**
+ * Our pretty-printed code.
+ */
+p.pretty {
+  font-size: 1.5em;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: block;
+  text-align: left;
+  white-space: pre;
+  font-family: Courier New, Courier, monospace;
+  word-wrap:break-word;
+  border: 1px solid grey;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+textarea.pretty {
+  readonly;
+  font-family: Courier New, Courier, monospace;
+  font-size: 2em;
+}
+
 /* This button was generated using CSSButtonGenerator.com */
 
 /*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
