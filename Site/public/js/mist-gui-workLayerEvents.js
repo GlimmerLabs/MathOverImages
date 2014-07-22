@@ -1,11 +1,17 @@
 // WORK LAYER EVENTS
-/*
-- on click
-- on mousedown
-- on contentMousemove
-- on mouseover
-- on mouseout
-*/
+/**
+ * mistgui-work-layer-events.js
+ *   Set up handlers for events that happen in the work layer.  These include
+ *     - on click
+ *     - on mousedown
+ *     - on contentMousemove
+ *     - on mouseover
+ *     - on mouseout
+ */
+
+// +-------+-----------------------------------------------------------
+// | Notes |
+// +-------+
 
 /*
 There are 3 different modes:
@@ -32,6 +38,11 @@ There are 3 different modes:
   an outlet.
   5. otherwise keep drawing the line.
   */
+
+// +----------+--------------------------------------------------------
+// | Handlers |
+// +----------+
+
   workLayer.on('click', function(evt) {
     var shape = evt.target;
     var parent = shape.getParent();
@@ -191,17 +202,6 @@ There are 3 different modes:
         }
       }
     } 
-  });
-
-  /*
-  while you are drawing a line, make it move with the cursor.
-    */
-  stage.addEventListener('contentMousemove', function(){
-    if (makingLine) {
-      currLine.points()[2] = stage.getPointerPosition().x;
-      currLine.points()[3] = stage.getPointerPosition().y;
-      lineLayer.draw();
-    } // if makingLine
   });
 
   
