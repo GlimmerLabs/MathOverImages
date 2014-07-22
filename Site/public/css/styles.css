@@ -1,3 +1,8 @@
+/**
+ * styles.css
+ *   Our primary style sheet.
+ */
+ 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
 
 
@@ -5,13 +10,22 @@
  font-family: 'Open Sans', sans-serif; /* Set Default Font */
 }
 
-#main {
- margin:80px;
+/**
+ * The main body of the page is offset 80 pixels from the top to allow 
+ * space for the annoying header.
+ */
+div#main {
+  margin-top: 80px;
+  clear: both;
 }
 
-/* Header */
+/**
+ * The header at the top of the page has to be offset -80px 
+ * to correspond to the margin-top in div#main.
+ */
 header {
- margin: -80px -10px;
+ margin-top: -80px;
+ margin-left: -10px;
  width: 101%;
  height: 60px;
  background-color: #4A4A4A;
@@ -90,7 +104,6 @@ header nav li:hover {
 
 }
 .menu{
-
     position: relative;
     margin: 0px;
     list-style: none;
@@ -153,7 +166,7 @@ input[type='submit'].more:hover{
 #pageTitle {
  height:100px;
  min-width:400px;
- margin: 0px -90px;
+ margin: 0px;
  float: left;
  background-color: #EFDC5C;
 }
@@ -172,7 +185,7 @@ input[type='submit'].more:hover{
 #pageTitleGeneral {
  height:100px;
  min-width:400px;
- margin: 0px -90px;
+ margin: 0px;
  float: left;
  background-color: #3FAAA0;
 }
@@ -194,7 +207,8 @@ input[type='submit'].more:hover{
  text-align: left;
  clear: left;
  color: #979797;
- margin: -15px -60px;
+ margin-left: 20px;
+ margin-top: 20px;
  display: block;
 }
 
@@ -229,7 +243,7 @@ form input[type='submit'] {
 #subviews {
  float: right;
  width: 450px;
- margin: -10px 0px;
+ margin-top: -10px;
 }
 
 .subview {
