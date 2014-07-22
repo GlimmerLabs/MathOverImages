@@ -79,11 +79,14 @@ $(document).ready(function() {
   if (btn) {
     btn.onclick = function(event) {
       var code = document.getElementById("code");
-      if (code.style.display == "none") {
-        code.style.display = "block";
+      var pretty = document.getElementById("pretty");
+      if (pretty.style.display == "none") {
+        pretty.innerHTML = MIST.parse(code.innerHTML).prettyPrint();
+        pretty.style.display = "block";
+        pretty.style.width = Math.round(textWidth(pretty.innerHTML)*1.5) + "ex";
       }
       else {
-        code.style.display = "none";
+        pretty.style.display = "none";
       }
     } // btn.onclick
   } // if (code)
@@ -250,3 +253,14 @@ var deleteComment = (function(commentId, callback){
   });
 }); // deleteComment
 
+/**
+ * Determine the width of some multi-line text.
+ */
+function textWidth(text) {
+  var lines = text.split("\n");
+  var result = 0;
+  for (var i = 0; i < lines.length; i++) {
+    result = Math.max(result, lines[i].length);
+  } // for
+  return result;
+} // textWidth

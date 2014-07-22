@@ -1,3 +1,9 @@
+/**
+ * mistgui-globals.js
+ *   Global variables for a MIST gui.  (Eventually, these should be fields
+ *   within the object/prototype.)
+ */
+ 
 var height = 2 * width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';
@@ -23,6 +29,11 @@ var valueXYColor = '#EFDC5C';
 var valueTimeColor = '#FD9E54'
 var valueMouseColor = '#E46868';
 var valueConstantColor = '#F17C9D';
+
+var menuFontSize = width/75; //12 when width = 900
+var nodeFontSize = width / 56.25; //16 when width = 900
+var globalScale = width/900; // for elements that are more difficult to scale (undo/redo)
+
 
 var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
 var functions = {
