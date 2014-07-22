@@ -619,12 +619,21 @@ MIST.FunInfo = function(name, display, about, params, other) {
 // | Parsing |
 // +---------+
 
+/**
+ * Patterns for alphabetic and digit characters.
+ */
 MIST.alpha = /[a-zA-Z]/;
 MIST.digit = /[0-9]/;
 
+/**
+ * Token type.
+ */
 MIST.tokens = Object.freeze({UNKNOWN:0, OPEN:1, CLOSE:2, COMMA:3, 
   ID:4, NUM:5, EOF:6});
 
+/**
+ * A token: One of the basic building blocks.
+ */
 MIST.Token = function(type,text,row,col)
 {
   this.type = type;
@@ -633,6 +642,9 @@ MIST.Token = function(type,text,row,col)
   this.col = col;
 } // MIST.Token
 
+/**
+ * An object that lets us read input one character at a time.
+ */
 MIST.Input = function(text)
 {
   this.text = text;
@@ -753,12 +765,19 @@ MIST.tokenize = function(str) {
   return tokens;
 } // MIST.tokenize
 
+/**
+ * Peek at the type of the next token.
+ */
 peekType = function(tokens) {
   if (!tokens[0])
     return MIST.tokens.UNKNOWN;
   else
     return tokens[0].type;
 } // peekType
+
+/**
+ * Create a regular expression for sanitizing MIST code.
+ */
 MIST.createSanitizer = function() {
   var resultingRE = ""
   for(var i = 0; i<arguments.length-1;i++) {
@@ -768,6 +787,10 @@ MIST.createSanitizer = function() {
   var evaluated = new RegExp(resultingRE, "g");
   return evaluated
 }
+
+/**
+ * Sanitize MIST code.
+ */
 MIST.sanitize = function(RE, string) {
   var result = "";
   var current = RE.exec(string);
@@ -777,8 +800,14 @@ MIST.sanitize = function(RE, string) {
   }
   return result
 }
+
+/**
+ * Parse MIST code into a MIST expression.
+ */
 MIST.parse = function(str,prefix) {
   if (!prefix) { prefix=""; }
+
+  // The kernel.  Does the work, also recurses.
   var kernel = function(tokens) {
     // This should never happen, but let's be safe.
     if (tokens.length == 0) {
@@ -899,6 +928,74 @@ function testArgs()
 {
   return getArgs(arguments, 1);
 } // testArgs
+
+// +-----------------------+-----------------------------------------
+// | Interpreting MIST Code |
+// +-----------------------+
+
+/**
+ * MISTbody2fun
+ *   Given the body of something that uses "raw" MIST, return the
+ *   corresponding function.  (Note that we will generally not
+ *   use "raw" MIST, but it's helpful for testing.)
+ */
+function MISTbody2fun(body)
+{
+  return eval("(function (x,y,t,m) { return " + body + "})");
+} // MISTbody2fun
+
+/** 
+ * Convert a MIST expression to something that returns an RGB
+ * list.
+ */
+MIST.expToRGB = function(name,exp,context) {
+  var type = MIST.expType(exp, context);
+  var tmp = [];
+   // Contexts as objects
+  for (var c in context) {
+    tmp.push("var " + c + " = " + context[c].toString());
+  }
+  var contextCode = tmp.join(";");
+
+  // For RGB functions
+  //   function(x,y,t,m,p) {
+  //      var context0 = def0;
+  //      ...
+  //      return (exp).map(r2c);
+  //   };
+  if (type == MIST.TYPE.RGB) {
+    var code = "(function(x,y,t,m,p) { " + contextCode + 
+        "; return (" + exp.toString() + ").map(r2c); })";
+    // console.log(code);
+    return eval(code);
+  }
+  // For B&W functions
+  //    function(x,y,t,m,p) {
+  //      var context0 = def0;
+  //      ...
+  //      var _tmp_ = r2c(-exp);
+  //      return [_tmp_, _tmp_, _tmp];
+  else if (type == MIST.TYPE.NUMBER) {
+    var code = "(function(x,y,t,m,p) { " + contextCode +
+        "; var _tmp_ = r2c(-" + exp.toString() + 
+        "); return [_tmp_, _tmp_, _tmp_]; })";
+    // console.log(code);
+    return eval(code);
+  }
+  else {
+    throw "Cannot handle expressions of type " + type;
+  }
+} // MIST.expToRGB
+
+/*
+  Some HSV notes for expToRGB
+        h = r2h(cap(hfun(x,y,time,mouse)));
+        s = r2sv(cap(sfun(x,y,time,mouse)));
+        v = r2sv(cap(vfun(x,y,time,mouse)));
+
+        var rgb = [];
+        rgb = hsv2rgb(h, s, v);
+ */
 
 // +--------------------+--------------------------------------------
 // | Sample Expressions |
