@@ -33,13 +33,13 @@
   <% } else { %>
     <div id="gallery">
       <div id="images">
-        <ul class="rig columns-3">
+        <ul class="rig columns-4">
           <% for (var i = 0; i < challenges.length; i++) { %>
             <% var c = challenges[i]; %>
             <li>
               <figure>
                 <p class="challengeName"><%- c.title %></p>
-                <a href="/challenges/view/<%-c.id %>">
+                <a href="/challenges/view/<%- c.name %>">
                   <canvas id="canvas<%-i%>" width="300px" height="300px"/>
                 </a>
                   <input id="code<%-i%>" type="hidden" value="<%-c.code%>"></input>
