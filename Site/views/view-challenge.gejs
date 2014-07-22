@@ -48,5 +48,5 @@ body
       <script>
         stage.draw()
       </script>
-    </div>
-  </div>
+    </div> <!-- container -->
+  </div> <!-- image-and-gui -->
