@@ -24,7 +24,7 @@ block content
       a(href='' class='subview' id='selected') albums
       a(href='/challenges' class='subview') challenges
     if loggedIn && (user.username===profileBeingViewed)
-      button(id='newAlbums') create album
+      button(id='newAlbums'  class='albumBtn') create album
       div(id = 'albumMaker' style='display:none;')
         script(type='text/javascript').
           var newAlbums = document.getElementById("newAlbums");
@@ -42,7 +42,7 @@ block content
         form(method='POST')
           textarea(name='newAlbum' required= 'required' placeholder='enter new album name' cols='5' rows='5')
           br
-          input(type='submit'  value='create new album' class='album' name='newAlbumSubmit')
+          input(type='submit'  value='enter' class='album' name='newAlbumSubmit')
     div(id = 'albums')
       figure
         a(href='/user/'+ profileBeingViewed + '/images/')
