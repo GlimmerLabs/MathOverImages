@@ -16,16 +16,16 @@ block stylesheets
 
 block content
   div(id='main')
-    div(id='top')
-      div(id='pageTitle')
-          h1= albumOwner
-          if (albumOwner==albumTitle.username)
-            h2= albumTitle.name
-      div(id='subviews')
-        a(href='/user/'+ albumOwner class='subview') profile
-        a(href='/badges' class='subview') badges
-        a(href='/user/'+ albumOwner +'/albums' class='subview' id= 'selected') albums
-        a(href='/challenges' class='subview') challenges
+    div(id='subviews')
+      a(href='/user/'+ albumOwner class='subview') profile
+      a(href='/badges' class='subview') badges
+      a(href='/user/'+ albumOwner +'/albums' class='subview' id= 'selected') albums
+      a(href='/challenges' class='subview') challenges
+    div(id='pageTitle')
+      h1= albumOwner
+    if (albumOwner==albumTitle.username)
+      div#subTitle
+        h2= albumTitle.name
     if loggedIn && (albumTitle.userid === user.userid) && (albumOwner==albumTitle.username)
       form(method='POST')
         input(type='hidden' value= albumTitle.albumid name='deleteWholeAlbum')

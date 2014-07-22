@@ -38,7 +38,8 @@ block extraLinks
   script(type='text/javascript' src='/js/mist-gui-openWorkspaceScreen.js')
   script(type='text/javascript' src='/js/mist-gui-funBarEvents.js')
   script(type='text/javascript' src='/js/mist-gui-makeLabels.js')
-
+  script(type='text/javascript' src='/js/mist-gui-initializeStage.js')
+  script(type='text/javascript' src='/js/mist-gui-workLayerEvents.js')
 
 block stylesheets
   link(rel='stylesheet' href='/css/mist-gui.css')
@@ -49,9 +50,8 @@ block content
   div(id='main')
     div(id='gui-and-key')
       div(id='container')
-        script(type='text/javascript' src='/js/mist-gui-initializeStage.js')
-        script(type='text/javascript' src='/js/mist-gui-workLayerEvents.js')
         script.
+          initializeStage('container');
           stage.draw()
       div(id="gui-accordion")
         h3 Workspace Key

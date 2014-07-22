@@ -42,6 +42,9 @@
   </div> <!-- image-controls -->
 </figure>
 <p id="code" class="code" style="display:none;"><%- image.code %></p>
+<div style="align:center; margin-left: auto; margin-right: auto; width:100%;">
+  <p id="pretty" class="pretty" style="display:none;"></p>
+</div>
 <table id="comments">
   <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
