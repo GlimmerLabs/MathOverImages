@@ -95,9 +95,9 @@
    </nav>
   </header>
   <div id="main">
+     <% if (user) { %>
     <div id="pageTitleGeneral"><h1>  challenges
 </h1></div>
-    
       <div id="subTitle">
     <h2><%- challenge.title %></h2>
      <p style="pre-wrap">
@@ -107,7 +107,7 @@
   <div id="image-and-gui">
     <canvas id="canvas" width=300 height=300></canvas>
     <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
-    <div id="container">          
+    <div id="container">
       <script type="text/javascript" src="/js/mist-gui-initializeStage.js"></script>
       <script type="text/javascript" src="/js/mist-gui-workLayerEvents.js"></script>
       <script>
@@ -115,7 +115,9 @@
       </script>
     </div>
   </div>
-
+       <% } else { %>
+          <p>You must be logged in to to create a challenge.</p>
+  <% } %>
   </div>
   <footer>
    <p>&copy;2014 Glimmer Labs</p>

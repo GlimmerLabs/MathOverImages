@@ -344,7 +344,7 @@ code: the code submitted by the client
 id: the id for the challenge
 */
 handlers.submitchallenge = function (info, req, res) {
-  var query = "SELECT code FROM challenges WHERE id="+database.sanitize(info.id)+";";
+  var query = "SELECT code FROM challenges WHERE name="+database.sanitize(info.name)+";";
   database.query(query, function(rows, error) {
     if (error) {
       fail(res, "Error: " + error);

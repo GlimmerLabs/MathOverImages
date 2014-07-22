@@ -808,12 +808,7 @@ MIST.createSanitizer = function() {
  * Sanitize MIST code.
  */
 MIST.sanitize = function(RE, string) {
-  var result = "";
-  var current = RE.exec(string);
-  while (current != null) {
-    result += current[0];
-    var current = RE.exec(string);
-  }
+  var result = string.match(RE).join("");
   return result
 }
 
