@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <title>Challenge:   <%- challenge.title %>
+  <title>  Challenge: <%- challenge.title %>
 </title>
   <!-- Meta Information -->
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -45,7 +45,6 @@
   <script type="text/javascript" src="/js/mist-gui-makeMenu.js"></script>
   <script type="text/javascript" src="/js/mist-gui-makeToolbox.js"></script>
   <script type="text/javascript" src="/js/mist-gui-makeFunctionBar.js"></script>
-
   <script type="text/javascript" src="/js/mist-gui-menuEvents.js"></script>
   <script type="text/javascript" src="/js/mist-gui-dragLayerEvents.js"></script>
   <script type="text/javascript" src="/js/mist-gui-lineLayerEvents.js"></script>
@@ -95,31 +94,29 @@
     </ul>
    </nav>
   </header>
-    <div id="main">
-    <% if (user) {%>
-        <div id="pageTitleGeneral"><h1>  challenges</h1></div>
-          <div id="subTitle">
-        <h2><%- challenge.title %></h2>
-         <p style="pre-wrap">
-           <%- challenge.description %>
-         </p>
-      </div>
-      <div id="image-and-gui">
-        <canvas id="canvas" width=300 height=300></canvas>
-        <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
-        <div id="container">          
-          <script type="text/javascript" src="/js/mist-gui-initializeStage.js"></script>
-          <script type="text/javascript" src="/js/mist-gui-workLayerEvents.js"></script>
-          <script>
-            stage.draw()
-          </script>
-        </div>
-      </div>
-      </div>
-    <% } %>
-    <% if (!user) { %>
-      <p>You must be logged in to to submit a challenge.</p>
-    <% } %>
+  <div id="main">
+    <div id="pageTitleGeneral"><h1>  challenges
+</h1></div>
+    
+      <div id="subTitle">
+    <h2><%- challenge.title %></h2>
+     <p style="pre-wrap">
+       <%- challenge.description %>
+     </p>
+  </div>
+  <div id="image-and-gui">
+    <canvas id="canvas" width=300 height=300></canvas>
+    <p id="code" class="code" style="display:none;"><%- challenge.code %></p>
+    <div id="container">          
+      <script type="text/javascript" src="/js/mist-gui-initializeStage.js"></script>
+      <script type="text/javascript" src="/js/mist-gui-workLayerEvents.js"></script>
+      <script>
+        stage.draw()
+      </script>
+    </div>
+  </div>
+
+  </div>
   <footer>
    <p>&copy;2014 Glimmer Labs</p>
    <div id="sharing">
