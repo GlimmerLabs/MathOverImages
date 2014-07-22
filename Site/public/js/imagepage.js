@@ -88,25 +88,19 @@ $(document).ready(function() {
     } // btn.onclick
   } // if (code)
 
-
+  
   // Add the event listener for the slider
-  var toggle=document.getElementById("toggle");
-  if(toggle) {
-  toggle.onclick = function (event) {
-     var slider=document.getElementById('reso');
-     if (slider.style.display == "none") {
-	   slider.style.display = "block";
-           slider.addEventListener('change', function(event) {
-           var sliderVal=document.getElementById('pixels').value;
-	   animator.setResolution(sliderVal, sliderVal);
- 	   animator.frame();
-          })
-        }
-    else {
-        slider.style.display = "none";
-      }
-    } // toggle.onclick
-  } // if (code)
+  var slider=document.getElementById('pixels');
+  try {
+    slider.addEventListener('change', function(event) {
+    var sliderVal=document.getElementById('pixels').value;
+	animator.setResolution(sliderVal, sliderVal);
+	animator.frame();
+      })
+  }
+  catch(err){
+  }
+
 
   var flags = document.getElementsByClassName("flagComment");
   var deletes = document.getElementsByClassName("deleteComment");
