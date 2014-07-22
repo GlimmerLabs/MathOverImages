@@ -1,9 +1,10 @@
 @import url("/css/styles.css");
 /**
- * set background color, size, and border of workspace
- * center workspace
+ * Set background color, size, and border of GUI workspace
+ * Center GUI workspace
  */
-#container {
+#container,
+#gui {
   margin: 0 0 0 40px;
   background-color: #F1F8FF;
   min-width: 800px;
