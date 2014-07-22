@@ -11,20 +11,18 @@ funBarSaveImGroup.destroy();
 var submitChallenge = function() {
   // Parse url to get the challenge ID
   var url = document.URL;
+  console.log(url);
   var i = url.length;
   while (i > 0 && url[--i] != '/');
-  var id = url.substring(i+1);
-  console.log(id);
+  var name = url.substring(i+1);
+  console.log(name);
   var request = new XMLHttpRequest();
-  var data = "action=submitchallenge&code=" + currText + "&id=" + id;
-  console.log(data);
+  var data = "action=submitchallenge&code=" + currText + "&name=" + name;
   request.open("POST", "/api", false);
   request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   request.send(data);
-  console.log(request.responseText);
-  console.log(eval(request.responseText));
   return eval(request.responseText);
-} 
+}
 
 
 /** add button for submitting challenges **/

@@ -195,8 +195,8 @@ MIST.ui.Animator.prototype.jpgBody = function() {
  */
 MIST.ui.Animator.prototype.run = function() {
   var runner = function(animator) {
-    return function() { return animator.run(); }
-   };
+    return function() { animator.run(); }
+  };
 
   // Build one frame
   this.frame();
@@ -204,12 +204,14 @@ MIST.ui.Animator.prototype.run = function() {
   // And schedule the next frame
   if (this.on) {
     var animator = this;
-    setTimeout(runner(this), 1000/this.fps);
+    // setTimeout(runner(this), 1000/this.fps);
+    window.requestAnimationFrame(runner(this));
   }
 }; // run
 
 /**
  * Change the fps of the animation.  (Defaults to 30 if unspecified.)
+ * DEPRECATED.  We now rely on the browser to set the animation rate.
  */
 MIST.ui.Animator.prototype.setFps = function(fps) {
   this.fps = fps || 30;

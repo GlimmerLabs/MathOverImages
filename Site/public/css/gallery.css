@@ -107,7 +107,7 @@ width: 28.83%;
 }
 /* class for 4 columns */
 ul.rig.columns-4 li{
- width: 22.5%; /* this value + 2.5 should = 25% */
+ width: 20%; /* Should be based on crap above */
 }
 
 @media (max-width: 480px) {
@@ -123,7 +123,8 @@ ul.rig.columns-4 li{
  }
  ul.rig li{
   width: 100% !important; /* over-ride all li styles */
-  margin: 0 0 20px;
+  height: 100%;
+  margin: 0 0 2.5%;
  }
 }
 
