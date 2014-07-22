@@ -186,6 +186,7 @@ td.comment {
 }
 
 td.date {
+  font-style: italic;
 }
 
 th.user {
