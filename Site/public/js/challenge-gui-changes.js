@@ -24,7 +24,7 @@ var submitChallenge = function() {
   console.log(request.responseText);
   console.log(eval(request.responseText));
   return eval(request.responseText);
-} 
+}
 
 
 /** add button for submitting challenges **/
