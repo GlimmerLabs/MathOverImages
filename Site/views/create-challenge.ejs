@@ -20,14 +20,16 @@
     margin-left: 20px; \
     display: block; \
   } \
-</style>"%> 
+</style>"%>
 <% include head.ejs %>
 <h1>Create a Challenge</h1>
   <% if (user) {%>
-    <form id="create" method="post" action="/challenge/add">
+    <form id="create" method="post" action="/challenges/add">
       <input type="hidden" value="<% user.userid %>">
       <label for="name">Name</label>
       <input type="text" name="name" id="name">
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title">
       <label for="category">Category</label>
       <!-- These shouldn't be hardcoded, but I'm lazy. -->
       <select name="category" id="category">
