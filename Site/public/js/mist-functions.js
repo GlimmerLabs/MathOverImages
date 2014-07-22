@@ -904,15 +904,15 @@ function displayContext(context)
 } // displayContext
 
 /**
- * Evaluate an expression in a context.  (Intended as a bit of an
+ * Evaluate an expression in an environment.  (Intended as a bit of an
  * experiment for what we're likely to do in the render function.)
  */
 function evalExp(exp)
 {
-  var context = getArgs(arguments,1);
-  for (var i = 0; i < context.length; i++)
+  var env = getArgs(arguments,1);
+  for (var i = 0; i < env.length; i++)
     {
-      fun = context[i];
+      fun = env[i];
       console.log(fun);
       var code = fun.name + " = " + fun.toString();
       console.log(code);
@@ -946,37 +946,38 @@ function MISTbody2fun(body)
 
 /** 
  * Convert a MIST expression to something that returns an RGB
- * list.
+ * list.  env is the 'environment' - a mapping of names to MIST
+ * expressions
  */
-MIST.expToRGB = function(name,exp,context) {
-  var type = MIST.expType(exp, context);
+MIST.expToRGB = function(name,exp,env) {
+  var type = MIST.expType(exp, env);
   var tmp = [];
    // Contexts as objects
-  for (var c in context) {
-    tmp.push("var " + c + " = " + context[c].toString());
+  for (var c in env) {
+    tmp.push("var " + c + " = " + env[c].toString());
   }
-  var contextCode = tmp.join(";");
+  var envCode = tmp.join(";");
 
   // For RGB functions
   //   function(x,y,t,m,p) {
-  //      var context0 = def0;
+  //      var env0 = def0;
   //      ...
   //      return (exp).map(r2c);
   //   };
   if (type == MIST.TYPE.RGB) {
-    var code = "(function(x,y,t,m,p) { " + contextCode + 
+    var code = "(function(x,y,t,m,p) { " + envCode + 
         "; return (" + exp.toString() + ").map(r2c); })";
     // console.log(code);
     return eval(code);
   }
   // For B&W functions
   //    function(x,y,t,m,p) {
-  //      var context0 = def0;
+  //      var env0 = def0;
   //      ...
   //      var _tmp_ = r2c(-exp);
   //      return [_tmp_, _tmp_, _tmp];
   else if (type == MIST.TYPE.NUMBER) {
-    var code = "(function(x,y,t,m,p) { " + contextCode +
+    var code = "(function(x,y,t,m,p) { " + envCode +
         "; var _tmp_ = r2c(-" + exp.toString() + 
         "); return [_tmp_, _tmp_, _tmp_]; })";
     // console.log(code);
@@ -996,6 +997,162 @@ MIST.expToRGB = function(name,exp,context) {
         var rgb = [];
         rgb = hsv2rgb(h, s, v);
  */
+
+// +---------------------+-------------------------------------------
+// | Comparing Functions |
+// +---------------------+
+
+/**
+ * Maximum 'distance' for two components to be considered the same.
+ * Remember that components have values in the range 0..255
+ */
+MIST.COMPONENT_EPSILON = 10;
+
+/**
+ * Percentage of pixels that must be similar for two functions to be
+ * the same.
+ */
+MIST.PERCENT_MATCH = 0.95;
+
+/**
+ * Compare two functions, using their code.  Returns true
+ * if they are similar and false if they are not.
+ */
+MIST.compareFun = function(code1,code2) {
+  // Determine if we might have interactive images
+  var timed = (code1.indexOf("t.") >= 0) || (code2.indexOf("t.") >= 0);
+  var mouse = (code1.indexOf("m.") >= 0) || (code2.indexOf("m.") >= 0);
+
+  // Pick the right comparison to use
+  if (timed && mouse) {
+    return MIST.compareFunCore(code1,code2,17);
+  }
+  else if (timed) {
+    return MIST.compareFunCore(code1,code2,9);
+  }
+  else if (mouse) {
+    return MIST.compareFunCore(code1,code2,9);
+  }
+  else {
+    return MIST.compareFunCore(code1,code2);
+  }
+}; // MIST.compareFun
+
+/**
+ * Repeatedly compare code for two functions.  (We take advantage of
+ * randomness in compareFunOnce to handle different mice and times.)
+ */
+MIST.compareFunCore = function(code1,code2,times) {
+  if (!times) { times = 1; }
+  var count = 0;
+  var sum = 0;
+  for (count = 0; count < times; count++) {
+    sum += MIST.compareFunOnce(code1,code2);
+  } // for
+  return (sum/count >= MIST.PERCENT_MATCH);
+} // compareFunCore
+
+/**
+ * Compare two functions, using their code.  Returns the percentage of
+ * pixels that are 'close enough'.  (See the constants above.)
+ */
+MIST.compareFunOnce = function(code1,code2,time,mouse) {
+  // Are two compnents similar?
+  var similar = function(a,b) {
+    var result = Math.abs(a-b) <= MIST.COMPONENT_EPSILON;
+    // console.log("similar",a,b,result);
+    return result;
+  }; // similar
+
+  // A random component
+  var rand = function() {
+    var result = 2*Math.random() - 1;
+    return result;
+  }; // rand
+
+  // Fill in the optional parameters
+  if (!time) {
+    time = { s: rand(), m:rand(), h:rand(), d:rand() };
+  }
+  if (!mouse) {
+    mouse = { x:rand(), y:rand(), X:rand(), Y:rand() };
+  }
+
+  // Parse the two pieces of code.  
+  try {
+    var parsed1 = MIST.parse(code1);
+    var parsed2 = MIST.parse(code2);
+  } // try
+  catch (err) {
+    // If either fails to parse, we assume nothing is in common
+    return 0;
+  } // catch
+
+  // Convert the two pieces of code into functions
+  try {
+    var fun1 = MIST.expToRGB("f1",parsed1,{});
+    var fun2 = MIST.expToRGB("f2",parsed2,{});
+  } // try
+  catch (err) {
+    // If either fails to convert, we assume nothing is in common
+    return 0;
+  } // catch
+
+  // Set up counters
+  var pixels = 0;
+  var matches = 0;
+
+  // Iterate through positions
+  for (var x = -1; x <= 1; x += 0.1) {
+    for (var y = -1; y <= 1; y+= 0.1) {
+      var c1 = fun1(x, y, time, mouse);
+      var c2 = fun2(x, y, time, mouse);
+      pixels++;
+      if (similar(c1[0],c2[0]) && similar(c1[1],c2[1]) && similar(c1[2],c2[2])) {
+        matches++;
+      } // if
+    } // for y
+  } // for x
+
+  // Determine the percentage that match
+  return matches/pixels;
+} // compareFunOnce
+
+/**
+ * Compare code for two functions that use the mouse (but not time).
+ * DEPRECATED.  We use randomness instead.
+ */
+MIST.compareFunMouse = function(code1,code2) {
+  var count = 0;        // The count of the number of tests we do.
+  var sum = 0;          // The sum of the percentages
+
+  for (var x = -1; x <= 1; x += 0.25) {
+    for (var y = -1; y <= 1; y += 0.25) {
+      count++;
+      sum += MIST.compareFunOnce(code1,code2,undefined,{x:x,y:y});
+    } // for y
+  } // for x
+
+  return (sum/count >= MIST.PERCENT_MATCH);
+} // compareFunMouse
+
+/**
+ * Compare code for two functions that use the time (but not mouse)
+ * DEPRECATED.  We use randomness instead.
+ */
+MIST.compareFunTime = function(code1,code2) {
+  var count = 0;        // The count of the number of tests we do.
+  var sum = 0;          // The sum of the percentages
+
+  for (var m = -1; m <= 1; m += 0.25) {
+    for (var s = -1; s <= 1; s += 0.25) {
+      count++;
+      sum += MIST.compareFunOnce(code1,code2,{s:s,m:m,h:0,d:0});
+    } // for y
+  } // for x
+
+  return (sum/count >= MIST.PERCENT_MATCH);
+} // compareFunTime
 
 // +--------------------+--------------------------------------------
 // | Sample Expressions |
