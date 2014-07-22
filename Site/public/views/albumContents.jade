@@ -41,6 +41,9 @@ block content
                     figcaption(class='center')= albumContents[i].title
                     canvas(id='canvas'+i width='180' height='180')
                     input(type='hidden' id='code'+i value=albumContents[i].code)
+                  if(albumContents[i].code.indexOf("t.") > -1 || albumContents[i].code.indexOf("m.") > -1)
+                    .run
+                      img(src='/icons/time.png' width ='20px' height='20 px')
                   a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
                   if(albumContents[i].liked)
                     figcaption(class='left starred')= "★" + albumContents[i].rating
@@ -52,4 +55,4 @@ block content
                         br
                         br
                         br
-                        input(type='submit' class='delete' value='delete from album'  onclick="return confirm('Are you sure you want to delete this image from this album?');")
+                        input(type='image' src= '/icons/trashcan.png' class='deleteImage' onclick="return confirm('Are you sure you want to delete this image from this album?');")
