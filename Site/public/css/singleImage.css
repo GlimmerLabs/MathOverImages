@@ -51,7 +51,7 @@ margin-bottom: 20px;
 
 table#comments {
   margin: 0 auto;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 div.comment {
@@ -308,7 +308,8 @@ margin-left: 1150px;
 	display:inline-block;
 	color:#777777;
 	font-family:arial;
-	font-size:21px;
+	font-size:12px;
+        width: 50px;
 	font-style:normal;
 }
 .animations:hover {
@@ -316,28 +317,25 @@ margin-left: 1150px;
 }
 
 #image-controls{
-padding-top:15px;
+padding-top:5px;
 padding-bottom:10px;
-}
-
-#reso{
-padding-top:10px;
-font-family: 'Open Sans';
-font-size: 15px;
-color: rgb(119, 119, 119);
+font-size: 13px;
+color: #777777;
 }
 
 input[type=range] {
-    background-color: rgb(157, 150, 142);
-    width: 200px;
-    height:4px;
+    -webkit-appearance:none !important;
+    background-color: #777777;
+    width: 100px;
+    height:3px;
 }
 
 input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none !important;  
     background-color: grey;
     opacity: 0.5;
-    width: 10px;
-    height: 26px;
+    width: 7px;
+    height: 20px;
 }
 
 #imageSettings{

@@ -69,3 +69,25 @@ textarea{
  -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
  box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
 }
+
+.albumBtn {
+	background-color:#ededed;
+	border-top-left-radius:13px;
+	border-top-right-radius:13px;
+	border-bottom-right-radius:13px;
+	border-bottom-left-radius:13px;
+	text-indent:0;
+	border:2px solid #dcdcdc;
+	display:inline-block;
+	color:#777777;
+	font-family:arial;
+	font-size:21px;
+	font-style:normal;
+}
+.albumBtn:hover {
+	background-color:#dfdfdf;
+}
+
+#albumMaker {
+padding-top: 10px;
+}
