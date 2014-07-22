@@ -184,3 +184,9 @@ input[type='submit'].delete:hover{
 .run{
    float: right;
 }
+
+.deleteImage{
+ width : 25px;
+ height : 25px;
+ float : right;
+}
