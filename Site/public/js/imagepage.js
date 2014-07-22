@@ -226,7 +226,7 @@ var describeDate = function(date) {
   else {
     dateSentence = 'a few seconds ago';
   }
-  console.log("DateSentence",dateSentence,"secs",secs);
+  // console.log("DateSentence",dateSentence,"secs",secs);
   return dateSentence;
 } // describeDate
 
