@@ -326,7 +326,7 @@ color: #777777;
 input[type=range] {
     -webkit-appearance:none !important;
     background-color: #777777;
-    width: 100px;
+    width: 80px;
     height:3px;
 }
 
