@@ -19,6 +19,7 @@ figure h1 {
  font-size: 1.3em;
  border: 1px solid #ddd;
  box-shadow: 0 0 5px #ddd;
+ padding: 20px;
 
 }
 
@@ -32,20 +33,15 @@ figure h1:hover {
  margin: 0 auto;
 }
 
-form input[type='image']{
-    width: 20px;
-    height: 20px;
-}
-
 .all {
-    color: #979797;
+    border: 1px solid #79C4BC;
+    color: #3FAAA0;
     font-size: 1.3em;
-    padding: 7px;
-    margin: 0px auto;
+    position: inline-block;
 }
 
 .all:hover{
-    color: #4A4A4A;
+    color: #2C7770;
     cursor: pointer;
 }
 
@@ -72,9 +68,4 @@ textarea{
  border: 1px solid #979797;
  -moz-box-shadow:    inset 0px 1px 3px 0px rgba(0,0,0,0.5);
  box-shadow:         inset 0px 1px 3px 0px rgba(0,0,0,0.5);
-}
-
-
-#createAlbum {
-    float: right;
 }
