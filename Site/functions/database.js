@@ -178,7 +178,8 @@ var querySequenceAll = function(queries, callback) {
     } // if (err)
     console.log("Result", rows);
     // Make a copy of the queries
-    var newQueries = queries.append([]);
+    var newQueries = queries.concat([]);
+    console.log("newQueries", newQueries);
     // Remove the first one, which we just did
     newQueries.shift();
     // And try it all over again
@@ -204,7 +205,7 @@ var querySequenceAny = function(queries, defaultError, callback) {
     // If we fail
     if (err) {
       // Make a copy of the array
-      var newQueries = queries.append([]);
+      var newQueries = queries.concat([]);
       // Delete the first element
       newQueries.shift();
       // And try again on the remaining queries
@@ -720,9 +721,59 @@ module.exports.getIDforUsername = (function (username, callback) {
 // +--------+
 
 /**
- * Delete an image.
+ * Delete an image.  Calls the callback with either true or false
+ * and an optional error.
  */
-module.exports.deleteImage=(function (userid, imageid, callback) {
+module.exports.deleteImage = function(userid, imageid, callback) {
+  // Sanitize the inputs
+  userid = sanitize(userid);
+  imageid = sanitize(imageid);
+
+  // Make sure that they are valid ids (all numbers).
+  if (isNaN(userid)) {
+    callback(false, "Invalid userid: " + userid);
+    return;
+  }
+  if ((!imageid) || (isNaN(imageid))) {
+    callback(false, "Invalid imageid: " + imageid);
+    return;
+  }
+
+  // Make sure that the user owns the image
+  var getUser = "SELECT userid FROM images WHERE imageid=" + imageid + ";";
+  console.log("getUser", getUser);
+  query(getUser, function(rows, err) {
+    console.log("rows",rows,"err",err);
+    if (err) {
+      callback(false,err);
+      return;
+    } // if (err)
+    if (rows.length == 0) {
+      callback(false,"No such image: " + imageid);
+      return;
+    }
+    if (rows[0].userid != userid) {
+      callback(false,"User " + userid + " does not own image " + imageid);
+      return;
+    }
+    // Okay, the user owns the image.  Delete everything related to
+    // the image (in order).
+    var queries = [
+      "DELETE FROM albumContents WHERE imageid=" + imageid,
+      "DELETE FROM comments WHERE onImage=" + imageid,
+      "DELETE FROM images WHERE imageid=" + imageid
+    ];
+    querySequenceAll(queries, callback);
+  }); // query(getUser,...)
+
+}; // deleteImage
+
+/**
+ * Delete an image.
+ * DEPRECATED.  This deletes things in the wrong order, which would violate constraints.  It also seems
+ * to delete comments even if it fails to delete the image.
+ */
+module.exports.deleteImageOld = (function (userid, imageid, callback) {
   // Sanitize the inputs
   userid=sanitize(userid);
   imageid=sanitize(imageid);
