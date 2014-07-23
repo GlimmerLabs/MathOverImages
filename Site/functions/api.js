@@ -77,10 +77,31 @@ fail = function(res, message) {
 var handlers = {};
 
 /**
-* Delete a workspace by name
-*  action: deletews
-*  name: string naming the workspace
-*/
+ * Delete an image.
+ *   imageid: the id of the image
+ */
+handlers.deleteimg = function(info, req, res) {
+  // Make sure that they are logged in.
+  if (!req.session.user) {
+    fail(res, "You must be logged in to delete an image.");
+    return;
+  } // if they are not logged in
+
+  // Do the real work
+  database.deleteImageNew(req.session.user.userid,info.imageid,function(ok,err) {
+    if (err) {
+      fail(res, err);
+      return;
+    }
+    res.send(ok);
+  }); // deleteImageNew
+} // deleteimg
+
+/**
+ * Delete a workspace by name
+ *  action: deletews
+ *  name: string naming the workspace
+ */
 handlers.deletews = function(info, req, res) {
   // Make sure that they are logged in.
   if (!req.session.user) {
