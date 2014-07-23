@@ -211,10 +211,18 @@ var saveImage = function(title, code, isPublic, codeVisible, replace) {
   var data = "action=saveimage&title="+title+"&code="+code+ 
       "&public="+isPublic+"&codeVisible="+codeVisible+
       "&license=GPL"+((replace) ? "&replace=true" : "");
+  // console.log(data);
   request.open("POST", "/api", false);
   request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   request.send(data);
-  return request.responseText.substring(11,14);
+  try {
+    var id = JSON.parse(request.responseText).imageid;
+    // console.log("id: " + id);
+    return id;
+  }
+  catch (err) {
+    return 0;
+  }
 }
 
 /**
