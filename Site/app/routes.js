@@ -403,6 +403,16 @@ module.exports = function(app,passport,database) {
     search.buildPage(req, res, database);
   }); 
 
+  // --------------------------------------------------
+  // Path: /privacypolicy
+  //   Privacy Policy
+  app.get('/privacypolicy', function(req,res) {
+    res.render('../public/views/privacyPolicy.jade', {
+      loggedIn: req.session.loggedIn,
+      user: req.session.user
+    });
+  });
+
 
   // --------------------------------------------------
   // Path: /tutorial
