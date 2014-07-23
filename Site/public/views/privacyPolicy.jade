@@ -1,0 +1,45 @@
+extends ./partials/framework
+block title
+  title Privacy Policy
+
+block extraMetas
+block extraLinks
+
+block stylesheets
+
+  link(rel='stylesheet', href='/css/styles.css')
+  link(rel='stylesheet', href='/css/privacy-policy.css')
+  
+block content
+  div(id='main')
+    div(id = 'pageTitleGeneral')
+      h1 privacy policy
+    div(id='policy-content')
+      p.
+        We at Glimmer Labs take your privacy very seriously. We believe that you, the user, should understand exactly what information we are keeping track of on our end, and be made aware of the steps you can take to control that information. This privacy policy will detail the following things, as well as the settings you have access to that can adjust these things:
+      ul
+        li The information we track while you are navigating our site.
+        li The information we store in our database.
+      h2 Information from Cookies
+      p
+        | The MIST website uses Google Analytics to track how you navigate the site. We 
+        | use this to better understand what our users want and how they respond to the 
+        | content on the site--most importantly, where users leave the site--which allows 
+        | us to better focus our efforts to keep you engaged. Google Analytics records a 
+        | large amount of data, so we recommend looking at Google’s Privacy Policy <a 
+        | href="http://www.google.com/intl/en/policies/privacy/#infocollect">here</a>. 
+        | We understand if you feel uncomfortable with this data being recorded, and as 
+        | such provide the link to <a href="https://tools.google.com/dlpage/gaoptout">
+        | disable google analytics</a> for your web browser.
+      h2 Information Stored by Us
+      p
+        | One of the features we provide as content creating website is the ability to 
+        | share the images you create with other users. As such, any image that you create 
+        | and save to your account is stored on our server as the code that rendered it. 
+        | You own the image under the <a href="http://creativecommons.org/licenses/by-sa/4.
+        | 0/legalcode">Creative Commons Attribution-ShareAlike 4.0 International</a>, and 
+        | you are free to create additional contracts with third parties in relation to 
+        | your own work. We are free to display your image, along with the code used to 
+        | render it, on our website and to use it in additional educational materials 
+        | related to our project.
+
