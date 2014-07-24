@@ -9,11 +9,11 @@
      <div id='imageSettings'>
       <form method='POST'>
         <input type='hidden' value= <%= image.imageid %> name='profile' />
-        <input type='submit' class='profile' value='set as featured image' onclick="return confirm('Are you sure you want to change your featured image?');">
+        <input type='submit' value='set as featured image' onclick="return confirm('Are you sure you want to change your featured image?');">
      </form>
       <form method='POST'>
         <input type='hidden' value= <%= image.imageid %> name='delete' />
-        <input type='submit' class='delete' value='delete this image' onclick="return confirm('Are you sure you want to delete this image forever?');">
+        <input type='image' src='/icons/trashcan.png' width=25px height=25px onclick="return confirm('Are you sure you want to delete this image forever?');">
       </form>
      </div>
     <% } // if it's the user's image%>

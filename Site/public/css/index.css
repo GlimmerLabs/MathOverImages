@@ -9,9 +9,9 @@
 }
 
 #homeButtons {
- /* padding: 40px; */
-        display: flex;
-        justify-content: space-between;
+  padding: 50px; 
+  display: flex;
+  justify-content: space-between;
  }
 
 #homeButtons a {

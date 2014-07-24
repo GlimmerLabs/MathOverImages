@@ -45,8 +45,10 @@ header {
 }
 
 header nav {
- height:60px;
- float:right;
+ margin-top: -45px;
+ margin-right: 50px;
+ text-align: right;
+ min-width: 800px; /* so the elements don't wrap on smaller window sizes */
 }
 
 header ul {
@@ -99,8 +101,8 @@ header nav li:hover {
 */
 #search {
   display: inline-block;
-  padding: 1.1%;
-  padding-left: 3%;
+  padding-top: 15px;
+  padding-left: 30px;
 
 }
 .menu{

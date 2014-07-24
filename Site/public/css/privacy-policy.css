@@ -1,0 +1,7 @@
+#policy-content {
+	margin-left: 30px;
+	padding: 20px;
+	display: block;
+	clear: left;
+	max-width: 35em; /* 30-35em is an ideal line-length for readers */
+}
