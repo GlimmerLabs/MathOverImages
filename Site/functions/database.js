@@ -1,4 +1,41 @@
-// config/database.js
+/**
+ * database.js
+ *   Functions that have to do with the database.
+ */
+
+// +-------+-----------------------------------------------------------
+// | To Do |
+// +-------+
+
+// Update user information
+// Split change password into two functions, one for password recovery
+// PGP Public key
+
+// +-------------------------------+-----------------------------------
+// | Summary of Exported Functions |
+// +-------------------------------+
+
+/*
+   PRIMARY
+     query(txt,callback(rows,error))
+       send a database query
+     sanitize(txt) 
+       sanitize a database input
+
+   USER INFO
+     userExists(userinfo, callback(exists))
+       Determine if a user is in the database (via username or email)
+
+   IMAGE INFO
+     imageExists(userid, title)
+       Determine if an image with the given title is in the database.
+     imageInfo(imageid, callback(info,error))
+       Get information on an image.
+ */
+
+// +---------+---------------------------------------------------------
+// | Globals |
+// +---------+
 
 var auth = require('./auth.js');  // Include private-strings that should not be on the public repo
 var mysql = require('mysql'); // Include the mysql library
@@ -14,30 +51,32 @@ var pool = mysql.createPool({
   database : auth["mysql-database"]
 });
 
+// +-----------+-------------------------------------------------------
+// | Utilities |
+// +-----------+
 
 /*
   Procedure:
-  hashPassword(passwordtohash, callback(hashedPassword));
+    hashPassword(passwordtohash, callback(hashedPassword,err));
   Purpose:
-  Hashes a password with Blowfish Algorithm
+    Hashes a password with Blowfish Algorithm
   Parameters:
-  passwordtohash, a plaintext version of a password to hash
+    passwordtohash, a plaintext version of a password to hash
   callback(hashedPassword, error), a function describing what to do with the result
   Produces:
-  hashedPassword, the hashed password
-  error, an error if there is one
+    [Nothing.  Passes control to the hashed password.]
   Pre-conditions:
-  None
+    None
   Post-conditions:
-  The password will be hashed with Blowfish Crypt
+    The password will be hashed with Blowfish Crypt
   Preferences:
-  This function is not available outside of this document.
+    This function is not available outside of this document.
 */
 var hashPassword = (function (passwordtohash, callback) {
   bcrypt.hash(passwordtohash, null, null, function(err,hash) {
     callback(hash, err);
   });
-});// hashPassword(passwordtohash, callback(hashedPassword));
+});// hashPassword(passwordtohash, callback)
 
 /*
   Procedure:
@@ -64,28 +103,30 @@ var sanitize = (function (string) {
 }); // sanitize(string);
 module.exports.sanitize = sanitize;
 
+// +--------------------+----------------------------------------------
+// | Primary Procedures |
+// +--------------------+
+
 /*
   Procedure:
-  database.query(query, callback(rows, error));
+    database.query(query, callback(rows, error));
   Purpose:
-  Make a query on the current database
+    Make a query on the current database
   Parameters:
-  query, a SQL formatted string
-  callback(rows, error), a function describing what to do with the result
+    query, a SQL formatted string
+    callback(rows, error), a function describing what to do with the result
   Produces:
-  rows, an array of database rows which may be accessed with dot syntax
-  error, the error produced by the mysql-nodejs library
+    [Nothing; Passes rows/error to the callback.]
   Pre-conditions:
-  None
+    None
   Post-conditions:
-  The MySQL database will be altered as requested
+    The MySQL database will be altered as requested
   Preferences:
-  SANITIZE YOUR INPUT
+    Please sanitize input.
 */
-
-module.exports.query = (function (query, callback){
-  pool.getConnection(function(err,connection){
-    connection.query(query, function(err,rows,fields){
+var query = (function (query, callback) {
+  pool.getConnection(function(err,connection) {
+    connection.query(query, function(err,rows,fields) {
       if (err) {
         callback(null, err);
       }
@@ -96,128 +137,165 @@ module.exports.query = (function (query, callback){
     connection.release();
   });
 }); // database.query(query, callback(rows, error));
+module.exports.query = query;
+
+/**
+ * Query a database and call the callback with true (success)
+ * or false (error) along with any error.
+ */
+module.exports.queryBoolean = function(query, callback) {
+  module.exports.query(query, function(result,error) {
+    if (error) {
+      callback(false, error);
+    }
+    else {
+      callback(true, null);
+    }
+  });
+} // queryBoolean
+
+/**
+ * Do a sequence of queries.  If all of the queries succeed, call the
+ * callback with true as the first parameter.  If any of the queries
+ * fail, call the callback with false as the first parameter and an error
+ * as the second parameter.
+ */
+var querySequenceAll = function(queries, callback) {
+  // See if any queries remain
+  if (queries.length == 0) {
+    console.log("Finished query sequence.");
+    callback(true,null);
+    return;
+  } // if we are out of queries
+
+  // Start with the first query
+  console.log("Query:", queries[0]);
+  query(queries[0], function(rows, err) {
+    if (err) {
+      console.log("Failed");
+      callback(false,err);
+      return;
+    } // if (err)
+    console.log("Result", rows);
+    // Make a copy of the queries
+    var newQueries = queries.concat([]);
+    console.log("newQueries", newQueries);
+    // Remove the first one, which we just did
+    newQueries.shift();
+    // And try it all over again
+    querySequenceAll(newQueries, callback);
+  }); // query
+} // querySequenceAll
+module.exports.querySequenceAll = querySequenceAll;
+
+/**
+ * Do a sequence of queries, call the callback when the first query
+ * succeeds.  If none of the queries succeed, call the callback with
+ * defaultError.
+ */
+var querySequenceAny = function(queries, defaultError, callback) {
+  // See if any queries remain
+  if (queries.length == 0) {
+    callback(null, defaultError);
+    return;
+  } // if there are no queries left
+
+  // Try the first query.
+  query(queries[0], function(rows,err) {
+    // If we fail
+    if (err) {
+      // Make a copy of the array
+      var newQueries = queries.concat([]);
+      // Delete the first element
+      newQueries.shift();
+      // And try again on the remaining queries
+      querySequenceAny(newQueries, defaultError, callback);
+    } // if err
+  }); // query
+}; // querySequenceAny
+module.exports.querySequenceAny = querySequenceAny;
+
+// +-----------------+-------------------------------------------------
+// | User Procedures |
+// +-----------------+
 
 /*
   Procedure:
-  database.userExists(checkString, callback(exists));
+    database.userExists(checkString, callback(exists));
   Purpose:
-  Checks to see if a username or email is already in the database
+    Checks to see if a username or email is already in the database
   Parameters:
-  checkstring, a string containing either a username or email address
-  callback(exists), a function describing what to do with the result
-  Produces:
-  exists, a BOOLEAN result
+    checkstring, a string containing either a username or email address
+    callback(exists), a function describing what to do with the result
+      Produces:
   Pre-conditions:
-  None
+    None
   Post-conditions:
-  None
+    None
   Preferences:
-  This function will automatically be called when using the addUser() function, so this is designed to be used while the client is typing on the client side
+    This function will automatically be called when using the 
+    addUser() function, so this is designed to be used while 
+    the client is typing on the client side
 */
-module.exports.userExists = (function(checkString, callback){
-
-  checkstring = sanitize(checkString); // Always sanitize user input.
+module.exports.userExists = (function(checkString, callback) {
+  checkString = sanitize(checkString); // Always sanitize user input.
   // check if string is a username
-  module.exports.query("SELECT username FROM users WHERE username = '" + checkString + "';", function (rows, error){
-    if (!rows[0]){ // string is not a username
+  var query = "SELECT username FROM users WHERE username = '" + 
+      checkString + "';";
+  module.exports.query(query, function (rows, error) {
+    // If there isn't a user.
+    if (error || (!rows[0])) { 
       // check if string is an email address
-      module.exports.query("SELECT email FROM users WHERE email = '" + checkString + "';", function(rows, error){
-        if (!rows[0]){ // string is not an email address
+      var altQuery = "SELECT email FROM users WHERE email = '" + 
+          checkString + "';";
+      module.exports.query(altQuery, function(rows, error) {
+        // If we don't find it
+        if (error || (!rows[0])) { 
           // user does not exist
           callback(false);
+          return;
         }
-        // email exists
-        else callback(true);
+        // Otherwise, we found the user
+        else {
+          callback(true);
+          return;
+        }
       });
     }
     // username exists
-    else callback(true);
+    else {
+      callback(true);
+    } // if the user exists
   });
 }); // database.userExists(checkString, callback(exists));
 
 /*
   Procedure:
-  database.imageExists(userid, checkString);
+    database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
   Purpose:
-  Checks to see if an image with the given string as a title exists for the user
+    Adds a user to the database
   Parameters:
-  userid, the userid of the current session user
-  checkstring, a string containing a desired title for an image
-  callback(exists), a function describing what to do with the result
+    forename, a string
+    surname, a string
+    password, a plaintext string (this will be crypted before being sent to the database)
+    email, a string
+    username, a string
+    callback(success, error), a function describing what to do with the result
   Produces:
-  exists, a BOOLEAN result
+    success, A BOOLEAN value representing if the insertion was successful
+    error, if there was an error, it will be returned here.
   Pre-conditions:
-  None
+    None
   Post-conditions:
-  None
-*/
-module.exports.imageExists = (function(userid, checkString, callback){
-
-  checkstring = sanitize(checkString); // Always sanitize user input.
-  // check if string is a username
-  module.exports.query("SELECT title FROM images WHERE title = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
-    if (!rows[0]){ // string is not a username
-      callback(false);
-    }
-    // username exists
-    else callback(true);
-  });
-}); // database.imageExists(userid, checkString, callback(exists));
-
-/*
-  Procedure:
-  database.wsExists(userid, checkString, callback(exists));
-  Purpose:
-  Checks to see if a workspace with the given string as a name exists for the user
-  Parameters:
-  userid, the userid of the current session user
-  checkstring, a string containing a desired name for a workspace
-  callback(exists), a function describing what to do with the result
-  Produces:
-  exists, a BOOLEAN result
-  Pre-conditions:
-  None
-  Post-conditions:
-  None
-*/
-module.exports.wsExists = (function(userid, checkString, callback){
-
-  checkstring = sanitize(checkString); // Always sanitize user input.
-  // check if string is a username
-  module.exports.query("SELECT name FROM workspaces WHERE name = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
-    if (!rows[0]){ // string is not a username
-      callback(false);;
-    }
-    // username exists
-    else callback(true);;
-  });
-}); // database.wsExists(userid, checkString;
-
-/*
-  Procedure:
-  database.addUser(forename, surname, password, email, pgpPublic, username, dob, callback(success, error));
-  Purpose:
-  Adds a user to the database
-  Parameters:
-  forename, a string
-  surname, a string
-  password, a plaintext string (this will be crypted before being sent to the database)
-  email, a string
-  username, a string
-  callback(success, error), a function describing what to do with the result
-  Produces:
-  success, A BOOLEAN value representing if the insertion was successful
-  error, if there was an error, it will be returned here.
-  Pre-conditions:
-  None
-  Post-conditions:
-  The database will be appended with the new user, all data will be sanitized, and the password will be hashed.
+    The database will be appended with the new user, all data will be 
+    sanitized, and the password will be hashed.
   Preferences:
-  This procedure automatically sanitizes and validates user input, as well as hashes the password. This is the preferred way to interact with the server.
-  However, client-side validation is always a good first-defense.
+    This procedure automatically sanitizes and validates user input, as 
+    well as hashes the password. This is the preferred way to interact 
+    with the server.  However, client-side validation is always a good 
+    first defense.
 */
-
-module.exports.addUser =(function (forename, surname, password, email, username, callback) {
+module.exports.addUser = (function (forename, surname, password, email, username, callback) {
   // Always sanitize user input
   forename = sanitize(forename);
   surname = sanitize(surname);
@@ -278,21 +356,24 @@ module.exports.addUser =(function (forename, surname, password, email, username,
 
 /*
   Procedure:
-  database.verifyPassword(userid, passwordToTest, callback(verified, error ));
+    database.verifyPassword(userid, passwordToTest, callback(verified, error ));
   Purpose:
-  Checks to see if a password is correct
+    Checks to see if a password is correct
   Parameters:
-  user, a string that is either the username or the email address
-  passwordToTest, a plaintext version of a password to test
-  callback(verified, error), a function describing what to do with the result
+    user, a string that is either the username or the email address
+    passwordToTest, a plaintext version of a password to test
+    callback(verified, error), a function describing what to do with the result
   Produces:
-  verified, A BOOLEAN value representing if the password was correct && the user exists
+    verified, A BOOLEAN value representing if the password was correct 
+      && the user exists
   Pre-conditions:
-  None
+    [None]
   Post-conditions:
-  None
+    [None]
   Preferences:
-  This procedure automatically sanitizes user input. This will also return false if the user does not exist. The client should never be told if a user exists.
+    This procedure automatically sanitizes user input. This will
+    also return false if the user does not exist. The client should
+    never be told if a user exists.
 */
 module.exports.verifyPassword = (function (userid, passwordToTest, callback){
   // Always sanitize user input
@@ -314,21 +395,19 @@ module.exports.verifyPassword = (function (userid, passwordToTest, callback){
 
 /*
   Procedure:
-  database.changeUsername(userid, newUsername, Callback(success, error));
+    database.changeUsername(userid, newUsername, Callback(success, error));
   Purpose:
-  To allow a user to change their username
+    To allow a user to change their username
   Parameters:
-  userid, the userid of the use who wants to change their password
-  newUsername, what they want to change their username to callback
+    userid, the userid of the use who wants to change their password
+    newUsername, what they want to change their username to callback
   Produces:
-  success, a boolean success indicator
-  error, any error occurred along the way
+    success, a boolean success indicator
+    error, any error occurred along the way
   Pre-conditions:
-  user has logged in, and therefore has access to their userid
+    user has logged in, and therefore has access to their userid
   Post-conditions:
-  username needs to be changed
-  Preferences:
-  None
+    username needs to be changed
 */
 module.exports.changeUsername = (function (userid, newUsername, password, callback){
   newUsername = sanitize(newUsername);
@@ -389,11 +468,17 @@ module.exports.changePassword = (function (userid, oldPassword, newPassword, cal
 
     else
       module.exports.verifyPassword(userid, oldPassword, function(verified, error){
-        if (error)
+        // If we got an error, we did not verify the password.
+        if (error) {
           callback(false, error);
-        else if (!verified)
+        }
+        // If we did not verify the password, stop.
+        else if (!verified) {
           callback(false, "Invalid Credentials: password");
-        else
+        }
+        // Otherwise, we successfully verified the password, so 
+        // insert the new password.
+        else {
           hashPassword(newPassword, function (newHash, error) {
             if (error)
               callback(false, error);
@@ -404,7 +489,8 @@ module.exports.changePassword = (function (userid, oldPassword, newPassword, cal
                 else
                   callback(true, null);
               });
-          });
+          }); // hashPassword
+        } // successfully verified the password
       });
   });
 }); // database.changePassword(user, oldPassword, newPassword, callback(success, error));
@@ -453,21 +539,20 @@ module.exports.changeEmail = (function (userid, newEmail, password, callback){
 
 /*
   Procedure:
-  database.changeAboutSection(userid, newAbout, Callback(success, error));
+    database.changeAboutSection(userid, newAbout, Callback(success, error));
   Purpose:
-  To allow a user to change their About Section
+    To allow a user to change their About Section
   Parameters:
-  userid, the userid of the use who wants to change their password
-  newAbout, a new about section to display
-  Produces:
-  success, a boolean success indicator
-  error, any error occurred along the way
+    userid, the userid of the use who wants to change their password
+    newAbout, a new about section to display
+    callback, a typical callback
+  Produces (for Callback):
+    success, a boolean success indicator
+    error, any error occurred along the way
   Pre-conditions:
-  user has logged in, and therefore has access to their about section
+    user has logged in, and therefore has access to their about section
   Post-conditions:
-  about section has to be changed
-  Preferences:
-  None
+    about section has to be changed
 */
 module.exports.changeAboutSection = (function (userid, newAbout, callback){
   newAbout = sanitize(newAbout);
@@ -480,18 +565,6 @@ module.exports.changeAboutSection = (function (userid, newAbout, callback){
   });
 
 });//database.changeAboutSection(userid, newAbout);
-
-// change albumName
-module.exports.changeAlbumName = (function (userid, newAlbumName, albumid, callback){
-  newAbout = sanitize(newAbout);
-  userid = sanitize(userid);
-  module.exports.query("UPDATE albums SET name='" + newAlbumName +"' WHERE userid= '" + userid + "' AND albumid= '"+ albumid +"';", function (rows, error){
-    if (error)
-      callback(false, error);
-    else
-      callback(true, error);
-  });
-});//database.changeAlbumName(userid, newAlbumName, albumid);
 
 /*
   Procedure:
@@ -571,37 +644,36 @@ module.exports.logIn = (function (user, password, callback) {
 
 /*
   Procedure:
-  database.getUser(userid, callback(userObject, error));
+    database.getUser(userid, callback(userObject, error));
   Parameters:
-  userid, the id of the user to retrieve
-  callback(userObject,error), a function describing what to do with the data
+    userid, the id of the user to retrieve
+    callback(userObject,error), a function describing what to do with the data
   Produces:
-  userObject, an object containing the following properties:
-  forename
-  surname
-  hashedPassword
-  email
-  emailVisible
-  pgpPublic
-  username
-  type
-  signupTime
-  lastLoginTime
-  userid
-  about
-  featuredImage
-  token
-  error, if there is one
+    userObject, an object containing the following properties:
+      forename
+      surname
+      hashedPassword
+      email
+      emailVisible
+      pgpPublic
+      username
+      type
+      signupTime
+      lastLoginTime
+      userid
+      about
+      featuredImage
+      token
+      error, if there is one
   Purpose:
-  To retrieve information on an user
+    To retrieve information on an user
   Pre-conditions:
-  userid corresponds to a user in the database
+    userid corresponds to a user in the database
   Post-conditions:
-  All information from the database will be retrieved
+    All information from the database will be retrieved
   Preferences:
-  Use database.getIDforUsername to get the id to pass to this function
+    Use database.getIDforUsername to get the id to pass to this function
 */
-
 module.exports.getUser = (function (userid, callback){
   module.exports.query("SELECT * FROM users WHERE userid='" + userid + "';", function(rows, error){
     if (error)
@@ -615,23 +687,22 @@ module.exports.getUser = (function (userid, callback){
 
 /*
   Procedure:
-  database.getIDforUsername(username, callback(userid, error));
+    database.getIDforUsername(username, callback(userid, error));
   Parameters:
-  username, a string
-  callback, a function describing what to do with the data
+    username, a string
+    callback, a function describing what to do with the data
   Produces:
-  userid, the userid associated with the username
-  error, if there is one
+    userid, the userid associated with the username
+    error, if there is one
   Purpose:
-  To get the primary key for a username for faster information retrieval in the future
+    To get the primary key for a username for faster information retrieval in the future
   Pre-conditions:
-  None
+    [None]
   Post-conditions:
-  The userid will correspond with a row in the database
+    The userid will correspond with a row in the database
   Preferences:
-  Use in conjunction with database.getUser() to retrieve information on a user
-
-  callback(userid, error)
+    Use in conjunction with database.getUser() to retrieve information on 
+      a user
 */
 module.exports.getIDforUsername = (function (username, callback) {
   username=sanitize(username);
@@ -645,13 +716,120 @@ module.exports.getIDforUsername = (function (username, callback) {
   });
 });
 
-// TO DO
-// Update user information
-// Split change password into two functions, one for password recovery
-// PGP Public key
+// +--------+----------------------------------------------------------
+// | Images |
+// +--------+
 
-//images query shortcode
+/**
+ * Delete an image.  Calls the callback with either true or false
+ * and an optional error.
+ */
+module.exports.deleteImage = function(userid, imageid, callback) {
+  // Sanitize the inputs
+  userid = sanitize(userid);
+  imageid = sanitize(imageid);
 
+  // Make sure that they are valid ids (all numbers).
+  if (isNaN(userid)) {
+    callback(false, "Invalid userid: " + userid);
+    return;
+  }
+  if ((!imageid) || (isNaN(imageid))) {
+    callback(false, "Invalid imageid: " + imageid);
+    return;
+  }
+
+  // Make sure that the user owns the image
+  var getUser = "SELECT userid FROM images WHERE imageid=" + imageid + ";";
+  console.log("getUser", getUser);
+  query(getUser, function(rows, err) {
+    console.log("rows",rows,"err",err);
+    if (err) {
+      callback(false,err);
+      return;
+    } // if (err)
+    if (rows.length == 0) {
+      callback(false,"No such image: " + imageid);
+      return;
+    }
+    if (rows[0].userid != userid) {
+      callback(false,"User " + userid + " does not own image " + imageid);
+      return;
+    }
+    // Okay, the user owns the image.  Delete everything related to
+    // the image (in order).
+    var queries = [
+      "DELETE FROM albumContents WHERE imageid=" + imageid,
+      "DELETE FROM comments WHERE onImage=" + imageid,
+      "DELETE FROM images WHERE imageid=" + imageid
+    ];
+    querySequenceAll(queries, callback);
+  }); // query(getUser,...)
+
+}; // deleteImage
+
+/**
+ * Delete an image.
+ * DEPRECATED.  This deletes things in the wrong order, which would violate constraints.  It also seems
+ * to delete comments even if it fails to delete the image.
+ */
+module.exports.deleteImageOld = (function (userid, imageid, callback) {
+  // Sanitize the inputs
+  userid=sanitize(userid);
+  imageid=sanitize(imageid);
+  module.exports.query("DELETE FROM images WHERE imageid='" + imageid + "' AND userid= '" + userid + "';", function (rows, error){
+    if (error) {
+      callback(null, error);
+      return;
+    }
+    module.exports.query("DELETE FROM albumContents WHERE imageid='" +imageid + "';", function (success, error){
+      if (error)
+        callback(null, error);
+      else
+        module.exports.query("DELETE FROM comments WHERE onImage='" + imageid + "';",function(success, error){
+          if (error)
+              callback(error);
+          else
+            callback(success, null);
+        });
+    });
+  });
+});
+
+/*
+  Procedure:
+    imageExists(userid, checkString);
+  Purpose:
+    Checks to see if an image with the given string as a title exists 
+    for the user
+  Parameters:
+    userid, the userid of the current session user
+    checkstring, a string containing a desired title for an image
+    callback(exists), a function describing what to do with the result
+  Produces:
+    exists, a BOOLEAN result
+  Pre-conditions:
+    [None]
+  Post-conditions:
+    [None]
+ */
+module.exports.imageExists = (function(userid, checkString, callback){
+  checkstring = sanitize(checkString); // Always sanitize user input.
+  // check if string is a username
+  module.exports.query("SELECT title FROM images WHERE title = '" + checkString + "'AND userid = " + userid + ";", function (rows, error){
+    if (!rows[0]){ // string is not a username
+      callback(false);
+    }
+    // username exists
+    else callback(true);
+  });
+}); // database.imageExists(userid, checkString, callback(exists));
+
+/**
+ * Get the title, code, username, modification date, rating, and more
+ * for an image.  If it finds the information, calls `callback(info,null)`.
+ * Otherwise, calls `callback(null,error)`.
+ */    
 module.exports.imageInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
   module.exports.query("SELECT images.title, images.code, users.username, images.modifiedAt, images.rating, images.imageid, images.userid, images.featured FROM images, users WHERE images.imageid= '" + imageid + "' and images.userid = users.userid;", function (rows, error){
@@ -664,69 +842,13 @@ module.exports.imageInfo=(function(imageid, callback) {
   });
 });
 
-//albums query shortcode
+// +----------------+--------------------------------------------------
+// | Image Comments |
+// +----------------+
 
-module.exports.albumsInfo=(function(userid, callback) {
-  userid=sanitize(userid);
-  module.exports.query("SELECT users.username, users.userid, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
-    if (error)
-      callback(null, error);
-    else
-      callback(rows, null);
-  });
-});
-
-//Get First Image of Album to Display
-
-module.exports.firstImageofAlbum=(function(albumid, callback){
-  albumid=sanitize(albumid);
-  module.exports.query("SELECT images.code from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid LIMIT 1;" , function (rows, error){
-    if (error)
-      callback(null, error);
-    else
-      callback(rows, null);
-  });
-});
-
-//albumContents query shortcode
-
-module.exports.getAlbumContentsTitle=(function(albumid, callback) {
-  albumid=sanitize(albumid);
-  module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
-    if (error)
-      callback(null, error);
-    else
-      callback(rows[0], null);
-  });
-});
-
-module.exports.albumContentsInfo=(function(userid, albumid, callback) {
-  albumid=sanitize(albumid);
-  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid  and albums.userid = '" + userid + "' ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
-    if (error)
-      callback(null, error);
-
-    else
-      callback(rows, null);
-  });
-});
-
-// Get owner of albums in albumContents
-
-module.exports.albumOwnerInfo=(function(albumid, callback) {
-  albumid=sanitize(albumid);
-  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and albums.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
-    if (error)
-      callback(null, error);
-    else if (!rows[0])
-      callback(null, "Owner does not exist");
-    else
-      callback(rows, null);
-  });
-});
-
-//Get Commenter Information for single image
-
+/**
+ * Get commenter information for a single image.
+ */
 module.exports.commentInfo=(function(imageid, callback) {
   imageid=sanitize(imageid);
   module.exports.query("SELECT images.title, images.imageid, users.username, comments.postedAt, comments.comment, comments.commentId, users.userid FROM images, comments, users WHERE comments.active='1' AND comments.onImage='"+imageid+"' and images.imageid=comments.onImage and comments.postedBy= users.userid ORDER BY comments.postedAt ASC;" , function (rows, error){
@@ -737,9 +859,9 @@ module.exports.commentInfo=(function(imageid, callback) {
   });
 });
 
-
-// To comment
-
+/**
+ * Save a comment.
+ */
 module.exports.saveComment=(function(userid, imageid, newComment, callback) {
   userid=sanitize(userid);
   imageid=sanitize(imageid);
@@ -752,37 +874,115 @@ module.exports.saveComment=(function(userid, imageid, newComment, callback) {
   });
 });
 
-// delete Image
-module.exports.deleteImage=(function (userid, imageid, callback) {
-  userid=sanitize(userid);
-  imageid=sanitize(imageid);
-  module.exports.query("DELETE FROM images WHERE imageid='" + imageid + "' AND userid= '" + userid + "';", function (rows, error){
-    if (error)
-      callback(null, error);
-    else
-      module.exports.query("DELETE FROM albumContents WHERE imageid='" +imageid + "';", function (success, error){
-        if (error)
-          callback(null, error);
-        else
-          module.exports.query("DELETE FROM comments WHERE onImage='" + imageid + "';",function(success, error){
-            if (error)
-              callback(error);
-            else
-              callback(success, null);
-          });
-      });
-  });
-});
+// +--------+----------------------------------------------------------
+// | Albums |
+// +--------+
 
-//Set profile picture
-module.exports.setProfilePicture=(function (userid, imageid, callback) {
+/**
+ * Get information on an album.
+ */
+module.exports.albumsInfo=(function(userid, callback) {
   userid=sanitize(userid);
-  imageid=sanitize(imageid);
-  module.exports.query("UPDATE users SET featuredImage='" + imageid + "' WHERE userid= '" + userid + "';", function (rows, error){
+  module.exports.query("SELECT users.username, users.userid, albums.name, albums.caption, albums.albumid, albums.dateCreated FROM albums, users WHERE users.userid= '" + userid + "' and albums.userid = users.userid ORDER BY albums.dateCreated ASC;" , function (rows, error){
     if (error)
       callback(null, error);
     else
       callback(rows, null);
+  });
+});
+
+/**
+ * Change the name of an album.  Call the callback with a success boolean
+ * and an optional error.
+ */
+module.exports.changeAlbumName = (function (userid, newAlbumName, albumid, callback){
+  newAbout = sanitize(newAbout);
+  userid = sanitize(userid);
+  module.exports.query("UPDATE albums SET name='" + newAlbumName +"' WHERE userid= '" + userid + "' AND albumid= '"+ albumid +"';", function (rows, error){
+    if (error) {
+      callback(false, error);
+    }
+    else {
+      callback(true, error);
+    }
+  });
+});//database.changeAlbumName(userid, newAlbumName, albumid);
+
+/**
+ * Get the first image in an album.
+ */
+module.exports.firstImageofAlbum=(function(albumid, callback){
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT images.code from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid LIMIT 1;" , function (rows, error){
+    if (error) {
+      callback(null, error);
+    }
+    else {
+      callback(rows, null);
+    }
+  });
+});
+
+/**
+ * Get some basic information about an album.
+ */
+module.exports.getAlbumContentsTitle=(function(albumid, callback) {
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
+    if (error) {
+      callback(null, error);
+    }
+    else {
+      callback(rows[0], null);
+    }
+  });
+});
+
+/**
+ * Get all of the contents of an album.
+ */
+module.exports.albumContentsInfo=(function(userid, albumid, callback) {
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid  and albums.userid = '" + userid + "' ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+    if (error) {
+      callback(null, error);
+    }
+    else {
+      callback(rows, null);
+    }
+  });
+});
+
+// Get owner of albums in albumContents
+
+module.exports.albumOwnerInfo=(function(albumid, callback) {
+  albumid=sanitize(albumid);
+  module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and albums.userid = users.userid and albumContents.imageid = images.imageid ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
+    if (error) {
+      callback(null, error);
+    }
+    else if (!rows[0]) {
+      callback(null, "Owner does not exist");
+    }
+    else {
+      callback(rows, null);
+    }
+  });
+});
+
+/**
+ * Set the profile picture for a given userid to a given imageid.
+ */
+module.exports.setProfilePicture=(function (userid, imageid, callback) {
+  userid=sanitize(userid);
+  imageid=sanitize(imageid);
+  module.exports.query("UPDATE users SET featuredImage='" + imageid + "' WHERE userid= '" + userid + "';", function (rows, error){
+    if (error) {
+      callback(null, error);
+    }
+    else {
+      callback(rows, null);
+    }
   });
 });
 
@@ -987,8 +1187,45 @@ module.exports.addtoAlbum=(function (albumid, imageid, callback) {
   });
 });
 
+// +-----------+-------------------------------------------------------
+// | Workspace |
+// +-----------+
 
-/* DATABASE SEARCH FUNCTIONS */
+/*
+  Procedure:
+    database.wsExists(userid, checkString, callback(exists));
+  Purpose:
+    Checks to see if a workspace with the given string as a name exists 
+    for the user
+  Parameters:
+    userid, the userid of the current session user
+    checkstring, a string containing a desired name for a workspace
+    callback(exists), a function describing what to do with the result
+  Produces:
+    exists, a BOOLEAN result
+  Pre-conditions:
+    [None]
+  Post-conditions:
+    [None]
+*/
+module.exports.wsExists = (function(userid, checkString, callback) {
+  checkstring = sanitize(checkString); // Always sanitize user input.
+  // check if string is a username
+  module.exports.query("SELECT name FROM workspaces WHERE name = '" + checkString + "'AND userid = " + userid + ";", function (rows, error) {
+    if (!rows[0]) { // string is not a username
+      callback(false);
+    }
+    // username exists
+    else callback(true);
+  });
+}); // database.wsExists(userid, checkString;
+
+// +-----------+-------------------------------------------------------
+// | Searching |
+// +-----------+
+
+// These probably belong in a separate file.
+ 
 /*
   Procedure:
   database.omnisearch(searchString, callback(resultObject, error));
@@ -1153,9 +1390,10 @@ module.exports.functionSearch = (function(searchString, callback){
   });
 });
 
-/* END DATABASE SEARCH FUNCTIONS */
+// +--------------------+----------------------------------------------
+// | Comment Moderation |
+// +--------------------+
 
-/* Comment moderation functions */
 // flag comments
 // callback(success, error);
 module.exports.flagComment = (function(commentId, flaggedByID,callback){
@@ -1245,7 +1483,9 @@ module.exports.deleteComment= (function(userid, commentId, callback){
   });
 });
 
-/* End comment moderation functions */
+// +---------------+---------------------------------------------------
+// | Cookie Tokens |
+// +---------------+
 
 /* Cookie token getter/setter */
 module.exports.setToken = (function (userid, token, callback){
@@ -1278,7 +1518,9 @@ module.exports.checkToken = (function (userid, token, callback){
   });
 });
 
-/* End Cookie token getter/setter */
+// +-----------------+-------------------------------------------------
+// | Featured Images |
+// +-----------------+
 
 /* Featured image */
 module.exports.canChangeFeaturedImage = function(userid, callback) {
@@ -1330,9 +1572,15 @@ module.exports.removeFeaturedImage = function(userid, imageid, callback) {
     } // If can change
   }); // Module.exports.canChangeFeaturedImages
 }
-/* End Featured Image */
 
-// Callback(token, error)
+// +--------------------------------+----------------------------------
+// | Account Verification Via Email |
+// +--------------------------------+
+
+/**
+ * Add the token used for verifying accounts via email.  Sends the created
+ * token to the callback.
+ */
 module.exports.addVerifyToken = (function (user, callback) {
   bcrypt.hash(user.forename + user.surname + user.hashedPassword + user.email, null, null, function(err,token) {
     var userid = module.exports.sanitize(user.userid);
@@ -1347,7 +1595,9 @@ module.exports.addVerifyToken = (function (user, callback) {
   });
 });
 
-// Callback(success, error)
+/**
+ * Check to see if the user provided the correct token (see addVerifyTOken).
+ */
 module.exports.verifyEmail = (function (userid, token, callback){
   module.exports.query("SELECT * FROM verifications WHERE userid='" + userid + "' AND token ='" + token + "';", function(results, error){
     if (error){ // Database I/O error
@@ -1377,34 +1627,34 @@ module.exports.verifyEmail = (function (userid, token, callback){
 
 });
 
+// +--------+----------------------------------------------------------
+// | Badges |
+// +--------+
 
-/* Badge Functions */
-
-module.exports.makeBadge = (function(badgeName, badgeDescription, requirements, callback){
+/**
+ * Create a new badge.  
+ * The callback has the form callback(bool,error).
+ */
+module.exports.makeBadge = (function(badgeName, badgeDescription, requirements, callback) {
+  // Sanitize the parameters
   badgeName= sanitize(badgeName);
   badgeDescription = sanitize(badgeDescription);
-  module.exports.query("INSERT INTO badges (name, description, requirements) VALUES ('" + badgeName + "', '" + badgeDescription + "', '" + requirements + "');", function(result, error){
-    if (error){
-      callback(false, error);
-    }
-    else{
-      callback(true, null);
-    }
-  });
+  // Do the query
+  var query = "INSERT INTO badges (name,description,requirements) VALUES ('" + 
+      badgeName + "','" + badgeDescription + "','" + requirements + "');";
+  module.exports.queryBoolean(query, callback);
 });
 
-module.exports.awardBadge = (function (userid, badgeid){
+/**
+ * Award a badge.
+ */
+module.exports.awardBadge = (function (userid, badgeid, callback) {
+  // Sanitize the inputs
   userid= sanitize(userid);
   badgeid= sanitize(badgeid);
-  module.exports.query("INSERT INTO earnedBadges (userid, badgeid) VALUES('" + userid + "', '" + badgeid + "');", function(result, error){
-    if (error){
-      callback(false, error);
-    }
-    else{
-      callback(true, null);
-    }
-  });
+  // Do the query 
+  var query = "INSERT INTO earnedBadges (userid, badgeid) VALUES('" + 
+      userid + "', '" + badgeid + "');";
+  module.exports.queryBoolean(query, callback);
 });
 
-
-/* End Badge Functions */
