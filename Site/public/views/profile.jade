@@ -20,8 +20,8 @@ block content
   div(id = 'subviews')
    a(href='/user/'+ viewing.username class='subview' id='selected') profile
    a(href='/badges' class='subview') badges
-   a(href='/user/'+ viewing.username +'/albums' class='subview') albums
-   a(href='/challenges' class='subview') challenges
+   a(href='/user/' + viewing.username +'/albums' class='subview') albums
+   a(href='/user/' + viewing.username + '/images' class='subview') images
   div(id='subTitle')
    p= "member since " + viewing.signupTime.toLocaleDateString()
   div#profile

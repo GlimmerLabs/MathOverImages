@@ -20,7 +20,7 @@ block content
       a(href='/user/'+ albumOwner class='subview') profile
       a(href='/badges' class='subview') badges
       a(href='/user/'+ albumOwner +'/albums' class='subview' id= 'selected') albums
-      a(href='/challenges' class='subview') challenges
+      a(href='/user/'+ albumOwner +'/images' class='subview') images
     div(id='pageTitle')
       h1= albumOwner
     if (albumOwner==albumTitle.username)
