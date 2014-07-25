@@ -1,7 +1,7 @@
 /**
-* api.js
-*   Functions for handling requests to the API.
-*/
+ * api.js
+ *   Functions for handling requests to the API.
+ */
 
 // +-------+-----------------------------------------------------------
 // | Notes |
@@ -65,6 +65,9 @@ module.exports.run = function(info, req, res) {
 // | Utilities |
 // +-----------+
 
+/**
+ * Indicate that the operation failed.
+ */
 fail = function(res, message) {
   console.log("FAILED!", message);
   res.send(400, message);       // "Bad request"
@@ -74,11 +77,23 @@ fail = function(res, message) {
 // | Handlers |
 // +----------+
 
+/**
+ * The collection of handlers.
+ */
 var handlers = {};
+
+// Note: Each handler should have parameters (info, req, res).
+
+// Please keep each set of handlers in alphabetical order.
+
+// +----------------+--------------------------------------------------
+// | Image Handlers |
+// +----------------+
 
 /**
  * Delete an image.
- *   imageid: the id of the image
+ *   info.action: deleteimg
+ *   info.imageid: the id of the image
  */
 handlers.deleteimg = function(info, req, res) {
   // Make sure that they are logged in.
@@ -96,6 +111,88 @@ handlers.deleteimg = function(info, req, res) {
     res.send(ok);
   }); // deleteImageNew
 } // deleteimg
+
+/**
+ * Check if an image exists (should be imagetitleexists)
+ *   info.action: imageexists
+ *   info.title: The title of the image
+ */
+handlers.imageexists = function(info, req, res) {
+  if (!req.session.user) {
+    res.send("logged out");
+  } else {
+    database.imageExists(req.session.user.userid, info.title, function(exists) {
+      res.send(exists);
+    });
+  }
+};
+
+/**
+ * Save an image
+ *   info.action: saveimage
+ *   info.title: The title of the image
+ *   info.code: the code of the image for display
+ *   info.codeVisible: is the code visible (boolean)
+ *   info.license: A license string
+ *   info.public: is the image public (boolean)
+ *   info.replace: Replace an existing image (boolean, optional)
+ */
+handlers.saveimage = function(info, req, res){
+  if (!req.session.user) {
+    fail(res, "Could not save image because you're not logged in");
+  }
+  else if (!info.title) {
+    fail(res, "Could not save image because you didn't title it");
+  }
+  else {
+    var query = "SELECT imageid FROM images WHERE title='"+
+        database.sanitize(info.title)+"' AND userid="+req.session.user.userid;
+    database.query(query, function(rows, error) {
+      if (error) {
+        fail(res, "Error: "+error);
+      }
+      else if (rows[0]) {
+        if (!info.replace) {
+          fail(res, info.title + " already exists!");
+        }
+        else {
+          var newQuery = "UPDATE images SET code='"+
+              database.sanitize(info.code)+"', modifiedAt= UTC_TIMESTAMP WHERE imageid="+rows[0].imageid;
+          database.query(newQuery, function(rows, error) {
+            if (error) {
+              fail(res, "Error: "+error);
+            }
+            else {
+              res.end();
+            }
+          });
+        } // If info.replace
+      } // If rows[0]
+      else {
+        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public, modifiedAt, createdAt) VALUES (" + req.session.user.userid + ",'" + database.sanitize(info.title) + "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) + "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) + "', UTC_TIMESTAMP, UTC_TIMESTAMP)";
+        database.query(newQuery, function(rows, error) {
+          if (error) {
+            fail(res, "Error: "+error);
+          }
+          else {
+            database.query("SELECT imageid FROM images WHERE userid="+req.session.user.userid+" AND title='"+info.title+"';",
+                            function(rows, error) {
+                              if(rows[0]) {
+                                res.send(rows[0]);
+                              } else {
+                                fail(res, "Error: " + error);
+                              }
+                            })
+          }
+        });
+      } // If name is not in table
+    });
+  }
+}; // handlers.saveimage
+
+// +--------------------+----------------------------------------------
+// | Workspace Handlers |
+// +--------------------+
 
 /**
  * Delete a workspace by name
@@ -168,6 +265,7 @@ handlers.getws = function(info, req, res) {
 
 /**
 * List the workspaces.
+*   action: listws
 */
 handlers.listws = function(info, req, res) {
   if (!req.session.user) {
@@ -190,6 +288,15 @@ handlers.listws = function(info, req, res) {
     }); // query
   } // if logged in
 } // handlers.listws
+
+/**
+ * Return the ws stored in the session.  See storews for more info.
+ *  info.action: returnws
+ */
+handlers.returnws = function(info, req, res) {
+  res.send(req.session.workspaceCode);
+  res.end();
+};
 
 /**
 * Save a workspace.
@@ -246,124 +353,42 @@ handlers.savews = function(info, req, res) {
   }
 } // handlers.savews
 
-/*
-Save an image
-action: saveimage
-title: The title of the image
-code: the code of the image for display
-codeVisible: BOOL
-license: A license string
-public: BOOL
-replace: BOOL [optional]
-*/
-handlers.saveimage = function(info, req, res){
-  if (!req.session.user) {
-    fail(res, "Could not save image because you're not logged in");
-  }
-  else if (!info.title) {
-    fail(res, "Could not save image because you didn't title it");
-  }
-  else {
-    var query = "SELECT imageid FROM images WHERE title='"+
-        database.sanitize(info.title)+"' AND userid="+req.session.user.userid;
-    database.query(query, function(rows, error) {
-      if (error) {
-        fail(res, "Error: "+error);
-      }
-      else if (rows[0]) {
-        if (!info.replace) {
-          fail(res, info.title + " already exists!");
-        }
-        else {
-          var newQuery = "UPDATE images SET code='"+
-              database.sanitize(info.code)+"', modifiedAt= UTC_TIMESTAMP WHERE imageid="+rows[0].imageid;
-          database.query(newQuery, function(rows, error) {
-            if (error) {
-              fail(res, "Error: "+error);
-            }
-            else {
-              res.end();
-            }
-          });
-        } // If info.replace
-      } // If rows[0]
-      else {
-        var newQuery = "INSERT INTO images (userid, title, code, codeVisible, license, public, modifiedAt, createdAt) VALUES (" + req.session.user.userid + ",'" + database.sanitize(info.title) + "','" + database.sanitize(info.code) + "','" + database.sanitize(info.codeVisible) + "','" + database.sanitize(info.license) + "','" + database.sanitize(info.public) + "', UTC_TIMESTAMP, UTC_TIMESTAMP)";
-        database.query(newQuery, function(rows, error) {
-          if (error) {
-            fail(res, "Error: "+error);
-          }
-          else {
-            database.query("SELECT imageid FROM images WHERE userid="+req.session.user.userid+" AND title='"+info.title+"';",
-                            function(rows, error) {
-                              if(rows[0]) {
-                                res.send(rows[0]);
-                              } else {
-                                fail(res, "Error: " + error);
-                              }
-                            })
-          }
-        });
-      } // If name is not in table
-    });
-  }
-}; // handlers.saveimage
-
-/*
-check if an image exists
-action: imageexists
-title: The title of the image
-*/
-handlers.imageexists = function(info, req, res) {
-  if (!req.session.user) {
-    res.send("logged out");
-  } else {
-    database.imageExists(req.session.user.userid, info.title, function(exists) {
-      res.send(exists);
-    });
-  }
-};
-
-/*
-check if an image exists
-action: wsexists
-title: The title of the image
-*/
-handlers.wsexists = function(info, req, res) {
-  if (!req.session.user) {
-    res.send("logged out");
-  } else {
-    database.wsExists(req.session.user.userid, info.name, function(exists) {
-      res.send(exists);
-    });
-  }
-};
-
-/*
-store the ws in the session
-action: storews
-code: the code for the workspace
-*/
+/**
+ * Store the ws in the session
+ *   info.action: storews
+ *   info.code: the code for the workspace
+ */
 handlers.storews = function(info, req, res) {
   req.session.workspaceCode = info.code;
   res.end();
 };
 
-/*
-return the ws stored in the session
-action: returnws
-*/
-handlers.returnws = function(info, req, res) {
-  res.send(req.session.workspaceCode);
-  res.end();
+/**
+ * Check if an image exists
+ *   info.action: wsexists
+ *   info.title: The title of the image
+ */
+handlers.wsexists = function(info, req, res) {
+  if (!req.session.user) {
+    res.send("logged out");
+  } 
+  else {
+    database.wsExists(req.session.user.userid, info.name, function(exists) {
+      res.send(exists);
+    }); // database.wsExists
+  } // else
 };
 
-/*
-check if submitted code for a challenge matches the solution
-action: submitchallenge
-code: the code submitted by the client
-id: the id for the challenge
-*/
+// +------------+------------------------------------------------------
+// | Challenges |
+// +------------+
+
+/**
+ * Submit a potential solution to a challenge.
+ *   info.action: submitchallenge
+ *   info.code: the code submitted by the client
+ *   info.id: the id for the challenge
+ */
 handlers.submitchallenge = function (info, req, res) {
   var query = "SELECT code FROM challenges WHERE name="+database.sanitize(info.name)+";";
   database.query(query, function(rows, error) {
@@ -377,12 +402,63 @@ handlers.submitchallenge = function (info, req, res) {
   });
 };
 
-/*
-Toggle the like on an image
-action: toggleLike
-imageid, to like or unlike
-*/
+// +---------------+---------------------------------------------------
+// | Miscellaneous |
+// +---------------+
 
+/**
+ * Search for names and values in the database.
+ *   info.action: omnisearch
+ *   info.search, the search string
+ */
+handlers.omnisearch = (function (info, req, res) {
+  database.omnisearch(info.search, function(resultObject, error){
+    if (error)
+      fail(res, JSON.stringify(resultObject));
+    else
+      res.end(JSON.stringify(resultObject));
+  });
+});
+
+/**
+ * Sets featured property of image.
+ *   info.action: setFeatured
+ *   info.imageid: the image to feature
+ *   info.state: the state to toggle it too
+*/
+handlers.setFeatured = (function (info, req, res) {
+  // console.log("setFeatured called with:", info);
+  if (!req.session.user) {
+    fail(res, "User Not logged in")
+    return;
+  }
+  if (info.state == 'true') {
+    database.addFeaturedImage(req.session.user.userid, info.imageid, function(response, err) {
+      if(err) {
+        res.end("Error: " + err)
+      }
+      else {
+        res.end("Success");
+      }
+    });
+  }
+  if(info.state == 'false') {
+    database.removeFeaturedImage(req.session.user.userid, info.imageid, function(response, err) {
+      if(err) {
+        res.end("Error: " + err)
+      }
+      else {
+        res.end("Success");
+      }
+    });
+  }
+});
+
+/**
+ * Toggle the like on an image
+ *   info.action: toggleLike
+ *   info.imageid, to like or unlike
+ */
 handlers.toggleLike = function(info, req, res) {
   if (!req.session.user)
     fail(res, "User is not logged in.");
@@ -395,43 +471,15 @@ handlers.toggleLike = function(info, req, res) {
     });
 }; // handlers.toggleLike
 
-/*
-Search for names and values in the database.
-action: omnisearch
-search, the search string
-*/
-handlers.omnisearch = (function (info, req, res) {
-  database.omnisearch(info.search, function(resultObject, error){
-    if (error)
-      fail(res, JSON.stringify(resultObject));
-    else
-      res.end(JSON.stringify(resultObject));
-  });
-});
+// +----------+--------------------------------------------------------
+// | Comments |
+// +----------+
 
-/*
-Flag comments for Moderator review
-action: flagComment
-commentId, the comment to flag
-*/
-handlers.flagComment = (function (info, req, res) {
-  if (!req.session.user)
-    fail(res, "User not logged in")
-    database.flagComment(info.commentId, req.session.user.userid, function(success, error){
-      if (error)
-        fail(res, JSON.stringify(error));
-      else if (success)
-        res.end("Comment " + info.commentId + " flagged.");
-      else
-        fail(res, "Unknown error");
-    });
-});
-
-/*
-Delete comments from the database.
-action: deleteComment
-commentId, the comment to delete
-*/
+/**
+ * Delete a comment from the database.
+ *   action: deleteComment
+ *   commentId, the comment to delete
+ */
 handlers.deleteComment = (function (info, req, res) {
   if (!req.session.user)
     fail(res, "User Not logged in")
@@ -445,37 +493,21 @@ handlers.deleteComment = (function (info, req, res) {
     });
 });
 
-/*
-Sets featured property of image.
-action: setFeatured
-imageid: the image to feature
-state: the state to toggle it too
-*/
-handlers.setFeatured = (function (info, req, res) {
-  console.log("setFeatured called with:", info);
+/**
+ * Flag comments for Moderator review
+ *   info.action: flagComment
+ *   info.commentId, the comment to flag
+ */
+handlers.flagComment = (function (info, req, res) {
   if (!req.session.user)
-    fail(res, "User Not logged in")
-  else {
-    if(info.state == 'true') {
-      database.addFeaturedImage(req.session.user.userid, info.imageid, function(response, err) {
-        if(err) {
-          res.end("Error: " + err)
-        }
-        else {
-          res.end("Success");
-        }
-      });
-    }
-    if(info.state == 'false') {
-      database.removeFeaturedImage(req.session.user.userid, info.imageid, function(response, err) {
-        if(err) {
-          res.end("Error: " + err)
-        }
-        else {
-          res.end("Success");
-        }
-      });
-    }
-  }
+    fail(res, "User not logged in")
+    database.flagComment(info.commentId, req.session.user.userid, function(success, error){
+      if (error)
+        fail(res, JSON.stringify(error));
+      else if (success)
+        res.end("Comment " + info.commentId + " flagged.");
+      else
+        fail(res, "Unknown error");
+    });
 });
 
