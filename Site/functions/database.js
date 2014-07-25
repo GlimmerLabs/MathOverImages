@@ -215,6 +215,52 @@ var querySequenceAny = function(queries, defaultError, callback) {
 }; // querySequenceAny
 module.exports.querySequenceAny = querySequenceAny;
 
+/**
+ * Determine if a user owns something (image, album, ...).
+ * Practica:
+ *   userOwns(17,"album",1234,function(ok,error) { ... });
+ */
+var userOwns = function(userid,type,id,callback) {
+  // Sanitize the inputs
+  userid = sanitize(userid);
+  id = sanitize(id);
+
+  // Make sure that they are valid ids (all numbers).
+  if (isNaN(userid)) {
+    callback(false, "Invalid user id: " + userid);
+    return;
+  }
+  if ((!id) || (isNaN(id))) {
+    callback(false, "Invalid " + type + " id: " + imageid);
+    return;
+  }
+
+  // Make sure that the user owns the thing
+  var getUser = "SELECT userid FROM " + type + "s WHERE " + type + 
+      "id=" + id + ";";
+  console.log("getUser", getUser);
+  query(getUser, function(rows, err) {
+    console.log("rows",rows,"err",err);
+    if (err) {
+      callback(false,err);
+      return;
+    } // if (err)
+    if (rows.length == 0) {
+      callback(false,"No such " + type + ": " + imageid);
+      return;
+    }
+    if (rows[0].userid != userid) {
+      callback(false,"User " + userid + " does not own " + type + " " + 
+          imageid);
+      return;
+    }
+    // Okay, we've checked all of the sensible failure points.  The
+    // user owns it.
+    callback(true,null);
+  }); // query
+}; // userOwns
+module.exports.userOwns = userOwns;
+
 // +-----------------+-------------------------------------------------
 // | User Procedures |
 // +-----------------+
@@ -765,7 +811,6 @@ module.exports.deleteImage = function(userid, imageid, callback) {
     ];
     querySequenceAll(queries, callback);
   }); // query(getUser,...)
-
 }; // deleteImage
 
 /**
@@ -1139,13 +1184,20 @@ module.exports.hasLiked=(function (userid, imageid, callback) {
 module.exports.createAlbum=(function (userid, name, callback) {
   userid=sanitize(userid);
   name=sanitize(name);
-  module.exports.query("INSERT INTO albums (userid, name, dateCreated) VALUES('" + userid + "','" + name + "', UTC_TIMESTAMP);", function (rows, error){
-    if (error)
+  var insert = "INSERT INTO albums (userid, name, dateCreated) VALUES('" + 
+      userid + "','" + name + "', UTC_TIMESTAMP);";
+  query(insert, function (rows, error) {
+    if (error) {
+      console.log("Failed to create album");
+      console.log("Query:", insert);
+      console.log("Error:", error);
       callback(null, error);
-    else
+    }
+    else {
       callback(rows, null);
-  });
-});
+    } // if !error
+  }); // query
+}); // createAlbum
 
 //delete from album (not image database)
 module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
@@ -1160,7 +1212,28 @@ module.exports.deleteFromAlbums= (function (albumid, imageid, callback) {
 });
 
 // delete whole album
-module.exports.deleteAlbum=(function (userid, albumid, callback) {
+module.exports.deleteAlbum = function(userid, albumid, callback) {
+  // Sanitize the inputs
+  userid = sanitize(userid);
+  albumid = sanitize(albumid);
+
+  // Make sure that the user owns the album
+  userOwns(userid, "album", albumid, function(ok,error) {
+    if (!ok) {
+      callback(ok,error);
+      return;
+    }
+    // Okay, the user owns the album.  Delete everything related to
+    // the album (in order).
+    var queries = [
+      "DELETE FROM albumContents WHERE albumid=" + albumid + ";",
+      "DELETE FROM albums WHERE albumid=" + albumid + ";"
+    ];
+    querySequenceAll(queries, callback);
+  }); // userOwns
+} // deleteAlbum
+
+module.exports.deleteAlbumOld=(function (userid, albumid, callback) {
   albumid=sanitize(albumid);
   module.exports.query("DELETE FROM albums WHERE albumid= '" + albumid + "' and userid= '" + userid + "';",function(success, error){
     if (error)
