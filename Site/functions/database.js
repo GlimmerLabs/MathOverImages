@@ -971,11 +971,14 @@ module.exports.firstImageofAlbum=(function(albumid, callback){
 /**
  * Get some basic information about an album.
  */
-module.exports.getAlbumContentsTitle=(function(albumid, callback) {
+module.exports.getAlbumInfo = (function(albumid, callback) {
   albumid=sanitize(albumid);
-  module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
+  module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error) {
     if (error) {
       callback(null, error);
+    }
+    else if (rows.length == 0) {
+      callback(null, "no such album: " + albumid);
     }
     else {
       callback(rows[0], null);
@@ -991,6 +994,7 @@ module.exports.albumContentsInfo=(function(userid, albumid, callback) {
   module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid  and albums.userid = '" + userid + "' ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
     if (error) {
       callback(null, error);
+      return;
     }
     else {
       callback(rows, null);
