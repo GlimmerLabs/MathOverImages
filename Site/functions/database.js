@@ -231,7 +231,7 @@ var userOwns = function(userid,type,id,callback) {
     return;
   }
   if ((!id) || (isNaN(id))) {
-    callback(false, "Invalid " + type + " id: " + imageid);
+    callback(false, "Invalid " + type + " id: " + id);
     return;
   }
 
@@ -246,7 +246,7 @@ var userOwns = function(userid,type,id,callback) {
       return;
     } // if (err)
     if (rows.length == 0) {
-      callback(false,"No such " + type + ": " + imageid);
+      callback(false,"No such " + type + ": " + id);
       return;
     }
     if (rows[0].userid != userid) {
