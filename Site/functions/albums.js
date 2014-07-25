@@ -1,6 +1,9 @@
 /**
- * Functions related to the album.
+ * albums.js
+ *   Functions related to the album.
  */
+
+
 var setLikes = function(imageArray, userID, database, callback) {
   if(imageArray.length == 0)
     callback([]);
@@ -67,11 +70,14 @@ module.exports.allImagesinAlbum = function(req, res, database) {
   });
 };
 
-module.exports.createAlbum= function(req, res, database) {
+module.exports.createAlbum = function(req, res, database) {
     database.createAlbum(req.session.user.userid, req.body.newAlbum, function (success, error){
-	if(!success)
-	    res.end(error);
-	else
-	    res.redirect('back');
+	if (!success) {
+          console.log("Failed to create album because", error);
+	  res.end("Error:" + error);
+        }
+	else {
+	  res.redirect('back');
+        }
     });
 };
