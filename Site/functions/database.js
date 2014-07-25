@@ -251,7 +251,7 @@ var userOwns = function(userid,type,id,callback) {
     }
     if (rows[0].userid != userid) {
       callback(false,"User " + userid + " does not own " + type + " " + 
-          imageid);
+          id);
       return;
     }
     // Okay, we've checked all of the sensible failure points.  The
@@ -1248,15 +1248,40 @@ module.exports.deleteAlbumOld=(function (userid, albumid, callback) {
   });
 });
 
+/**
+ * Add an image to an album.
+ */
+module.exports.addToAlbum = function(userid, albumid, imageid, callback) {
+  // Sanitize inputs.
+  userid = sanitize(userid);
+  albumid = sanitize(albumid);
+  imageid = sanitize(imageid);
+
+  // Make sure the user owns the album
+  userOwns(userid, "album", albumid, function(ok,error) {
+    if (!ok) {
+      callback(ok,error);
+      return;
+    }
+    // Sent the insert request.
+    var insert = "INSERT INTO albumContents (albumid, imageid, dateAdded) " +
+        "VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);";
+    query(insert, callback);
+  }); // userOwns
+} // addToAlbum
+
 // add to album
 module.exports.addtoAlbum=(function (albumid, imageid, callback) {
+  // Sanitize inputs.  Yay!
   albumid=sanitize(albumid);
   imageid=sanitize(imageid);
   module.exports.query("INSERT INTO albumContents (albumid, imageid, dateAdded) VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);", function (success, error){
-    if (error)
+    if (error) {
       callback(null, error)
-      else
-        callback(success, null);
+    }
+    else {
+      callback(success, null);
+    }
   });
 });
 
