@@ -2,12 +2,52 @@
  * mist-utils.js
  *   A few assorted utilities for MIST and other applications.
  *
+ * api(action,params,callback)
+ *   Call one of the API routines.
  * contains(array,val)
  *   Determine if an array contains a value
  * restore(obj)
  *   Restore the prototypes for an object using a .class field to
  *   identify the class.
  */
+
+/**
+ * Call an API routine.  The callback takes two parameters: the response
+ * and an optional error.
+ */
+function api(action,params,callback,method) {
+  if (!callback) {
+    callback = function(result,error) { return [result,error]; };
+  }
+  if (!method) {
+    method = "POST";
+  }
+  var keys = Object.keys(params);
+  var stuff = keys.map(function(k) { return k + "=" + params[k]});
+  var data = "action=" + action + "&" + stuff.join("&");
+  console.log(data);
+  var request = new XMLHttpRequest();
+  // If we're supposed to post the request ...
+  if (method == "POST") {
+    request.open("POST", "/api", false);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send(data);
+  } // if POST
+  // Otherwise, we can just use GET.
+  else {
+    request.open("GET", "/api?" + data, false);
+    request.send();
+  } // if GET
+
+  if (request.status != 200) {
+    console.log("failed", request.responseText);
+    return callback(false, request.responseText);
+  }
+  else {
+    console.log("succeeded", request.responseText);
+    return callback(request.responseText, false);
+  }
+} // api
 
 /**
  * Determine if an array contains a value.
