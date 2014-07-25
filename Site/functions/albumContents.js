@@ -73,7 +73,7 @@ module.exports.buildPage = function(req, res, database) {
 module.exports.deleteAlbum=function(req, res, database) {
     database.deleteAlbum(req.session.user.userid, req.params.albumid, function (success, error){
 	if(!success)
-	    res.end(error)
+	    res.end (JSON.stringify(error));
 	else
 	    res.redirect('/user/' + req.params.username + '/albums');
     });
@@ -82,7 +82,7 @@ module.exports.deleteAlbum=function(req, res, database) {
 module.exports.deleteFromAlbums=function(req, res, database) {
     database.deleteFromAlbums(req.params.albumid, req.body.deleteImage, function (success, error){
 	if(!success)
-	    res.end(error);
+	    res.end (JSON.stringify(error));
 	else
 	    res.redirect('back');
     });

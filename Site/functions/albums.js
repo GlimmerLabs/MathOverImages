@@ -32,11 +32,11 @@ module.exports.buildPage =  function(req, res, database) {
 database.getIDforUsername(req.params.username,
 	function(userid, error) {
 	    if(error)
-		res.end (error);
+		res.end (JSON.stringify(error));
 	    else
 	database.albumsInfo(userid, function(albums, error){
 	    if(error)
-		res.end(error)
+		res.end (JSON.stringify(error));
 	    else
 		res.render('../public/views/albums.jade', {
 		    loggedIn: req.session.loggedIn,
@@ -52,11 +52,11 @@ module.exports.allImagesinAlbum = function(req, res, database) {
   database.getIDforUsername(req.params.username,
     function(userid, error) {
       if(error)
-        res.end (error);
+        res.end (JSON.stringify(error));
       else
         database.getAllImagesforUser(userid, function(images, error){
           if(error)
-            res.end(error)
+            res.end (JSON.stringify(error));
           else
             setLikes(images, (req.session.user) ? req.session.user.userid : null, database, function(imageArray){
               res.render('../public/views/imagesCompilation.jade', {
@@ -74,7 +74,7 @@ module.exports.createAlbum = function(req, res, database) {
     database.createAlbum(req.session.user.userid, req.body.newAlbum, function (success, error){
 	if (!success) {
           console.log("Failed to create album because", error);
-	  res.end("Error:" + error);
+	  res.end (JSON.stringify(error));
         }
 	else {
 	  res.redirect('back');
