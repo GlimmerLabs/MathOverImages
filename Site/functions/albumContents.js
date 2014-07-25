@@ -30,11 +30,11 @@ module.exports.buildPage = function(req, res, database) {
   database.getIDforUsername(req.params.username,
     function(userid, error) {
       if(error)
-        res.end (error);
+        res.end (JSON.stringify(error));
       else
         database.albumContentsInfo(userid, req.params.albumid, function(albumContents, error){
           if(error)
-            res.end(error)
+            res.end (JSON.stringify(error));
           else
             setLikes(albumContents, (req.session.user) ? req.session.user.userid : null, function(images){
               database.getAlbumContentsTitle(req.params.albumid, function(albumTitle, error){
@@ -54,7 +54,7 @@ module.exports.buildPage = function(req, res, database) {
 module.exports.deleteAlbum=function(req, res, database) {
     database.deleteAlbum(req.session.user.userid, req.params.albumid, function (success, error){
 	if(!success)
-	    res.end(error)
+	    res.end (JSON.stringify(error));
 	else
 	    res.redirect('/user/' + req.params.username + '/albums');
     });
@@ -63,7 +63,7 @@ module.exports.deleteAlbum=function(req, res, database) {
 module.exports.deleteFromAlbums=function(req, res, database) {
     database.deleteFromAlbums(req.params.albumid, req.body.deleteImage, function (success, error){
 	if(!success)
-	    res.end(error);
+	    res.end (JSON.stringify(error));
 	else
 	    res.redirect('back');
     });
