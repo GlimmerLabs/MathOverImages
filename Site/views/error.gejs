@@ -2,14 +2,43 @@ title
   ERROR <%- error %>
 css
   <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    div#pageTitle,
+    div#pageTitleGeneral,
+    h1 {
+      background: red;
+    }
+    h2 {
+      color: red;
+    }
+    div.narrative {
+      clear: left;
+      margin-left: 40px;
+      max-width: 600px;
+    }
+    p.narrative {
+      color: #aa0000;
+      clear: left;
+    }
+  </style>
 head1
   error
 head2
   <%- error %>
 body
-  <p style="clear:left;">
-    <%- errortext %>
-  </p>
-  <p>
-    Please contact us and let us know what you were doing when this error appeared.  Thanks!
-  </p>
+  <div class="narrative">
+    <p>
+      Our software has reported the following somewhat garbled error.
+    </p>
+    <blockquote>
+      <p>
+        <%- errortext %>
+      </p>
+    </blockquote>
+    <p>
+      You can help us fix bugs!  If you think this reveals a problem
+      with MIST, please contact us and let us know what you were
+      doing when this error appeared.  And send the error, too.
+      Thanks!
+    </p>
+  </div> <!-- narrative -->
