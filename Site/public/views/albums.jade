@@ -22,7 +22,7 @@ block content
       a(href='/user/'+ profileBeingViewed class='subview') profile
       a(href='/badges' class='subview') badges
       a(href='' class='subview' id='selected') albums
-      a(href='/challenges' class='subview') challenges
+      a(href='/user/'+ profileBeingViewed +'/images' class='subview') images
     if loggedIn && (user.username===profileBeingViewed)
       div(id = 'createNew')
         button(id='newAlbums'  class='albumBtn') create album
