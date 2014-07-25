@@ -98,26 +98,25 @@ function setProfileImage() {
         <% if (albums.length > 0) { %>
           <li>add to album
             <script>
-            function addToAlbum(num) {
-              console.log("adding to album " + num);
-              var form = document.getElementById("add-" + num);
-              if (!form) return;
-              form.submit();
-              // alert("Added");
-              return false;
-            } // addToAlbum(num)
+            function addToAlbum(albumid) {
+              var imageid = <%- image.imageid %>;
+              console.log("adding",imageid,"to album",albumid);
+              api("addToAlbum", {imageid:imageid, albumid:albumid}, function(success,error) {
+                if (error) {
+                  alert(error);
+                  return false;
+                }
+                return true;
+              });
+            } // addToAlbum(albumid)
             </script>
             <ul>
               <% for (var i=0; i < albums.length; i++) { %>
-                <% var id = "add-" + i %>
                 <li>
-                  <form method='POST' id=<%- id %>>
-                    <a href='javascript:void(0);' onclick='addToAlbum(<%- i %>)'>
+                  <a href=<%- '/user/' + user.username + '/albums/' + albums[i].albumid %>
+                     onClick='addToAlbum(<%- albums[i].albumid %>)'>
                       <%= albums[i].name %>
                     </a>
-                    <input type='hidden' value= <%= albums[i].albumid %> name='add' />
-                    <!-- <input type='submit' value='select' class='select' /> -->
-                  </form>
                 </li>
               <% } // for %>
             </ul>
