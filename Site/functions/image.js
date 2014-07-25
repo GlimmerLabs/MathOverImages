@@ -75,10 +75,12 @@ module.exports.buildPage =  function(req, res, database) {
 
 module.exports.addtoAlbum= function(req, res, database) {
   database.addtoAlbum(req.body.add, req.params.imageid, function(success, error) {
-    if(!success)
-      res.end(error)
-      else
-        res.redirect('back');
+    if (!success) {
+      res.end("Error:" + error)
+    } // if we failed
+    else {
+      res.redirect('back');
+    } // if we succeeded
   });
 }
 
