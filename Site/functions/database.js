@@ -231,7 +231,7 @@ var userOwns = function(userid,type,id,callback) {
     return;
   }
   if ((!id) || (isNaN(id))) {
-    callback(false, "Invalid " + type + " id: " + imageid);
+    callback(false, "Invalid " + type + " id: " + id);
     return;
   }
 
@@ -246,12 +246,12 @@ var userOwns = function(userid,type,id,callback) {
       return;
     } // if (err)
     if (rows.length == 0) {
-      callback(false,"No such " + type + ": " + imageid);
+      callback(false,"No such " + type + ": " + id);
       return;
     }
     if (rows[0].userid != userid) {
       callback(false,"User " + userid + " does not own " + type + " " + 
-          imageid);
+          id);
       return;
     }
     // Okay, we've checked all of the sensible failure points.  The
@@ -971,11 +971,14 @@ module.exports.firstImageofAlbum=(function(albumid, callback){
 /**
  * Get some basic information about an album.
  */
-module.exports.getAlbumContentsTitle=(function(albumid, callback) {
+module.exports.getAlbumInfo = (function(albumid, callback) {
   albumid=sanitize(albumid);
-  module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error){
+  module.exports.query("SELECT albums.name, albums.userid, albums.albumid, users.username FROM albums, users WHERE albumid='" + albumid + "' and users.userid=albums.userid;" , function (rows, error) {
     if (error) {
       callback(null, error);
+    }
+    else if (rows.length == 0) {
+      callback(null, "no such album: " + albumid);
     }
     else {
       callback(rows[0], null);
@@ -991,6 +994,7 @@ module.exports.albumContentsInfo=(function(userid, albumid, callback) {
   module.exports.query("SELECT images.imageid, images.title, images.code, users.username, images.rating, albums.name from images, albumContents, albums, users WHERE albumContents.albumid= '" + albumid + "' and albums.albumid= '" + albumid + "' and images.userid = users.userid and albumContents.imageid = images.imageid  and albums.userid = '" + userid + "' ORDER BY albumContents.dateAdded ASC;" , function (rows, error){
     if (error) {
       callback(null, error);
+      return;
     }
     else {
       callback(rows, null);
@@ -1248,15 +1252,40 @@ module.exports.deleteAlbumOld=(function (userid, albumid, callback) {
   });
 });
 
+/**
+ * Add an image to an album.
+ */
+module.exports.addToAlbum = function(userid, albumid, imageid, callback) {
+  // Sanitize inputs.
+  userid = sanitize(userid);
+  albumid = sanitize(albumid);
+  imageid = sanitize(imageid);
+
+  // Make sure the user owns the album
+  userOwns(userid, "album", albumid, function(ok,error) {
+    if (!ok) {
+      callback(ok,error);
+      return;
+    }
+    // Sent the insert request.
+    var insert = "INSERT INTO albumContents (albumid, imageid, dateAdded) " +
+        "VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);";
+    query(insert, callback);
+  }); // userOwns
+} // addToAlbum
+
 // add to album
 module.exports.addtoAlbum=(function (albumid, imageid, callback) {
+  // Sanitize inputs.  Yay!
   albumid=sanitize(albumid);
   imageid=sanitize(imageid);
   module.exports.query("INSERT INTO albumContents (albumid, imageid, dateAdded) VALUES('" + albumid + "','" + imageid + "', UTC_TIMESTAMP);", function (success, error){
-    if (error)
+    if (error) {
       callback(null, error)
-      else
-        callback(success, null);
+    }
+    else {
+      callback(success, null);
+    }
   });
 });
 

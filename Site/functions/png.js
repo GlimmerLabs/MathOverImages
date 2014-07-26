@@ -29,7 +29,7 @@ module.exports.build = function(req, res, database, info) {
   database.imageInfo(req.params.imageid, function(image, error) {
     // Make sure we succeeded
     if (error) {
-      res.end(error)
+      res.end (JSON.stringify(error));
       return;
     }
 
