@@ -14,7 +14,7 @@ module.exports.changeEmail= (function(req, res, database){
 	    if (error)
 	    {
 		console.log(error);
-		res.end ("error"); // Error Landing page
+		res.end (JSON.stringify(error)); // Error Landing page
 	    }
 	    else
 	    {
@@ -33,7 +33,7 @@ module.exports.changeUsername= (function(req, res, database){
 	    if (error)
 	    {
 		console.log(error);
-		res.end ("error"); // Error Landing page
+		res.end (JSON.stringify(error)); // Error Landing page
 	    }
 	    else
 	    {
@@ -53,7 +53,7 @@ module.exports.changePassword= (function(req, res, database){
 	    if (error)
 	    {
 		console.log(error);
-		res.end ("error"); // Error Landing page
+		res.end (JSON.stringify(error)); // Error Landing page
 	    }
 	    else
 	    {
