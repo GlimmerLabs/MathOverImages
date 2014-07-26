@@ -95,9 +95,11 @@ while ($line = <$in>) {
       $data = "";
     } # if
     chomp($line);
+    $line =~ s/^  //;
     $entry = $line;
   } # if the line represents a new entry
   else {
+    $line =~ s/^  //;
     $data .= $line;
   } # 
 } # while
@@ -111,8 +113,8 @@ if (!$stdin) {
 # Print the template
 open($tp, "<", "$template");
 while ($line = <$tp>) {
-  $line =~ s/<:([^:]*):>/field($1,"","")/ge;
-  $line =~ s/<:([^:]*):([^:]*):([^:]*):>/field($1,$2,$3)/ge;
+  $line =~ s/(.*)<:([^:]*):>(.*)/field($2,"","",$1,$3)/ge;
+  $line =~ s/(.*)<:([^:]*):([^:]*):([^:]*):>(.*)/field($2,$3,$4,$1,$5)/ge;
   print $out $line;
 } # while
 
@@ -124,13 +126,22 @@ if ($outfile) {
 # | Helpers |
 # +---------+
 
+# field(name,pre,post,front,back)
 sub field($$$) {
-  my $name = shift;
-  my $pre = shift;
-  my $post = shift;
+  my ($name,$pre,$post,$front,$back) = @_;
   my $val = $entries{$name};
+
+  if ($back !~ m/^[ \n\t]*$/) {
+    $val =~ s/\n//m;
+  } 
+  elsif ($front =~ m/^[ \t]*$/) {
+    $val =~ s/^/$front/gm;
+    $front = "";
+    $back = "";
+  }
+
   if ($val) {
-    return "$pre$val$post";
+    return "$front$pre$val$post$back";
   }
   else {
     return "";
