@@ -19,7 +19,12 @@ if (!MIST.ui) { MIST.ui = {}; }
  * simple validation strategy.
  */
 var builtinsPattern = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,\-]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:m.x)|(?:m.y)|(?:mistif)/g
-
+/**
+ * Adding backwards compatibilty for request animation frame.
+ */
+window.requestAnimationFrame = requestAnimationFrame || mozRequestAnimationFrame || webkitRequestAnimationFrame || msRequestAnimationFrame || function(fun) {
+  setTimeout(fun, 1000 / 30);
+}
 /**
  * The number of animators we've created.
  */
