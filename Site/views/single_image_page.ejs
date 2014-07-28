@@ -73,7 +73,7 @@ function setProfileImage() {
           <li>
             <form id='profile-image' method='POST'>
               <input type='hidden' value= <%= image.imageid %> name='profile' />
-              <a class="menuitem" href='javascript:void(0);' onclick="setProfileImage()">use as profile image</a>
+              <a class="menuitem" href='javascript:void(0);' onclick="setProfileImage()">set profile image</a>
             </form>
           </li>
           <!-- Option: Delete image -->
@@ -81,7 +81,7 @@ function setProfileImage() {
             <form id='delete-image' method='POST'>
               <input type='hidden' value= <%= image.imageid %> name='delete' />
               <a class="menuitem" href='javascript:void(0);' onclick="deleteImage()">
-                delete this image
+                delete image
               </a>
             </form>
           </li>
