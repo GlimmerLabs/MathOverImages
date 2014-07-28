@@ -4,7 +4,7 @@
 module.exports.buildPage = function(req, res, database) {
 	database.getIDforUsername(req.params.username, function(userid, error){
 	    if (error)
-		res.end (error); // Error Landing page
+		res.end (JSON.stringify(error)); // Error Landing page
 	    else
 		database.getUser(userid, function(userObject, error){
 		    res.render('../public/views/profile.jade',{

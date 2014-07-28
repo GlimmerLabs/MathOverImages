@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Extract the process id
+pid=`ps -C node -o user,pid | grep "^$USER" | sed -e 's/^[^ ]*[ \t]//'`
+
+# Kill it
+if [ -z $pid ]; then
+  echo "Server is not currently running.";
+else
+  echo "Killing server at $pid";
+  kill $pid;
+fi
+
+# And start again
+echo "Switching to the Site directory."
+pushd Site
+echo "Starting server."
+npm start
+echo "Returning to top-level directory."
+popd

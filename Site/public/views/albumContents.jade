@@ -16,16 +16,16 @@ block stylesheets
 
 block content
   div(id='main')
-    div(id='top')
-      div(id='pageTitle')
-          h1= albumOwner
-          if (albumOwner==albumTitle.username)
-            h2= albumTitle.name
-      div(id='subviews')
-        a(href='/user/'+ albumOwner class='subview') profile
-        a(href='/badges' class='subview') badges
-        a(href='/user/'+ albumOwner +'/albums' class='subview' id= 'selected') albums
-        a(href='/challenges' class='subview') challenges
+    div(id='subviews')
+      a(href='/user/'+ albumOwner class='subview') profile
+      a(href='/badges' class='subview') badges
+      a(href='/user/'+ albumOwner +'/albums' class='subview' id= 'selected') albums
+      a(href='/user/'+ albumOwner +'/images' class='subview') images
+    div(id='pageTitle')
+      h1= albumOwner
+    if (albumOwner==albumTitle.username)
+      div#subTitle
+        h2= albumTitle.name
     if loggedIn && (albumTitle.userid === user.userid) && (albumOwner==albumTitle.username)
       form(method='POST')
         input(type='hidden' value= albumTitle.albumid name='deleteWholeAlbum')
@@ -41,6 +41,9 @@ block content
                     figcaption(class='center')= albumContents[i].title
                     canvas(id='canvas'+i width='180' height='180')
                     input(type='hidden' id='code'+i value=albumContents[i].code)
+                  if(albumContents[i].code.indexOf("t.") > -1 || albumContents[i].code.indexOf("m.") > -1)
+                    .run
+                      img(src='/icons/time.png' width ='20px' height='20 px')
                   a(href='/user/' + albumContents[i].username): figcaption(class='right')= albumContents[i].username
                   if(albumContents[i].liked)
                     figcaption(class='left starred')= "★" + albumContents[i].rating
@@ -52,4 +55,4 @@ block content
                         br
                         br
                         br
-                        input(type='submit' class='delete' value='delete from album'  onclick="return confirm('Are you sure you want to delete this image from this album?');")
+                        input(type='image' src= '/icons/deleteFromAlbum.png' class='deleteImage' onclick="return confirm('Are you sure you want to delete this image from this album?');")

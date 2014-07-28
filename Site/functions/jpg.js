@@ -5,7 +5,7 @@
 module.exports.buildPage = function(req, res, database, info) {
   database.imageInfo(req.params.imageid, function(image, error){
   if (error)
-    res.end(error)
+    res.end (JSON.stringify(error));
   else
     res.render('jpg.ejs', {
       width: info.width | 200 ,

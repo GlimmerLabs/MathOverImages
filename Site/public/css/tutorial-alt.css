@@ -1,4 +1,8 @@
 @import url("/css/styles.css");
+/**
+ * tutorial-alt.css
+ *   The primary tutorial style.
+ */
 
 body {
 }
@@ -11,6 +15,7 @@ h2 {
 }
 
 #narrative {
+  margin-left: 5%;
   width: 35%;
 }
 
@@ -83,6 +88,8 @@ div.tutorial {
 div.links {
   display: flex;
   justify-content: space-between;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 #createLink {

@@ -1,27 +1,50 @@
+/**
+ * image.css
+ *   CSS for the single image page.
+ */
+ 
 @import url("/css/styles.css");
-#main {
- text-align: center;
+
+/* +------------------------+------------------------------------------
+ * | Override Standard Tags |
+ * +------------------------+
+ */
+
+/*
+ * We use div#main for the main body of every page.  We want this
+ * page formatted slightly differently, so we override that
+ * setting.
+ */
+div#main {
+  text-align: center;
 }
 
+/*
+ * Various settings for the headings.
+ */
 h1 {
- color: #4A4A4A;
- font-size: 2em;
- margin: 0 auto;
- font-weight: normal;
+  color: #4A4A4A;
+  font-size: 2em;
+  margin: 0 auto;
+  font-weight: normal;
 }
 
 h2 {
- color: #979797;
- font-size: 1em;
- margin: 0 auto;
- padding: 0;
- font-weight: normal;
+  color: #979797;
+  font-size: 1em;
+  margin: 0 auto;
+  padding: 0;
+  font-weight: normal;
 }
 
-figure{
- margin: 5px auto;
- width: 400px;
+/* +---------------+---------------------------------------------------
+ * | Miscellaneous |
+ * +---------------+
+ */
 
+figure {
+  margin: 5px auto;
+  width: 400px;
 }
 
 figure img {
@@ -29,12 +52,20 @@ figure img {
   width: 400px;
 }
 
-p.code{
-margin-top: 10px;
-margin-bottom: 20px;
+/**
+ * We have paragraphs of code.  Right now, all we control
+ * are margins.
+ */
+p.code {
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
- .starred, .unstarred{
+/**
+ * ???
+ */
+.starred, 
+.unstarred {
   display: inline-block;
   cursor: pointer;
   font-size: 1.2em;
@@ -49,6 +80,11 @@ margin-bottom: 20px;
   cursor: pointer;
 }
 
+/* +----------+--------------------------------------------------------
+ * | Comments |
+ * +----------+
+ */
+ 
 table#comments {
   margin: 0 auto;
   padding-top: 10px;
@@ -169,11 +205,10 @@ input[type='submit'].select:hover{
     color: #FFF;
 }
 
-table.comments {
-}
-
-tbody {
-}
+/* +-------------------------+-----------------------------------------
+ * | Format Comments Section |
+ * +-------------------------+
+ */
 
 tr.comment {
   valign: top;
@@ -214,39 +249,75 @@ th.user a {
   text-decoration: none;
 }
 
-#add ul {
+/* +-------+-----------------------------------------------------------
+ * | Menus |
+ * +-------+
+ *
+ * Dropdown menu based on 
+ *   <http://cssdeck.com/labs/another-simple-css3-dropdown-menu >
+ */
+
+/* The menu */
+div#menu ul {
   text-align: left;
   display: inline;
   margin: 0;
-  padding: 15px 4px 17px 0;
-  list-style: none;
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  padding: 0;
 }
-#add ul li {
+
+/* One menu item. */
+div#menu ul li,
+div#menu ul li ul li {
   display: inline-block;
-  margin-right: -4px;
-  position: relative;
-  width: 200px;
-  padding: 15px 20px;
-  background: #fff;
+  clear: left;
+  position: relative; 
+  width: 105px;
+  height: 17px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid grey;
   cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  padding: 1px;
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   -ms-transition: all 0.2s;
   -o-transition: all 0.2s;
   transition: all 0.2s;
-  color: #555;
+  color: #555555;
+  background: #ffffff;
 }
-#add ul li:hover {
-  background: #555;
-  color: #fff;
+
+/* by-pass presets on 'a' elements */
+div#menu .menuitem {
+  color: #555555;
 }
-#add ul li ul {
+
+/* When you hover over the item, it inverts. */
+div#menu ul li:hover,
+div#menu ul li ul li:hover 
+div#menu ul li:hover a,
+div#menu ul li ul li:hover a {
+  color: #ffffff;
+  background: #555555;
+}
+div#menu li:hover a.menuitem {
+  color: #ffffff;
+}
+
+/* When hovering over an item with a submenu, show it */
+div#menu ul li:hover ul {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* A submenu */
+div#menu ul li ul {
   padding: 0;
   position: absolute;
-  top: 48px;
+  /* top: 48px; */
   left: 0;
   width: 150px;
   -webkit-box-shadow: none;
@@ -255,12 +326,14 @@ th.user a {
   display: none;
   opacity: 0;
   visibility: hidden;
-  -webkit-transiton: opacity 0.2s;
+  -webkit-transition: opacity 0.2s;
   -moz-transition: opacity 0.2s;
   -ms-transition: opacity 0.2s;
   -o-transition: opacity 0.2s;
   -transition: opacity 0.2s;
 }
+
+/* An item in a submenu */
 #add ul li ul li { 
   background: #555; 
   display: block; 
@@ -268,11 +341,8 @@ th.user a {
   text-shadow: 0 -1px 0 #000;
 }
 #add ul li ul li:hover { background: #666; }
-#add ul li:hover ul {
-  display: block;
-  opacity: 1;
-  visibility: visible;
-}
+
+/* ------------------------------------------------------------------- */
 
 #image-sharing {
   margin: 0 auto; 
@@ -317,10 +387,10 @@ margin-left: 1150px;
 }
 
 #image-controls{
-padding-top:5px;
-padding-bottom:10px;
-font-size: 13px;
-color: #777777;
+  padding-top:5px;
+  padding-bottom:5px;
+  font-size: 13px;
+  color: #777777;
 }
 
 input[type=range] {
@@ -342,8 +412,31 @@ input[type=range]::-webkit-slider-thumb {
 display:flex;
 }
 
+/**
+ * Our pretty-printed code.
+ */
+p.pretty {
+  font-size: 1.5em;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: block;
+  text-align: left;
+  white-space: pre;
+  font-family: Courier New, Courier, monospace;
+  word-wrap:break-word;
+  border: 1px solid grey;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+textarea.pretty {
+  readonly;
+  font-family: Courier New, Courier, monospace;
+  font-size: 2em;
+}
+
 /* This button was generated using CSSButtonGenerator.com */
 
-/*dropdown menu based on http://cssdeck.com/labs/another-simple-css3-dropdown-menu */
 
 
