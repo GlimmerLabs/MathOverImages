@@ -33,11 +33,13 @@ block content
          ='tutorials'
       a(href='/gallery' id='gallery')
          ='gallery'
+    p(class='info')
+      | Images with   
+      img(src='/icons/time.png' width ='25 px' height='25 px')
+      |    will animate when you hover over them
+    p(class='warning').
+      WARNING: Some of the images rendered on this site may feature flashing animations and patterns. For those with a history of epilepsy, viewer discretion is advised.
     div(id='galleryImages')
-      p(class='info')
-        | Images with   
-        img(src='/icons/time.png' width ='25 px' height='25 px')
-        |    will animate when you hover over them
       - for (var i=0; i < images.length; i++)
         figure
           a(href='/image/' + images[i].imageid)
@@ -46,6 +48,4 @@ block content
           if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1)
               img(src='/icons/time.png' width ='20 px' height='20 px')
           figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
-    div(id='epilepticWarning')
-      p(class='warning').
-        WARNING: Some of the images rendered on this site may feature flashing animations and patterns. For those with a history of epilepsy, viewer discretion is advised.
+
