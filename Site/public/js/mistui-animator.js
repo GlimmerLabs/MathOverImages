@@ -18,7 +18,7 @@ if (!MIST.ui) { MIST.ui = {}; }
  * The pattern to identify builtins (or lack thereof).  Used for the
  * simple validation strategy.
  */
-var builtinsPattern = /(?:abs)|(?:avg)|(?:cos)|(?:mult)|(?:rgb)|(?:sign)|(?:neg)|(?:signz)|(?:sin)|(?:square)|(?:sum)|(?:wsum)|(?:null)|[0-9xy().,\-]|(?:t.s)|(?:t.m)|(?:t.h)|(?:t.d)|(?:m.x)|(?:m.y)|(?:mistif)/g
+var builtinsPattern = /(?:abs|avg|cos|mult|rgb|sign|neg|signz|sin|square|sum|wsum|null|mistif|t.s|t.m|t.h|t.d|m.x|m.y)|[0-9xy().,\-]/g
 /**
  * Adding backwards compatibilty for request animation frame.
  */
