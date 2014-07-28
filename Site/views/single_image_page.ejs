@@ -4,20 +4,24 @@
 <% var meta= '<meta property="og:image" content=' + jpgURL + '/>' %>
 <% var js= '<script type="text/javascript" src="/js/imagepage.js"></script>' %>
 <% include head.ejs %>
-  <% if (user) { %>
-    <% if (image.userid === user.userid) { %>
-     <div id='imageSettings'>
-      <form method='POST'>
-        <input type='hidden' value= <%= image.imageid %> name='profile' />
-        <input type='submit' class='profile' value='set as featured image' onclick="return confirm('Are you sure you want to change your featured image?');">
-     </form>
-      <form method='POST'>
-        <input type='hidden' value= <%= image.imageid %> name='delete' />
-        <input type='submit' class='delete' value='delete this image' onclick="return confirm('Are you sure you want to delete this image forever?');">
-      </form>
-     </div>
-    <% } // if it's the user's image%>
-  <% } // if it's the user's image%>
+<script>
+function deleteImage() {
+  if (! confirm("Are you sure you what to delete this image forever?")) {
+    return;
+  }
+  var form = document.getElementById('delete-image');
+  form.submit();
+} // deleteImage
+function setProfileImage() {
+  if (! confirm("Are you sure that you want to change your profile image?")) {
+    return;
+  }
+  var form = document.getElementById('profile-image');
+  console.log("Setting profile image");
+  form.submit();
+} // setProfileImage
+</script>
+
 <h1><%- image.title %></h1>
 <h2><%- image.modifiedAt.toUTCString() %></h2>
 <figure>
@@ -42,6 +46,9 @@
   </div> <!-- image-controls -->
 </figure>
 <p id="code" class="code" style="display:none;"><%- image.code %></p>
+<div style="align:center; margin-left: auto; margin-right: auto; width:100%;">
+  <p id="pretty" class="pretty" style="display:none;"></p>
+</div>
 <table id="comments">
   <% for (var i = 0; i < comments.length; i++) { %>
     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
@@ -59,37 +66,64 @@
     </tr>
   <% } // for %>
   <% if (user) { %>
-    <% if(user.type == "A" || user.type == "M") { %>
-      <% if(image.featured == 1) { %>
-        <div id="add">
-          <ul>
-            <li id="featureImage" data-featureStatus="false" data-imageid='<%=image.imageid%>'>- unfeature image</li>
-          </ul>
-        </div>
-      <% } else { %>
-        <div id="add">
-          <ul>
-            <li id="featureImage" data-featureStatus="true" data-imageid='<%=image.imageid%>'>+ feature image</li>
-          </ul>
-        </div>
-      <% } %>
-    <% } // If user is moderator or admin %>
-    <div id="add">
+    <div id="menu">
       <ul>
-        <li>+ add to album
-          <ul>
-            <% for (var i=0; i < albums.length; i++) {%>
-              <li><%= albums[i].name %>
-                <form method='POST'>
-                  <input type='hidden' value= <%= albums[i].albumid %> name='add' />
-                  <input type='submit' value='select' class='select' />
-                </form>
-              </li>
-            <% } // for %>
-          </ul>
-        </li>
+        <% if (image.userid === user.userid) { %>
+          <!-- Option: make profile image -->
+          <li>
+            <form id='profile-image' method='POST'>
+              <input type='hidden' value= <%= image.imageid %> name='profile' />
+              <a class="menuitem" href='javascript:void(0);' onclick="setProfileImage()">set profile image</a>
+            </form>
+          </li>
+          <!-- Option: Delete image -->
+          <li>
+            <form id='delete-image' method='POST'>
+              <input type='hidden' value= <%= image.imageid %> name='delete' />
+              <a class="menuitem" href='javascript:void(0);' onclick="deleteImage()">
+                delete image
+              </a>
+            </form>
+          </li>
+        <% } // if it's the user's image %>
+        <!-- Option: Feature Image -->
+        <% if(user.type == "A" || user.type == "M") { %>
+          <% if(image.featured == 1) { %>
+            <li id="featureImage" data-featureStatus="false" data-imageid='<%=image.imageid%>'>unfeature image</li>
+          <% } else { %>
+            <li id="featureImage" data-featureStatus="true" data-imageid='<%=image.imageid%>'>feature image</li>
+          <% } %>
+        <% } // If user is moderator or admin %>
+        <!-- Option: Add to album -->
+        <% if (albums.length > 0) { %>
+          <li>add to album
+            <script>
+            function addToAlbum(albumid) {
+              var imageid = <%- image.imageid %>;
+              console.log("adding",imageid,"to album",albumid);
+              api("addToAlbum", {imageid:imageid, albumid:albumid}, function(success,error) {
+                if (error) {
+                  alert(error);
+                  return false;
+                }
+                return true;
+              });
+            } // addToAlbum(albumid)
+            </script>
+            <ul>
+              <% for (var i=0; i < albums.length; i++) { %>
+                <li>
+                  <a href=<%- '/user/' + user.username + '/albums/' + albums[i].albumid %>
+                     onClick='addToAlbum(<%- albums[i].albumid %>)'>
+                      <%= albums[i].name %>
+                    </a>
+                </li>
+              <% } // for %>
+            </ul>
+          </li>
+        <% } // if (albums.length > 0) %>
       </ul>
-    </div> <!-- add -->
+    </div> <!-- menu -->
 
     <tr id="leaveComment" class="comment">
       <th class="user">

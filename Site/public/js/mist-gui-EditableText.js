@@ -375,25 +375,25 @@ function readyEditing(stage)
         }
       }
       else if (map[68]) { // 68 is the d key
-        if (makingLine) {
-          currLine.destroy();
-          makingLine = false; 
-          lineLayer.draw();
-        }
         if (!deleteToolOn) {
-          deleteToolGroup.children[0].setAttr('shadowEnabled', true);
-          deleteToolOn = true;
-          disableTool(workToolGroup);
-          disableTool(lineToolGroup);
-          toolboxLayer.draw();
-        }
+          if (makingLine) {
+            removeLine(currLine);
+            makingLine = false; 
+            lineLayer.draw();
+          } // if making a line
+        deleteToolGroup.children[0].setAttr('shadowEnabled', true);
+        deleteToolOn = true;
+        disableTool(workToolGroup);
+        disableTool(lineToolGroup);
+        toolboxLayer.draw();
+  } // if the delete tool is not already on
       }
       else if (map[87]) { // 87 is the w key
         if (makingLine) {
-          currLine.destroy();
+          removeLine(currLine);
           makingLine = false;
           lineLayer.draw();
-        }
+        } // if making a line
         if (!workToolOn) {
           enableWorkTool();
         }

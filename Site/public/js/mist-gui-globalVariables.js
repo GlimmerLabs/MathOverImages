@@ -1,3 +1,9 @@
+/**
+ * mistgui-globals.js
+ *   Global variables for a MIST gui.  (Eventually, these should be fields
+ *   within the object/prototype.)
+ */
+ 
 var height = 2 * width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';

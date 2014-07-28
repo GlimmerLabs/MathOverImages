@@ -1,45 +1,99 @@
+/**
+ * styles.css
+ *   The primary MIST style sheet.
+ */
+
+/* +-------+-----------------------------------------------------------
+ * | Fonts |
+ * +-------+
+ */
+
+/**
+ * We like open sans as our font, and import info on it from Google.
+ */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800');
 
 
+/* Set the default font. */
 * {
- font-family: 'Open Sans', sans-serif; /* Set Default Font */
+ font-family: 'Open Sans', sans-serif; 
 }
 
-#main {
- margin:80px;
+/* +---------+---------------------------------------------------------
+ * | Headers |
+ * +---------+
+ */
+
+/**
+ * The main body of the page is offset 80 pixels from the top to allow 
+ * space for the annoying header.
+ */
+div#main {
+  margin-top: 80px;
+  clear: both;
 }
 
-/* Header */
+/**
+ * The header at the top of the page has to be offset -80px 
+ * to correspond to the margin-top in div#main.
+ */
 header {
- margin: -80px -10px;
- width: 101%;
- height: 60px;
- background-color: #4A4A4A;
- position:fixed;
- box-shadow: 0 2px 4px 0 #000;
- z-index : 1;
+  margin-top: -80px;
+  margin-left: -10px;
+  width: 101%;
+  height: 60px;
+  background-color: #4A4A4A;
+  position:fixed;
+  box-shadow: 0 2px 4px 0 #000;
+  z-index : 1;
+  vertical-align: top;
 }
 
-#headerLogo{
- float:left;
- width: 126px;
- margin: 0px 10px;
+/**
+ * The MIST Logo in the header.
+ */
+#headerLogo {
+  /* float:left; */
+  width: 126px;
+  margin: 0px 10px;
 }
 
 #headerLogo img{
- height:60px;
+  height:60px;
+}
+
+header {
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+header nav,
+header #search,
+header #headerLogo {
+  vertical-align: top;
+  display: inline-block;
+}
+
+header #search {
+  width: 150px;
+  display: inline-block;
 }
 
 header nav {
- height:60px;
- float:right;
+  width: calc(100% - 126px - 180px - 30px); /* width - img - search - extra*/
+  whitespace: nowrap;
+  text-align: right;
 }
 
 header ul {
- width: 100%;
- height: 33%;
- margin:20px 20px 20px 0px;
-
+  whitespace: nowrap;
+  width: 98%;
+  height: 33%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px;
 }
 
 header nav a {
@@ -52,23 +106,27 @@ header nav a:hover {
 }
 
 header nav li {
+ display: inline-block;
  padding: 0 10px;
  margin: 0;
- display: inline-block;
  color: #E1E1E1
-
 }
 
+/* Put lines between elements in the nav bar. */
 header nav li+li {
  border-left: 1px solid #9B9B9B;
-
 }
 
 header nav li:hover {
  color: #9B9B9B;
  cursor: pointer;
 }
-#rememberMeContainer:hover label { /* Make it so "Remember Me" li doesn't change when hovering on the right of the text*/
+
+/** 
+ * Make it so "Remember Me" li doesn't change when hovering on the 
+ * right of the text
+ */
+#rememberMeContainer:hover label { 
   color: #E1E1E1;
 }
 #rememberMe { /*Make it so "Remember Me" has the pointer cursor*/
@@ -78,19 +136,20 @@ header nav li:hover {
   color: #E1E1E1;
 }
 
+/* +-----------------+-------------------------------------------------
+ * | Search Features |
+ * +-----------------+
+ */
 
-/* End of Header */
 /*
-  Provide styling for searchbar in header
-*/
+ * Provide styling for searchbar in header
+ */
 #search {
-  display: inline-block;
-  padding: 1.1%;
-  padding-left: 3%;
+  padding-top: 15px;
+  padding-left: 30px;
 
 }
-.menu{
-
+.menu {
     position: relative;
     margin: 0px;
     list-style: none;
@@ -147,13 +206,15 @@ input[type='submit'].more:hover{
     text-shadow: 0 -1px 0 #000;
 }
 
-/*
-  End of searchbar styling
-*/
+/* +-------------+-----------------------------------------------------
+ * | Other Stuff |
+ * +-------------+
+ */
+
 #pageTitle {
  height:100px;
  min-width:400px;
- margin: 0px -90px;
+ margin: 0px;
  float: left;
  background-color: #EFDC5C;
 }
@@ -172,7 +233,7 @@ input[type='submit'].more:hover{
 #pageTitleGeneral {
  height:100px;
  min-width:400px;
- margin: 0px -90px;
+ margin: 0px;
  float: left;
  background-color: #3FAAA0;
 }
@@ -194,7 +255,8 @@ input[type='submit'].more:hover{
  text-align: left;
  clear: left;
  color: #979797;
- margin: -15px -60px;
+ margin-left: 20px;
+ margin-top: 20px;
  display: block;
 }
 
@@ -229,7 +291,7 @@ form input[type='submit'] {
 #subviews {
  float: right;
  width: 450px;
- margin: -10px 0px;
+ margin-top: -10px;
 }
 
 .subview {
