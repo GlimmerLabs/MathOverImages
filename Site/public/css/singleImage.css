@@ -271,8 +271,10 @@ div#menu ul li ul li {
   display: inline-block;
   clear: left;
   position: relative; 
-  width: 100px;
-  font-size: 9px;
+  width: 105px;
+  height: 17px;
+  font-size: 12px;
+  text-align: center;
   border: 1px solid grey;
   cursor: pointer;
   margin-left: 1px;
@@ -285,6 +287,11 @@ div#menu ul li ul li {
   transition: all 0.2s;
   color: #555555;
   background: #ffffff;
+}
+
+/* by-pass presets on 'a' elements */
+div#menu .menuitem {
+  color: #555555;
 }
 
 /* When you hover over the item, it inverts. */

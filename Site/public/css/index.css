@@ -1,3 +1,4 @@
+
 @import url("/css/styles.css");
 
 #featuredImage {
@@ -55,6 +56,7 @@
  /* margin: 0px; */
 }
 
+
 #galleryImages {
  width: 80%;
  margin-left: auto;
@@ -73,7 +75,6 @@
  margin-right: auto;
         margin-top: 8px;
 }
-
 #gallery h1 {
  font-size:1.5em;
  text-align:right;
@@ -89,7 +90,7 @@
  color: #666;
 }
 
-#galleryImages p.info{
+p.info{
   text-align: center;
 }
 
@@ -112,10 +113,9 @@
 }
 
 
-#epilepticWarning{
+p.warning{
   text-align: center;
   display: block;
   padding-top: 10px;
 
 }
-
