@@ -69,10 +69,11 @@ var workspaceToJSON = function() {
     var node = nodes[i];
     if (isValue(node)) {
       if(node.name() == 'constant') {
-        info.addVal(node.name() + node.attrs.renderFunction, node.x(), node.y());
+        nodeInfo[node._id] = 
+          info.addVal(node.name() + node.attrs.renderFunction, node.x(), node.y());
       } // if its a constant store its value in the name
       else {
-      nodeInfo[node._id] = 
+        nodeInfo[node._id] = 
           info.addVal(node.name(), node.x(), node.y());
       }
     } // if it's a value
@@ -192,7 +193,7 @@ var loadWorkspace = function(wsname) {
     }
     else {
       var json = request.responseText.replace(/\&quot;/g, '"');
-      console.log(json);
+      // console.log(json);
       resetWorkspace();
       jsonToWorkspace(json);
       currentWorkspace = wsname;
@@ -264,7 +265,7 @@ var addLoadWorkspaceDialog = function() {
   // dialog.innerHTML='<form><fieldset><label for="workspace-name">Workspace</label><select id="workspace-name"></select></fieldset></form>';
   dialog.innerHTML='<p>Select the workspace to load.</p><form><select id="workspace-name"></select></form>';
   document.body.appendChild(dialog);
-  console.log(dialog);
+  // console.log(dialog);
 
   // Turn it into a JQuery dialog
   $("#load-workspace").dialog({
@@ -377,14 +378,14 @@ $(window).on('beforeunload', function() {
     var x = storeWS();
     return x;
 });
-function storeWS(){
+function storeWS() {
   code = workspaceToJSON();
   var data = "action=storews&code="+code;
   jQuery.ajax("/api", {
     data: data,
     type: 'POST'
-    });
-}
+  });
+} // storeWS
 
 /**
  * function to load a workspace from the req.session object. This queries
