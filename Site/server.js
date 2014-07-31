@@ -22,9 +22,6 @@ var http = require('http');
 var app = express();
 
 var mysql = require('mysql');
-var passport = require('passport');
-var flash = require('connect-flash');
-
 var auth = require('./functions/auth.js');
 var ports = require('./functions/ports.js');
 
@@ -36,7 +33,6 @@ var database = require('./functions/database.js');
 
 
 
-// require(./functions/passport')(passport); // pass passport for configuration
 app.use(compress());
 app.use(morgan('dev')); //log every request to the console
 app.use(cookieParser(auth["session-secret"])); // read cookie information (for auth)
@@ -47,9 +43,6 @@ app.use(expressSession({secret: auth["session-secret"],
                  saveUninitialized: true,
                  resave: true}));
 
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
 app.set('view engine', 'ejs');
 
 //==================== routes ====================
