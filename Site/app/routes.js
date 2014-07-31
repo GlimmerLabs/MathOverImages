@@ -66,7 +66,7 @@ function sendFileWithSuffix(res,path,suffix) {
 // | Exports |
 // +---------+
 
-module.exports = function(app,passport,database) {
+module.exports = function(app,database) {
   // --------------------------------------------------
   // Path: all
   //   EVERY PAGE

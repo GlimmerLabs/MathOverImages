@@ -47,7 +47,7 @@ app.set('view engine', 'ejs');
 
 //==================== routes ====================
 
-require('./app/routes.js')(app,passport,database);
+require('./app/routes.js')(app,database);
 
 //==================== launch ====================
 
