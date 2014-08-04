@@ -262,7 +262,28 @@ handlers.getws = function(info, req, res) {
     fail(res, "Insufficient info for getting the workspace");
   }
 } // handlers.getws
-
+/**
+ * List challenges of specified types
+ *   info.title: The title of the image
+ *   info.difficulty: The difficulty rating for the challenges select
+ *   info.color: The color for the challenges to select
+ *   info.animation: The animation type of the challenges to select
+ */
+handlers.listchallenges = function(info, req, res) {
+  var level = database.sanitize(info.level || "Beginning");
+  var color = database.sanitize(info.color || "Greyscale");
+  var animation = database.sanitize(info.animation || "Static");
+  var category = level + ", " + color + ", " + animation;
+  var query = "SELECT challenges.id, challenges.name, challenges.title, challenges.code FROM challengecategories,challenges WHERE challengecategories.description='" + category + "' and challengecategories.id = challenges.categoryid ORDER BY challenges.position;";
+  database.query(query, function(rows, error) {
+    if(error) {
+      res.send(error);
+    }
+    else {
+      res.send(rows);
+    }
+  });
+}
 /**
 * List the workspaces.
 *   action: listws
