@@ -70,7 +70,7 @@ module.exports.buildPage =  function(req, res, database) {
             else {
               var userid = (req.session.user) ? req.session.user.userid : null;
               setFlags(comment, userid, database, function(comments) {
-                res.render('single_image_page.ejs', {
+                res.render('single-image-page.ejs', {
                   comments: comments,
                   user: req.session.user,
                   image: image,
