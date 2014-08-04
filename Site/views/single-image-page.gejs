@@ -1,0 +1,144 @@
+title
+ <%- image.title + " by " + image.username + " on MIST" %>
+
+metas
+ <% var jpgURL= "\"http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=800&height=800\"" %>
+ <meta property="og:image" content=' + jpgURL + '/>
+css
+ <link rel="stylesheet" href="/css/singleImage.css">
+
+js
+ <script type="text/javascript" src="/js/imagepage.js"></script>
+ <script>
+ function deleteImage() {
+   if (! confirm("Are you sure you what to delete this image forever?")) {
+     return;
+   }
+   var form = document.getElementById('delete-image');
+   form.submit();
+ } // deleteImage
+ function setProfileImage() {
+   if (! confirm("Are you sure that you want to change your profile image?")) {
+     return;
+   }
+   var form = document.getElementById('profile-image');
+   console.log("Setting profile image");
+   form.submit();
+ } // setProfileImage
+ </script>
+
+head1
+ <%- image.title %>
+head2
+ <%- image.modifiedAt.toUTCString() %>
+
+body
+ <figure>
+   <canvas id="canvas" width="400" height="400"></canvas>
+   <div id="image-sharing" data-imageid=<%= image.imageid %>>
+     <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
+     <div id="image-fb-share" data-href="<%= 'http://glimmer.grinnell.edu/image/' + image.imageid %>" data-type="button" class="fb-share-button"></div>
+     <a id="image-tweet" href="https://twitter.com/share" data-lang="en" data-text= '<%- "Check out " + ((user&&user.userid===image.userid) ? "my image, \"" + image.title + "\"" : "\"" + image.title + "\" by " + image.username) + " on @MISTbyGlimmer"%>' data-url=<%- "\"http://glimmer.grinnell.edu/image/" + image.imageid + "\"" %> class="twitter-share-button">
+       <Tweet>      </Tweet>
+     </a>
+   <a href="<%='/user/' + image.username %>">
+     <figcaption class="right"><%- image.username %></figcaption>
+   </a>
+   </div> <!-- image-sharing -->
+   <div id="image-controls">
+     <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
+     <button id="animator" class="animations">stop</button>
+   <% } %>
+     <button id="jpeg" class="animations">jpeg</button>
+     <button id="showcode" class="animations">code</button>
+      Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1"> 400px
+   </div> <!-- image-controls -->
+ </figure>
+ <p id="code" class="code" style="display:none;"><%- image.code %></p>
+ <div style="align:center; margin-left: auto; margin-right: auto; width:100%;">
+   <p id="pretty" class="pretty" style="display:none;"></p>
+ </div>
+ <table id="comments">
+   <% for (var i = 0; i < comments.length; i++) { %>
+     <tr class="comment" id=<%- "'comment" + comments[i].commentId + "'" %>>
+       <th class="user">
+         <a href='<%= "/user/" + comments[i].username %>'><%- comments[i].username %></a>
+       </th>
+       <td class="comment"><%- comments[i].comment %></td>
+       <td class="date"><script>document.write(describeDate("<%= comments[i].postedAt %>"))</script></td>
+       <% if(user) { %>
+         <td class='flagComment <%= (comments[i].flagged) ? 'flaggedComment' : ''%>'>&#9873</td>
+         <% if(user.type == "A" || user.type == "M" || user.userid == comments[i].userid || user.userid == image.userid) { %>
+           <td class='deleteComment'>X</td>
+         <% } %>
+       <% } %>
+     </tr>
+   <% } // for %>
+   <% if (user) { %>
+     <div id="menu">
+       <ul>
+         <% if (image.userid === user.userid) { %>
+           <!-- Option: make profile image -->
+           <li>
+             <form id='profile-image' method='POST'>
+               <input type='hidden' value= <%= image.imageid %> name='profile' />
+               <a class="menuitem" href='javascript:void(0);' onclick="setProfileImage()">set profile image</a>
+             </form>
+           </li>
+           <!-- Option: Delete image -->
+           <li>
+             <form id='delete-image' method='POST'>
+               <input type='hidden' value= <%= image.imageid %> name='delete' />
+               <a class="menuitem" href='javascript:void(0);' onclick="deleteImage()">
+                 delete image
+               </a>
+             </form>
+           </li>
+         <% } // if it's the user's image %>
+         <!-- Option: Feature Image -->
+         <% if(user.type == "A" || user.type == "M") { %>
+           <% if(image.featured == 1) { %>
+             <li id="featureImage" data-featureStatus="false" data-imageid='<%=image.imageid%>'>unfeature image</li>
+           <% } else { %>
+             <li id="featureImage" data-featureStatus="true" data-imageid='<%=image.imageid%>'>feature image</li>
+           <% } %>
+         <% } // If user is moderator or admin %>
+         <!-- Option: Add to album -->
+         <% if (albums.length > 0) { %>
+           <li>add to album
+             <script>
+             function addToAlbum(albumid) {
+               var imageid = <%- image.imageid %>;
+               console.log("adding",imageid,"to album",albumid);
+               api("addToAlbum", {imageid:imageid, albumid:albumid}, function(success,error) {
+                 if (error) {
+                   alert(error);
+                   return false;
+                 }
+                 return true;
+               });
+             } // addToAlbum(albumid)
+             </script>
+             <ul>
+               <% for (var i=0; i < albums.length; i++) { %>
+                 <li>
+                   <a href=<%- '/user/' + user.username + '/albums/' + albums[i].albumid %>
+                      onClick='addToAlbum(<%- albums[i].albumid %>)'>
+                       <%= albums[i].name %>
+                     </a>
+                 </li>
+               <% } // for %>
+             </ul>
+           </li>
+         <% } // if (albums.length > 0) %>
+       </ul>
+     </div> <!-- menu -->
+
+     <tr id="leaveComment" class="comment">
+       <th class="user">
+         <a href=<%="/user/" + user.username %>><%-user.username%></a>
+       </th>
+       <td class="comment"><form method="POST"><textarea name="newComment" required="required" placeholder="leave a comment"></textarea><input type="submit" value="submit" name="commentSubmit"></form></td>
+     </tr>
+   <% } %>
+ </table>
