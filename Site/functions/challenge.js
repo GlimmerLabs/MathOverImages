@@ -112,9 +112,9 @@ module.exports.create = function(req, res, database) {
 }; // create
 
 module.exports.gallery = function(req, res, database, info) {
-  var level = info.level ? info.level : "Beginning";
-  var color = info.color ? info.color : "Greyscale";
-  var animation = info.animation ? info.animation : "Static";
+  var level = database.sanitize(info.level || "Beginning");
+  var color = database.sanitize(info.color || "Greyscale");
+  var animation = database.sanitize(info.animation || "Static");
   var category = level + ", " + color + ", " + animation;
   var query = "SELECT challenges.id, challenges.name, challenges.title, challenges.code FROM challengecategories,challenges WHERE challengecategories.description='" + category + "' and challengecategories.id = challenges.categoryid ORDER BY challenges.position;";
   console.log(query);
