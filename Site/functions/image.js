@@ -56,7 +56,7 @@ module.exports.buildPage =  function(req, res, database) {
                 else {
                   var userid = (req.session.user) ? req.session.user.userid : null;
                   setFlags(comment, userid, database, function(comments) {
-                    res.render('single_image_page.ejs', {
+                    res.render('single-image-page.ejs', {
                       comments: comments,
                       user: req.session.user,
                       image: image,
@@ -86,7 +86,7 @@ module.exports.buildPage =  function(req, res, database) {
 
 module.exports.addtoAlbum = function(req, res, database) {
   database.addtoAlbum(req.body.add, req.params.imageid, function(success, error) {
-    if (!success) {              
+    if (!success) {
       utils.error(req,res,"Could not add to album",error.toString());
     } // if we failed
     else {
