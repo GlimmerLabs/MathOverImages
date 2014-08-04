@@ -1,0 +1,62 @@
+title
+ Create Challenge
+css
+ <link rel='stylesheet' href='/css/styles.css'>
+ <style class='text/css'>
+  form#create label {
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+   }
+  form#create input[type='submit'] {
+    margin-top: 5px;
+    margin-left: 0px;
+    width: auto;
+    font-size: 1em;
+  }
+  form#create input,
+  form#create select,
+  form#create textarea {
+    width: 5in;
+    margin-left: 20px;
+    display: block;
+  }
+ </style>
+head1
+ Create a Challenge
+body
+  <% if (user) {%>
+    <form id="create" method="post" action="/challenges/add">
+      <input type="hidden" value="<% user.userid %>">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name">
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title">
+      <label for="category">Category</label>
+      <!-- These shouldn't be hardcoded, but I'm lazy. -->
+      <select name="category" id="category">
+        <option value="2">Beginning, Greyscale, Static</option>
+        <option value="3">Intermediate, Greyscale, Static</option>
+        <option value="4">Advanced, Greyscale, Static</option>
+        <option value="5">Beginning, RGB, Static</option>
+        <option value="6">Intermediate, RGB, Static</option>
+        <option value="7">Advanced, RGB, Static</option>
+        <option value="8">Beginning, Greyscale, Animated</option>
+        <option value="9">Intermediate, Greyscale, Animated</option>
+        <option value="10">Advanced, Greyscale, Animated</option>
+        <option value="11">Beginning, RGB, Animated</option>
+        <option value="12">Intermediate, RGB, Animated</option>
+        <option value="13">Advanced, RGB, Animated</option>
+      </select>
+      <label for="position">Position (Numeric)</label>
+      <input type="text" name="position" id="position">
+      <label for="description">Description</label>
+      <textarea name="description" id="description" rows=6></textarea>
+      <label for="code">Code</label>
+      <textarea name="code" id="code" rows=6></textarea>
+      <input type="submit">
+    </form>
+  <% } %>
+  <% if (!user) { %>
+    <p>You must be logged in to to create a challenge.</p>
+  <% } %>
