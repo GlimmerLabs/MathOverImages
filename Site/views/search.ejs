@@ -34,36 +34,32 @@
 
  <body>
   <header>
-   <div id="headerLogo">
-    <a href="/"><img src="/logos/header.png"></a>
-   </div>
-   <form id='search' action='/search'>
-    <input type='search' name='searchQuery' id='searchBar'/>
-    <ul class='menu' id='searchResults'></ul>
-   </form>
-   <nav>
-    <ul>
-      <li><a href="/create">create</a></li>
-      <li><a href="/challenges">challenges</a></li>
-      <li><a href="/gallery">gallery</a></li>
-      <li><a href="/about">about</a></li>
-      <li><a href="/help">help</a></li>
-       <% if (user) { %>
-        <li><a href="/me"><%-user.username%></a></li>
-        <li><a href="/logout">log out</a></li>
-       <% } else { %>
-        <li id="slider">login/signup</li>
-     </span>
-     <form method="POST" action="/login" class="hidden">
-      <input type="text" placeholder="username" name="username" required="required">
-      <input type="password" placeholder="password" name="password" require="required">
-      <li id="login">login</li>
-      <li><a href="/signup">signup</a></li>
-      <li id="cancel">cancel</li>
-     </form>
-      <% } %>
-    </ul>
-   </nav>
+    <div id="headerLogo">
+      <a href="/"><img src="/logos/header.png"></a>
+    </div>
+    <form id="search" action="/search">
+      <input type="search" name="searchQuery" id="searchBar">
+      <input type="image" src="/icons/search.png" value="submit" width="20px" height="20px">
+      <ul id="searchResults" class="menu"></ul>
+    </form>
+    <nav>
+      <ul>
+        <span class="main">
+          <li><a href="/create">create</a></li>
+          <li><a href="/challenges">challenges</a></li>
+          <li><a href="/gallery">gallery</a></li>
+          <li><a href="/about">about</a></li>
+          <li><a href="/help">help</a></li>
+          <li id="slider">login/signup</li>
+        </span>
+        <form method="POST" action="/login" class="hidden" style="display: none; opacity: 0;"><input type="text" placeholder="username" name="username" required="required"><input type="password" placeholder="password" name="password" require="required">
+          <li id="rememberMeContainer"><label id="rememberMe">Remember Me<input type="checkbox" name="stayLoggedIn"></label></li>
+          <li id="login">login</li>
+          <li><a href="/signup">signup</a></li>
+          <li id="cancel">cancel</li>
+        </form>
+      </ul>
+    </nav>
   </header>
   <div id="main">
 <div id="pageTitleGeneral"><h1>     MIST Search
