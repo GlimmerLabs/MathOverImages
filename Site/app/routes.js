@@ -84,8 +84,7 @@ module.exports = function(app,database) {
   // Path: /about
   //   About MIST
   app.get('/about', function(req,res) {
-    res.render('../public/views/about.jade', {
-      loggedIn: req.session.loggedIn,
+    res.render('about', {
       user: req.session.user
     });
   });
