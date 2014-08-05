@@ -1,0 +1,27 @@
+title
+ MIST by Glimmer
+
+js
+ <script type="text/javascript" src="/js/imagepage.js"></script>
+
+css
+ <link rel='stylesheet', href='/css/index.css'>
+ <link rel='stylesheet', href='/css/singleimage.css'>
+
+head1
+ 404
+head2
+ That page doesn't exist, but here's a random image!
+
+body
+ <h1><%- image.title %></h1>
+ <figure data-imageid=<%- image.imageid %>
+  <a href='image/<%- image.imageid%>'>
+   <canvas id='canvas' width='400' height='400'></canvas>
+  </a>
+  <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
+  <a href='/user/<%- image.username%>'>
+   <figcaption class='right'><%- image.username %></figcaption>
+  </a>
+  <p id='code' class='code'><%- image.code %></p>
+  </figure>
