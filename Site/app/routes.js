@@ -406,8 +406,7 @@ module.exports = function(app,database) {
   // Path: /privacypolicy
   //   Privacy Policy
   app.get('/privacypolicy', function(req,res) {
-    res.render('../public/views/privacyPolicy.jade', {
-      loggedIn: req.session.loggedIn,
+    res.render('privacy-policy', {
       user: req.session.user
     });
   });
