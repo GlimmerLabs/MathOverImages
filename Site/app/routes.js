@@ -571,8 +571,7 @@ module.exports = function(app,database) {
   // Path: /welcome
   //   About MIST
   app.get('/welcome', function(req,res) {
-    res.render('../public/views/welcome.jade', {
-      loggedIn: req.session.loggedIn,
+    res.render('welcome', {
       user: req.session.user
     });
   });
