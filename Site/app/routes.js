@@ -84,8 +84,7 @@ module.exports = function(app,database) {
   // Path: /about
   //   About MIST
   app.get('/about', function(req,res) {
-    res.render('../public/views/about.jade', {
-      loggedIn: req.session.loggedIn,
+    res.render('about', {
       user: req.session.user
     });
   });
@@ -550,8 +549,7 @@ module.exports = function(app,database) {
   });
 
   app.get('/badges', function(req,res) {
-    res.render("../public/views/soon.jade", {
-      loggedIn:req.session.loggedIn,
+    res.render("soon", {
       user: req.session.user
     });
   });
@@ -572,8 +570,7 @@ module.exports = function(app,database) {
   // Path: /welcome
   //   About MIST
   app.get('/welcome', function(req,res) {
-    res.render('../public/views/welcome.jade', {
-      loggedIn: req.session.loggedIn,
+    res.render('welcome', {
       user: req.session.user
     });
   });

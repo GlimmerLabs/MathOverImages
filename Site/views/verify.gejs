@@ -1,0 +1,12 @@
+title
+ Log In to MIST
+
+css
+ <link rel='stylesheet', href='/css/signup.css'>
+head1
+ email verification
+
+body
+ <div id='flashZone'>
+ <h1><%- flashMessage %>
+ </div>

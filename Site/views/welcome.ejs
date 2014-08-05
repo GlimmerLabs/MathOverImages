@@ -3,13 +3,12 @@
   edit it directly.
 
   The command used to generate this file was
-    gejs challenge-gallery.gejs -t mist.ejs -o challenge-gallery.ejs
+    gejs welcome.gejs -t mist.ejs -o welcome.ejs
  -->
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <title><% var title= level + ", " + color + ", " + animation + " challenges" %><%- title %>
-
+  <title> Welcome to MIST
 </title>
   <!-- Meta Information -->
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -18,7 +17,8 @@
 
   <!-- CSS -->
   <link rel='stylesheet' href='/css/styles.css'>
-  <link rel="stylesheet" href="/css/challenges.css">
+   <link rel='stylesheet', href='/css/styles.css'>
+  
 
 
   <!-- Scripts -->
@@ -31,10 +31,7 @@
   <script type="text/javascript" src="/js/analytics.js"></script>
   <script type="text/javascript" src="/js/sharing-tools.js"></script>
   
-  <script type="text/javascript" src="/js/gallery.js"></script>
-  <script src="/js/challengeAjax.js"></script>
   
-
  </head>
 
  <body>
@@ -67,53 +64,58 @@
     </nav>
   </header>
   <div id="main">
-<div id="pageTitleGeneral"><h1>    challenges
+<div id="pageTitleGeneral"><h1>     welcome
     
 </h1></div>
-<div id="subTitle"><h2>    <%- title %>
-    
-</h2></div>
-    <form id="categories" method="get" action="/challenges">
-      <select class="category" id="level" name="level">
-        <option value="Beginning" <%= (level=="Beginning") ? "selected" : ""%>>Beginning</option>
-        <option value="Intermediate" <%= (level=="Intermediate") ? "selected" : "" %>>Intermediate</option>
-        <option value="Advanced" <%= (level=="Advanced") ? "selected" : "" %>>Advanced</option>
-      </select>
-      <select class="category" id="color" name="color">
-        <option value="Greyscale" <%= (color=="Greyscale") ? "selected" : "" %>>Greyscale</option>
-        <option value="RGB" <%= (color=="RGB") ? "selected" : "" %>>RGB</option>
-      </select>
-      <select class="category" id="animation" name="animation">
-        <option value="Static" <%= (animation=="Static") ? "selected" : "" %>>Static</option>
-        <option value="Animated" <%= (animation=="Animated") ? "selected" : "" %>>Animated</option>
-      </select>
-      <input type="submit" value="View">
-    </form>
-    <!-- <a href='/challenges/create' id='createChallenge'>Make a challenge</a> -->
-    <% if (challenges.length == 0) { %>
+<div id="subTitle"><h2>    </h2></div>
+    <div style="clear:left;">
       <p>
-        Sorry, there are no <%- title %>.
+        Welcome to the MIST public beta release. We hope that you have fun experimenting with MIST. In case you haven't figured it out, MIST provides a new approach to making interesting abstract images. We hope that you will be inspired by the sample images already on the site and that you will be inspired to create your own.
       </p>
-    <% } else { %>
-      <div id="gallery">
-        <div id="images">
-          <ul class="rig columns-4">
-            <% for (var i = 0; i < challenges.length; i++) { %>
-              <% var c = challenges[i]; %>
-              <li>
-                <figure>
-                  <p class="challengeName"><%- c.title %></p>
-                  <a href="/challenges/view/<%- c.name %>">
-                    <canvas id="canvas<%-i%>" width="300px" height="300px"/>
-                  </a>
-                    <input id="code<%-i%>" type="hidden" value="<%-c.code%>"></input>
-                </figure>
-              </li>
-            <% } %>
+      <p>
+        Because MIST is in its early stages of development, you are likely to find some things missing on this Web site, and you'll ocassionally find that things don't work as they should. We'd appreciate it if you'd take the time to let us know about <a href="https://docs.google.com/forms/d/1vWQcSE6oU-yiM0CWk-q55aBj6Ec8zTRTepUlKdbPdog/viewform">features</a> that you would like to see and any <a href="https://docs.google.com/forms/d/1TrMg8uoYFa1JJYR4qRAxX396gGW46UazTnU_Z23eQm8/viewform">bugs</a> that you have encountered. If you spend more than a few minutes on the site, we'd also appreciate it if you'd fill out the <a href="https://docs.google.com/forms/d/1DUo5eEY-5w8amayx9DJMifr7BvgzRUp1yy4a9-r09-g/viewform">user feedback form</a>.
+      </p>
+      <p style='text-align: right;'>
+        -- The MIST Team
+      </p>
+      <h2>FAQ</h2>
+      <dl>
+        <dt>
+          What can I do on this site?
+        </dt>
+        <dd>
+          <ul>
+            <li>Browse interesting images in the galleries.</li>
+            <li>Create interesting images yourself using the gui. </li>
+            <li>Challenge yourself to figure out how to make the images that appear in the challenges section.</li>
           </ul>
-        </div> <!-- images -->
-      </div> <!-- gallery -->
-    <% } // if there are challenges %>
+        </dd>
+        <dt>
+          Where can I find the bug report form?
+        </dt>
+        <dd>
+          Here's <a href="https://docs.google.com/forms/d/1TrMg8uoYFa1JJYR4qRAxX396gGW46UazTnU_Z23eQm8/viewform">the bug report form</a>.
+        </dd>
+        <dt>
+          Where can I find the feature request form?
+        </dt>
+        <dd>
+          Here's <a href="https://docs.google.com/forms/d/1vWQcSE6oU-yiM0CWk-q55aBj6Ec8zTRTepUlKdbPdog/viewform">the feature request form</a> .
+        </dd>
+        <dt>
+          What should I do if I have other questions?
+        </dt>
+        <dd>
+          Send us mail at <a href='mailto:MIST@grinnell.edu'>MIST@grinnell.edu</a>!
+        </dd>
+        <dt>
+          Why are you using a self-signed certificate for https?
+        </dt>
+        <dd>
+          We haven't had time to get a reasonable certificate.
+        </dd>
+      </dl>
+    </div>
 
   </div>
   <footer>

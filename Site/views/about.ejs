@@ -3,13 +3,12 @@
   edit it directly.
 
   The command used to generate this file was
-    gejs challenge-gallery.gejs -t mist.ejs -o challenge-gallery.ejs
+    gejs about.gejs -t mist.ejs -o about.ejs
  -->
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <title><% var title= level + ", " + color + ", " + animation + " challenges" %><%- title %>
-
+  <title> About MIST
 </title>
   <!-- Meta Information -->
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -18,7 +17,9 @@
 
   <!-- CSS -->
   <link rel='stylesheet' href='/css/styles.css'>
-  <link rel="stylesheet" href="/css/challenges.css">
+   <link rel='stylesheet', href='/css/styles.css'>
+   <link rel='stylesheet', href='/css/about.css'>
+  
 
 
   <!-- Scripts -->
@@ -31,10 +32,7 @@
   <script type="text/javascript" src="/js/analytics.js"></script>
   <script type="text/javascript" src="/js/sharing-tools.js"></script>
   
-  <script type="text/javascript" src="/js/gallery.js"></script>
-  <script src="/js/challengeAjax.js"></script>
   
-
  </head>
 
  <body>
@@ -67,53 +65,37 @@
     </nav>
   </header>
   <div id="main">
-<div id="pageTitleGeneral"><h1>    challenges
+<div id="pageTitleGeneral"><h1>     about
     
 </h1></div>
-<div id="subTitle"><h2>    <%- title %>
-    
-</h2></div>
-    <form id="categories" method="get" action="/challenges">
-      <select class="category" id="level" name="level">
-        <option value="Beginning" <%= (level=="Beginning") ? "selected" : ""%>>Beginning</option>
-        <option value="Intermediate" <%= (level=="Intermediate") ? "selected" : "" %>>Intermediate</option>
-        <option value="Advanced" <%= (level=="Advanced") ? "selected" : "" %>>Advanced</option>
-      </select>
-      <select class="category" id="color" name="color">
-        <option value="Greyscale" <%= (color=="Greyscale") ? "selected" : "" %>>Greyscale</option>
-        <option value="RGB" <%= (color=="RGB") ? "selected" : "" %>>RGB</option>
-      </select>
-      <select class="category" id="animation" name="animation">
-        <option value="Static" <%= (animation=="Static") ? "selected" : "" %>>Static</option>
-        <option value="Animated" <%= (animation=="Animated") ? "selected" : "" %>>Animated</option>
-      </select>
-      <input type="submit" value="View">
-    </form>
-    <!-- <a href='/challenges/create' id='createChallenge'>Make a challenge</a> -->
-    <% if (challenges.length == 0) { %>
-      <p>
-        Sorry, there are no <%- title %>.
-      </p>
-    <% } else { %>
-      <div id="gallery">
-        <div id="images">
-          <ul class="rig columns-4">
-            <% for (var i = 0; i < challenges.length; i++) { %>
-              <% var c = challenges[i]; %>
-              <li>
-                <figure>
-                  <p class="challengeName"><%- c.title %></p>
-                  <a href="/challenges/view/<%- c.name %>">
-                    <canvas id="canvas<%-i%>" width="300px" height="300px"/>
-                  </a>
-                    <input id="code<%-i%>" type="hidden" value="<%-c.code%>"></input>
-                </figure>
-              </li>
-            <% } %>
-          </ul>
-        </div> <!-- images -->
-      </div> <!-- gallery -->
-    <% } // if there are challenges %>
+<div id="subTitle"><h2>    </h2></div>
+     <div id='galleryImages'>
+    <table>
+      <tr>
+        <td><img src='/samples/bw2.jpg' id='display'>
+        </td>
+        <td rowspan='3' id='text'>
+          <p style='text-align:center'>
+            <em>MIST is currently in public beta. Look at the <a href='/welcome'>welcome page</a> for more information.</em>
+          </p>
+          <p>
+            MIST (the Mathematical Image Synthesis Toolkit) isn’t just about the pretty pictures. By using the MIST application, it is our intention that users will explore functional problem solving and computational thinking by creating non-representational images. Computational thinking is an essential part of computer science, and MIST allows anyone to develop this skill. Anyone can use MIST because it does not require any prior experience in computer science. Users have the option of creating images from scratch, or completing tutorials and challenges that encourage problem solving and computational thinking through image building. MIST also encourages interactions between users. Create an account to see, share, and modify the work of other users. Our goal is to develop a community where users enjoy learning computational thinking by associating mathematical functions with interesting images.
+          </p>
+          <p>
+            If you have any questions or comments, contact us at <a href='mailto:MIST@grinnell.edu'>MIST@grinnell.edu</a>.
+          </p>
+      </tr>
+      <tr>
+        <td>
+          <img src='/samples/color2.jpg' id='display'>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img src='/samples/color2.jpg' id='display'>
+        </td>
+    </table>
+     </div>
 
   </div>
   <footer>
