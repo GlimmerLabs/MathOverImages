@@ -9,7 +9,7 @@ module.exports.buildPage = (function(req, res, database) {
       if(error)
         res.redirect("/");
       else {
-        res.render('../public/views/404.jade',{
+        res.render('404',{
           loggedIn: req.session.loggedIn,
           user: req.session.user,
           image: images[0],
