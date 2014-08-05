@@ -549,8 +549,7 @@ module.exports = function(app,database) {
   });
 
   app.get('/badges', function(req,res) {
-    res.render("../public/views/soon.jade", {
-      loggedIn:req.session.loggedIn,
+    res.render("soon", {
       user: req.session.user
     });
   });
