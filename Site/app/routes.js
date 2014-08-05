@@ -492,8 +492,10 @@ module.exports = function(app,database) {
   // Path: /signup
   //   Signup page
   app.get('/signup', function(req,res) {
-    res.render('../public/views/signup.jade', {
-      prior:{}
+    res.render('signup', {
+      error: null,
+      prior:{},
+      user: req.session.user
     });
   });
 

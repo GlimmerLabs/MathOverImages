@@ -13,14 +13,16 @@ module.exports.buildPage = (function(req, res, database) {
       if (success)
         res.redirect('/login');
       else
-        res.render ("../public/views/signup.jade", {
+        res.render ("signup", {
           error: error,
-          prior: req.body
+          prior: req.body,
+          user: req.session.user
         });
     });
   else
-    res.render ("../public/views/signup.jade", {
+    res.render ("signup", {
       error: error,
-      prior: req.body
+      prior: req.body,
+      user: req.session.user
     });
 });
