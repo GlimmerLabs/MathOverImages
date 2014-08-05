@@ -3,13 +3,12 @@
   edit it directly.
 
   The command used to generate this file was
-    gejs challenge-gallery.gejs -t mist.ejs -o challenge-gallery.ejs
+    gejs verify.gejs -t mist.ejs -o verify.ejs
  -->
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <title><% var title= level + ", " + color + ", " + animation + " challenges" %><%- title %>
-
+  <title> Log In to MIST
 </title>
   <!-- Meta Information -->
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -18,7 +17,7 @@
 
   <!-- CSS -->
   <link rel='stylesheet' href='/css/styles.css'>
-  <link rel="stylesheet" href="/css/challenges.css">
+   <link rel='stylesheet', href='/css/signup.css'>
 
 
   <!-- Scripts -->
@@ -31,10 +30,7 @@
   <script type="text/javascript" src="/js/analytics.js"></script>
   <script type="text/javascript" src="/js/sharing-tools.js"></script>
   
-  <script type="text/javascript" src="/js/gallery.js"></script>
-  <script src="/js/challengeAjax.js"></script>
   
-
  </head>
 
  <body>
@@ -67,53 +63,13 @@
     </nav>
   </header>
   <div id="main">
-<div id="pageTitleGeneral"><h1>    challenges
+<div id="pageTitleGeneral"><h1>     email verification
     
 </h1></div>
-<div id="subTitle"><h2>    <%- title %>
-    
-</h2></div>
-    <form id="categories" method="get" action="/challenges">
-      <select class="category" id="level" name="level">
-        <option value="Beginning" <%= (level=="Beginning") ? "selected" : ""%>>Beginning</option>
-        <option value="Intermediate" <%= (level=="Intermediate") ? "selected" : "" %>>Intermediate</option>
-        <option value="Advanced" <%= (level=="Advanced") ? "selected" : "" %>>Advanced</option>
-      </select>
-      <select class="category" id="color" name="color">
-        <option value="Greyscale" <%= (color=="Greyscale") ? "selected" : "" %>>Greyscale</option>
-        <option value="RGB" <%= (color=="RGB") ? "selected" : "" %>>RGB</option>
-      </select>
-      <select class="category" id="animation" name="animation">
-        <option value="Static" <%= (animation=="Static") ? "selected" : "" %>>Static</option>
-        <option value="Animated" <%= (animation=="Animated") ? "selected" : "" %>>Animated</option>
-      </select>
-      <input type="submit" value="View">
-    </form>
-    <!-- <a href='/challenges/create' id='createChallenge'>Make a challenge</a> -->
-    <% if (challenges.length == 0) { %>
-      <p>
-        Sorry, there are no <%- title %>.
-      </p>
-    <% } else { %>
-      <div id="gallery">
-        <div id="images">
-          <ul class="rig columns-4">
-            <% for (var i = 0; i < challenges.length; i++) { %>
-              <% var c = challenges[i]; %>
-              <li>
-                <figure>
-                  <p class="challengeName"><%- c.title %></p>
-                  <a href="/challenges/view/<%- c.name %>">
-                    <canvas id="canvas<%-i%>" width="300px" height="300px"/>
-                  </a>
-                    <input id="code<%-i%>" type="hidden" value="<%-c.code%>"></input>
-                </figure>
-              </li>
-            <% } %>
-          </ul>
-        </div> <!-- images -->
-      </div> <!-- gallery -->
-    <% } // if there are challenges %>
+<div id="subTitle"><h2>    </h2></div>
+     <div id='flashZone'>
+     <h1><%- flashMessage %>
+     </div>
 
   </div>
   <footer>

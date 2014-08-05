@@ -70,13 +70,15 @@ module.exports.validatePage = function (req, res, database) {
   database.verifyEmail(userid, token, function (success, error){
     if (error){
       console.log(error);
-      res.render("../public/views/verify.jade", {
-        flashMessage: "There was an error verifying your email."
+      res.render("verify", {
+        flashMessage: "There was an error verifying your email.",
+        user: req.session.user
       });
     }
     else if (success){
-      res.render("../public/views/verify.jade", {
-        flashMessage: "Email Confirmed! <a href='/login'>Log in</a> to begin!"
+      res.render("verify", {
+        flashMessage: "Email Confirmed! <a href='/login'>Log in</a> to begin!",
+        user:req.session.user
       });
     }
     else {
