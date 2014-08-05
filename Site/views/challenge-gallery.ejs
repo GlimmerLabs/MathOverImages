@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <title> <% var title= level + ", " + color + ", " + animation + " challenges" %> <%- title %>
+  <title><% var title= level + ", " + color + ", " + animation + " challenges" %><%- title %>
 
 </title>
   <!-- Meta Information -->
@@ -18,7 +18,7 @@
 
   <!-- CSS -->
   <link rel='stylesheet' href='/css/styles.css'>
-   <link rel="stylesheet" href="/css/challenges.css">
+  <link rel="stylesheet" href="/css/challenges.css">
 
 
   <!-- Scripts -->
@@ -31,7 +31,9 @@
   <script type="text/javascript" src="/js/analytics.js"></script>
   <script type="text/javascript" src="/js/sharing-tools.js"></script>
   
-   <script type="text/javascript" src="/js/gallery.js"></script>
+  <script type="text/javascript" src="/js/gallery.js"></script>
+  <script src="/js/challengeAjax.js"></script>
+  
 
  </head>
 
@@ -65,10 +67,10 @@
     </nav>
   </header>
   <div id="main">
-<div id="pageTitleGeneral"><h1>     challenges
+<div id="pageTitleGeneral"><h1>    challenges
     
 </h1></div>
-<div id="subTitle"><h2>     <%- title %>
+<div id="subTitle"><h2>    <%- title %>
     
 </h2></div>
     <form id="categories" method="get" action="/challenges">
