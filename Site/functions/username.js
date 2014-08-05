@@ -11,21 +11,17 @@ module.exports.buildPage = function(req, res, database) {
 	    database.getUser(userid, function(userObject, error){
 		if (userObject.featuredImage !== 0){
 		    database.imageInfo(userObject.featuredImage, function(featuredImage, error){
-			res.render('../public/views/profile.jade',{
-			    loggedIn: req.session.loggedIn,
+			res.render('profile',{
 			    user: req.session.user,
 			    viewing: userObject,
-			    image: featuredImage,
-			    viewingSelf: (req.session.user != null) && (req.session.user.username === req.params.username)
+			    image: featuredImage
 			});
 		    });
 		}
 		else
-		    res.render('../public/views/profile.jade', {
-			loggedIn: req.session.loggedIn,
+		    res.render('profile', {
 			user: req.session.user,
-			viewing: userObject,
-			viewingSelf: (req.session.user != null) && (req.session.user.username === req.params.username)
+			viewing: userObject
 
 		    });
 	    });
@@ -41,21 +37,17 @@ module.exports.goToMyProfile = function(req, res, database) {
 		database.getUser(userid, function(userObject, error) {
 		    if (userObject.featuredImage !== 0){
 			database.imageInfo(userObject.featuredImage, function(featuredImage, error){
-			    res.render('../public/views/profile.jade', {
-				loggedIn: req.session.loggedIn,
+			    res.render('profile', {
 				user: req.session.user,
 				viewing: userObject,
-				image: featuredImage,
-				viewingSelf: true
+				image: featuredImage
 			    });
 			});
 		    }
 		    else
-			res.render('../public/views/profile.jade', {
-			    loggedIn: req.session.loggedIn,
+			res.render('profile', {
 			    user: req.session.user,
-			    viewing: userObject,
-			    viewingSelf: true
+			    viewing: userObject
 			});
 		});
 	});

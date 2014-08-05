@@ -1,0 +1,72 @@
+title
+ <%- viewing.username + " on MIST" %>
+
+js
+ <script type='text/javascript' src='/js/profile.js'></script>
+ <script type='text/javascript' src='/js/imagepage.js'></script>
+
+css
+ <link rel='stylesheet', href='/css/profile.css'>
+
+head1
+ <%- viewing.username %>
+head2
+ <%- "member since " + viewing.signupTime.toLocaleDateString() %>
+
+body
+  <div id = 'subviews'>
+    <a href='/user/<%- viewing.username %>' class='subview' id='selected'>profile</a>
+    <a href='/badges' class='subview'>badges</a>
+    <a href='/user/<%- viewing.username %>/albums' class='subview'>albums</a>
+    <a href='/user/<%- viewing.username %>/images' class='subview'>images</a>
+  </div>
+  <div id= 'profile'>
+   <% if (image) { %>
+    <div id = 'featuredImage'>
+      <figure>
+        <p class='imageTitle'><%- image.title %></p>
+        <a href='/image/<%- image.imageid %>'>
+          <canvas id='canvas' width='400' height='400'></canvas>
+        </a>
+        <p id='code' class='code'><%- image.code %></p>
+      </figure>
+    </div>
+   <% } else { %>
+    <div id= 'featuredImage'>
+      <figure>
+        <p class='imageTitle'><%- image.title %></p>
+        <% if (user.userid === viewing.userid) {  %>
+          <a href='/user/<%- viewing.username %>/images'>
+            <canvas id='canvas' width='400' height='400'></canvas>
+          </a>
+          <script>
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext("2d");
+            context.fillStyle ='#C0C0C0'
+            context.font = '20pt Open Sans';
+            context.fillText('Choose a Picture', 100, 200);
+            context.fill();
+            canvas.style.border = '#C0C0C0 1px dashed';
+          </script>
+      </figure>
+        <% } else { %>
+          <canvas id='canvas' width='400' height='400'></canvas>
+          <script>
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext("2d");
+            canvas.style.border = '#C0C0C0 1px dashed';
+          </script>
+        <% } %>
+  <% } %>
+  <div id='bio'>
+    <p class=biography><%- viewing.about %></p>
+    <% if (viewing.userid === user.userid) { %>
+      <input type='image' id='edit-bio' src='/icons/edit_button.png' value='submit'>
+      <form method='POST' id='bio-form'>
+        <textarea name='aboutSection' cols='40' rows='5')><%- viewing.about %></textarea>
+        <br>
+        <input type='submit' value='Update Bio' id='update' name='aboutSubmit'>
+      </form>
+      <p class='right'><a href='/accountSettings' class='settings'>account settings</a></p>
+    <% } %>
+  </div>
