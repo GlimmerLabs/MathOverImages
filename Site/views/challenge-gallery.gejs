@@ -1,16 +1,18 @@
 title
- <% var title= level + ", " + color + ", " + animation + " challenges" %>
- <%- title %>
+  <% var title= level + ", " + color + ", " + animation + " challenges" %>
+  <%- title %>
 
 css
- <link rel="stylesheet" href="/css/challenges.css">
+  <link rel="stylesheet" href="/css/challenges.css">
 js
- <script type="text/javascript" src="/js/gallery.js"></script>
+  <script type="text/javascript" src="/js/gallery.js"></script>
+  <script src="/js/challengeAjax.js"></script>
+
 head1
- challenges
+  challenges
 
 head2
- <%- title %>
+  <%- title %>
 
 body
   <form id="categories" method="get" action="/challenges">
