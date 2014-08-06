@@ -160,8 +160,7 @@ module.exports = function(app,database) {
   // Path: /create
   //   Page for creating (something)
   app.get('/create', function(req,res) {
-    res.render('../public/views/mist-gui.jade',{
-      loggedIn: req.session.loggedIn,
+    res.render('create',{
       user: req.session.user
     });
   });
