@@ -38,11 +38,10 @@ database.getIDforUsername(req.params.username,
 	    if(error)
 		res.end (JSON.stringify(error));
 	    else
-		res.render('../public/views/albums.jade', {
-		    loggedIn: req.session.loggedIn,
+		res.render('albums', {
 		    user:req.session.user,
-		    profileBeingViewed: req.params.username,
-                    albums:albums
+		    username: req.params.username,
+        albums:albums
 		});
 	});
 });
