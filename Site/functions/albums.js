@@ -59,11 +59,10 @@ module.exports.allImagesinAlbum = function(req, res, database) {
             res.end (JSON.stringify(error));
           else
             setLikes(images, (req.session.user) ? req.session.user.userid : null, database, function(imageArray){
-              res.render('../public/views/imagesCompilation.jade', {
-                loggedIn: req.session.loggedIn,
+              res.render('full-gallery', {
                 user:req.session.user,
                 images:imageArray || images,
-                viewing:req.params.username
+                username:req.params.username
               });
             });
         });
