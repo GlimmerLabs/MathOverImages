@@ -36,8 +36,7 @@ module.exports.buildFeaturedPage = (function(req, res, database) {
     else {
       var userid = (req.session.user) ? req.session.user.userid : null;
       setLikes(images, userid, function(imageArray, errorArray){
-        res.render('../public/views/gallery.jade',{
-            loggedIn: req.session.loggedIn,
+        res.render('gallery',{
             user: req.session.user,
             images: imageArray,
             currentPage: req.params.pageNumber,
@@ -58,8 +57,7 @@ module.exports.buildRandomPage = (function(req, res, database) {
     else {
       var userid = (req.session.user) ? req.session.user.userid : null;
       setLikes(images, userid, function(imageArray, errorArray){
-        res.render('../public/views/gallery.jade',{
-            loggedIn: req.session.loggedIn,
+        res.render('gallery',{
             user: req.session.user,
             images: imageArray,
             currentPage: req.params.pageNumber,
@@ -80,8 +78,7 @@ module.exports.buildRecentsPage = function(req, res, database) {
     else {
       var userid = (req.session.user) ? req.session.user.userid : null;
       setLikes(images, userid, function(imageArray, errorArray){
-        res.render('../public/views/gallery.jade',{
-            loggedIn: req.session.loggedIn,
+        res.render('gallery',{
             user: req.session.user,
             images: imageArray,
             nextPage: nextPage,
@@ -188,8 +185,7 @@ module.exports.buildTopRatedPage = function(req, res, database) {
         else {
           var userid = (req.session.user) ? req.session.user.userid : null;
           setLikes(images, userid, function(imageArray, errorArray){
-              res.render('../public/views/gallery.jade',{
-                loggedIn: req.session.loggedIn,
+              res.render('gallery',{
                 user: req.session.user,
                 images: imageArray,
                 currentPage: req.params.pageNumber,
