@@ -1,0 +1,50 @@
+title
+  <%= username + "'s albums on MIST"%>
+
+js
+  <script type='text/javascript' src='/js/gallery.js'></script>
+
+css
+  <link rel='stylesheet', href='/css/albums.css'>
+head1
+ <%= username %>
+body
+  <div id = 'subviews'>
+    <a href='/user/<%- username %>' class='subview'>profile</a>
+    <a href='/badges' class='subview'>badges</a>
+    <a href='#' class='subview' id='selected'>albums</a>
+    <a href='/user/<%- username %>/images' class='subview'>images</a>
+  </div>
+  <% if (user.username===username) { %>
+    <div id = 'createNew'>
+      <button id='newAlbums' class='albumBtn'>create album</button>
+      <div id = 'albumMaker' style='display:none;'>
+        <script type='text/javascript'>
+          var newAlbums = document.getElementById("newAlbums");
+          if (newAlbums) {
+            newAlbums.onclick = function(event) {
+              var albumMaker= document.getElementById("albumMaker");
+              if (albumMaker.style.display == "none") {
+                albumMaker.style.display = "block";
+              }
+              else {
+                albumMaker.style.display = "none";
+              }
+            } // newAlbums.onclick
+          } // if (code)
+        </script>
+        <form method='POST'>
+          <textarea name='newAlbum' required= 'required' placeholder='enter new album name' cols='5' rows='5'></textarea>
+          <input type='submit' value='enter' class='album' name='newAlbumSubmit'>
+        </form>
+      </div>
+    </div>
+  <% } %>
+  <div id = 'albums'>
+    <% for(var i=0; i < albums.length; i++) { %>
+      <figure>
+        <a href='/user/<%- username %>/albums/<%- albums[i].albumid %>'>
+          <h1><%- albums[i].name %></h1>
+        </a>
+      </figure>
+    <% } %>
