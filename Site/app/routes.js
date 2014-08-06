@@ -274,10 +274,9 @@ module.exports = function(app,database) {
 
   // --------------------------------------------------
   // Path: /help
-  //   The list of available hlep pages
+  //   The list of available help pages
   app.get('/help', function(req,res) {
-    res.render('../public/views/help.jade',{
-      loggedIn: req.session.loggedIn,
+    res.render('help',{
       user: req.session.user
     });
   });

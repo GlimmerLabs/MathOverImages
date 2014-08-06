@@ -1,0 +1,55 @@
+title
+  MIST Help
+
+css
+  <link rel='stylesheet', href='/css/help.css'>
+
+head1
+  help & tutorials
+
+body
+  <p class= "intro">
+    Confused about MIST?  Here are a few quick guides to get you started.
+  </p>
+  <table class ='help'>
+    <tr>
+      <th> Section </th>
+      <th> Description </th>
+      <th> Type </th>
+    </tr>
+    <tr>
+      <td><a href='/tutorial/intro'>An Introduction to MIST</a></td>
+      <td>A quick introduction to the ideas behind MIST</td>
+      <td>Text</td>
+    </tr>
+    <tr>
+      <td><a href='/video/intro-site'>A Quick Tour of the Web Site</a></td>
+      <td>A brief introduction to the pages on this site</td>
+      <td>Video</td>
+    </tr>
+    <tr>
+      <td><a href='/tutorial/gui'>Getting Started with the Workspace</a></td>
+      <td>A short introduction to the graphical user interface for creating new MIST images</td>
+      <td>Text</td>
+    </tr>
+    <tr>
+      <td><a href='/video/intro-gui'>The MIST Graphical User Interface</a></td>
+      <td>A shorter introduction to the graphical user interface for creating new MIST images</td>
+      <td>Video</td>
+    </tr>
+    <tr>
+      <td><a href='/video/extended-1'>An Extended Example, Part 1</a></td>
+      <td>A quick demonstration of how to make an "interesting" animation</td>
+      <td>Video</td>
+    </tr>
+    <tr>
+      <td><a href='/tutorial/rgb'>Pretty Pictures</a></td>
+      <td>An introduction to RGB</td>
+      <td>Text</td>
+    </tr>
+    <tr>
+      <td><a href='/tutorial/animation'>Moving Pictures</a></td>
+      <td>An introduction to Animation</td>
+      <td>Text</td>
+    </tr>
+  </table>
