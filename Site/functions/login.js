@@ -57,7 +57,7 @@ module.exports.buildPage = function (req, res, database) {
       }
     }
     else {
-      res.render("../public/views/login.jade", {
+      res.render("login", {
         flashMessage: "Invalid Credentials. Try again."
       }); //return error
     }

@@ -347,10 +347,11 @@ module.exports = function(app,database) {
   // Path: /login
   //   Login page
   app.get('/login', function(req, res) {
-    if (req.session.loggedIn)
+    if (req.session.user)
       res.redirect('/');
     else {
-      res.render("../public/views/login.jade", {
+      res.render("login", {
+        user: req.session.user,
         flashMessage: "Welcome back to MIST! Enter your username and password to begin"
       });
     }
