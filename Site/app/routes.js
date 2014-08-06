@@ -462,22 +462,7 @@ module.exports = function(app,database) {
     tutorial.rgb(req,res);
   });
 
-  // --------------------------------------------------
-  // Path: /user
-  //   User profile pages
-  app.get('/user/:username', function(req, res) {
-    username.buildPage(req, res, database);
-  });
 
-  app.post('/user/:username', function(req,res) {
-    if (req.session.user != null) {
-      if(req.session.user.username === req.params.username) {
-        if(req.body.aboutSubmit != null) {
-          username.changeAboutSection(req, res, database);
-        }
-      }
-    }
-  });
 
   // --------------------------------------------------
   // Path: /sample
