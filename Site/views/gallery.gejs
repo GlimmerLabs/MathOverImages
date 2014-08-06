@@ -1,0 +1,53 @@
+title
+ MIST Galleries
+
+js
+  <script type='text/javascript' src='/js/gallery.js'></script>
+
+css
+  <link rel='stylesheet', href='/css/gallery.css'>
+
+head1
+ gallery
+
+body
+  <div id='subviews'>
+    <a href='/gallery/random' class='subview' <%- (type==="random") ? "id='selected'" : "" %>>random</a>
+    <a href='/gallery/recent' class='subview'  <%- (type==="recent") ? "id='selected'" : "" %>>recent</a>
+    <a href='/gallery/toprated' class='subview'  <%- (type==="toprated") ? "id='selected'" : "" %>>top rated</a>
+    <a href='/gallery/featured' class='subview'  <%- (type==="featured") ? "id='selected'" : "" %>>featured</a>
+  </div>
+  <div id='gallery'>
+    <div id='images'>
+      <ul class='rig columns-3'>
+        <% for (var i=0; i < images.length; i++) {%>
+          <li>
+            <figure data-imageid=<%= images[i].imageid %>>
+              <a href='/image/<%= images[i].imageid %>'>
+                <canvas id='<%= 'canvas'+ i%>' width='300px' height='300px'></canvas>
+                <input type='hidden' id='<%= 'code'+ i %>' value='<%= images[i].code %>'>
+              </a>
+              <% if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1) { %>
+                <p class= 'run'>
+                  <img src='/icons/time.png' width ='20px' height='20 px'>
+                </p>
+              <% } %>
+              <a href='/user/<%= images[i].username %>'>
+                <figcaption class='right'><%= images[i].username%></figcaption>
+              </a>
+              <figcaption class = 'left <% images[i].liked ? "starred" : "unstarred"%>'>★<%=images[i].rating%></figcaption>
+            </figure>
+          </li>
+        <% } %>
+      </ul>
+    <div id='pageNumber'>
+      <% if (!(type === "random")) { %>
+           <% if (!(currentPage==1)) {%>
+                <a href='/gallery/<%= type + '/' + (currentPage-1) %>'> « previous</a>
+           <% } %>
+           <% if (nextPage) {%>
+               <a href='/gallery/<%=  type + '/' + ++currentPage %>'>    next »</a>
+          <% } %>
+      <% } %>
+    </div>
+  </div>
