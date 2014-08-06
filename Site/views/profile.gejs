@@ -35,7 +35,7 @@ body
     <div id= 'featuredImage'>
       <figure>
         <p class='imageTitle'><%- image.title %></p>
-        <% if (user.userid === viewing.userid) {  %>
+        <% if (user && user.userid === viewing.userid) {  %>
           <a href='/user/<%- viewing.username %>/images'>
             <canvas id='canvas' width='400' height='400'></canvas>
           </a>
@@ -60,7 +60,7 @@ body
   <% } %>
   <div id='bio'>
     <p class=biography><%- viewing.about %></p>
-    <% if (viewing.userid === user.userid) { %>
+    <% if (user && viewing.userid === user.userid) { %>
       <input type='image' id='edit-bio' src='/icons/edit_button.png' value='submit'>
       <form method='POST' id='bio-form'>
         <textarea name='aboutSection' cols='40' rows='5')><%- viewing.about %></textarea>
