@@ -1,0 +1,37 @@
+title
+  Log In to MIST
+css
+  <link rel='stylesheet', href='/css/signup.css'>
+head1
+  log in
+
+body
+  <div id='flashZone'>
+    <h1><%= flashMessage %></h1>
+  </div>
+  <form method='POST'>
+    <table>
+      <tr>
+        <td>username:</td>
+        <td>
+          <input type='text' name='username' required='required' placeholder='username' class='signupField'>
+        </td>
+      </tr>
+      <tr>
+        <td>password:</td>
+        <td>
+          <input type='password' name='password' required='required' placeholder='password' class='signupField'>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for='stayLoggedIn'> Remember Me
+        </td>
+        <td>
+          <input type='checkbox' name='stayLoggedIn'>
+          </label>
+        </td>
+      </tr>
+    </table>
+    <input type='submit' value='log in'>
+  </form>
