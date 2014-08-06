@@ -1,0 +1,42 @@
+title
+ <%- username + " on MIST" %>
+
+js
+ <script type='text/javascript' src='/js/gallery.js'></script>
+
+css
+  <link rel='stylesheet' href='/css/gallery.css'>
+head1
+  <%=username %>
+
+body
+  <div id='subviews'>
+    <a href='/user/<%- username %>' class='subview'>profile</a>
+    <a href='/badges' class='subview'>badges</a>
+    <a href='/user/<%- username %>/albums' class='subview' id= 'selected'>albums</a>
+    <a href='/user/<%- username %>/images' class='subview'>images</a>
+  </div>
+  <div id='gallery'>
+    <div id='images'>
+      <ul class='rig columns-3'>
+        <% for (var i = 0; i < images.length; i++) { %>
+          <li>
+            <figure data-imageid=<%-images[i].imageid%>>
+              <a href='/image/<%-images[i].imageid %>'>
+                <figcaption class='center'><%= images[i].title %></figcaption>
+                <canvas id=<%= 'canvas'+i %> width='180' height='180'>
+                <input type='hidden' id='<%= 'code'+i %>'value='<%= images[i].code %>'>
+              </a>
+              <% if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1) { %>
+                <p class= 'run'>
+                  <img src='/icons/time.png' width ='20 px' height='20 px'>
+                </p>
+              <% } %>
+              <a href='/user/<%- images[i].username %>'<figcaption class='right'><%= images[i].username %></figcaption></a>
+              <figcaption class='left <%- images[i].liked ? "starred" : "unstarred" %>'>★<%= images[i].rating %></figcaption>
+            </figure>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
