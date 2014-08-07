@@ -2,7 +2,7 @@
  * User's Settings page
  */
 module.exports.buildPage = (function(req, res, database) {
-    res.render('../public/views/accountSettings.jade',{
+    res.render('account-settings',{
 	loggedIn: req.session.loggedIn,
 	user: req.session.user
     });
