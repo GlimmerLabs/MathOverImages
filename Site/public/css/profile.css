@@ -2,12 +2,6 @@
  * profile.css
  *   Styles for the user profile pages.
  */
-
-/**
- * Too much stuff from the main style.
- */
-@import url("/css/styles.css"); 
-
 /**
  * I'm not sure why the figure is not already the same size as the
  * canvas, but we make it that way.
@@ -40,7 +34,7 @@ div#profile {
  * The two main divs should be side by side, so we make them inline
  * and specify sizes.
  */
-div#featuredImage, 
+div#featuredImage,
 div#bio {
   display: inline-block;
 }
@@ -51,7 +45,7 @@ div#featuredImage {
 
 div#bio {
   margin-top: 40px;
-} 
+}
 
 /**
  * Text in the biography gets some special formatting.
