@@ -1,6 +1,6 @@
 {
   "name": "MIST",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Glimmer Labs' Mathematical Image Synthesis Toolkit",
   "main": "server.js",
   "contributors": [
@@ -44,7 +44,6 @@
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "^1.3.0",
-    "bufferjs": "latest",
     "compression": "^1.0.6",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.1.0",
@@ -72,7 +71,7 @@
     "Glimmer",
     "Labs"
   ],
-  "author": "Glimmer Labs <rebelsky@cs.grinnell.edu",
+  "author": "Glimmer Labs <rebelsky@grinnell.edu>",
   "license": "GNU LESSER GENERAL PUBLIC LICENSE",
   "readme": "DEVELOPERS"
 }
