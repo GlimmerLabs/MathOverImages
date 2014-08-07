@@ -1,0 +1,116 @@
+title
+ MIST Account Settings
+
+js
+  <script type='text/javascript' src='js/accountSettings'></script>
+  <script type='text/javascript' src='js/signup'></script>
+
+css
+  <link rel='stylesheet', href='/css/accountSettings'>
+
+head1
+ settings
+
+body
+  <form method='POST'>
+    <table>
+      <thead>
+        <tr>
+          <td id='headers'>username</td>
+          <td id='content'><%= user.username %></td>
+          <td><input type='button' id='edit-username' class='editButton'></td>
+        </tr>
+      </thead>
+      <tbody id='username-form'>
+        <tr id='item'>
+          <td id ='headers'>current password:</td>
+          <td id='content'>
+            <input type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword'>
+          </td>
+        </tr>
+        <tr id='item'>
+          <td id='headers'>change username:</td>
+          <td id='content'> <input type='username' name='newUsername' placeholder='username' class='signupField' id='newUsername'></td>
+        </tr>
+        <tr id='item'>
+          <td id='headers'>confirm username:</td>
+          <td id='content'> <input type='username' name='newUsername2' placeholder='re-enter username' class='signupField' id='newUsername2'></td>
+        </tr>
+        <tr id='item'>
+          <td></td>
+          <td id='changeInfo'> <input type='submit' name='usernameSubmit' value ='submit'>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <form method='POST'>
+    <table>
+      <thead>
+        <tr>
+          <td id ='headers'>password</td>
+          <td id='content'></td>
+          <td>
+            <input type='button' id='edit-password' class='editButton'>
+          </td>
+      </thead>
+      <tbody id='password-form'>
+        <tr id='item'>
+          <td id ='headers'>current password:</td>
+          <td id='content'>
+            <input type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword'>
+          </td>
+        </tr>
+        <tr id='item'>
+          <td id ='headers'>new password:</td>
+          <td id='content'>
+            <input type='password' name='newPassword'  placeholder='password' class='signupField'>
+          </td>
+        </tr>
+        <tr id='item'>
+          <td id ='headers'>confirm password:</td>
+          <td id='content'>
+            <input type='password' name='newPassword2'  placeholder='re-enter password' class='signupField' >
+          </td>
+        </tr>
+        <tr id='item'>
+          <td></td>
+          <td id='changeInfo')> <input type='submit' name='passwordSubmit' value ='submit'></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <form method='POST' name='emailSubmit'>
+    <table>
+      <thead>
+        <tr>
+          <td id='headers')>email</td>
+          <td id='content'><%=user.email %></td>
+          <td><input type='button' id='edit-email' class='editButton'></td>
+        </tr>
+      </thead>
+      <tbody id='email-form'>
+        <tr id='item'>
+          <td id ='headers'>current password:</td>
+          <td id='content'>
+            <input type='password' name='password1' required='required' placeholder='password' class='signupField' id='oldpassword'>
+          </td>
+        </tr>
+        <tr id='item'>
+          <td id ='headers'>new primary email:</td>
+          <td id='content'>
+            <input type='email' name='newEmail' placeholder='new email' class='signupField' id='newEmail1'>
+          </td>
+        </tr>
+        <tr id='item'>
+          <td id ='headers'>confirm new email:</td>
+          <td id='content'>
+            <input type='email' name='newEmail2' placeholder='re-enter email' class='signupField' id='newEmail2'>
+          </td>
+        </tr>
+        <tr id='item'>
+          <td></td>
+          <td id='changeInfo'><input type='submit' name='emailSubmit' value ='submit'></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
