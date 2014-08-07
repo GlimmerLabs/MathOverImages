@@ -24,7 +24,7 @@ block content
         | Try exploring the galleries, reading the tutorials, or
         | creating your own images.
       p
-        | MIST is in pre-alpha release.  Look at the
+        | MIST is in public beta.  Look at the
         | <a href="/welcome">welcome page</a> for more information.
     div(id='homeButtons')
       a(href='/create' id='create')
@@ -34,7 +34,7 @@ block content
       a(href='/gallery' id='gallery')
          ='gallery'
     p(class='info')
-      | Images with   
+      | Images with
       img(src='/icons/time.png' width ='25 px' height='25 px')
       |    will animate when you hover over them
     p(class='warning').
@@ -48,4 +48,3 @@ block content
           if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1)
               img(src='/icons/time.png' width ='20 px' height='20 px')
           figcaption(class='right'): a(href='/user/'+ images[i].username)= images[i].username
-
