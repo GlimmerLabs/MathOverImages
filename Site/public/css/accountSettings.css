@@ -2,8 +2,6 @@
 * accountSettings.css
 *   Styles for the "account settings" page.
 */
-@import url("/css/styles.css");
-
 img editButton {
   width: 20px; <!--change to percent-->
   height: 20px;

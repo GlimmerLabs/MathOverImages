@@ -2,14 +2,6 @@
  * image.css
  *   CSS for the single image page.
  */
- 
-@import url("/css/styles.css");
-
-/* +------------------------+------------------------------------------
- * | Override Standard Tags |
- * +------------------------+
- */
-
 /*
  * We use div#main for the main body of every page.  We want this
  * page formatted slightly differently, so we override that
@@ -64,7 +56,7 @@ p.code {
 /**
  * ???
  */
-.starred, 
+.starred,
 .unstarred {
   display: inline-block;
   cursor: pointer;
@@ -84,7 +76,7 @@ p.code {
  * | Comments |
  * +----------+
  */
- 
+
 table#comments {
   margin: 0 auto;
   padding-top: 10px;
@@ -253,7 +245,7 @@ th.user a {
  * | Menus |
  * +-------+
  *
- * Dropdown menu based on 
+ * Dropdown menu based on
  *   <http://cssdeck.com/labs/another-simple-css3-dropdown-menu >
  */
 
@@ -270,7 +262,7 @@ div#menu ul li,
 div#menu ul li ul li {
   display: inline-block;
   clear: left;
-  position: relative; 
+  position: relative;
   width: 105px;
   height: 17px;
   font-size: 12px;
@@ -296,7 +288,7 @@ div#menu .menuitem {
 
 /* When you hover over the item, it inverts. */
 div#menu ul li:hover,
-div#menu ul li ul li:hover 
+div#menu ul li ul li:hover
 div#menu ul li:hover a,
 div#menu ul li ul li:hover a {
   color: #ffffff;
@@ -334,9 +326,9 @@ div#menu ul li ul {
 }
 
 /* An item in a submenu */
-#add ul li ul li { 
-  background: #555; 
-  display: block; 
+#add ul li ul li {
+  background: #555;
+  display: block;
   color: #fff;
   text-shadow: 0 -1px 0 #000;
 }
@@ -345,7 +337,7 @@ div#menu ul li ul {
 /* ------------------------------------------------------------------- */
 
 #image-sharing {
-  margin: 0 auto; 
+  margin: 0 auto;
   display: -webkit-flex;
   -webkit-flex-direction: row;
   display: flex;
@@ -401,7 +393,7 @@ input[type=range] {
 }
 
 input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance:none !important;  
+    -webkit-appearance:none !important;
     background-color: grey;
     opacity: 0.5;
     width: 7px;
@@ -437,6 +429,3 @@ textarea.pretty {
 }
 
 /* This button was generated using CSSButtonGenerator.com */
-
-
-
