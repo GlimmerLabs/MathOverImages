@@ -31,8 +31,6 @@ var ports = require('./functions/ports.js');
 
 var database = require('./functions/database.js');
 
-
-
 app.use(compress());
 app.use(morgan('dev')); //log every request to the console
 app.use(cookieParser(auth["session-secret"])); // read cookie information (for auth)
@@ -43,6 +41,7 @@ app.use(expressSession({secret: auth["session-secret"],
                  saveUninitialized: true,
                  resave: true}));
 
+// Use EJS as the default render engine
 app.set('view engine', 'ejs');
 
 //==================== routes ====================
