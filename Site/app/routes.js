@@ -371,7 +371,6 @@ module.exports = function(app,database) {
   // Path: /logout
   //   Logout page
   app.get('/logout', function(req,res) {
-    req.session.loggedIn = false;
     req.session.user = null;
     res.clearCookie("loginToken");
     res.redirect('back');
@@ -546,7 +545,6 @@ module.exports = function(app,database) {
   //   Page for creating (something)
   app.get('/video/:name', function(req,res) {
     res.render('../public/views/video/' + req.params.name + '.jade', {
-      loggedIn: req.session.loggedIn,
       user: req.session.user
     });
   });
