@@ -14,9 +14,9 @@ One-Time Setup
 ### Add files not in repo
 
 The certs directory and functions/auth.js are intentionally NOT in
-the repo because they store confidential information.  You should 
-manually link to the versions on the main server.  In our standard
-setup, that's something like
+the repo because they store confidential information.  You should
+manually link to the versions on the main server.  If you are operating on the glimmer
+machine, that's something like
 
 	$ cd MathOverImages
         $ cd Site
@@ -40,8 +40,8 @@ Running the Server
 
 Test mode
 
-        $ nodemon server.js
+        $ npm test
 
 Normal mode
 
-        $ nohup node server.js
+        $ npm start
