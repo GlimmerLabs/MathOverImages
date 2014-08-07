@@ -45,24 +45,25 @@ module.exports.buildPage = function(req, res, database) {
         res.end("Error:" + error);
         return;
       }
-      database.albumContentsInfo(userid, req.params.albumid, 
+      database.albumContentsInfo(userid, req.params.albumid,
            function(albumContents, error) {
         if (error) {
           res.end(error)
           return;
         }
         setLikes(albumContents, (req.session.user) ? req.session.user.userid : null, function(images) {
-          database.getAlbumInfo(req.params.albumid, function(albumTitle, error) {
+          database.getAlbumInfo(req.params.albumid, function(albumInfo, error) {
             if (error) {
               utils.error(req,res,"Could not load album",error.toString());
               return;
             }
-            res.render('../public/views/albumContents.jade', {
-                loggedIn: req.session.loggedIn,
+            res.render('album-contents', {
                 user: req.session.user,
-                albumContents: images,
-                albumTitle:albumTitle,
-                albumOwner:req.params.username
+                album: {
+                  contents: images,
+                  title: albumInfo.name,
+                  owner: req.params.username
+                }
             });
           }); // database.getAlbumContentsTitle
         }); // setLikes

@@ -1,0 +1,62 @@
+title
+  <%= album.owner + " on MIST" %>
+
+js
+  <script type='text/javascript' src='/js/gallery.js'></script>
+
+css
+  <link rel='stylesheet' href='/css/gallery'>
+
+head1
+ <%= album.owner %>
+
+head2
+ <%= album.title %>
+
+
+body
+  <div id='subviews'>
+    <a href='/user/<%= album.owner %>' class='subview'>profile</a>
+    <a href='/badges' class='subview'>badges</a>
+    <a href='/user/<%= album.owner %>/albums' class='subview' id= 'selected'>albums</a>
+    <a href='/user/<%= album.owner %>/images' class='subview'>images</a>
+  </div>
+  <% if (album.owner === user.username) { %>
+    <form method='POST'>
+      <input type='hidden' value= albumTitle.albumid name='deleteWholeAlbum'>
+      <input type='submit' class='delete' value='delete this album' onclick="return confirm('Are you sure you want to delete this whole album forever?');">
+    </form>
+  <% } %>
+  <div id='gallery'>
+    <div id='images'>
+      <ul class='rig columns-3'>
+        <% for (var i = 0; i < (album.contents.length || 0 ); i++) { %>
+          <li>
+            <figure data-imageid='<%= album.contents[i].imageid %>'>
+              <a href='/image/<%= album.contents[i].imageid %>'>
+                <figcaption class='center'><%= album.contents[i].title %></figcaption>
+                <canvas id='<%= 'canvas'+i%>' width='180' height='180'></canvas>
+                <input type='hidden' id='<%='code'+i%>' value='<%=album.contents[i].code %>'>
+              </a>
+              <% if(album.contents[i].code.indexOf("t.") > -1 || album.contents[i].code.indexOf("m.") > -1) { %>
+                <p class= 'run'>
+                  <img src='/icons/time.png' width ='20px' height='20 px'>
+                </p>
+              <% } %>
+              <a href='/user/<%= album.contents[i].username%>'>
+                <figcaption class='right'><%= album.contents[i].username%></figcaption>
+              </a>
+              <figcaption class='left <%= album.contents[i].liked ? "starred" : "unstarred" %>'>★<%= album.contents[i].rating %></figcaption>
+              <% if (album.owner === user.username) { %>
+                <form method='POST'>
+                  <input type='hidden' value= album.contents[i].imageid name='deleteImage'>
+                  <br><br><br>
+                  <input type='image' src= '/icons/deleteFromAlbum.png' class='deleteImage' onclick="return confirm('Are you sure you want to delete this image from this album?');">
+                </form>
+              <% } %>
+            </figure>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
