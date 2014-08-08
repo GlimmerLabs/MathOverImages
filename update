@@ -21,7 +21,7 @@ popd
 # Update node dependencies
 echo "*** UPDATING NODE ***";
 pushd Site/
-# npm install
+npm install
 popd
 
 # Remind the user to restart
