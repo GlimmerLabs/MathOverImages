@@ -100,7 +100,7 @@
                 <a href='/user/<%= images[i].username %>'>
                   <figcaption class='right'><%= images[i].username%></figcaption>
                 </a>
-                <figcaption class = 'left <% images[i].liked ? "starred" : "unstarred"%>'>★<%=images[i].rating%></figcaption>
+                <figcaption class = 'left <%= images[i].liked ? "starred" : "unstarred" %>'>★<%=images[i].rating%></figcaption>
               </figure>
             </li>
           <% } %>
