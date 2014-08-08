@@ -7,8 +7,8 @@
 // | Additional Javascript Files |
 // +-----------------------------+
 
-var account-settings =  require ("../functions/account-settings.js");
-var album-contents = require("../functions/album-contents.js");
+var accountSettings =  require ("../functions/account-settings.js");
+var albumContents = require("../functions/album-contents.js");
 var albums = require("../functions/albums.js");
 var api = require("../functions/api.js");
 var challenge = require("../functions/challenge.js");
@@ -90,18 +90,18 @@ module.exports = function(app,database) {
   });
 
   // --------------------------------------------------
-  // Path: /account-settings
+  // Path: /accountSettings
   //   Account settings
   app.get('/accountSettings', function(req,res) {
-    account-settings.buildPage(req, res, database);
+    accountSettings.buildPage(req, res, database);
   });
   app.post('/accountSettings', function(req,res) {
     if(req.body.profileSubmit != null) {
-      account-settings.changeUsername(req, res, database);
+      accountSettings.changeUsername(req, res, database);
     } else if (req.body.passwordSubmit != null) {
-      account-settings.changePassword(req, res, database);
+      accountSettings.changePassword(req, res, database);
     } else {
-      account-settings.changeEmail(req, res, database);
+      accountSettings.changeEmail(req, res, database);
     }
   });
 
@@ -112,15 +112,15 @@ module.exports = function(app,database) {
     albums.buildPage(req, res, database);
   });
   app.get('/user/:username/albums/:albumid', function(req,res) {
-    album-contents.buildPage(req, res, database);
+    albumContents.buildPage(req, res, database);
   });
 
   app.post('/user/:username/albums/:albumid', function(req,res) {
     if (req.body.deleteImage != null) {
-      album-contents.deleteFromAlbums(req, res, database);
+      albumContents.deleteFromAlbums(req, res, database);
     }
     else if (req.body.deleteWholeAlbum != null) {
-      album-contents.deleteAlbum(req, res, database);
+      albumContents.deleteAlbum(req, res, database);
     };
   });
 
