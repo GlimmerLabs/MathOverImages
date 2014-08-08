@@ -69,7 +69,7 @@
   </header>
   <div id="main">
 <div id="pageTitleGeneral"><h1>     MIST Search
-    
+
 </h1></div>
 
     <h2>Users (<%= results.users.length%>)</h2>
@@ -77,12 +77,12 @@
      <p><a href="<%= '/user/' + results.users[i].username %>"><%- results.users[i].username %></a></p>
     <% } %>
     <h2>Images (<%= results.images.length%>)</h2>
-    
+
     <% for (var i=0; i < results.images.length; i++) { %>
      <p><a href="<%= '/image/' + results.images[i].imageid %>"><%- results.images[i].title %></a></p>
     <% } %>
     <h2>Albums (<%= results.albums.length%>)</h2>
-    
+
     <% for (var i=0; i < results.albums.length; i++) { %>
      <p><a href="<%= '/user/' + results.albums[i].username + '/albums/' + results.albums[i].albumid %>"><%- results.albums[i].name %></a></p>
     <% } %>

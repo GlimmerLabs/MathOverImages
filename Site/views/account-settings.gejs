@@ -2,11 +2,11 @@ title
  MIST Account Settings
 
 js
-  <script type='text/javascript' src='js/accountSettings'></script>
-  <script type='text/javascript' src='js/signup'></script>
+  <script type='text/javascript' src='js/account-settings.js'></script>
+  <script type='text/javascript' src='js/signup.js'></script>
 
 css
-  <link rel='stylesheet', href='/css/accountSettings'>
+  <link rel='stylesheet', href='/css/account-settings.css'>
 
 head1
  settings

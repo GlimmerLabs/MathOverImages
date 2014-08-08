@@ -91,7 +91,7 @@ $(document).ready(function() {
     } // btn.onclick
   } // if (code)
 
-  
+
   // Add the event listener for the slider
   var slider=document.getElementById('pixels');
   try {
@@ -188,12 +188,12 @@ var describeUnits = function(amt,unit) {
  */
 var describeDate = function(date) {
   var tmp = new Date(date);
-  var timePosted = Date.UTC(tmp.getFullYear(), tmp.getMonth(), 
-      tmp.getDate(), tmp.getHours(), tmp.getMinutes(), 
+  var timePosted = Date.UTC(tmp.getFullYear(), tmp.getMonth(),
+      tmp.getDate(), tmp.getHours(), tmp.getMinutes(),
       tmp.getSeconds())/1000;
   var now = new Date();
-  var rightNow = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 
-      now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), 
+  var rightNow = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(),
+      now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(),
       now.getUTCSeconds())/1000;
   var dateSentence;
   var secs = rightNow-timePosted;
@@ -204,7 +204,7 @@ var describeDate = function(date) {
   var secsPerYear = secsPerDay * 365;
   if ((secs/secsPerYear) >= 1) {
     dateSentence = describeUnits(Math.floor(secs/secsPerYear), "year");
-  }     
+  }
   else if ((secs/secsPerMonth) >= 1) {
     dateSentence = describeUnits(Math.floor(secs/secsPerMonth), "month");
   }
