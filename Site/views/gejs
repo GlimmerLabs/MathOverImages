@@ -131,10 +131,10 @@ sub field($$$) {
   my ($name,$pre,$post,$front,$back) = @_;
   my $val = $entries{$name};
 
-  if ($back !~ m/^[ \n\t]*$/) {
+  if ($val && ($back !~ m/^[ \n\t]*$/)) {
     $val =~ s/\n//m;
   } 
-  elsif ($front =~ m/^[ \t]*$/) {
+  elsif ($val && ($front =~ m/^[ \t]*$/)) {
     $val =~ s/^/$front/gm;
     $front = "";
     $back = "";
