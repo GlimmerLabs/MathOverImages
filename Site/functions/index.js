@@ -5,11 +5,9 @@ var filedatabase;
 module.exports.buildFeaturedPage = (function(req, res, database) {
   filedatabase=database;
   module.exports.getFeaturedImages (6, function(images, error){
-    res.render('../public/views/index.jade',{
-      loggedIn: req.session.loggedIn,
+    res.render('index',{
       user: req.session.user,
-      images: images,
-      type: "random"
+      images: images
     });
   });
 });
