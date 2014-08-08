@@ -43,9 +43,6 @@ css
   <link rel='stylesheet' href='http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css'>
   <link rel='stylesheet' href='/css/jquery-override.css'>
 
-head1
- create
-
 body
   <p id="gui-welcome">
     Welcome to your workspace! Here it's easy to create your own interesting images!

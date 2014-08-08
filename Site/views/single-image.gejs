@@ -5,10 +5,10 @@ metas
  <% var jpgURL= "\"http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=800&height=800\"" %>
  <meta property="og:image" content=' + jpgURL + '/>
 css
- <link rel="stylesheet" href="/css/singleImage.css">
+ <link rel="stylesheet" href="/css/single-image.css">
 
 js
- <script type="text/javascript" src="/js/imagepage.js"></script>
+ <script type="text/javascript" src="/js/single-image.js"></script>
  <script>
  function deleteImage() {
    if (! confirm("Are you sure you what to delete this image forever?")) {
