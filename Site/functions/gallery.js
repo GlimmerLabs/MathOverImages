@@ -35,11 +35,12 @@ module.exports.buildFeaturedPage = (function(req, res, database) {
     }
     else {
       var userid = (req.session.user) ? req.session.user.userid : null;
-      setLikes(images, userid, function(imageArray, errorArray){
+      setLikes(images, userid, function(imageArray, nextPage, errorArray){
         res.render('gallery',{
             user: req.session.user,
             images: imageArray,
-            currentPage: req.params.pageNumber,
+            nextPage:false,
+            currentPage: 1,
             type: "featured"
           }
         );
