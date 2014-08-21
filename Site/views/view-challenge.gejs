@@ -5,7 +5,7 @@ css
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   <link rel="stylesheet" href="/css/jquery-override.css">
 js
-  <script type="text/javascript" src="/js/imagepage.js"></script>
+  <script type="text/javascript" src="/js/single-image.js"></script>
   <script type="text/javascript" src="https://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"></script>
   <script type="text/javascript" src="/js/challenge-gui-width.js"></script>
   <script type="text/javascript" src="/js/mist-gui-globalVariables.js"></script>
