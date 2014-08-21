@@ -1,0 +1,19 @@
+<!--Sam's way of putting a iframe-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= image.title + ' by ' + image.username %></title>
+    <meta http-equiv='content-type', content='text/html; charset=utf-8'>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type='text/javascript' src="/js/analytics.js"></script>
+    <script type='text/javascript' src='/js/ugly.mist.js'></script>
+    <script type='text/javascript' src='/js/mistui.js'></script>
+    <script type='text/javascript' src='/js/single-image.js'></script>
+  </head>
+  <body>
+    <canvas id='canvas' class="fullscreen" style="position:absolute; left:0; top:0;" onclick='window.top.location.href = &quot;/image/<%= image.imageid%>&quot;'></canvas>
+    <p id='code' class='code' style='visibility:hidden;'><%=image.code%></p>
+  </body>
+</html>

@@ -7,7 +7,7 @@
 filename=mist_backup_`date +"%Y_%m_%d"`.sql
 echo $filename
 # Dump Database
-/usr/local/mysql/bin/mysqldump -hglimmer.grinnell.edu -uroot -p mist -r$filename
+mysqldump -hlocalhost -uroot -p mist -r$filename
 
 # Move Database to backups folder
 mv $filename database_backups/$filename

@@ -3,7 +3,7 @@ title
 
 js
  <script type='text/javascript' src='/js/profile.js'></script>
- <script type='text/javascript' src='/js/imagepage.js'></script>
+ <script type='text/javascript' src='/js/single-image.js'></script>
 
 css
  <link rel='stylesheet', href='/css/profile.css'>

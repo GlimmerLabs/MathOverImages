@@ -6,8 +6,7 @@ module.exports.buildPage = function(req, res, database) {
   if(error)
     res.end (JSON.stringify(error));
   else
-    res.render('../public/views/embed.jade', {
-      imageid: req.params.imageid,
+    res.render('embed', {
       image: image
     });
   });

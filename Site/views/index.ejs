@@ -3,21 +3,23 @@
   edit it directly.
 
   The command used to generate this file was
-    gejs privacy-policy.gejs -t mist.ejs -o privacy-policy.ejs
+    gejs index.gejs -t mist.ejs -o index.ejs
  -->
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <title> MIST Privacy Policy
+  <title>MIST by Glimmer
 </title>
   <!-- Meta Information -->
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name='google-site-verification' content='P8V7MGREuNuon08HmOnVFcxjSKSXUbpgyXCCIdCqP1o'>
+  
 
   <link rel="shortcut icon" href="/logos/favicon.ico">
 
   <!-- CSS -->
   <link rel='stylesheet' href='/css/styles.css'>
-  <link rel='stylesheet', href='/css/privacy-policy.css'>
+  <link rel='stylesheet', href='/css/index.css'>
   
 
 
@@ -31,6 +33,8 @@
   <script type="text/javascript" src="/js/analytics.js"></script>
   <script type="text/javascript" src="/js/sharing-tools.js"></script>
 
+  <script type='text/javascript' src='/js/gallery.js'></script>
+  
 
  </head>
 
@@ -70,25 +74,35 @@
     </nav>
   </header>
   <div id="main">
-<div id="pageTitleGeneral"><h1>     privacy policy
-</h1></div>
 
-    <div id='policy-content'>
-      <p>We at Glimmer Labs take your privacy very seriously. We believe that you, the user, should understand exactly what information we are keeping track of on our end, and be made aware of the steps you can take to control that information. This privacy policy will detail the following things, as well as the settings you have access to that can adjust these things:</p>
-      <ul>
-        <li> The information we track while you are navigating our site.</li>
-        <li> The information we store in our database.</li>
-      </ul>
-      <h2> Information from Cookies</h2>
-      <p>The MIST website uses Google Analytics to track how you navigate the site. We use this to better understand what our users want and how they respond to the content on the site--most importantly, where users leave the site--which allows us to better focus our efforts to keep you engaged. Google Analytics records a large amount of data, so we recommend looking at Google’s Privacy Policy <a href="http://www.google.com/intl/en/policies/privacy/#infocollect">here</a>. We understand if you feel uncomfortable with this data being recorded, and as such provide the link to <a href="https://tools.google.com/dlpage/gaoptout"> disable google analytics</a> for your web browser.</p>
-      <h2> Information Stored by Us</h2>
-      <p>One of the features we provide as content creating website is the ability to share the images you create with other users. As such, any image that you create and save to your account is stored on our server as the code that rendered it. You own the image under the <a href="http://creativecommons.org/licenses/by-sa/4.0/legalcode">Creative Commons Attribution-ShareAlike 4.0 International</a>, and you are free to create additional contracts with third parties in relation to your own work. We are free to display your image, along with the code used to render it, on our website and to use it in additional educational materials related to our project. </p>
-      <p>Glimmer Labs will not sell, rent, or exchange the email address or other account information ​of our users. In the future, we plan to use email addresses for the following purposes:</p>
-      <ul>
-        <li> To verify user accounts on account creation.</li>
-        <li> To provide account recovery services to users.</li>
-      </ul>
+
+    <div id='featuredImage'>
+      <img src='/logos/featured.png'>
     </div>
+    <div id='about'>
+      <p>MIST, the <i>Mathematical Image Synthesis Toolkit</i>, is a platform for building interesting animated images. Try exploring the galleries, reading the tutorials, or creating your own images.</p>
+      <p>MIST is in public beta. Look at the <a href="/welcome">welcome page</a> for more information.</p>
+    </div>
+    <div id='homeButtons'>
+      <a href='/create' id='create'>create</a>
+      <a href='/help' id='tutorials'>tutorials</a>
+      <a href='/gallery' id='gallery'>gallery</a>
+    </div>
+    <p class='info'>Images with <img src='/icons/time.png' width ='25 px' height='25 px'> will animate when you hover over them</p>
+    <p class='warning'> WARNING: Some of the images rendered on this site may feature flashing animations and patterns. For those with a history of epilepsy, viewer discretion is advised.</p>
+    <div id='galleryImages'>
+      <% for (var i=0; i < images.length; i++) {%>
+        <figure>
+          <a href='/image/<%= images[i].imageid %>'>
+            <canvas id='<%= 'canvas'+i %>' width='150' height='150'></canvas>
+            <input type='hidden' id='<%= 'code'+i %>' value='<%=images[i].code%>'>
+          </a>
+          <% if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1) { %>
+            <img src='/icons/time.png' width ='20 px' height='20 px'>
+          <% } %>
+          <figcaption class='right'><a href='/user/<%= images[i].username%>'><%= images[i].username %></a></figcaption>
+        </figure>
+      <% } %>
 
   </div>
   <footer>
