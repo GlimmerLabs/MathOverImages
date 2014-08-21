@@ -5,7 +5,7 @@ js
   <script type='text/javascript' src='/js/gallery.js'></script>
 
 css
-  <link rel='stylesheet' href='/css/gallery'>
+  <link rel='stylesheet' href='/css/gallery.css'>
 
 head1
  <%= album.owner %>

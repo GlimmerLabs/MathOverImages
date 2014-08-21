@@ -11,7 +11,7 @@
   <title> MIST Search</title>
   <!-- Meta Information -->
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  
+
   <link rel="shortcut icon" href="/logos/favicon.ico">
 
   <!-- CSS -->
@@ -28,8 +28,8 @@
   <script type="text/javascript" src="/js/likes.js"></script>
   <script type="text/javascript" src="/js/analytics.js"></script>
   <script type="text/javascript" src="/js/sharing-tools.js"></script>
-  
-  
+
+
  </head>
 
  <body>
@@ -50,33 +50,39 @@
           <li><a href="/gallery">gallery</a></li>
           <li><a href="/about">about</a></li>
           <li><a href="/help">help</a></li>
-          <li id="slider">login/signup</li>
+          <% if (!user) { %>
+            <li id="slider">login/signup</li>
         </span>
-        <form method="POST" action="/login" class="hidden" style="display: none; opacity: 0;"><input type="text" placeholder="username" name="username" required="required"><input type="password" placeholder="password" name="password" require="required">
-          <li id="rememberMeContainer"><label id="rememberMe">Remember Me<input type="checkbox" name="stayLoggedIn"></label></li>
-          <li id="login">login</li>
-          <li><a href="/signup">signup</a></li>
-          <li id="cancel">cancel</li>
-        </form>
+          <form method="POST" action="/login" class="hidden" style="display: none; opacity: 0;"><input type="text" placeholder="username" name="username" required="required"><input type="password" placeholder="password" name="password" require="required">
+            <li id="rememberMeContainer"><label id="rememberMe">Remember Me<input type="checkbox" name="stayLoggedIn"></label></li>
+            <li id="login">login</li>
+            <li><a href="/signup">signup</a></li>
+            <li id="cancel">cancel</li>
+          </form>
+          <% } else {%>
+            <li><a href='/me'><%= user.username %></a></li>
+            <li><a href='/logout'>logout</a></li>
+        </span>
+          <% } %>
       </ul>
     </nav>
   </header>
   <div id="main">
 <div id="pageTitleGeneral"><h1>     MIST Search
-    
+
 </h1></div>
-<div id="subTitle"><h2>    </h2></div>
+
     <h2>Users (<%= results.users.length%>)</h2>
     <% for (var i=0; i < results.users.length; i++) { %>
      <p><a href="<%= '/user/' + results.users[i].username %>"><%- results.users[i].username %></a></p>
     <% } %>
     <h2>Images (<%= results.images.length%>)</h2>
-    
+
     <% for (var i=0; i < results.images.length; i++) { %>
      <p><a href="<%= '/image/' + results.images[i].imageid %>"><%- results.images[i].title %></a></p>
     <% } %>
     <h2>Albums (<%= results.albums.length%>)</h2>
-    
+
     <% for (var i=0; i < results.albums.length; i++) { %>
      <p><a href="<%= '/user/' + results.albums[i].username + '/albums/' + results.albums[i].albumid %>"><%- results.albums[i].name %></a></p>
     <% } %>

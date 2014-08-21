@@ -11,7 +11,7 @@
   <title>Log In to MIST</title>
   <!-- Meta Information -->
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  
+
   <link rel="shortcut icon" href="/logos/favicon.ico">
 
   <!-- CSS -->
@@ -28,8 +28,8 @@
   <script type="text/javascript" src="/js/likes.js"></script>
   <script type="text/javascript" src="/js/analytics.js"></script>
   <script type="text/javascript" src="/js/sharing-tools.js"></script>
-  
-  
+
+
  </head>
 
  <body>
@@ -50,14 +50,20 @@
           <li><a href="/gallery">gallery</a></li>
           <li><a href="/about">about</a></li>
           <li><a href="/help">help</a></li>
-          <li id="slider">login/signup</li>
+          <% if (!user) { %>
+            <li id="slider">login/signup</li>
         </span>
-        <form method="POST" action="/login" class="hidden" style="display: none; opacity: 0;"><input type="text" placeholder="username" name="username" required="required"><input type="password" placeholder="password" name="password" require="required">
-          <li id="rememberMeContainer"><label id="rememberMe">Remember Me<input type="checkbox" name="stayLoggedIn"></label></li>
-          <li id="login">login</li>
-          <li><a href="/signup">signup</a></li>
-          <li id="cancel">cancel</li>
-        </form>
+          <form method="POST" action="/login" class="hidden" style="display: none; opacity: 0;"><input type="text" placeholder="username" name="username" required="required"><input type="password" placeholder="password" name="password" require="required">
+            <li id="rememberMeContainer"><label id="rememberMe">Remember Me<input type="checkbox" name="stayLoggedIn"></label></li>
+            <li id="login">login</li>
+            <li><a href="/signup">signup</a></li>
+            <li id="cancel">cancel</li>
+          </form>
+          <% } else {%>
+            <li><a href='/me'><%= user.username %></a></li>
+            <li><a href='/logout'>logout</a></li>
+        </span>
+          <% } %>
       </ul>
     </nav>
   </header>
@@ -65,7 +71,7 @@
 <div id="pageTitleGeneral"><h1>    log in
     
 </h1></div>
-<div id="subTitle"><h2>    </h2></div>
+
     <div id='flashZone'>
       <h1><%= flashMessage %></h1>
     </div>

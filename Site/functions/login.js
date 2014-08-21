@@ -47,7 +47,6 @@ module.exports.cookieLogin = function(req, res, database) {
 module.exports.buildPage = function (req, res, database) {
   database.logIn(req.body.username, req.body.password, function(user, error){
     if(!error) {
-      req.session.loggedIn = true;
       req.session.user = user;
       if(req.body.stayLoggedIn == "on") {
         addSessionTokenForUser(user.userid, res, database);

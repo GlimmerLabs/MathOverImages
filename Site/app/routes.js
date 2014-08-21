@@ -7,8 +7,8 @@
 // | Additional Javascript Files |
 // +-----------------------------+
 
-var accountSettings =  require ("../functions/accountSettings.js");
-var albumContents = require("../functions/albumContents.js");
+var accountSettings =  require ("../functions/account-settings.js");
+var albumContents = require("../functions/album-contents.js");
 var albums = require("../functions/albums.js");
 var api = require("../functions/api.js");
 var challenge = require("../functions/challenge.js");
@@ -16,7 +16,7 @@ var embed = require("../functions/embed.js");
 var fourohfour = require("../functions/404.js");
 var functions = require("../functions/functions.js");
 var gallery = require("../functions/gallery.js");
-var image = require("../functions/image.js");
+var image = require("../functions/single-image.js");
 var index = require("../functions/index.js");
 var jpg = require("../functions/jpg.js");
 var login = require("../functions/login.js");
@@ -24,7 +24,7 @@ var png = require("../functions/png.js");
 var search= require("../functions/search.js");
 var signup = require("../functions/signup.js");
 var tutorial = require("../functions/tutorial.js");
-var username = require("../functions/username.js");
+var profile = require("../functions/profile.js");
 
 // +-------+---------------------------------------------------------
 // | Notes |
@@ -96,7 +96,7 @@ module.exports = function(app,database) {
     accountSettings.buildPage(req, res, database);
   });
   app.post('/accountSettings', function(req,res) {
-    if(req.body.usernameSubmit != null) {
+    if(req.body.profileSubmit != null) {
       accountSettings.changeUsername(req, res, database);
     } else if (req.body.passwordSubmit != null) {
       accountSettings.changePassword(req, res, database);
@@ -380,12 +380,12 @@ module.exports = function(app,database) {
   // Path: /me
   //   User profile page, current user
   app.get('/me', function(req, res) {
-    username.goToMyProfile(req, res, database);
+    profile.goToMyProfile(req, res, database);
   });
 
   app.post('/me', function(req,res) {
     if(req.body.aboutSubmit != null) {
-      username.changeAboutSection(req, res, database);
+      profile.changeAboutSection(req, res, database);
     }
   });
 
@@ -496,7 +496,7 @@ module.exports = function(app,database) {
   // Path: /user
   //   User profile pages
   app.get('/user/:username', function(req, res) {
-    username.buildPage(req, res, database);
+    profile.buildPage(req, res, database);
   });
 
   app.post('/user/:username', function(req,res) {
@@ -504,7 +504,7 @@ module.exports = function(app,database) {
     if ((req.session.user != null) &&
         (req.session.user.username === req.params.username)) {
       if(req.body.aboutSubmit != null) {
-        username.changeAboutSection(req, res, database);
+        profile.changeAboutSection(req, res, database);
       }}
   });
 
