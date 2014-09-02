@@ -1,5 +1,9 @@
+@import url('/css/image-grid.css');
+
 form#categories{
-  float: right;
+  float: left;
+  margin-left: 25px;
+  margin-bottom: 20px;
 }
 
 select{
@@ -28,3 +32,4 @@ select{
   background-color:#FFF;
   color: #979797;
 }
+
