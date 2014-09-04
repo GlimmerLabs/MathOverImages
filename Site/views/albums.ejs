@@ -80,7 +80,7 @@
       <a href='#' class='subview' id='selected'>albums</a>
       <a href='/user/<%- username %>/images' class='subview'>images</a>
     </div>
-    <% if (user.username===username) { %>
+    <% if (user && user.username===username) { %>
       <div id = 'createNew'>
         <button id='newAlbums' class='albumBtn'>create album</button>
         <div id = 'albumMaker' style='display:none;'>
