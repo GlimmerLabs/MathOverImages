@@ -21,7 +21,8 @@ module.exports.buildPage = function(req, res, database) {
 		else
 		    res.render('profile', {
 			user: req.session.user,
-			viewing: userObject
+			viewing: userObject,
+			image: null
 
 		    });
 	    });
