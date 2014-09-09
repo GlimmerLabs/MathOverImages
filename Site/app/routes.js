@@ -380,7 +380,12 @@ module.exports = function(app,database) {
   // Path: /me
   //   User profile page, current user
   app.get('/me', function(req, res) {
-    profile.goToMyProfile(req, res, database);
+    if (req.session.user){
+    res.redirect("/user/"+req.session.user.username)
+  }
+  else {
+    res.redirect("/");
+  }
   });
 
   app.post('/me', function(req,res) {
