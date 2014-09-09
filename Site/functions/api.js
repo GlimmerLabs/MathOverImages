@@ -412,7 +412,7 @@ handlers.wsexists = function(info, req, res) {
  *   info.id: the id for the challenge
  */
 handlers.submitchallenge = function (info, req, res) {
-  var query = "SELECT code FROM challenges WHERE name="+database.sanitize(info.name)+";";
+  var query = "SELECT code FROM challenges WHERE name='"+database.sanitize(info.name)+"';";
   database.query(query, function(rows, error) {
     if (error) {
       fail(res, "Error: " + error);
