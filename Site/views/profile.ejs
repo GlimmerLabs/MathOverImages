@@ -98,7 +98,6 @@
      <% } else { %>
       <div id= 'featuredImage'>
         <figure>
-          <p class='imageTitle'><%- image.title %></p>
           <% if (user && user.userid === viewing.userid) {  %>
             <a href='/user/<%- viewing.username %>/images'>
               <canvas id='canvas' width='400' height='400'></canvas>
@@ -121,6 +120,7 @@
               canvas.style.border = '#C0C0C0 1px dashed';
             </script>
           <% } %>
+        </div>
     <% } %>
     <div id='bio'>
       <p class=biography><%- viewing.about %></p>
