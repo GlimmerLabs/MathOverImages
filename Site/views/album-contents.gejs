@@ -10,8 +10,6 @@ css
 head1
  <%= album.owner %>
 
-head2
- <%= album.title %>
 
 
 body
@@ -21,12 +19,13 @@ body
     <a href='/user/<%= album.owner %>/albums' class='subview' id= 'selected'>albums</a>
     <a href='/user/<%= album.owner %>/images' class='subview'>images</a>
   </div>
-  <% if (album.owner === user.username) { %>
+  <% if (user && album.owner === user.username) { %>
     <form method='POST'>
       <input type='hidden' value= albumTitle.albumid name='deleteWholeAlbum'>
       <input type='submit' class='delete' value='delete this album' onclick="return confirm('Are you sure you want to delete this whole album forever?');">
     </form>
   <% } %>
+  <div id='albumTitle'><%= album.title %></div>
   <div id='gallery'>
     <div id='images'>
       <ul class='rig columns-3'>
@@ -47,7 +46,7 @@ body
                 <figcaption class='right'><%= album.contents[i].username%></figcaption>
               </a>
               <figcaption class='left <%= album.contents[i].liked ? "starred" : "unstarred" %>'>★<%= album.contents[i].rating %></figcaption>
-              <% if (album.owner === user.username) { %>
+              <% if (user && album.owner === user.username) { %>
                 <form method='POST'>
                   <input type='hidden' value= album.contents[i].imageid name='deleteImage'>
                   <br><br><br>

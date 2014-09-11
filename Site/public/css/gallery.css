@@ -129,3 +129,16 @@ input[type='submit'].delete:hover{
  height : 25px;
  float : right;
 }
+
+/**
+ * For album pages album titles
+ */
+div#albumTitle {
+  clear: both;
+  font-size: 2em;
+  color: #979797;
+  margin-left: 20px;
+  margin-top: 20px;
+  display: block;
+}
+
