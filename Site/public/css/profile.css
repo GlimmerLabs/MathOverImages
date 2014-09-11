@@ -23,11 +23,23 @@ p.imageTitle {
 }
 
 /**
+ * Member since text goes between the title and the featured image.
+ */
+div#memberSince {
+  clear: both;
+  color: #979797;
+  margin-left: 20px;
+  margin-top: 20px;
+  display: block;
+}
+
+/**
  * We have two main divs that should be side by side.
  */
 div#profile {
   display: flex;
   flex-direction: row;
+  clear: both;
 }
 
 /**
@@ -37,6 +49,7 @@ div#profile {
 div#featuredImage,
 div#bio {
   display: inline-block;
+  clear: left;
 }
 
 div#featuredImage {
