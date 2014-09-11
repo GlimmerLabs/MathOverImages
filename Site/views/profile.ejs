@@ -74,17 +74,19 @@
   </header>
   <div id="main">
 <div id="pageTitleGeneral"><h1>     <%- viewing.username %>
-</h1></div>
-<div id="subTitle"><h2>     <%- "member since " + viewing.signupTime.toLocaleDateString() %>
+     
     
-</h2></div>
+</h1></div>
+
     <div id = 'subviews'>
       <a href='/user/<%- viewing.username %>' class='subview' id='selected'>profile</a>
       <a href='/badges' class='subview'>badges</a>
       <a href='/user/<%- viewing.username %>/albums' class='subview'>albums</a>
       <a href='/user/<%- viewing.username %>/images' class='subview'>images</a>
     </div>
+    <div id= 'memberSince'><%- "member since " + viewing.signupTime.toLocaleDateString() %></div>
     <div id= 'profile'>
+    
      <% if (image) { %>
       <div id = 'featuredImage'>
         <figure>
