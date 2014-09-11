@@ -74,23 +74,23 @@
   <div id="main">
 <div id="pageTitleGeneral"><h1>     <%= album.owner %>
     
+    
+    
 </h1></div>
-<div id="subTitle"><h2>     <%= album.title %>
-    
-    
-</h2></div>
+
     <div id='subviews'>
       <a href='/user/<%= album.owner %>' class='subview'>profile</a>
       <a href='/badges' class='subview'>badges</a>
       <a href='/user/<%= album.owner %>/albums' class='subview' id= 'selected'>albums</a>
       <a href='/user/<%= album.owner %>/images' class='subview'>images</a>
     </div>
-    <% if (album.owner === user.username) { %>
+    <% if (user && album.owner === user.username) { %>
       <form method='POST'>
         <input type='hidden' value= albumTitle.albumid name='deleteWholeAlbum'>
         <input type='submit' class='delete' value='delete this album' onclick="return confirm('Are you sure you want to delete this whole album forever?');">
       </form>
     <% } %>
+    <div id='albumTitle'><%= album.title %></div>
     <div id='gallery'>
       <div id='images'>
         <ul class='rig columns-3'>
@@ -111,7 +111,7 @@
                   <figcaption class='right'><%= album.contents[i].username%></figcaption>
                 </a>
                 <figcaption class='left <%= album.contents[i].liked ? "starred" : "unstarred" %>'>★<%= album.contents[i].rating %></figcaption>
-                <% if (album.owner === user.username) { %>
+                <% if (user && album.owner === user.username) { %>
                   <form method='POST'>
                     <input type='hidden' value= album.contents[i].imageid name='deleteImage'>
                     <br><br><br>
