@@ -89,6 +89,7 @@
             <li>
               <figure data-imageid=<%= images[i].imageid %>>
                 <a href='/image/<%= images[i].imageid %>'>
+                  <figcaption class='center'><%= images[i].title %></figcaption>
                   <canvas id='<%= 'canvas'+ i%>' width='300px' height='300px'></canvas>
                   <input type='hidden' id='<%= 'code'+ i %>' value='<%= images[i].code %>'>
                 </a>
