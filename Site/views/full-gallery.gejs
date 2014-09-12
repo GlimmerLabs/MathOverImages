@@ -13,8 +13,8 @@ body
   <div id='subviews'>
     <a href='/user/<%- username %>' class='subview'>profile</a>
     <a href='/badges' class='subview'>badges</a>
-    <a href='/user/<%- username %>/albums' class='subview' id= 'selected'>albums</a>
-    <a href='/user/<%- username %>/images' class='subview'>images</a>
+    <a href='/user/<%- username %>/albums' class='subview'>albums</a>
+    <a href='/user/<%- username %>/images' class='subview' id='selected'>images</a>
   </div>
   <div id='gallery'>
     <div id='images'>
