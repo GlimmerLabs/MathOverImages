@@ -127,7 +127,7 @@
     <div id='bio'>
       <p class=biography><%- viewing.about %></p>
       <% if (user && viewing.userid === user.userid) { %>
-        <input type='image' id='edit-bio' src='/icons/edit_button.png' value='submit'>
+        <input type='submit' value='Update Bio' id='edit-bio'>
         <form method='POST' id='bio-form'>
           <textarea name='aboutSection' cols='40' rows='5')><%- viewing.about %></textarea>
           <br>
