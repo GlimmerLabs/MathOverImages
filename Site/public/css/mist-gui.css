@@ -8,7 +8,7 @@
     min-width: 900px;
     height: 600px;
     border: 3px solid black;
-    margin: 0 10px 0 auto;
+    margin: 0 auto 0 10px;
 }
 
 #gui-and-key {
@@ -26,7 +26,7 @@
  */
 #gui-welcome {
 	min-width: 900px;
-	padding-right: 325px;
+	padding-left: 325px;
 	padding-bottom: 10px;
 	margin: 0 auto;
 	text-align: center;
@@ -37,16 +37,37 @@
  */
 #gui-help {
 	min-width: 900px;
-	padding-right: 325px;
+	padding-left: 325px;
 	padding-bottom: 10px;
 	margin: 0 auto;
 	text-align: center;
 }
 
+/** QUICK-START GUIDE **/
+dl#quickStart{
+	padding: 0.3em 0.7em;
+}
+
+#quickStart dt {
+	font-size: 1em;
+	font-weight: bold;
+}
+
+#quickStart dd {
+	font-size: .75em;
+}
+
+#quickStart hr {
+	-webkit-margin-before: .2em;
+	-webkit-margin-after: .2em;
+}
+
 /** KEY TABLE **/
 #gui-accordion {
-	margin-left: 10px;
-	margin-right: auto;
+	margin-right: 10px;
+	margin-left: auto;
+	width: 305px;
+	min-width: 305px;
 }
 
 /** set width of accordion header equal to the width of the table */
@@ -63,7 +84,7 @@
 	min-width: 200px;
 	width: 200px;
 	text-align: left;
-	font-size: 12px;
+	font-size: .8em;
 }
 
 .key-image {
