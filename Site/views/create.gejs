@@ -50,13 +50,30 @@ body
      If you're new to MIST, check out our <a href='/tutorial/gui'>create tutorial</a> or visit our <a href='/help'>help section</a> to get started. Have fun!
    </p>
   <div id='gui-and-key'>
-    <div id='container'>
-      <script>
-        initializeStage('container');
-        stage.draw()
-      </script>
-    </div>
+    
     <div id="gui-accordion">
+      <h3>Quick-Start Guide</h3>
+      <dl id='quickStart'>
+        <dt>Add a value</dt>
+        <dd>-Click on 'add a value'.</dd>
+        <dd>-Click and drag one or more values to the screen. Hover over values in the menu to see a description.</dd><hr>
+        <dt>Add a function</dt>
+        <dd>-Click on 'add a function'.</dd>
+        <dd>-Click and drag one or more functions to the screen. Hover over functions to see a description.</dd><hr>
+        <dt>Make connections</dt>
+        <dd>-Click on the line tool in the tool bar</dd>
+        <dd>-Click once on the colored part of the value. Click again on the function you want input the value to.</dd>
+        <dd>-Click once on your function, then click on another function to add your first function as an input to the second.</dd><hr>
+        <dt>Preview your image</dt>
+        <dd>-Click on the white box in the corner of a value or function to see your image.</dd>
+        <dd>-If the white box does not appear, check to see if you have enough inputs to your function and that all of the inputs also have white boxes in the corner.</dd><hr>
+        <dt>Save Image</dt>
+        <dd>-Once you have an image you like, go to the 'work tool' in the toolbox.</dd> 
+        <dd>-Click once on the function that shows the image you want to save</dd>
+        <dd>-Click the 'Image' button in the bottom right-hand corner</dd>
+        <dd>-Enter a name for your creation and click 'Save'</dd>
+
+      </dl>
       <h3>Workspace Key</h3>
       <table id='key'>
         <tr id='value-key'>
@@ -129,6 +146,12 @@ body
           </td>
         </tr>
       </table>
+    </div>
+    <div id='container'>
+      <script>
+        initializeStage('container');
+        stage.draw()
+      </script>
     </div>
   </div>
   <p id="gui-help">
