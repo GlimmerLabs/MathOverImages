@@ -103,7 +103,7 @@ var isUndoTool = function(target) {
  				validInputs++;
  			}
  		}
- 		return validInputs >= group.attrs.minInputs;
+ 		return validInputs >= group.attrs.minInputs && validInputs == group.attrs.numInputs;
  	}
  };
 
