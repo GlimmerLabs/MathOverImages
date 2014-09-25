@@ -11,30 +11,36 @@ css
   <link rel='stylesheet', href='/css/index.css'>
 
 body
-  <div id='featuredImage'>
-    <img src='/logos/featured.png'>
+  <div id='intro'>
+    <div id='featuredImage'>
+      <img src='/logos/featured.png'>
+    </div>
+    <div id='about'>
+      <p>Create abstract images and animations using simple math functions.</p>
+    </div>
   </div>
-  <div id='about'>
-    <p>MIST, the <i>Mathematical Image Synthesis Toolkit</i>, is a platform for building interesting animated images. Try exploring the galleries, reading the tutorials, or creating your own images.</p>
-    <p>MIST is in public beta. Look at the <a href="/welcome">welcome page</a> for more information.</p>
-  </div>
+  <p id="welcomeLink">MIST is in public beta. Look at the <a href="/welcome">welcome page</a> for more information.</p>
   <div id='homeButtons'>
     <a href='/create' id='create'>create</a>
     <a href='/help' id='tutorials'>tutorials</a>
     <a href='/gallery' id='gallery'>gallery</a>
   </div>
-  <p class='info'>Images with <img src='/icons/time.png' width ='25 px' height='25 px'> will animate when you hover over them</p>
-  <p class='warning'> WARNING: Some of the images rendered on this site may feature flashing animations and patterns. For those with a history of epilepsy, viewer discretion is advised.</p>
-  <div id='galleryImages'>
-    <% for (var i=0; i < images.length; i++) {%>
-      <figure>
-        <a href='/image/<%= images[i].imageid %>'>
-          <canvas id='<%= 'canvas'+i %>' width='150' height='150'></canvas>
-          <input type='hidden' id='<%= 'code'+i %>' value='<%=images[i].code%>'>
-        </a>
-        <% if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1) { %>
-          <img src='/icons/time.png' width ='20 px' height='20 px'>
-        <% } %>
-        <figcaption class='right'><a href='/user/<%= images[i].username%>'><%= images[i].username %></a></figcaption>
-      </figure>
-    <% } %>
+  <p class='warning'> WARNING: Some of the images rendered on this site may feature flashing animations and patterns. <br>For those with a history of epilepsy, viewer discretion is advised.</p>
+  <div id='featuredImages'>
+    <h2><a href='/gallery/featured'>Featured Images</a></h2>
+    <div id='galleryImages'>
+      <% for (var i=0; i < images.length; i++) {%>
+        <figure>
+          <a href='/image/<%= images[i].imageid %>'>
+            <canvas id='<%= 'canvas'+i %>' width='150' height='150'></canvas>
+            <input type='hidden' id='<%= 'code'+i %>' value='<%=images[i].code%>'>
+          </a>
+          <% if(images[i].code.indexOf("t.") > -1 || images[i].code.indexOf("m.") > -1) { %>
+            <img src='/icons/time.png' width ='20 px' height='20 px'>
+          <% } %>
+          <figcaption class='right'><a href='/user/<%= images[i].username%>'><%= images[i].username %></a></figcaption>
+        </figure>
+      <% } %>
+    </div>
+    <p class='info'>Images with <img src='/icons/time.png' width ='25 px' height='25 px'> will animate when you hover over them</p>
+  </div>
