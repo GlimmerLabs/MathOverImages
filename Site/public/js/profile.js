@@ -11,11 +11,13 @@ var formVisible = true;
 
 function hideForm() {
   $('#bio-form').hide();
+  $('#edit-bio').show();
   formVisible = false;
 } // hideForm
 
 function showForm() {
   $('#bio-form').show();
+  $('#edit-bio').hide();
   formVisible = true;
 } // showForm
 
