@@ -3,6 +3,7 @@ $(window).on('load', function() {
   $( "#gui-accordion" ).accordion({ 
   	header: "h3",
   	collapsible: true,
+  	active: false,
     animate: false,
     keyboard: false
    });
