@@ -29,12 +29,12 @@ body
     </tr>
     <tr>
       <td><a href='/tutorial/gui'>Getting Started with the Workspace</a></td>
-      <td>A short introduction to the graphical user interface for creating new MIST images</td>
+      <td>A short introduction to the workspace for creating new MIST images</td>
       <td>Text</td>
     </tr>
     <tr>
-      <td><a href='/video/intro-gui'>The MIST Graphical User Interface</a></td>
-      <td>A shorter introduction to the graphical user interface for creating new MIST images</td>
+      <td><a href='/video/intro-gui'>The MIST Workspace</a></td>
+      <td>A shorter introduction to the workspace for creating new MIST images</td>
       <td>Video</td>
     </tr>
     <tr>
