@@ -30,7 +30,7 @@
 
    4. When you want to store any of these objects in the database, use
    `JSON.stringify` on the object.  When you want to restore the object,
-   use `restore(JSON.parse(str))`, where `restore` comes from 
+   use `restore(JSON.parse(str))`, where `restore` comes from
    `mist-utils.js`.  (Unfortunately, JSON.parse does not restore prototypes,
    so we need to do that by hand.)
 
@@ -108,7 +108,7 @@ function contains(array, val)
 } // contains
 
 /**
- * I like varargs procedures, but sometimes I want to pass in an 
+ * I like varargs procedures, but sometimes I want to pass in an
  * array instead.  So, call getArgs with the arguments 'array' and
  * the starting point for extracting the array.
  */
@@ -149,7 +149,7 @@ function nspaces(n)
 
 /**
  * Determine the depth of an expression.  Assumes that the expression has
- * no loops. 
+ * no loops.
  */
 MIST.depth = function(exp)
 {
@@ -196,7 +196,7 @@ MIST.hasLoop = function(val, seen)
 /**
  * Determine if an object is a MIST expression.
  */
-MIST.isExp = function(val) 
+MIST.isExp = function(val)
 {
   return ((val instanceof MIST.Val) || (val instanceof MIST.App));
 }; // MIST.isExp
@@ -247,7 +247,7 @@ MIST.rebuild = function(obj) {
  */
 MIST.sameExp = function(a,b,checkedLoops)
 {
-  // We'll assume that expressions with loops are different.  (We can 
+  // We'll assume that expressions with loops are different.  (We can
   // probably get partial similarity, but I'm pretty sure that the
   // Halting Problem suggests that I can't determine equality of
   // arbitrary loops, so I might as well not try.)
@@ -282,7 +282,7 @@ MIST.sameExp = function(a,b,checkedLoops)
 } // MIST.sameExp
 
 /**
- * Validate an expression: 
+ * Validate an expression:
  *   * Make sure that all of the parameters are of appropriate types.
  *   * Make sure that all of the functions are in the context or are
  *     standard functions.
@@ -301,7 +301,7 @@ MIST.validate = function(name, exp, context) {
 
   // Case 1: Applications
   if (exp instanceof MIST.App) {
-    var opInfo = context[exp.operator] || 
+    var opInfo = context[exp.operator] ||
          MIST.builtins.functions[exp.operator];
 
     // Make sure that the operator is defined.
@@ -383,8 +383,8 @@ MIST.App = function(operation) {
 /**
  * Convert the application to a string.
  */
-MIST.App.prototype.toString = function() { 
-  return this.code; 
+MIST.App.prototype.toString = function() {
+  return this.code;
 };
 
 /**
@@ -408,7 +408,7 @@ MIST.App.prototype.prettyPrint = function(indent,suffix) {
   } // if there's only one operand
 
   // If there are more than one operand
-  else { 
+  else {
     var result = this.operation + "(";
     result += this.operands[0].prettyPrint(newindent, ",\n");
     for (var i = 1; i < arity-1; i++) {
@@ -427,7 +427,7 @@ MIST.App.prototype.prettyPrint = function(indent,suffix) {
 /**
  * MIST functions are expressions that have parameters.
  */
-MIST.Fun = function(parameters, body) 
+MIST.Fun = function(parameters, body)
 {
   this.class = "MIST.Fun";
   // Note: Need to validate inputs.
@@ -452,13 +452,13 @@ MIST.Fun.prototype.toString = function() {
  * Pretty print.
  */
 MIST.Fun.prototype.prettyPrint = function (indent) {
-  return this.body.prettyPrint(indent); 
+  return this.body.prettyPrint(indent);
 };
 
 /**
  * Convert to an executable Javascript function.
  */
-MIST.Fun.prototype.toFunction = function() { 
+MIST.Fun.prototype.toFunction = function() {
   var code = "var " + this.name  + " = " + this.toString();
   eval(code);
   return eval(this.name);
@@ -480,8 +480,8 @@ MIST.Val = function(name) {
 /**
  * Convert to a string.
  */
-MIST.Val.prototype.toString = function() { 
-  return this.code; 
+MIST.Val.prototype.toString = function() {
+  return this.code;
 }; // MIST.Val.prototype.toString
 
 /**
@@ -528,7 +528,7 @@ MIST.ImageGrey = function(exp)
 MIST.Collection = function(name, about) {
   this.class = "MIST.Collection";
   this.name = name;
-  if (!this.name) { 
+  if (!this.name) {
     this.name = "<Untitled>";
   }
   this.about = about;
@@ -554,7 +554,7 @@ MIST.Collection.prototype.clear = function() {
 
 /**
  * Add an object, which we will then index by name (we assume that all
- * objects have a .name field).  
+ * objects have a .name field).
  *
  * If there's a .display field, also index the object by that value
  */
@@ -568,14 +568,14 @@ MIST.Collection.prototype.add = function(obj) {
 /**
  * Look up an object.
  */
-MIST.Collection.prototype.get = function(name) { 
+MIST.Collection.prototype.get = function(name) {
   return this.values[name];
 } // MIST.Collection.prototype.get
 
 /**
  * Add a user function.
  */
-MIST.Collection.prototype.addUserFun = function(name,display,about,params,code) { 
+MIST.Collection.prototype.addUserFun = function(name,display,about,params,code) {
   var numParams = 0;
   if (params) {
     numParams = params.split(",").length;
@@ -644,7 +644,7 @@ MIST.digit = /[0-9]/;
 /**
  * Token type.
  */
-MIST.tokens = Object.freeze({UNKNOWN:0, OPEN:1, CLOSE:2, COMMA:3, 
+MIST.tokens = Object.freeze({UNKNOWN:0, OPEN:1, CLOSE:2, COMMA:3,
   ID:4, NUM:5, EOF:6});
 
 /**
@@ -689,7 +689,7 @@ MIST.Input = function(text)
       return undefined;
     }
     else {
-      var result = new MIST.Token(MIST.tokens.UNKNOWN, c, 
+      var result = new MIST.Token(MIST.tokens.UNKNOWN, c,
           this.row, this.col);
       ++this.pos;
       ++this.col;
@@ -745,14 +745,14 @@ MIST.tokenize = function(str) {
         var num = ch.text;
         var c;
         var dot = (ch.text == ".");
-        while ((c = input.peek()) && 
+        while ((c = input.peek()) &&
             (/[0-9]/.test(c) || (!dot && (c == ".")))) {
           input.next();
           num += c;
           if (c == ".") { dot = true; }
         } // while
         if (num == "-") {
-          MIST.parseError("Singleton negative signs not allowed.", 
+          MIST.parseError("Singleton negative signs not allowed.",
             ch.row, ch.col);
         } // if we only saw a negative sign
         ch.type = MIST.tokens.NUM;
@@ -836,7 +836,7 @@ MIST.parse = function(str,prefix) {
     if (tok.type == MIST.tokens.NUM) {
       return new MIST.Val(tok.text);
     } // MIST.tokens.NUM
-    
+
     // Only identifiers and numbers are allowed at the top level.
     else if (tok.type != MIST.tokens.ID) {
       MIST.parseError("Unexpected token (" + tok.text + ")", tok.row, tok.col);
@@ -858,7 +858,7 @@ MIST.parse = function(str,prefix) {
       tokens.shift();
       return new MIST.App(prefix + tok.text, children);
     } // if it's a function call
-  
+
     // Otherwise, it's a singleton
     else {
       return new MIST.Val(tok.text);
@@ -870,7 +870,7 @@ MIST.parse = function(str,prefix) {
   if ((tokens.length > 1) || (peekType(tokens) != MIST.tokens.EOF)) {
     MIST.parseError("Extra text after expression", tokens[0].row,
       tokens[0].col);
-  } 
+  }
   return result;
 } // MIST.parse
 
@@ -955,7 +955,7 @@ function MISTbody2fun(body)
   return eval("(function (x,y,t,m) { return " + body + "})");
 } // MISTbody2fun
 
-/** 
+/**
  * Convert a MIST expression to something that returns an RGB
  * list.  env is the 'environment' - a mapping of names to MIST
  * expressions
@@ -976,7 +976,7 @@ MIST.expToRGB = function(name,exp,env) {
   //      return (exp).map(r2c);
   //   };
   if (type == MIST.TYPE.RGB) {
-    var code = "(function(x,y,t,m,p) { " + envCode + 
+    var code = "(function(x,y,t,m,p) { " + envCode +
         "; return (" + exp.toString() + ").map(r2c); })";
     // console.log(code);
     return eval(code);
@@ -989,7 +989,7 @@ MIST.expToRGB = function(name,exp,env) {
   //      return [_tmp_, _tmp_, _tmp];
   else if (type == MIST.TYPE.NUMBER) {
     var code = "(function(x,y,t,m,p) { " + envCode +
-        "; var _tmp_ = r2c(-" + exp.toString() + 
+        "; var _tmp_ = r2c(-" + exp.toString() +
         "); return [_tmp_, _tmp_, _tmp_]; })";
     // console.log(code);
     return eval(code);
@@ -1089,7 +1089,7 @@ MIST.compareFunOnce = function(code1,code2,time,mouse) {
     mouse = { x:rand(), y:rand(), X:rand(), Y:rand() };
   }
 
-  // Parse the two pieces of code.  
+  // Parse the two pieces of code.
   try {
     var parsed1 = MIST.parse(code1);
     var parsed2 = MIST.parse(code2);
@@ -1169,7 +1169,7 @@ MIST.compareFunTime = function(code1,code2) {
 // | Sample Expressions |
 // +--------------------+
 
-var plus = function() 
+var plus = function()
   {
     var result = 0;
     for (var i = 0; i < arguments.length; i++)
@@ -1186,12 +1186,12 @@ var exp3 = new MIST.Val("x");
 var fun0 = new MIST.Fun([], exp0);
 
 var fun1 = new MIST.Fun(["i"],
-                       new MIST.App("plus", 
+                       new MIST.App("plus",
                                    new MIST.Val(3),
                                    new MIST.Val("i")));
 
 var fun2 = new MIST.Fun(["i"],
-                       new MIST.App("plus", 
+                       new MIST.App("plus",
                                     new MIST.Val("x"),
                                     new MIST.Val("i")));
 

@@ -1,7 +1,7 @@
 title
  MIST Creator Workspace
 js
- <script type='text/javascript' src='https://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js'></script>
+ <script type='text/javascript' src='/js/kinetic-v5.1.0.min.js'></script>
  <script type='text/javascript' src='/js/mist-gui-jquery-functions.js'></script>
  <script type='text/javascript' src='/js/mist-utils.js'></script>
  <script type='text/javascript' src='/js/mist-functions.js'></script>
