@@ -1,6 +1,28 @@
 /**
  * Functions related to the gallery.
  */
+
+/**
+ * Set which images a user has liked on the current page
+ */
+/*
+  Procedure:
+  gallary.setLikes(imageArray, userID, callback)
+  Purpose:
+  find which images in imageArray are liked by the user with userID
+  Parameters:
+  imageArray, a set of images to look for in database
+  userID, the current user or nil if not logged in
+  callback, a function describing what to do with the results
+  Produces:
+  imageArrayClone, a clone of imageArray, with the "liked" field 
+    for each image changed according to the current user
+  errorsArray, a possible error from database for each image quaried
+  Pre-conditions:
+  None
+  Post-conditions:
+  None
+*/
 var setLikes = function(imageArray, userID, callback) {
   if(imageArray.length == 0)
     callback([]);
@@ -8,7 +30,12 @@ var setLikes = function(imageArray, userID, callback) {
     var imageArrayClone = imageArray.slice(0, imageArray.length);
     var errorsArray = [];
     var likes = {counter: 0, likes: []};
+    // for each image, check database to see if user has liked image
+    // save true or false for each image in likes array
+    // when all images checked, copy likes to the liked filed of each image
+    // execute callback with modified imageArrayClone
     for(var image = 0; image < imageArrayClone.length; image++) {
+      // use the image counter as var currentIndex
       (function(currentIndex){
         filedatabase.hasLiked(userID, imageArrayClone[currentIndex].imageid, function(liked, error) {
           likes.likes[currentIndex] = liked;
@@ -29,17 +56,21 @@ var setLikes = function(imageArray, userID, callback) {
 var filedatabase;
 module.exports.buildFeaturedPage = (function(req, res, database) {
   filedatabase=database;
+  // there are 9 images on a page
+  // might want to pull this out to a global variable
   module.exports.getFeaturedImages (9, function(images, error){
     if(error) {
       res.redirect("/404");
     }
     else {
+      // userid is either logged in user or nil
+      // add user like info to each image, then render page
       var userid = (req.session.user) ? req.session.user.userid : null;
       setLikes(images, userid, function(imageArray, nextPage, errorArray){
         res.render('gallery',{
             user: req.session.user,
             images: imageArray,
-            nextPage:false,
+            nextPage:false,         // featured is one page long
             currentPage: 1,
             type: "featured"
           }
@@ -56,12 +87,14 @@ module.exports.buildRandomPage = (function(req, res, database) {
       res.redirect("/404");
     }
     else {
+      // userid is either logged in user or nil
+      // add user like info to each image, then render page
       var userid = (req.session.user) ? req.session.user.userid : null;
       setLikes(images, userid, function(imageArray, errorArray){
         res.render('gallery',{
             user: req.session.user,
             images: imageArray,
-            currentPage: req.params.pageNumber,
+            currentPage: req.params.pageNumber,  // multiple pages long
             type: "random"
           }
         );
@@ -77,13 +110,15 @@ module.exports.buildRecentsPage = function(req, res, database) {
       res.redirect("/404");
     }
     else {
+      // userid is either logged in user or nil
+      // add user like info to each image, then render page
       var userid = (req.session.user) ? req.session.user.userid : null;
       setLikes(images, userid, function(imageArray, errorArray){
         res.render('gallery',{
             user: req.session.user,
             images: imageArray,
             nextPage: nextPage,
-            currentPage: req.params.pageNumber,
+            currentPage: req.params.pageNumber,  // mulitple pages long
             type: "recent"
           }
         );
