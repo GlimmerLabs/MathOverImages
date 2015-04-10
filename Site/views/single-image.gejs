@@ -1,9 +1,9 @@
 title
  <%- image.title + " by " + image.username + " on MIST" %>
 
-metas
+meta
  <% var jpgURL= "\"http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=800&height=800\"" %>
- <meta property="og:image" content=' + jpgURL + '/>
+ <meta property="og:image" content=<%- jpgURL %>/>
 css
  <link rel="stylesheet" href="/css/single-image.css">
 
