@@ -90,18 +90,6 @@ var handlers = {};
 // | Image Handlers |
 // +----------------+
 
-/**
- * Check if user is logged in
- * /
-
-handlers.login = function(info,req,res) {
-  if (!req.session.user) {
-    fail(res, "You are not logged in.");
-    return;
-  }
-  else
-    return req.query.id;
-}
     
 /**
  * Delete an image.
