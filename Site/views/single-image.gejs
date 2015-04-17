@@ -2,7 +2,7 @@ title
  <%- image.title + " by " + image.username + " on MIST" %>
 
 meta
- <% var jpgURL= "\"http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=800&height=800\"" %>
+ <% var jpgURL= "\"http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=200&height=200\"" %>
  <meta property="og:image" content=<%- jpgURL %>/>
 css
  <link rel="stylesheet" href="/css/single-image.css">
