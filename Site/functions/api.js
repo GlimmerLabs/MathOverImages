@@ -456,6 +456,19 @@ handlers.addToAlbum = function(info, req, res) {
 }; // handlers.addToAlbum
 
 /**
+ * Check if user is logged in
+ */
+handlers.loggedIn = function(info, req, res) {
+  if (!req.session.user) {
+    fail(res, "You are not logged in.");
+    return;
+  }
+  else {
+    return req.query.id;
+  }
+}
+
+/**
  * Search for names and values in the database.
  *   info.action: omnisearch
  *   info.search, the search string
