@@ -90,6 +90,7 @@ var handlers = {};
 // | Image Handlers |
 // +----------------+
 
+    
 /**
  * Delete an image.
  *   info.action: deleteimg
