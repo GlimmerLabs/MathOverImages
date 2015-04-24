@@ -451,9 +451,11 @@ handlers.addToAlbum = function(info, req, res) {
 
 /**
  * checkAvailability - Check whether a username is available.
+ * info.action: checkAvailability
+ * info.userinfo: username or email of a user
  */
 handlers.checkAvailability = function(info, req, res) {
-  if (!info.username) {
+  if (!info.userinfo) {
     fail(res, "missing required userinfo field");
     return;
   }
@@ -465,6 +467,7 @@ handlers.checkAvailability = function(info, req, res) {
 
 /**
  * Check if user is logged in
+ * info.action: loggedIn
  */
 handlers.loggedIn = function(info, req, res) {
   if (!req.session.user) {
