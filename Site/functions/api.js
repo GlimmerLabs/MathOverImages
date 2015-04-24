@@ -454,10 +454,10 @@ handlers.addToAlbum = function(info, req, res) {
  */
 handlers.checkAvailability = function(info, req, res) {
   if (!info.username) {
-    fail(res, "missing required username field");
+    fail(res, "missing required userinfo field");
     return;
   }
-  database.userExists(info.username, function(exists, error) {
+  database.userExists(info.userinfo, function(exists, error) {
     res.end((!exists).toString());
   });
 }; // checkAvailability
