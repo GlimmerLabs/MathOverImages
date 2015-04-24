@@ -465,7 +465,7 @@ handlers.loggedIn = function(info, req, res) {
     return;
   }
   else {
-    return req.query.id;
+    return req.session.user.userid;
   }
 }
 
