@@ -14,6 +14,7 @@
 // +------------------+
 
 var animator;
+var encoder;
 
 $(document).ready(function() {
   // Add feature and unfeature capability
@@ -34,6 +35,11 @@ $(document).ready(function() {
     })
   }
   catch(err) {}
+
+  // Set up gif encoder
+  encoder = new GIFEncoder();
+  encoder.setRepeat(0);
+  encoder.setDelay(Math.round(100/30)); //convert 30fps to frame delay -> Somewhere I'm missing frames though!
   // Support full size canvases
   var canvas = document.getElementById("canvas");
   if (canvas.className == "fullscreen") {
@@ -73,6 +79,26 @@ $(document).ready(function() {
   }
   catch(err) {
   }
+	// Add the handler for the "record gif" button
+$("#recorder").click(function() {
+	var state = $(this).html();
+	if (state == "record") { //start recording
+		$(this).html("gif");
+		console.log(encoder.start());
+		$(this).val("1");
+	//	$("#dl").css("display","flex");
+	}	
+	else { //stop recording
+		$(this).html("record");
+		encoder.finish();
+		$(this).val("0");
+		var binary_gif = encoder.stream().getData();
+		var data_url = 'data:image/gif;base64,' + encode64(binary_gif);
+		//document.location = data_url;
+		window.location.href = data_url;
+	}
+});
+
 
   // Add the handler for the "code" button
   var btn=document.getElementById("showcode");
@@ -133,7 +159,7 @@ $(document).ready(function() {
       } // if confirmed
     } // delete[i].onclick
   } // for
-  animator = new MIST.ui.Animator(document.getElementById('code').innerHTML,
+  animator = new MIST.ui.Animator(document.getElementById("code").innerHTML,
     "", {}, canvas);
   animator.start();
   canvas.onkeypress=function(evt) {

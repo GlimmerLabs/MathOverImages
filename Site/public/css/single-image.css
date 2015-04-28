@@ -378,11 +378,34 @@ margin-left: 1150px;
 	background-color:#dfdfdf;
 }
 
+#recorder:hover {
+	background-color:#ff0000;
+	border: #ffffff;
+	color: #ffffff;
+}
+
+@keyframes recording {
+	from {background-color: red; color: white;}
+	to {background-color: white; color: red;}
+}
+
+#recorder[value="1"] {
+	background-color:#ff0000;
+	border: #ffffff;
+	color: #ffffff;
+	animation: recording 1s infinite;
+}
+
 #image-controls{
   padding-top:5px;
   padding-bottom:5px;
   font-size: 13px;
   color: #777777;
+}
+
+#dl{
+  display: none;
+  width: 80px;
 }
 
 input[type=range] {

@@ -142,22 +142,47 @@ function Mouse(x, y, cx, cy)
  * Render an expression on the specified region of the canvas.
  * (If no region is specified, uses the whole canvas.)
  */
+
+
 MIST.render = function(exp, context, canvas, renderWidth, renderHeight,
     imgLeft, imgTop, imgWidth, imgHeight) {
   // Get the time.
   var d = new Date();
-  var t = {
+ 
+
+ var t = {
     s: d.getMilliseconds()/500 - 1,
     m: (d.getSeconds()*1000 + d.getMilliseconds())/30000 - 1,
     h: (d.getMinutes()*60 + d.getSeconds())/1800 - 1,
     d: (d.getHours()*60 + d.getMinutes())/720 - 1
-  };
+  }; 
+
   // Use the core function
   MIST.renderAt(t, exp, context, canvas, renderWidth, renderHeight,
       imgLeft, imgTop, imgWidth, imgHeight);
   // Return the time (for use elsewhere)
   return t;
 } // MIST.render
+
+MIST.renderGIF = function(d, exp, context, canvas, renderWidth, renderHeight, 
+    imgLeft, imgTop, imgWidth, imgHeight) {
+
+  var t = {
+    s: d.ms / 500 - 1,
+    m: ( d.s * 1000 + d.ms)/30000 - 1,
+    h: ( d.m * 60 + d.s)/1800 - 1,
+    d: ( d.h * 60 + d.m)/720 - 1
+  };
+
+  // Use the core function
+  MIST.renderAt(t, exp, context, canvas, renderWidth, renderHeight,
+      imgLeft, imgTop, imgWidth, imgHeight);
+  // Return the time (for use elsewhere)
+  return t;
+} // MIST.renderGIF
+    
+
+
 
 /**
  * Render an expression at a particular time.
@@ -214,7 +239,6 @@ MIST.renderAt = function(t, exp, context, canvas,
 
   // Build the function
   var fun = MIST.expToRGB("untitled image", exp, context);
-
   // Set up our main variables
   var x = -1;
   var y = -1 - deltaY;
@@ -252,5 +276,11 @@ MIST.renderAt = function(t, exp, context, canvas,
   // Draw and scale
   bufferContext.putImageData(region, 0, 0);
   canvasContext.drawImage(buffer, imgLeft, imgTop, imgWidth, imgHeight);
+
+//canvasContext.fillStyle = "rgb(200, 0, 0)";
+//canvasContext.fillRect (10,10,75,50);
+
+//return t;
+
 } // MIST.renderAt
 

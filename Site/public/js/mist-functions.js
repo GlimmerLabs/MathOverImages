@@ -899,6 +899,19 @@ function SimulatedTime()
   this.y = 0;
 } // SimulatedTime
 
+
+function gifTime()
+{
+  var temp = new Date();
+  this.ms = temp.getMilliseconds();
+  this.s = temp.getSeconds();
+  this.m = temp.getMinutes();
+  this.h = temp.getHours();
+  this.d = 0;
+  this.y = 0;
+} // gifTime
+
+
 // +-------------+---------------------------------------------------
 // | Quick Hacks |
 // +-------------+
@@ -978,7 +991,7 @@ MIST.expToRGB = function(name,exp,env) {
   if (type == MIST.TYPE.RGB) {
     var code = "(function(x,y,t,m,p) { " + envCode +
         "; return (" + exp.toString() + ").map(r2c); })";
-    // console.log(code);
+     //console.log(code);
     return eval(code);
   }
   // For B&W functions
@@ -991,7 +1004,7 @@ MIST.expToRGB = function(name,exp,env) {
     var code = "(function(x,y,t,m,p) { " + envCode +
         "; var _tmp_ = r2c(-" + exp.toString() +
         "); return [_tmp_, _tmp_, _tmp_]; })";
-    // console.log(code);
+    //console.log(code);
     return eval(code);
   }
   else {

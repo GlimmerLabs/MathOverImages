@@ -1,6 +1,7 @@
 title
  <%- image.title + " by " + image.username + " on MIST" %>
 
+
 metas
  <% var jpgURL= "\"http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=800&height=800\"" %>
  <meta property="og:image" content=' + jpgURL + '/>
@@ -26,14 +27,18 @@ js
    form.submit();
  } // setProfileImage
  </script>
+<script type="text/javascript" src="/js/LZWEncoder.js"></script>
+<script type="text/javascript" src="/js/NeuQuant.js"></script>
+<script type="text/javascript" src="/js/GIFEncoder.js"></script>
+<script type="text/javascript" src="/js/b64.js"></script>
 
 head1
  <%- image.title %>
 head2
  <%- image.modifiedAt.toUTCString() %>
-
 body
- <figure>
+
+<figure>
    <canvas id="canvas" width="400" height="400"></canvas>
    <div id="image-sharing" data-imageid=<%= image.imageid %>>
      <figcaption class="<%= liked ? 'left starred' : 'left unstarred' %>">★<%- image.rating %></figcaption>
@@ -47,14 +52,18 @@ body
    </div> <!-- image-sharing -->
    <div id="image-controls">
      <% if(image.code.indexOf("t.") > -1 || image.code.indexOf("m.") > -1) { %>
-     <button id="animator" class="animations">stop</button>
+	<button id="animator" class="animations">stop</button>
+	<button id="recorder" class="animations" value="0">record</button>
    <% } %>
+
      <button id="jpeg" class="animations">jpeg</button>
      <button id="showcode" class="animations">code</button>
+<button id="dl" class="animations" style="width:200">download</button>
+<br>
       Resolution: 1px <input id="pixels" type="range" min="1" max="400" value="200" step ="1"> 400px
    </div> <!-- image-controls -->
  </figure>
- <p id="code" class="code" style="display:none;"><%- image.code %></p>
+<p id="code" class="code" style="display:none;"><%- image.code %></p>
  <div style="align:center; margin-left: auto; margin-right: auto; width:100%;">
    <p id="pretty" class="pretty" style="display:none;"></p>
  </div>

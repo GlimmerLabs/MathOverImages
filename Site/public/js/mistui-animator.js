@@ -82,8 +82,11 @@ MIST.ui.Animator = function(exp, params, context, canvas, log) {
    // need to re-render a particular frame.)
   this.time = { t:0, m:0, h:0, d:0 };
 
+  this.simTime = new gifTime();
+
   // Set up the bounds (which also sets up the render width and height)
   this.bounds(0, 0, canvas.width, canvas.height);
+
 
   // Parse the expression
   try {
@@ -139,6 +142,35 @@ MIST.ui.Animator.prototype.coords = function() {
   context.textBaseline="top";
   context.fillText("+1", this.left+(this.width/2), this.top+this.height+5);
 }; // coords
+
+/**
+ *Increment simulated time
+ */
+incTime = function(t) {
+t.ms += 33; 
+ if (t.ms >= 1000) {
+        t.ms = 0;
+        t.s++;
+  }
+  if (t.s > 60) {
+        t.s = 0;
+        t.m++;
+  }
+  if (t.m > 60) {
+        t.m = 0;
+        t.h++
+  }
+  if (t.h > 24) {
+        t.h = 0;
+        t.d++;
+  }
+  if (t.d > 365) {
+        t.d = 0;
+        t.y++;
+  }
+ return t;
+}
+
 /**
  * Do one frame of the animation.
  */
@@ -160,15 +192,29 @@ MIST.ui.Animator.prototype.frame = function() {
     this.log(paramInfo);
   } // if (paramInfo)
 
-  // Make the frame
+
+
+  // Make the frame: if we are recording, we need to simulate time
   try {
-    this.time = MIST.render(this.expParsed, this.context, this.canvas,
-        this.renderWidth, this.renderHeight, this.left, this.top,
-        this.width, this.height);
-  }
+    if ($("#recorder").html() == "gif") {
+
+//      var tempTim = incTime(this.simTime);
+
+      this.time = MIST.renderGIF(incTime(this.simTime), this.expParsed, this.context, this.canvas,
+          this.renderWidth, this.renderHeight, this.left, this.top,
+          this.width, this.height);
+
+      console.log(encoder.addFrame(this.canvas.getContext('2d')));   
+    }
+    else {
+      this.time = MIST.render(this.expParsed, this.context, this.canvas,
+          this.renderWidth, this.renderHeight, this.left, this.top,
+          this.width, this.height);
+    }
+  }  
   catch(err) {
     this.log(err);
-  }
+  }   
 } // frame
 
 /**
@@ -176,7 +222,11 @@ MIST.ui.Animator.prototype.frame = function() {
  */
 MIST.ui.Animator.prototype.jpg = function() {
   var data = canvas.toDataURL("image/jpeg");
-  document.location = data;
+  //document.location = data;
+  $("#test").html("hell goats");
+
+ // $("#change").attr("content", "http://www.cs.grinnell.edu/~hansonse17/main/twit.png");
+  //$("meta[property='og\\:image']").attr("content", "http://www.cs.grinnell.edu/~hansonse17/main/widescreenbackscodes.png");
 } // MIST.ui.Animator.prototype.jpg
 
 /**
@@ -206,6 +256,7 @@ MIST.ui.Animator.prototype.run = function() {
   // Build one frame
   this.frame();
 
+  
   // And schedule the next frame
   if (this.on) {
     var animator = this;
@@ -242,8 +293,8 @@ MIST.ui.Animator.prototype.stop = function() {
  * Start the animation running.
  */
 MIST.ui.Animator.prototype.start = function()
-{
-  // Set up a hash for the parameters
+{  
+// Set up a hash for the parameters
   this.parameters = {};
   if (this.params != "") {
     var tmp = this.params.split(",");

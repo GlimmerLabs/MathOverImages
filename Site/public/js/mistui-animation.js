@@ -93,11 +93,14 @@ MIST.ui.animator.frame = function() {
   // Inform the user
   MIST.ui.animator.log(paramInfo);
   // Make the frame
+   
+
+
   if (MIST.ui.animator.on) {
     MIST.ui.animator.time = MIST.render(MIST.ui.animator.exp, context,
-        MIST.ui.animator.canvas, 200, 200);
+        MIST.ui.animator.canvas, 200, 200);   
   }
-  else {
+ else {
     MIST.ui.animator.time = MIST.render(MIST.ui.animator.exp, context,
         MIST.ui.animator.canvas);
   }
