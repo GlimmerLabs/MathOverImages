@@ -42,16 +42,8 @@ module.exports.run = function(info, req, res) {
     fail(res, "No action specified.");
   } // if there's no action
 
-  // checkAvailability - Check whether a username is available.
-  //   Does this work?
-  else if (action == "checkAvailability") {
-    database.userExists(req.body.value, function(exists, error) {
-      res.end((!exists).toString());
-    });
-  } // checkAvailability
-
   // Deal with actions with a handler.
-  if (handlers[action]) {
+  else if (handlers[action]) {
     handlers[action](info, req, res);
   } // if (handlers[action])
 
@@ -90,6 +82,7 @@ var handlers = {};
 // | Image Handlers |
 // +----------------+
 
+    
 /**
  * Delete an image.
  *   info.action: deleteimg
@@ -424,6 +417,7 @@ handlers.submitchallenge = function (info, req, res) {
   });
 };
 
+
 // +---------------+---------------------------------------------------
 // | Miscellaneous |
 // +---------------+
@@ -454,6 +448,36 @@ handlers.addToAlbum = function(info, req, res) {
     }
   });
 }; // handlers.addToAlbum
+
+/**
+ * checkAvailability - Check whether a username is available.
+ * info.action: checkAvailability
+ * info.userinfo: username or email of a user
+ */
+handlers.checkAvailability = function(info, req, res) {
+  if (!info.userinfo) {
+    fail(res, "missing required userinfo field");
+    return;
+  }
+  database.userExists(info.userinfo, function(exists, error) {
+    res.end((!exists).toString());
+  });
+}; // checkAvailability
+
+
+/**
+ * Check if user is logged in
+ * info.action: loggedIn
+ */
+handlers.loggedIn = function(info, req, res) {
+  if (!req.session.user) {
+    fail(res, "You are not logged in.");
+    return;
+  }
+  else {
+    res.end((req.session.user.userid).toString());
+  }
+};
 
 /**
  * Search for names and values in the database.

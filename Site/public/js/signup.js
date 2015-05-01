@@ -15,7 +15,7 @@ $(document).ready(function(){
     } )
 
     var checkUsername = (function(username){
-	var parameters = { funct: "checkAvailability", value: username};
+	var parameters = { funct: "checkAvailability", userinfo: username};
 	$.post('/api', parameters, function(available){
 	    if(available === "true")
 		$("#usernamevalid").html("<p>Yes! Available!</p>");
@@ -25,7 +25,7 @@ $(document).ready(function(){
     });
 
     var checkEmail = (function(email){
-	var parameters = { funct: "checkAvailability", value: email};
+	var parameters = { funct: "checkAvailability", userinfo: email};
 	$.post('/api', parameters, function(available){
 	    if(available === "true")
 		$("#emailvalid").html("<p>Good</p>");
