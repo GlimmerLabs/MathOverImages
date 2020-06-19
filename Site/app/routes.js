@@ -67,7 +67,7 @@ function sendFileWithSuffix(res,path,suffix) {
 // | Exports |
 // +---------+
 
-module.exports = function(app,database) {
+module.exports = function(app, express, database) {
   // --------------------------------------------------
   // Path: all
   //   EVERY PAGE
@@ -417,10 +417,11 @@ module.exports = function(app,database) {
 
   // --------------------------------------------------
   // Path: /react
-  //   Distribute react file
-  app.get('/react/:file', function(req,res) {
+  //   Distribute react related files
+  app.use('/react', express.static('public/react'));
+  /*app.get('/react/:file', function(req,res) {
     res.sendFile(req.params.file, {root: path.resolve(__dirname, "../", "public/react")});
-  });
+  });*/
 
   // --------------------------------------------------
   // Path: /tutorial
