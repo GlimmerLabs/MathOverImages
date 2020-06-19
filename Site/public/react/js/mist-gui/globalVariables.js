@@ -4,6 +4,7 @@
  *   within the object/prototype.)
  */
  
+var width = 900;
 var height = 2 * width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';
