@@ -25,6 +25,7 @@ var search= require("../functions/search.js");
 var signup = require("../functions/signup.js");
 var tutorial = require("../functions/tutorial.js");
 var profile = require("../functions/profile.js");
+var path = require("path");
 
 // +-------+---------------------------------------------------------
 // | Notes |
@@ -414,6 +415,12 @@ module.exports = function(app,database) {
     });
   });
 
+  // --------------------------------------------------
+  // Path: /react
+  //   Distribute react file
+  app.get('/react/:file', function(req,res) {
+    res.sendFile(req.params.file, {root: path.resolve(__dirname, "../", "public/react")});
+  });
 
   // --------------------------------------------------
   // Path: /tutorial
