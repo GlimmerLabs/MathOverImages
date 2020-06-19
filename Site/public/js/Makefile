@@ -44,8 +44,7 @@ MISTUI_FILES = \
         mistui-help.js \
         mistui-menus.js
 
-default: mist.js mistui.js mistgui.js \
-        ugly.mist.js ugly.mistui.js ugly.mistgui.js
+default: mist.js mistui.js mistgui.js
 
 mist.js: $(MIST_FILES)
 	cat $^ > $@
