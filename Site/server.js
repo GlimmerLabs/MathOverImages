@@ -12,11 +12,11 @@ var compress = require('compression');
 var fs = require('fs');
 
 /* set up HTTPS */
-var https = require('https');
+/*var https = require('https');
 var httpsOptions = {
   key: fs.readFileSync('./certs/key.pem'),
   cert: fs.readFileSync('./certs/cert.pem')
-}
+}*/
 
 var http = require('http');
 var app = express();
@@ -51,6 +51,6 @@ require('./app/routes.js')(app,database);
 //==================== launch ====================
 
 http.createServer(app).listen(ports.http);
-https.createServer(httpsOptions, app).listen(ports.https);
+// https.createServer(httpsOptions, app).listen(ports.https);
 console.log('HTTP operating on port ' + ports.http);
-console.log('HTTPS operating on port ' + ports.https);
+// console.log('HTTPS operating on port ' + ports.https);
