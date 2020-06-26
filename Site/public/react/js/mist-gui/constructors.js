@@ -369,4 +369,3 @@ var createEditableText = function (group) {
     layers.work.draw()
   };
 };
-
