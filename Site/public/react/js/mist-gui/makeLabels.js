@@ -36,9 +36,9 @@ var toolboxDescriptions = {
 };
 
 var tagColor = 'white';
-var pointerWidth = width / 90;
-var pointerHeight = width / 104;
-var triRadius = width / 156;
+var pointerWidth = size.width / 90;
+var pointerHeight = size.width / 104;
+var triRadius = size.width / 156;
 
 
 var makeLabel = function(group) {
