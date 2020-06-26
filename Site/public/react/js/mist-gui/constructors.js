@@ -102,8 +102,8 @@
     var newRect = new Kinetic.Rect({
       x: functionStyle.rectSideLength/2,
       y: 0,
-      width: valueSideLength,
-      height: valueSideLength,
+      width: valueStyle.sideLength,
+      height: valueStyle.sideLength,
       fill: values[valName].color,
       rotation: 45,
       name: valName
@@ -116,7 +116,7 @@
       fill: 'black',
       fontSize: nodeFontSize,
       x: 0,
-      y: valueSideLength/2,
+      y: valueStyle.sideLength/2,
       width: functionStyle.rectSideLength,
       align: 'center'
     });

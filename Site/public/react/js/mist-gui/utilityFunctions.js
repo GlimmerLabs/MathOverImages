@@ -383,7 +383,7 @@ var applyDragBounds = function(group) {
 var enableSaveImage = function() {
   funBarSaveImCover.setAttrs({
     stroke: 'black',
-    fill: valueMenuColor
+    fill: valueStyle.menuColor
   });
   funBarSaveImText.setAttr('fill', 'black');
 };
@@ -391,7 +391,7 @@ var enableSaveImage = function() {
 var disableSaveImage = function() {
   funBarSaveImCover.setAttrs({
     stroke: 'grey',
-    fill: valueMenuColorLight
+    fill: valueStyle.menuColorLight
   });
   funBarSaveImText.setAttr('fill', 'grey');
 };

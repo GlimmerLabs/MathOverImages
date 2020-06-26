@@ -16,7 +16,7 @@ funBarSaveImGroup.on('mousedown', function(){
 
 funBarSaveImGroup.on('mouseover', function(){
   if (currShape && predicate.isRenderable(currShape)) {
-    funBarSaveImGroup.children[0].setAttr('fill', valueMenuColorLight);
+    funBarSaveImGroup.children[0].setAttr('fill', valueStyle.menuColorLight);
     layers.funBar.draw();
   }
 });
@@ -24,7 +24,7 @@ funBarSaveImGroup.on('mouseover', function(){
 funBarSaveImGroup.on('mouseout', function(){
   if (currShape && predicate.isRenderable(currShape)) {
     funBarSaveImGroup.children[0].setAttrs({
-      fill: valueMenuColor,
+      fill: valueStyle.menuColor,
       shadowEnabled: false
     });
     layers.funBar.draw();

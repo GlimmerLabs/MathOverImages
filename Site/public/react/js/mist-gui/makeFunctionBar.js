@@ -89,7 +89,7 @@ var funBarSaveImCover = new Kinetic.Rect ({
   y: 0,
   width: funBarIconTextWidth,
   height: funBarTextAreaHeight,
-  fill: valueMenuColorLight,
+  fill: valueStyle.menuColorLight,
   stroke: 'grey',
   strokeWidth: 1,
   shadowColor: 'black',

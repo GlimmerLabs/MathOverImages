@@ -26,13 +26,15 @@ functionStyle.multColor = '#5EC783';
 functionStyle.singleColor = '#77C9E2';
 functionStyle.RGBcolor = '#AE88D6';
 
-var valueSideLength = functionStyle.totalSideLength / 1.414;
-var valueMenuColor = '#F2937C';
-var valueMenuColorLight = '#FDE6DD';
-var valueXYColor = '#EFDC5C';
-var valueTimeColor = '#FD9E54'
-var valueMouseColor = '#E46868';
-var valueConstantColor = '#F17C9D';
+const valueStyle = {
+  sideLength: functionStyle.totalSideLength / 1.414,
+  menuColor: '#F2937C',
+  menuColorLight: '#FDE6DD',
+  XYColor: '#EFDC5C',
+  timeColor: '#FD9E54',
+  mouseColor: '#E46868',
+  constantColor: '#F17C9D',
+};
 
 var menuFontSize = size.width/75; //12 when width = 900
 var nodeFontSize = size.width / 56.25; //16 when width = 900
@@ -56,15 +58,15 @@ var functions = {
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'mouseX', 'mouseY', 'constant'];
 var values = {
-  x:        {rep: 'x', color: valueXYColor},
-  y:        {rep: 'y', color: valueXYColor},
-  second:   {rep: 't.s', color: valueTimeColor},
-  minute:   {rep: 't.m', color: valueTimeColor},
-  hour:     {rep: 't.h', color: valueTimeColor},
-  day:      {rep: 't.d', color: valueTimeColor},
-  constant: {rep: '#', color: valueConstantColor},
-  mouseX:   {rep: 'm.x', color: valueMouseColor},
-  mouseY:   {rep: 'm.y', color: valueMouseColor}
+  x:        {rep: 'x', color: valueStyle.XYColor},
+  y:        {rep: 'y', color: valueStyle.XYColor},
+  second:   {rep: 't.s', color: valueStyle.timeColor},
+  minute:   {rep: 't.m', color: valueStyle.timeColor},
+  hour:     {rep: 't.h', color: valueStyle.timeColor},
+  day:      {rep: 't.d', color: valueStyle.timeColor},
+  constant: {rep: '#', color: valueStyle.constantColor},
+  mouseX:   {rep: 'm.x', color: valueStyle.mouseColor},
+  mouseY:   {rep: 'm.y', color: valueStyle.mouseColor}
 }
 
 var imageBoxSideLength = size.width / 80;
