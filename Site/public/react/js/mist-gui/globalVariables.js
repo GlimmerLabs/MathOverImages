@@ -78,11 +78,13 @@ var editableTextWidth = size.width / 15;
 var editableTextHeight = size.width / 30;
 var editableTextFont = size.width / 69;
 
-var variableColor = {r: 197, g: 231, b: 109, a: .5};
-var variableStrokeColor = '#A1C447';
-var variableRadius = 1.4 * (functionStyle.totalSideLength / 2);
-var variableTextColor = '#62694F';
-var variableWidth = Math.cos(Math.PI/6)*variableRadius;
+const variableStyle = {
+  color: {r: 197, g: 231, b: 109, a: .5},
+  strokeColor: '#A1C447',
+  radius: 1.4 * (functionStyle.totalSideLength / 2),
+  textColor: '#62694F',
+};
+variableStyle.width = Math.cos(Math.PI/6) * variableStyle.radius;
 
 var outletXOffset = size.width / 400;
 var outletYOffset = functionStyle.rectSideLength / 3;

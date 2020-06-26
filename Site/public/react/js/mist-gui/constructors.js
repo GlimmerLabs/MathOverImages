@@ -160,14 +160,14 @@
     /* create circle shape. */
     var newHex = new Kinetic.RegularPolygon({
       sides: 6,
-      x: variableWidth,
-      y: variableRadius,
-      radius: variableRadius,
-      fillRed: variableColor['r'],
-      fillGreen: variableColor['g'],
-      fillBlue: variableColor['b'],
-      fillAlpha: variableColor['a'],
-      stroke: variableStrokeColor,
+      x: variableStyle.width,
+      y: variableStyle.radius,
+      radius: variableStyle.radius,
+      fillRed: variableStyle.color['r'],
+      fillGreen: variableStyle.color['g'],
+      fillBlue: variableStyle.color['b'],
+      fillAlpha: variableStyle.color['a'],
+      stroke: variableStyle.strokeColor,
       strokeWidth: 2,
       name: 'variableHex'
     });
@@ -176,11 +176,11 @@
     var newText = new Kinetic.Text({
       text: "",
       fontFamily: fonts.default,
-      fill: variableTextColor,
+      fill: variableStyle.textColor,
       fontSize: 16,
       x: 0,
-      y: (-.5 * variableRadius),
-      width: 2 * variableWidth,
+      y: (-.5 * variableStyle.radius),
+      width: 2 * variableStyle.width,
       align: 'center'
     });
     newGroup.add(newText);
