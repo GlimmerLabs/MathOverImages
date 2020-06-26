@@ -20,7 +20,7 @@ const utility = {
       var newOutlet = makeOutlet(funGroup);
       funGroup.add(newOutlet);
       if (funGroup.name() == 'rgb') {
-        newOutlet.setAttr('fill', RGBoutletColors[newOutlet.attrs.outletIndex]);
+        newOutlet.setAttr('fill', outletStyle.rgbColors[newOutlet.attrs.outletIndex]);
       } // if the function is an rgb
       layers.work.draw();
       if (funGroup.attrs.renderLayer != null){

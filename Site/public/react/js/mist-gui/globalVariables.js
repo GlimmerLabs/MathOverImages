@@ -89,6 +89,7 @@ const outletStyle = {
   xOffset: size.width / 400,
   yOffset: functionStyle.rectSideLength / 3,
   color:  '#C4C4C4',
+  rgbColors: ['#C94949','#2D9C2D','#4272DB'],
 };
 
 var lineStrokeWidth = 2;
@@ -186,10 +187,6 @@ var popOpenWsGroupY = (size.height - popOpenWsRectHeight) / 2;
 var popOpenWsButtonShiftX = popTextShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
 var popOpenWsButtonWidth = ((popOpenWsRectWidth / 2) - (3 * popOpenWsButtonShiftX)) / 2;
 var popOpenWsButtonHeight = popOpenWsRectWidth * .06;
-
-
-var RGBoutletColors = ['#C94949','#2D9C2D','#4272DB'];
-
 
 // TOOLBOX BOOLEANS
  var lineToolOn = false;
