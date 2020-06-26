@@ -353,7 +353,7 @@ function readyEditing(stage)
           undoAction(actionArray[currIndex - 1]);
           currIndex--;
           shadeUndoRedo();
-          toolboxLayer.draw();
+          layers.toolbox.draw();
         }
       }
       else if (map[17] && map[89]) { // 17 is the control key; 89 is the y key
@@ -362,7 +362,7 @@ function readyEditing(stage)
           redoAction(actionArray[currIndex]);
           currIndex++;
           shadeUndoRedo();
-          toolboxLayer.draw();
+          layers.toolbox.draw();
         }
       }
       else if (map[67]) { // 67 is the c key
@@ -371,7 +371,7 @@ function readyEditing(stage)
           lineToolOn = true;
           disableTool(workToolGroup);
           disableTool(deleteToolGroup);
-          toolboxLayer.draw();
+          layers.toolbox.draw();
         }
       }
       else if (map[68]) { // 68 is the d key
@@ -379,20 +379,20 @@ function readyEditing(stage)
           if (makingLine) {
             removeLine(currLine);
             makingLine = false; 
-            lineLayer.draw();
+            layers.line.draw();
           } // if making a line
         deleteToolGroup.children[0].setAttr('shadowEnabled', true);
         deleteToolOn = true;
         disableTool(workToolGroup);
         disableTool(lineToolGroup);
-        toolboxLayer.draw();
+        layers.toolbox.draw();
   } // if the delete tool is not already on
       }
       else if (map[87]) { // 87 is the w key
         if (makingLine) {
           removeLine(currLine);
           makingLine = false;
-          lineLayer.draw();
+          layers.line.draw();
         } // if making a line
         if (!workToolOn) {
           enableWorkTool();

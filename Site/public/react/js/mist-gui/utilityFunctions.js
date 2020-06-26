@@ -25,7 +25,7 @@
       if (funGroup.name() == 'rgb') {
         newOutlet.setAttr('fill', RGBoutletColors[newOutlet.attrs.outletIndex]);
       } // if the function is an rgb
-      workLayer.draw();
+      layers.work.draw();
       if (funGroup.attrs.renderLayer != null){
         funGroup.attrs.renderLayer.draw();
       } // if there is already a renderLayer, clear it with .draw()
@@ -56,7 +56,7 @@ var removeOutlet = function(funGroup) {
           line.points()[1] = funGroup.y() + (funGroup.children[0].height() + functionStrokeWidth) / 2;
         } // for the lineout array
       } // if there are still more than 2 outlets (we need to shrink the node)
-      workLayer.draw();
+      layers.work.draw();
       if (funGroup.attrs.renderLayer != null){
         funGroup.attrs.renderLayer.draw();
       } // if there is already a renderLayer, clear it with .draw()
@@ -124,7 +124,7 @@ var updateFunBar = function() {
     funBarText.setAttr('text', '');
     disableSaveImage();
   } // else we dont have a renderable currShape
-  funBarLayer.draw();
+  layers.funBar.draw();
 };
 
 /**
@@ -215,7 +215,7 @@ var updateForward = function(group) {
   workToolOn = true;
   disableTool(lineToolGroup);
   disableTool(deleteToolGroup);
-  toolboxLayer.draw();
+  layers.toolbox.draw();
  };
 
 
@@ -310,14 +310,14 @@ var removeShadow = function(group) {
     if (isRenderable(newNode)) {
       for (var i = 3; i < 5; i++) {
         newNode.children[i].setAttr('visible', false);
-        workLayer.draw();
+        layers.work.draw();
       }
     }
   }
   predicate.assertRenderable(newNode);
   updateForward(newNode);
-  lineLayer.draw();
-  workLayer.draw();
+  layers.line.draw();
+  layers.work.draw();
  };
 
 /**

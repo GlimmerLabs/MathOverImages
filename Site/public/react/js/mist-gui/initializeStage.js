@@ -34,20 +34,20 @@ function initializeStage(containerName) {
 
   // Add the layers to the stage. The top layer is the one most recently added, and
   // objects within a layer follow the same logic.
-  stage.add(lineLayer);
-  stage.add(menuLayer);
-  stage.add(menuButtonLayer);
-  stage.add(menuArrowLayer);
-  stage.add(menuControlLayer);
-  stage.add(workLayer);
-  stage.add(borderLayer);
-  stage.add(funBarLayer);
-  stage.add(textLayer);
-  stage.add(toolboxLayer);
-  stage.add(labelLayer);
-  stage.add(dragLayer);
-  stage.add(screenLayer);
-  stage.add(renderLayer);
+  stage.add(layers.line);
+  stage.add(layers.menu);
+  stage.add(layers.menuButton);
+  stage.add(layers.menuArrow);
+  stage.add(layers.menuControl);
+  stage.add(layers.work);
+  stage.add(layers.border);
+  stage.add(layers.funBar);
+  stage.add(layers.text);
+  stage.add(layers.toolbox);
+  stage.add(layers.label);
+  stage.add(layers.drag);
+  stage.add(layers.screen);
+  stage.add(layers.render);
 
   // Indicate that the stage is ready for 
  readyEditing(stage);
@@ -65,7 +65,7 @@ function initializeStage(containerName) {
     if (makingLine) {
       currLine.points()[2] = stage.getPointerPosition().x;
       currLine.points()[3] = stage.getPointerPosition().y;
-      lineLayer.draw();
+      layers.line.draw();
     } // if (makingLine)
   });
 } // initializeStage

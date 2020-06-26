@@ -3,21 +3,21 @@ funBarSaveImGroup.on('mouseup', function(){
     enableWorkTool();
     openSavePopUp();
     funBarSaveImGroup.children[0].setAttr('shadowEnabled', false);
-    funBarLayer.draw();
+    layers.funBar.draw();
   }
 });
 
 funBarSaveImGroup.on('mousedown', function(){
   if (currShape && predicate.isRenderable(currShape)) {
     funBarSaveImGroup.children[0].setAttr('shadowEnabled', true);
-    funBarLayer.draw();
+    layers.funBar.draw();
   }
 });
 
 funBarSaveImGroup.on('mouseover', function(){
   if (currShape && predicate.isRenderable(currShape)) {
     funBarSaveImGroup.children[0].setAttr('fill', valueMenuColorLight);
-    funBarLayer.draw();
+    layers.funBar.draw();
   }
 });
 
@@ -27,6 +27,6 @@ funBarSaveImGroup.on('mouseout', function(){
       fill: valueMenuColor,
       shadowEnabled: false
     });
-    funBarLayer.draw();
+    layers.funBar.draw();
   }
 });

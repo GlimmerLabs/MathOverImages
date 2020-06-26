@@ -5,14 +5,14 @@ var borderLine = new Kinetic.Line({
   strokeWidth: 2
 });
 
- borderLayer.add(borderLine);
- borderLayer.draw();
+ layers.border.add(borderLine);
+ layers.border.draw();
 
  /* create and add menu buttons */
  var valuesButton = new Kinetic.Group({
   x: menuCornerWidth
  });
- menuButtonLayer.add(valuesButton);
+ layers.menuButton.add(valuesButton);
 
  var valuesButtonBox = new Kinetic.Rect({
   x:0,
@@ -51,7 +51,7 @@ var borderLine = new Kinetic.Line({
  var functionsButton = new Kinetic.Group({
   x: menuCornerWidth + buttonWidth
  });
- menuButtonLayer.add(functionsButton);
+ layers.menuButton.add(functionsButton);
 
  var functionsButtonBox = new Kinetic.Rect({
   x:0,
@@ -88,7 +88,7 @@ var borderLine = new Kinetic.Line({
   fontSize: menuFontSize
  });
  functionsButton.add(functionsButtonText);
- menuButtonLayer.draw();
+ layers.menuButton.draw();
 
  /**
   * toggle labels text
@@ -97,7 +97,7 @@ var borderLine = new Kinetic.Line({
     x: (width / 90),
     y: menuHeight + (width / 90)
   });
-  borderLayer.add(toggleTag);
+  layers.border.add(toggleTag);
 
   toggleTag.add(new Kinetic.Text({
     x:0,
@@ -112,14 +112,14 @@ var borderLine = new Kinetic.Line({
  var menuFunctions = [];
  for (var i = 0; i < funNames.length; i++) {
   menuFunctions[i] = makeFunctionGroup(funNames[i], menuFunctsXStart, menuYspacing);
-  menuLayer.add(menuFunctions[i]);
+  layers.menu.add(menuFunctions[i]);
  }
 
  /* add values to menu */
  var menuValues = [];
  for (var i = 0; i < valNames.length; i++) {
   menuValues[i] = makeValueGroup(valNames[i], menuValuesXStart, menuYspacing);
-  menuLayer.add(menuValues[i]);
+  layers.menu.add(menuValues[i]);
  }
 
 
@@ -207,8 +207,8 @@ var addScrollArrows = function(type) {
 var valuesArrows = addScrollArrows('values');
 var functionsArrows = addScrollArrows('functions');
 /* add arrows to menuArrowLayer */
-menuArrowLayer.add(valuesArrows['left'], valuesArrows['right']);
-menuArrowLayer.add(functionsArrows['left'], functionsArrows['right']);
+layers.menuArrow.add(valuesArrows['left'], valuesArrows['right']);
+layers.menuArrow.add(functionsArrows['left'], functionsArrows['right']);
 
 /**
  * showScrollArrows changes visibility of the scroll arrows to true depending 
@@ -224,7 +224,7 @@ menuArrowLayer.add(functionsArrows['left'], functionsArrows['right']);
       functionsArrows['left'].setAttr('visible', true);
       functionsArrows['right'].setAttr('visible', true);
     }
-    menuArrowLayer.draw();
+    layers.menuArrow.draw();
   }, 1000);
 };
 
@@ -241,7 +241,7 @@ var hideScrollArrows = function(type) {
     functionsArrows['left'].setAttr('visible', false);
     functionsArrows['right'].setAttr('visible', false);
   }
-  menuArrowLayer.draw();
+  layers.menuArrow.draw();
 };
 /**
  * updateArrows changes the opacity of the arrows based on if they are functional.
@@ -298,7 +298,7 @@ var hideScrollArrows = function(type) {
         rightArrow.children[1].setAttr('opacity', 0);
       } // else right non-funcitonal
     } // else if functions
-    menuArrowLayer.draw();
+    layers.menuArrow.draw();
   }, 1050);
 }; // updateArrows
 
@@ -347,7 +347,7 @@ var openButton = makeMenuButton('Open Workspace', menuOffset, (2*menuOffset) + m
 var saveButton = makeMenuButton('Save Workspace', menuOffset, (3*menuOffset) + 
   (2*menuControlHeight));
 
-menuControlLayer.add(bottomCover);
-menuControlLayer.add(resetButton);
-menuControlLayer.add(openButton);
-menuControlLayer.add(saveButton);
+layers.menuControl.add(bottomCover);
+layers.menuControl.add(resetButton);
+layers.menuControl.add(openButton);
+layers.menuControl.add(saveButton);

@@ -14,7 +14,7 @@ var saveWsGroup = new Kinetic.Group({
   y: popSaveWsGroupY,
   visible: false
 });
-screenLayer.add(saveWsGroup);
+layers.screen.add(saveWsGroup);
 
 var saveWsRect = new Kinetic.Rect({
   x: 0,
@@ -63,7 +63,7 @@ nameWsEditText.setEditable(true);
 nameWsEditText.matchingCharacters = /[a-zA-Z0-9\-]/;
 nameWsEditText.defaultText = 'Enter a Name';
 nameWsEditText.drawMethod = function(){
-  screenLayer.draw()
+  layers.screen.draw()
 };
 
 var popWsErrorText = new Kinetic.Text({
@@ -228,7 +228,7 @@ popSaveWsButtonGroup.on('mouseup', function(){
     saveWsGroup.setAttr('visible', false);
     showThumbnails();
   } // else a valid workspace name
-  screenLayer.draw();
+  layers.screen.draw();
 });
 
 popWsYesButtonGroup.on('mouseup', function(){
@@ -244,7 +244,7 @@ popWsYesButtonGroup.on('mouseup', function(){
   cover.setAttr('visible', false);
   saveWsGroup.setAttr('visible', false);
   showThumbnails();
-  screenLayer.draw();
+  layers.screen.draw();
 });
 
 popWsNoButtonGroup.on('mouseup', function(){
@@ -255,7 +255,7 @@ popWsNoButtonGroup.on('mouseup', function(){
   popWsErrorText.setAttr('text', '');
   nameWsEditText.setAttr('text', 'Enter a Name');
   nameWsEditText.setEditable(true);
-  screenLayer.draw();
+  layers.screen.draw();
 });
 
 popWsCancelButtonGroup.on('mouseup', function(){
@@ -266,7 +266,7 @@ popWsCancelButtonGroup.on('mouseup', function(){
   saveWsGroup.setAttr('visible', false);
   nameWsEditText.setEditable(true);
   showThumbnails();
-  screenLayer.draw();
+  layers.screen.draw();
 });
 
 var openSaveWsPopUp = function() {
@@ -276,5 +276,5 @@ var openSaveWsPopUp = function() {
   if (currentWorkspace) {
     nameWsEditText.setAttr('text', currentWorkspace);
   } // if currentWorkspace exists
-  screenLayer.draw();
+  layers.screen.draw();
 };

@@ -235,17 +235,19 @@ var OUTLET_OFFSET = 3;
  * 13. The renderLayer contains the large rendered canvas when saving an image.
  */
 
- var lineLayer = new Kinetic.Layer();
- var menuLayer = new Kinetic.Layer();
- var menuButtonLayer = new Kinetic.Layer();
- var menuArrowLayer = new Kinetic.Layer();
- var menuControlLayer = new Kinetic.Layer();
- var toolboxLayer = new Kinetic.Layer();
- var workLayer = new Kinetic.Layer();
- var borderLayer = new Kinetic.Layer();
- var funBarLayer = new Kinetic.Layer();
- var dragLayer = new Kinetic.Layer();
- var textLayer = new Kinetic.Layer();
- var labelLayer = new Kinetic.Layer();
- var screenLayer = new Kinetic.Layer();
- var renderLayer = new Kinetic.Layer();
+const layers = {
+  line: new Kinetic.Layer(),
+  menu: new Kinetic.Layer(),
+  menuButton: new Kinetic.Layer(),
+  menuArrow: new Kinetic.Layer(),
+  menuControl: new Kinetic.Layer(),
+  toolbox: new Kinetic.Layer(),
+  work: new Kinetic.Layer(),
+  border: new Kinetic.Layer(),
+  funBar: new Kinetic.Layer(),
+  drag: new Kinetic.Layer(),
+  text: new Kinetic.Layer(),
+  label: new Kinetic.Layer(),
+  screen: new Kinetic.Layer(),
+  render: new Kinetic.Layer(),
+};

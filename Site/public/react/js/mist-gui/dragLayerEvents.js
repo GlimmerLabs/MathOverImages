@@ -8,21 +8,21 @@
 /* workaround to make sure intersections work while dragging
    KineticJS's getIntersection doesn't work when using the 'mousedown' event
     to startDrag */
-    dragLayer.on('dragstart mousedown', function(evt) {
+    layers.drag.on('dragstart mousedown', function(evt) {
       if (dragShape) {
         dragShape.stopDrag();
         dragShape.startDrag();
-        dragLayer.draw();
+        layers.drag.draw();
       }
     });
 
-    dragLayer.on('mousedown', function(evt) {
+    layers.drag.on('mousedown', function(evt) {
       removeShadow(currShape);
       var group = evt.target.getParent();
       group.stopDrag();
       group.startDrag();
-      dragLayer.draw();
-      workLayer.draw();
+      layers.drag.draw();
+      layers.work.draw();
     });
 /*
   when an object being dragged is released:
@@ -31,7 +31,7 @@
   2. if its in the menu area destroy it and all lines attached to it
   */
   var initToWorkLayer = function(group) {
-    group.moveTo(workLayer);
+    group.moveTo(layers.work);
 
     if (predicate.isFunction(group) && group.children.length < 4) {
       for (var i = 0; i < functions[group.attrs.name].min; i++) {
@@ -59,7 +59,7 @@
     }
   };
 
-  dragLayer.on('mouseup', function(evt) {
+  layers.drag.on('mouseup', function(evt) {
     var group = evt.target.getParent();
     if (scaledObj) {
       scaledObj.setAttr('scale', { x: 1, y: 1 });
@@ -69,7 +69,7 @@
       insertToArray(actionToObject('replace', group, scaledObj));
       replaceNode(scaledObj, group);
       scaledObj = null;
-      group.moveTo(workLayer);
+      group.moveTo(layers.work);
     }
     else {
       if (group.attrs.y > menuHeight) {
@@ -90,16 +90,16 @@
     }
     updateFunBar();
     dragShape = null;
-    menuLayer.draw();
-    menuButtonLayer.draw();
-    dragLayer.draw();
-    workLayer.draw();
-    lineLayer.draw();
+    layers.menu.draw();
+    layers.menuButton.draw();
+    layers.drag.draw();
+    layers.work.draw();
+    layers.line.draw();
   }); 
 /*
  * While an object is being dragged, move all lines connected to it with it.
  */
- dragLayer.on('draw', function() {
+ layers.drag.on('draw', function() {
   if(currShape != null) {
     var targetLine;
     for(var i = 0; i < currShape.children.length - OUTLET_OFFSET; i++) {
@@ -123,14 +123,14 @@
       targetLine.points()[0] = currShape.x() + functionRectSideLength - OUTLET_OFFSET;
       targetLine.points()[1] = currShape.y() + yOffset;
     }
-    lineLayer.draw();
+    layers.line.draw();
   }
 });
 
- dragLayer.on('dragmove', function() {
+ layers.drag.on('dragmove', function() {
     if (dragShape != null) {
       var pos = stage.getPointerPosition();
-      var node = workLayer.getIntersection(pos);
+      var node = layers.work.getIntersection(pos);
       if (node) {
         var group = node.getParent();
         if ((predicate.isValue(group) && predicate.isValue(dragShape)) ||
@@ -155,6 +155,6 @@
           }
         scaledObj = null;
       }
-      workLayer.draw();
+      layers.work.draw();
     }
   });

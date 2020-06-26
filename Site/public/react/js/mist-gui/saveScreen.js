@@ -15,14 +15,14 @@ var cover = new Kinetic.Rect({
   opacity: .6,
   visible: false
 });
-screenLayer.add(cover);
+layers.screen.add(cover);
 
 var popSaveGroup = new Kinetic.Group({
   x: popSaveGroupX, 
   y: popSaveGroupY,
   visible: false
 });
-screenLayer.add(popSaveGroup);
+layers.screen.add(popSaveGroup);
 
 var popSaveRect = new Kinetic.Rect ({
   x: 0,
@@ -84,7 +84,7 @@ nameEditText.setEditable(true);
 nameEditText.matchingCharacters = /[a-zA-Z0-9 \-]/;
 nameEditText.defaultText = 'Enter a Name';
 nameEditText.drawMethod = function(){
-screenLayer.draw()
+layers.screen.draw()
 };
 
 // ERROR TEXT
@@ -200,7 +200,7 @@ var popSaveButtonText = new Kinetic.Text({
 popSaveButtonGroup.add(popSaveButtonText);
 
 // rCanvas is the canvas used to render the image on the saveScreen
-var rCanvas = renderLayer.canvas._canvas;
+var rCanvas = layers.render.canvas._canvas;
 var rAnimator;
 
 /**
@@ -239,54 +239,54 @@ var updatePopText = function(renderFunction) {
 }; // updatePopText(renderFunction);
 
 /**
- * screenLayer.on('mouseover' ...) checks if it's mousing over a button.
+ * layers.screen.on('mouseover' ...) checks if it's mousing over a button.
  * If it is, it changes the color to the selected color
  */
-screenLayer.on('mouseover', function(evt) {
+layers.screen.on('mouseover', function(evt) {
   var group = evt.target.parent;
   if (group.attrs.name && group.attrs.name != 'download') {
     group.children[0].setAttr('fill', popButtonSelectedColor);
-    screenLayer.draw();
+    layers.screen.draw();
   } // if name (not download)
 });
 
 /**
- * screenLayer.on('mouseout' ...) checks if it's mousing out of a button.
+ * layers.screen.on('mouseout' ...) checks if it's mousing out of a button.
  * If it is, it disables the shadow and changes color to original color
  */
-screenLayer.on('mouseout', function(evt) {
+layers.screen.on('mouseout', function(evt) {
   var group = evt.target.parent;
   if (group.attrs.name) {
     group.children[0].setAttrs({
       fill: popButtonColor,
       shadowEnabled: false
     });
-    screenLayer.draw();
+    layers.screen.draw();
   } // if name
 });
 
 /**
- * screenLayer.on('mousedowm' ...) checks if it's mousing down on a button.
+ * layers.screen.on('mousedowm' ...) checks if it's mousing down on a button.
  * If it is, it enables the shadow around the box of the button
  */
-screenLayer.on('mousedown', function(evt) {
+layers.screen.on('mousedown', function(evt) {
   var group = evt.target.parent;
   if (group.attrs.name && group.attrs.name != 'download') {
     group.children[0].setAttr('shadowEnabled', true);
-    screenLayer.draw();
+    layers.screen.draw();
   } // if button (not download)
 });
 
 /**
- * screenLayer.on('mouseup' ...) checks if it's mousing up on a button.
+ * layers.screen.on('mouseup' ...) checks if it's mousing up on a button.
  * If it is, it removes the shadow from the box
  */
-screenLayer.on('mouseup', function(evt) {
+layers.screen.on('mouseup', function(evt) {
   var group = evt.target.parent;
   var name = group.attrs.name
   if (name) {
     group.children[0].setAttr('shadowEnabled', false);
-    screenLayer.draw();
+    layers.screen.draw();
   } // if name
 });
 
@@ -301,9 +301,9 @@ popCancelButtonGroup.on('mouseup', function(){
   showThumbnails();
   rAnimator.stop();
   rAnimator = undefined;
-  screenLayer.draw();
+  layers.screen.draw();
   setTimeout(function(){
-      renderLayer.draw();
+      layers.render.draw();
     }, 50);
 });
 
@@ -338,11 +338,11 @@ popSaveButtonGroup.on('mouseup', function(){
     rAnimator.stop()
     rAnimator = undefined;
     setTimeout(function(){
-      renderLayer.draw();
+      layers.render.draw();
     }, 50);
     showSuccessDialog(newName, imageid);
   } // else valid name is enters
-  screenLayer.draw();
+  layers.screen.draw();
 });
 
 /**
@@ -354,13 +354,13 @@ var openSavePopUp = function() {
   popSaveGroup.setAttr('visible', true);
   var renderFunction = currShape.attrs.renderFunction;
   updatePopText(renderFunction);
-  renderLayer.moveToTop();
+  layers.render.moveToTop();
   renderPopCanvas(renderFunction);
   rAnimator.start();
-  screenLayer.draw();
+  layers.screen.draw();
   /*
   animation = true;
-  screenLayer.draw();
+  layers.screen.draw();
   var frame = function() {
     renderPopCanvas(renderFunction);
     if (animation) {
@@ -373,11 +373,11 @@ var openSavePopUp = function() {
 
 
 /**
- * hideThumbnails goes through all the nodes on the workLayer and, if they're expanded,
+ * hideThumbnails goes through all the nodes on the layers.work and, if they're expanded,
  * draws their renderLayer to hide their image.
  */
 var hideThumbnails = function() {
-  var nodes = workLayer.children;
+  var nodes = layers.work.children;
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i];
     if (node.children[2].attrs.expanded) {
@@ -391,7 +391,7 @@ var hideThumbnails = function() {
  * renders their canvas
  */
 var showThumbnails = function() {
-  var nodes = workLayer.children;
+  var nodes = layers.work.children;
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i];
     if (node.children[2].attrs.expanded) {

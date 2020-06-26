@@ -80,13 +80,13 @@ On click of function menu button:
 /*
 If you click on a menu button when the workTool is not activated, the workTool will become activated. 
 */
-menuButtonLayer.on('click', function(){
+layers.menuButton.on('click', function(){
   if (!workToolOn) {
     enableWorkTool();
     if(makingLine) {
       removeLine(currLine);
       makingLine = false;
-      lineLayer.draw();
+      layers.line.draw();
     }
   }
 });
@@ -98,40 +98,40 @@ menuButtonLayer.on('click', function(){
  * - on mousedown
  * - on mouseup
  */
-menuArrowLayer.on('mouseover', function(evt) {
+layers.menuArrow.on('mouseover', function(evt) {
   var group = evt.target.getParent();
   if (group.attrs.functional) {
     var box = group.children[0];
     var arrow = group.children[1];
     box.setAttr('opacity', .7);
     arrow.setAttr('opacity', .9);
-    menuArrowLayer.draw();
+    layers.menuArrow.draw();
   }
 });
 
-menuArrowLayer.on('mouseout', function(evt) {
+layers.menuArrow.on('mouseout', function(evt) {
   var group = evt.target.getParent();
   if (group.attrs.functional) {
     var box = group.children[0];
     var arrow = group.children[1];
     box.setAttr('opacity', .3);
     arrow.setAttr('opacity', .5);
-    menuArrowLayer.draw();
+    layers.menuArrow.draw();
   }
 });
 
-menuArrowLayer.on('mousedown', function(evt) {
+layers.menuArrow.on('mousedown', function(evt) {
   var group = evt.target.getParent();
   if (group.attrs.functional) {
     var box = group.children[0];
     var arrow = group.children[1];
     box.setAttr('opacity', 1);
     arrow.setAttr('opacity', 1);
-    menuArrowLayer.draw();
+    layers.menuArrow.draw();
   }
 });
 var scrolling;
-menuArrowLayer.on('mouseup', function(evt) {
+layers.menuArrow.on('mouseup', function(evt) {
   var group = evt.target.getParent();
   if (group.attrs.functional) {
     var box = group.children[0];
@@ -139,7 +139,7 @@ menuArrowLayer.on('mouseup', function(evt) {
     var direction = group.attrs.direction;
     box.setAttr('opacity', .7);
     arrow.setAttr('opacity', .9);
-    menuArrowLayer.draw();
+    layers.menuArrow.draw();
     if(!scrolling) {
       if (group.attrs.type =='functions') {
         if (direction == 'left') {
@@ -177,7 +177,7 @@ menuArrowLayer.on('mouseup', function(evt) {
 /*
   On mousedown of a menu object (value or function prototype), you create a copy of that object and begin to draw it. Turns on workTool, if not already on. 
   */
-  menuLayer.on('mousedown', function(evt) {
+  layers.menu.on('mousedown', function(evt) {
     if (!makingLine) {
       if (!workToolOn) {
         enableWorkTool();
@@ -190,22 +190,22 @@ menuArrowLayer.on('mouseup', function(evt) {
         var newGroup = makeValueGroup(group.attrs.name, group.attrs.x, group.attrs.y);
       } // if function / else value
       newGroup.setAttr('visible', true);
-      dragLayer.add(newGroup);
+      layers.drag.add(newGroup);
       setDragShadow(newGroup);
       removeShadow(currShape);
       newGroup.startDrag();
-      dragLayer.draw();
+      layers.drag.draw();
       dragShape = newGroup;
       currShape = newGroup;
     }
     else {
       removeLine(currLine);
       makingLine = false;
-      lineLayer.draw();
+      layers.line.draw();
     }
   });
 
-  menuLayer.on('mouseover', function(evt) {
+  layers.menu.on('mouseover', function(evt) {
     var group = evt.target.getParent();
     if (tagsOn) {
      if (predicate.isFunction(group) || predicate.isValue(group)) {
@@ -213,33 +213,33 @@ menuArrowLayer.on('mouseup', function(evt) {
         if (openTag) {
           openTag.destroy();
         }
-        var temp = menuLayer.getIntersection(stage.getPointerPosition());
+        var temp = layers.menu.getIntersection(stage.getPointerPosition());
         if (temp && group == temp.getParent()) {
           openTag = makeLabel(group);
-          labelLayer.add(openTag)
-          labelLayer.draw(); 
+          layers.label.add(openTag)
+          layers.label.draw(); 
         }
       }, 500);
     } 
   }
 });
 
-  menuLayer.on('mouseout', function(evt) {
+  layers.menu.on('mouseout', function(evt) {
     var group = evt.target.getParent();
     if (openTag) {  
       openTag.destroy();
-      labelLayer.draw();
+      layers.label.draw();
     }
   });
 
 toggleTag.on('mouseover', function() {
   toggleTag.children[0].setAttr('fill', 'black');
-  borderLayer.draw();
+  layers.border.draw();
 });
 
 toggleTag.on('mouseout', function() {
   toggleTag.children[0].setAttr('fill', '#787878');
-  borderLayer.draw();
+  layers.border.draw();
 });
 
 toggleTag.on('mouseup', function(){
@@ -251,20 +251,20 @@ toggleTag.on('mouseup', function(){
     tagsOn = true;
     toggleTag.children[0].setAttr('text', 'Turn Labels Off');
   }
-  borderLayer.draw();
+  layers.border.draw();
 });
 
 // CONTROL MENU EVENTS 
-menuControlLayer.on('mouseover', function(evt) {
+layers.menuControl.on('mouseover', function(evt) {
   if (evt.target.name() != 'cover') {
     var parent = evt.target.getParent();
     var shape = parent.children[0];
     shape.setAttr('fill', menuControlSelect);
-    menuControlLayer.draw();
+    layers.menuControl.draw();
   }
 });
 
-menuControlLayer.on('mouseout', function(evt) {
+layers.menuControl.on('mouseout', function(evt) {
   if (evt.target.name() != 'cover') {
     var parent = evt.target.getParent();
     var shape = parent.children[0];
@@ -272,25 +272,25 @@ menuControlLayer.on('mouseout', function(evt) {
       fill: menuControlColor,
       shadowEnabled: false
     });
-    menuControlLayer.draw();
+    layers.menuControl.draw();
   }
 });
 
-menuControlLayer.on('mousedown', function(evt) {
+layers.menuControl.on('mousedown', function(evt) {
   if (evt.target.name() != 'cover') {
     var parent = evt.target.getParent();
     var shape = parent.children[0];
     shape.setAttr('shadowEnabled', true);
-    menuControlLayer.draw();
+    layers.menuControl.draw();
   }
 });
 
-menuControlLayer.on('mouseup', function(evt) {
+layers.menuControl.on('mouseup', function(evt) {
   if (evt.target.name()!= 'cover') {
     var parent = evt.target.getParent();
     var shape = parent.children[0];
     shape.setAttr('shadowEnabled', false);
-    menuControlLayer.draw();
+    layers.menuControl.draw();
   }
 });
 

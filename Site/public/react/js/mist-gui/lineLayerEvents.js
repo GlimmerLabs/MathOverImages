@@ -4,16 +4,16 @@
 - on mouseover
 - on mouseout
 */
-lineLayer.on('click', function(evt) {
+layers.line.on('click', function(evt) {
   if(deleteToolOn) {
     removeLine(evt.target);
     insertToArray(actionToObject('delete', evt.target));
-    lineLayer.draw();
-    workLayer.draw();
+    layers.line.draw();
+    layers.work.draw();
   }
 });
 
-lineLayer.on('mouseover', function(evt) {
+layers.line.on('mouseover', function(evt) {
   if (deleteToolOn) {
     var shape = evt.target;
     shape.setAttrs({
@@ -21,17 +21,17 @@ lineLayer.on('mouseover', function(evt) {
       shadowColor: deleteColor,
       shadowEnabled: true
     });
-    lineLayer.draw();
+    layers.line.draw();
   }
 }); 
 
-lineLayer.on('mouseout', function(evt) {
+layers.line.on('mouseout', function(evt) {
   if (deleteToolOn) {
     var shape = evt.target;
     shape.setAttrs({
       strokeWidth: lineStrokeWidth,
       shadowEnabled: false
     });
-    lineLayer.draw();
+    layers.line.draw();
   }
 });

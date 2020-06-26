@@ -29,8 +29,8 @@ MISTgui.outletIndex = function(outlet) {
  */
 var workspaceToArray = function() {
   var wArray = [];
-  var workChildren = workLayer.getChildren();
-  var lineChildren = lineLayer.getChildren();
+  var workChildren = layers.work.getChildren();
+  var lineChildren = layers.line.getChildren();
   var i = 0;
   for (i; i < workChildren.length; i++) {
     wArray[i] = workChildren[i]; 
@@ -56,8 +56,8 @@ var jsonToWorkspace = function(json) {
  */
 var workspaceToJSON = function() {
   // Extract information from the workspace.
-  var nodes = workLayer.getChildren();
-  var edges = lineLayer.getChildren();
+  var nodes = layers.work.getChildren();
+  var edges = layers.line.getChildren();
 
   // Set up information to turn to JSON
   var info = new MIST.Layout();
@@ -102,15 +102,15 @@ var workspaceToJSON = function() {
   for (var i = 0; i < array.length; i++) {
     var object = array[i];
     if (predicate.isLine(object)) {
-      object.moveTo(lineLayer);
+      object.moveTo(layers.line);
     }
     else {
-      object.moveTo(workLayer);
+      object.moveTo(layers.work);
       object.setAttr('visible', true);
     }
   }
-  workLayer.draw();
-  lineLayer.draw();
+  layers.work.draw();
+  layers.line.draw();
  };
 
 /**
@@ -119,9 +119,9 @@ var workspaceToJSON = function() {
  */
 var resetWorkspace = function() {
   // destroy workLayer children and renderLayers
-  workLayer.destroyChildren();
+  layers.work.destroyChildren();
   //destroy lineLayer children
-  lineLayer.destroyChildren();
+  layers.line.destroyChildren();
   // empty elementTable
   elementTable = {};
   // empty actionArray

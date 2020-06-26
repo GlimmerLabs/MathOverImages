@@ -2,7 +2,7 @@ var funBar = new Kinetic.Group ({
   x: 0,
   y: height - funBarHeight,
 });
-funBarLayer.add(funBar);
+layers.funBar.add(funBar);
 var funBarArea = new Kinetic.Rect({
   x: 0,
   y: 0,

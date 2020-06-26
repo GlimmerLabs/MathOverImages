@@ -43,7 +43,7 @@ There are 3 different modes:
 // | Handlers |
 // +----------+
 
-  workLayer.on('click', function(evt) {
+  layers.work.on('click', function(evt) {
     var shape = evt.target;
     var parent = shape.getParent();
     if (workToolOn) {
@@ -57,7 +57,7 @@ There are 3 different modes:
           animation = false;
           setTimeout(function() {collapseCanvas(parent)}, 50);
         } // else the image box is expanded already
-        setTimeout(function() {workLayer.draw()}, 50);
+        setTimeout(function() {layers.work.draw()}, 50);
       } // if clicked on an image box
     } // if the work tool is enabled
     else if (lineToolOn) {
@@ -136,13 +136,13 @@ There are 3 different modes:
           animation = false;
           setTimeout(function() { collapseCanvas(parent) }, 50);
         } // else the image box is expanded
-        setTimeout(function() { workLayer.draw() }, 50);
+        setTimeout(function() { layers.work.draw() }, 50);
       } // if the object is an image box
       else if (parent.name() != 'rgb') {
         makingLine = true;
         currLine = makeLine(parent);
         parent.attrs.lineOut[parent.attrs.lineOut.length] = currLine;
-        lineLayer.add(currLine);
+        layers.line.add(currLine);
       } // if the object is part of an rgb 
     } // else not making line
   } // if line tool enabled 
@@ -163,7 +163,7 @@ There are 3 different modes:
       targetLine = parent.attrs.lineOut[0];
       removeLine(targetLine);
     } // 
-    var render = parent.attrs.renderLayer
+    var render = parent.attrs.renderLayer;
     if (render != null) {
       render.destroy();
     } // if the renderLayer exists
@@ -173,15 +173,15 @@ There are 3 different modes:
     } // if the object belongs to the global currShape
     parent.remove();
   } // if the delete tool is enabled
-  workLayer.draw();
-  lineLayer.draw();
+  layers.work.draw();
+  layers.line.draw();
 });
 
 /*
   When you click down on an object in the workLayer and arent in the process of making
   a line, move that object to the dragLayer and allow it to be dragged.
   */
-  workLayer.on('mousedown', function(evt) {
+  layers.work.on('mousedown', function(evt) {
     if (workToolOn) {
       if (!predicate.isImageBox(evt.target)) {
         var group = evt.target.getParent();
@@ -189,13 +189,13 @@ There are 3 different modes:
           return;
         }
         removeShadow(currShape);
-        group.moveTo(dragLayer);
+        group.moveTo(layers.drag);
         currShape = group;
         insertToArray(actionToObject('move', group));
         group.startDrag();
         setDragShadow(group);
-        workLayer.draw();
-        dragLayer.draw();
+        layers.work.draw();
+        layers.drag.draw();
 
         if (group.attrs.renderLayer != null) {
           group.attrs.renderLayer.draw();
@@ -209,7 +209,7 @@ There are 3 different modes:
   while making a line, make outlets grow when they are moused over to signify that they
   are valid connections
 */
-workLayer.on('mouseover', function(evt) {
+layers.work.on('mouseover', function(evt) {
   var shape = evt.target;
   var parent = shape.parent;
   if (workToolOn || lineToolOn) {
@@ -262,9 +262,9 @@ workLayer.on('mouseover', function(evt) {
             shadowColor: deleteColor,
             shadowEnabled: true
           });
-          lineLayer.draw();
+          layers.line.draw();
         } // if line exists
-        workLayer.draw();
+        layers.work.draw();
       } // if outlet
     } // if makingLine
   } // if the work tool or line tool is enabled
@@ -297,8 +297,8 @@ workLayer.on('mouseover', function(evt) {
         } // if line
       } // for incoming lines
     } // if the mouseover object belongs to a value 
-    workLayer.draw();
-    lineLayer.draw();
+    layers.work.draw();
+    layers.line.draw();
   } // if the delete tool is enabled
 });
 
@@ -306,7 +306,7 @@ workLayer.on('mouseover', function(evt) {
  * When the cursor is moved out of an outlet while drawing a line, return the outlet to its
  * original size/shadow/state
  */
-workLayer.on('mouseout', function(evt) {
+layers.work.on('mouseout', function(evt) {
   var shape = evt.target;
   var parent = shape.getParent();
   if (workToolOn || lineToolOn) {
@@ -347,9 +347,9 @@ workLayer.on('mouseout', function(evt) {
         line = outlet.attrs.lineIn;
         if (line) {
           line.setAttr('shadowEnabled', false);
-          lineLayer.draw();
+          layers.line.draw();
         } // if line exists
-        workLayer.draw();
+        layers.work.draw();
       } // if outlet exists and does not belong to the line's source
     } // if makingLine
   } // if the work tool or line tool is enabled 
@@ -379,7 +379,7 @@ workLayer.on('mouseout', function(evt) {
         } // if line in exists
       } // for incoming lines
     } // if the mouseover object belongs to a value or function
-    workLayer.draw();
-    lineLayer.draw();
+    layers.work.draw();
+    layers.line.draw();
   }
 });

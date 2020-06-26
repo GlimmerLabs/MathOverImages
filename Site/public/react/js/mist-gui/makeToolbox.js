@@ -22,7 +22,7 @@
       };
     }
   });
-  toolboxLayer.add(toolboxGroup);
+  layers.toolbox.add(toolboxGroup);
 
   // add the box to contain the entire group
   var toolboxRect = new Kinetic.Rect({

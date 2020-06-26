@@ -102,7 +102,7 @@
      currIndex++;
      totalIndex = currIndex;
      shadeUndoRedo();
-     toolboxLayer.draw();
+     layers.toolbox.draw();
  };
 
 /**
@@ -140,7 +140,7 @@
       // if working with a node
       if (actionObj.type == 'node') {
         // put the object back on the worklayer
-        element.moveTo(workLayer);
+        element.moveTo(layers.work);
         var connections = actionObj.connections;
         for (var i = 0; i < connections.length; i++) {
           // re-call the function on the line in question's deletion
@@ -198,7 +198,7 @@
       else {
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
-            oldGroup.moveTo(workLayer);
+            oldGroup.moveTo(layers.work);
             replaceNode(element, oldGroup);
             var totalNeeded = oldGroup.children.length + actionObj.connections.length;
             for (var i = 0; i < actionObj.connections.length; i++)
@@ -210,7 +210,7 @@
               predicate.assertRenderable(actionObj.connections[i].sink);
               updateForward(actionObj.connections[i].sink);
             }
-            workLayer.draw();
+            layers.work.draw();
         } // if node
         else {
             removeLine(element);
@@ -220,9 +220,9 @@
         } // else line
       } // if replace
     } // if undo
-    workLayer.draw();
-    dragLayer.draw();
-    lineLayer.draw();
+    layers.work.draw();
+    layers.drag.draw();
+    layers.line.draw();
 };
 
 
@@ -290,7 +290,7 @@
         // if working with a ndoe
         if (actionObj.type == 'node') {
           // remove the element from the workLayer
-          element.moveTo(workLayer);
+          element.moveTo(layers.work);
         } // if node
         // if working with a line
         else {
@@ -298,9 +298,9 @@
           insertLine(actionObj);
           predicate.assertRenderable(actionObj.sink);
           updateForward(actionObj.sink);
-          lineLayer.draw();
+          layers.line.draw();
       }
-      workLayer.draw();
+      layers.work.draw();
       } // if insert
       // else if move
       else if (action == 'move') {
@@ -330,7 +330,7 @@
       else {
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
-            element.moveTo(workLayer);
+            element.moveTo(layers.work);
             replaceNode (oldGroup, element); 
             for (var i = 0; i < actionObj.connections.length; i++)
             {
@@ -349,9 +349,9 @@
           updateForward(actionObj.sink);
         } // else line
       } // else replace
-      dragLayer.draw(); 
-      workLayer.draw();
-      lineLayer.draw();
+      layers.drag.draw(); 
+      layers.work.draw();
+      layers.line.draw();
     } // currIndex < totalIndex
   }; // function redoAction(actionObj)
 
@@ -387,7 +387,7 @@
           // update currShape's identification and the funBarText
           funBarText.setAttr('text', ''); 
         } // else un-renderable
-        funBarLayer.draw();
+        layers.funBar.draw();
       } // if currShape
       else {
       // if sink is not currShape, assert and update renderability of sink
@@ -414,7 +414,7 @@
     if (outlet) {
       var element = elementTable[actionObj.id];
       // move old line to the lineLayer
-      element.moveTo(lineLayer);
+      element.moveTo(layers.line);
       // connect line to source
       element.attrs.source = source;
       // change sourceIndex in line
@@ -439,10 +439,10 @@
       var temp = currShape;
       // update the currshape to be the sink and re-draw
       currShape = sink;
-      dragLayer.draw();
+      layers.drag.draw();
       // update the currShape to be the source and re-draw
       currShape = actionObj.source;
-      dragLayer.draw();
+      layers.drag.draw();
       currShape = temp;
     }
   };

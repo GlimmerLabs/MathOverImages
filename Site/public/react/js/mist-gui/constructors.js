@@ -287,11 +287,11 @@ var addLine = function(source, sink, outletIndex) {
   } // if it's an appropriate number
   updateForward(sink);
   line.setAttr("visible",true);
-  lineLayer.add(line);
+  layers.line.add(line);
   insertToTable(line);
-  workLayer.draw();
-  lineLayer.draw();
-  dragLayer.draw();
+  layers.work.draw();
+  layers.line.draw();
+  layers.drag.draw();
 };
 
 /**
@@ -307,9 +307,9 @@ var addOp = function(funName, x, y) {
     addOutlet(op);
   }
   applyDragBounds(op);
-  workLayer.add(op);
+  layers.work.add(op);
   insertToTable(op);
-  workLayer.draw();
+  layers.work.draw();
   return op;
 };
 /**
@@ -332,9 +332,9 @@ var addVal = function(valName, x, y) {
   assertRenderable(val);
   val.setAttr("visible",true);
   applyDragBounds(val);
-  workLayer.add(val);
+  layers.work.add(val);
   insertToTable(val);
-  workLayer.draw();
+  layers.work.draw();
   return val;
 };
 
@@ -366,7 +366,7 @@ var createEditableText = function (group) {
   editableTextBox.matchingCharacters = /^-?[0-9]*\.?[0-9]*$/;
   editableTextBox.defaultText = 'Enter a Value';
   editableTextBox.drawMethod = function(){
-    workLayer.draw()
+    layers.work.draw()
   };
 };
 

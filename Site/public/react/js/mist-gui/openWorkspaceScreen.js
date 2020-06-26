@@ -3,7 +3,7 @@ var openWsGroup = new Kinetic.Group({
 	y: popSaveWsGroupY,
 	visible: false
 });
-screenLayer.add(openWsGroup);
+layers.screen.add(openWsGroup);
 
 var openWsRect = new Kinetic.Rect({
 	x: 0,
@@ -52,7 +52,7 @@ nameOpenWsEditText.setEditable(true);
 nameOpenWsEditText.matchingCharacters = /[a-zA-Z0-9\-]/;
 nameOpenWsEditText.defaultText = 'Enter a Name';
 nameOpenWsEditText.drawMethod = function(){
-	screenLayer.draw()
+	layers.screen.draw()
 };
 
 var popOpenWsCancelButtonGroup = new Kinetic.Group({
@@ -123,7 +123,7 @@ popOpenWsCancelButtonGroup.on('mouseup', function(){
 	cover.setAttr('visible', false);
 	openWsGroup.setAttr('visible', false);
 	showThumbnails();
-	screenLayer.draw();
+	layers.screen.draw();
 });
 
 popOpenWsButtonGroup.on('mouseup', function(){
@@ -133,12 +133,12 @@ popOpenWsButtonGroup.on('mouseup', function(){
 	cover.setAttr('visible', false);
 	openWsGroup.setAttr('visible', false);
 	showThumbnails();
-	screenLayer.draw();
+	layers.screen.draw();
 });
 
 var openOpenWsPopUp = function() {
 	hideThumbnails();
 	cover.setAttr('visible', true);
 	openWsGroup.setAttr('visible', true);
-	screenLayer.draw();
+	layers.screen.draw();
 };
