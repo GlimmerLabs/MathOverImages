@@ -10,8 +10,6 @@ size.height = 2 * size.width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';
 
-
-
 var currentWorkspace;
 
 const functionGlobals = {};
