@@ -7,6 +7,8 @@
 const size = {}
 size.width = 900;
 size.height = 2 * size.width / 3;
+size.scale = size.width / 900;
+// var globalScale = size.width/900; // for elements that are more difficult to scale (undo/redo)
 
 const fonts = {
   default: 'Arial',
@@ -38,8 +40,6 @@ const valueStyle = {
 
 var menuFontSize = size.width/75; //12 when width = 900
 var nodeFontSize = size.width / 56.25; //16 when width = 900
-var globalScale = size.width/900; // for elements that are more difficult to scale (undo/redo)
-
 
 var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
 var functions = {
