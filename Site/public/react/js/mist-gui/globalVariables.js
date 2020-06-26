@@ -13,6 +13,8 @@ size.scale = size.width / 900;
 const fonts = {
   default: 'Arial',
   function: 'Courier New',
+  menuSize: size.width / 75,
+  nodeSize: size.width / 56.25
 };
 
 var currentWorkspace;
@@ -37,9 +39,6 @@ const valueStyle = {
   mouseColor: '#E46868',
   constantColor: '#F17C9D',
 };
-
-var menuFontSize = size.width/75; //12 when width = 900
-var nodeFontSize = size.width / 56.25; //16 when width = 900
 
 var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
 var functions = {

@@ -44,7 +44,7 @@ var borderLine = new Kinetic.Line({
   fill: 'black',
   align: 'center',
   fontFamily: fonts.default,
-  fontSize: menuFontSize
+  fontSize: fonts.menuSize
  });
  valuesButton.add(valuesButtonText);
 
@@ -85,7 +85,7 @@ var borderLine = new Kinetic.Line({
   fill: 'black',
   align: 'center',
   fontFamily: fonts.default,
-  fontSize: menuFontSize
+  fontSize: fonts.menuSize
  });
  functionsButton.add(functionsButtonText);
  layers.menuButton.draw();
@@ -104,7 +104,7 @@ var borderLine = new Kinetic.Line({
     y:0,
     text: 'Turn Labels Off',
     fontFamily: fonts.default,
-    fontSize: menuFontSize,
+    fontSize: fonts.menuSize,
     fill: '#787878'
   }));
 
@@ -337,7 +337,7 @@ var bottomCover = new Kinetic.Rect({
     align: 'center',
     fill: menuControlTextColor,
     fontFamily: fonts.default,
-    fontSize: menuFontSize
+    fontSize: fonts.menuSize
   });
   newGroup.add(newText);
 return newGroup;
