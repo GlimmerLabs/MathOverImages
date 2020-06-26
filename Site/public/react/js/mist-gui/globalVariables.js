@@ -27,6 +27,7 @@ const functionStyle = {
   multColor: '#5EC783',
   singleColor: '#77C9E2',
   RGBcolor: '#AE88D6',
+  imageBoxOffset: size.width / 300,
 };
 functionStyle.halfStrokeWidth = functionStyle.strokeWidth / 2;
 functionStyle.rectSideLength = functionStyle.totalSideLength - functionStyle.strokeWidth;
@@ -70,7 +71,6 @@ const values = {
 
 var imageBoxSideLength = size.width / 80;
 var imageBoxColor = 'white';
-var functionImageBoxOffset = size.width / 300;
 var valueImageBoxOffset = size.width / 31;
 var renderSideLength = size.width / 18;
 
