@@ -1,7 +1,7 @@
-var popWsRectWidth = width * .4;
-var popWsRectHeight = height * .25;
-var popSaveWsGroupX = (width - popWsRectWidth) / 2;
-var popSaveWsGroupY = (height - popWsRectHeight) / 2;
+var popWsRectWidth = size.width * .4;
+var popWsRectHeight = size.height * .25;
+var popSaveWsGroupX = (size.width - popWsRectWidth) / 2;
+var popSaveWsGroupY = (size.height - popWsRectHeight) / 2;
 
 var popWsButtonShiftX = popTextShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
 var popWsButtonWidth = ((popWsRectWidth / 2) - (3 * popWsButtonShiftX)) / 2;

@@ -4,8 +4,9 @@
  *   within the object/prototype.)
  */
  
-var width = 900;
-var height = 2 * width / 3;
+const size = {}
+size.width = 900;
+size.height = 2 * size.width / 3;
 var globalFont = 'Arial';
 var functionFont = 'Courier New';
 
@@ -13,9 +14,9 @@ var functionFont = 'Courier New';
 
 var currentWorkspace;
 
-var functionStrokeWidth = width / 90;
+var functionStrokeWidth = size.width / 90;
 var functionHalfStrokeWidth = functionStrokeWidth / 2;
-var functionTotalSideLength = width / 20;
+var functionTotalSideLength = size.width / 20;
 var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
 var functionColor = '#3FAAA0';
 var functionColorLight = '#C6F1ED';
@@ -31,9 +32,9 @@ var valueTimeColor = '#FD9E54'
 var valueMouseColor = '#E46868';
 var valueConstantColor = '#F17C9D';
 
-var menuFontSize = width/75; //12 when width = 900
-var nodeFontSize = width / 56.25; //16 when width = 900
-var globalScale = width/900; // for elements that are more difficult to scale (undo/redo)
+var menuFontSize = size.width/75; //12 when width = 900
+var nodeFontSize = size.width / 56.25; //16 when width = 900
+var globalScale = size.width/900; // for elements that are more difficult to scale (undo/redo)
 
 
 var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
@@ -64,15 +65,15 @@ var values = {
   mouseY:   {rep: 'm.y', color: valueMouseColor}
 }
 
-var imageBoxSideLength = width / 80;
+var imageBoxSideLength = size.width / 80;
 var imageBoxColor = 'white';
-var functionImageBoxOffset = width / 300;
-var valueImageBoxOffset = width / 31;
-var renderSideLength = width / 18;
+var functionImageBoxOffset = size.width / 300;
+var valueImageBoxOffset = size.width / 31;
+var renderSideLength = size.width / 18;
 
-var editableTextWidth = width / 15;
-var editableTextHeight = width / 30;
-var editableTextFont = width / 69;
+var editableTextWidth = size.width / 15;
+var editableTextHeight = size.width / 30;
+var editableTextFont = size.width / 69;
 
 var variableColor = {r: 197, g: 231, b: 109, a: .5};
 var variableStrokeColor = '#A1C447';
@@ -80,7 +81,7 @@ var variableRadius = 1.4 * (functionTotalSideLength / 2);
 var variableTextColor = '#62694F';
 var variableWidth = Math.cos(Math.PI/6)*variableRadius;
 
-var outletXOffset = width / 400;
+var outletXOffset = size.width / 400;
 var outletYOffset = functionRectSideLength / 3;
 var outletColor =  '#C4C4C4';
 
@@ -90,27 +91,27 @@ var dragShadowColor = 'black';
 var selectedShadowColor = 'blue';
 
 //SLIDING MENU
-var menuHeight = width / 9; 
-var menuCornerWidth = width / 6;
-var buttonWidth = width / 10;
-var valSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
+var menuHeight = size.width / 9; 
+var menuCornerWidth = size.width / 6;
+var buttonWidth = size.width / 10;
+var valSpaceWidth = size.width - menuCornerWidth - (2 * buttonWidth);
 var numVals = 6;//valNames.length;
 var valMenuXSpacing = (valSpaceWidth - (numVals * functionTotalSideLength - 4)) / (numVals + 1);
-var functSpaceWidth = width - menuCornerWidth - (2 * buttonWidth);
+var functSpaceWidth = size.width - menuCornerWidth - (2 * buttonWidth);
 var numFuncts = 6; 
 var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionTotalSideLength)) / (numFuncts + 1);
-var menuYspacing = width * 11/360;
+var menuYspacing = size.width * 11/360;
 var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
-var menuFunctsXEnd = width - buttonWidth + functionRectSideLength / 2;
+var menuFunctsXEnd = size.width - buttonWidth + functionRectSideLength / 2;
 var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
 var menuAnimDuration = 1;
 
 //SCROLLING MENU BUTTONS
-var arrowWidth = width / 50;
+var arrowWidth = size.width / 50;
 var arrowBoxFill = 'gray';
 var arrowFill = 'black';
-var triX = width / 90;
-var triY = width / 60;
+var triX = size.width / 90;
+var triY = size.width / 60;
 
 //CORNER BUTTONS
 var menuOffset = 10;
@@ -121,46 +122,46 @@ var menuControlTextColor = 'black';
 var menuTextOffset = menuControlHeight / 5;
 
 //TOOLBOX
-var toolboxWidth = width / 18; 
-var toolboxHeight = width / 4.1; 
+var toolboxWidth = size.width / 18; 
+var toolboxHeight = size.width / 4.1; 
 var toolboxShift = toolboxWidth / 5; 
-var toolboxButtonSize = width / 30;
+var toolboxButtonSize = size.width / 30;
 var deleteColor = '#A30F0F'; 
 
 //FUNCTIONBAR
-var funBarWidth = width;
-var funBarHeight = height / 15;
+var funBarWidth = size.width;
+var funBarHeight = size.height / 15;
 var funBarBackgroundColor = menuControlColor;
 var funBarOffset = funBarHeight * .17;
 var funBarTextAreaWidth = funBarWidth * .75;
 var funBarTextAreaHeight = funBarHeight * .66;
 var funBarTextOffset = funBarOffset* 1.5;
-var funBarDisplayFontSize = width / 40.9; 
-var funBarFontSize = width / 75;
+var funBarDisplayFontSize = size.width / 40.9; 
+var funBarFontSize = size.width / 75;
 var funBarIconOffset = funBarWidth / 16;
 var funBarIconSideLength = funBarHeight / 4;
-var funBarIconTextWidth = width / 18;
+var funBarIconTextWidth = size.width / 18;
 var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
 
 //SAVE SCREEN
 var popRectColor = '#e8e8e8'
-var popRectWidth = width * .4;
-var popRectHeight = height * .85;
-var popSaveGroupX = (width - popRectWidth) / 2;
-var popSaveGroupY = (height - popRectHeight) / 2;
+var popRectWidth = size.width * .4;
+var popRectHeight = size.height * .85;
+var popSaveGroupX = (size.width - popRectWidth) / 2;
+var popSaveGroupY = (size.height - popRectHeight) / 2;
 
 var popCanvasSide = popRectWidth * 0.9;
-var popCanvasResolution = width * (3/9);
+var popCanvasResolution = size.width * (3/9);
 var popCanvasShiftX = popSaveGroupX + (popRectWidth - popCanvasSide) / 2;
 var popCanvasShiftY = popSaveGroupY + (popRectWidth - popCanvasSide) / 2;
 
 var popTextShiftX = (popRectWidth - popCanvasSide) / 2;
 var popTextShiftY = ((popRectWidth - popCanvasSide) / 1.5) + popCanvasSide;
 var popTextWidth = popCanvasSide;
-var popTextFontSize = width / 56.25;
+var popTextFontSize = size.width / 56.25;
 var popTextHeight = 2 * popTextFontSize;
 
-var nameTextShift = width / 18;
+var nameTextShift = size.width / 18;
 
 var popButtonWidth = popCanvasSide / 3.4;
 var popButtonHeight = popTextHeight / 1.25;
@@ -171,10 +172,10 @@ var popButtonSelectedColor = '#B6BABA'
 var errorColor = '#A11212';
 
 // OPEN WS SCREEN
-var popOpenWsRectWidth = width * .4;
-var popOpenWsRectHeight = height * .16;
-var popOpenWsGroupX = (width - popOpenWsRectWidth) / 2;
-var popOpenWsGroupY = (height - popOpenWsRectHeight) / 2;
+var popOpenWsRectWidth = size.width * .4;
+var popOpenWsRectHeight = size.height * .16;
+var popOpenWsGroupX = (size.width - popOpenWsRectWidth) / 2;
+var popOpenWsGroupY = (size.height - popOpenWsRectHeight) / 2;
 
 var popOpenWsButtonShiftX = popTextShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
 var popOpenWsButtonWidth = ((popOpenWsRectWidth / 2) - (3 * popOpenWsButtonShiftX)) / 2;

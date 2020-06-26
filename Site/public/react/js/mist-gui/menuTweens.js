@@ -52,7 +52,7 @@
 	};
 	/* move the functionsButton to the right of the screen (for when values are expanded). */
 	var moveFunctionsButtonRight = function() {
-		var moveButton = makeMenuTween(functionsButton, width - buttonWidth, true)
+		var moveButton = makeMenuTween(functionsButton, size.width - buttonWidth, true)
 		moveButton.play();
 	};
 	/* move the functionsButon to it's original position. */

@@ -1,6 +1,6 @@
  /* create and add menu border */
 var borderLine = new Kinetic.Line({
-  points: [0, menuHeight, width, menuHeight],
+  points: [0, menuHeight, size.width, menuHeight],
   stroke: 'black',
   strokeWidth: 2
 });
@@ -94,8 +94,8 @@ var borderLine = new Kinetic.Line({
   * toggle labels text
   */
   var toggleTag = new Kinetic.Group ({
-    x: (width / 90),
-    y: menuHeight + (width / 90)
+    x: (size.width / 90),
+    y: menuHeight + (size.width / 90)
   });
   layers.border.add(toggleTag);
 
@@ -131,8 +131,8 @@ var borderLine = new Kinetic.Line({
 var addScrollArrows = function(type) {
   var leftX = (type=='values') ? valuesButton.x() + buttonWidth : 
     functionsButton.x() + buttonWidth;
-  var rightX = (type=='values') ? width - buttonWidth - arrowWidth : 
-    width - arrowWidth
+  var rightX = (type=='values') ? size.width - buttonWidth - arrowWidth : 
+    size.width - arrowWidth
   /* make left arrow group */  
   var leftArrow = new Kinetic.Group({
     x: leftX,
@@ -159,7 +159,7 @@ var addScrollArrows = function(type) {
       context.closePath();
       context.fillStrokeShape(this);
     },
-    x: width/250,
+    x: size.width/250,
     y: menuHeight / 2,
     fill: arrowFill,
     opacity: .2
@@ -194,7 +194,7 @@ var addScrollArrows = function(type) {
       context.closePath();
       context.fillStrokeShape(this);
     },
-    x: width / 65,
+    x: size.width / 65,
     y: menuHeight / 2,
     fill: arrowFill,
     opacity: .2

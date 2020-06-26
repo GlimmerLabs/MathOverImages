@@ -9,8 +9,8 @@
 var cover = new Kinetic.Rect({
   x: 0,
   y: 0,
-  width: width,
-  height: height,
+  width: size.width,
+  height: size.height,
   fill: 'black',
   opacity: .6,
   visible: false

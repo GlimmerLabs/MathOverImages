@@ -166,7 +166,7 @@ predicate.canMoveRight = function(type) {
  */
 predicate.canMoveLeft = function(type) {
 	return ((type == 'values' &&
-	  menuValues[menuValues.length - 1].x() > width - buttonWidth) ||
+	  menuValues[menuValues.length - 1].x() > size.width - buttonWidth) ||
       (type == 'functions' && 
-	  menuFunctions[menuFunctions.length - 1].x() > width))
+	  menuFunctions[menuFunctions.length - 1].x() > size.width))
 };

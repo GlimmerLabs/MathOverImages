@@ -8,14 +8,14 @@
 
   // add the entire group
   var toolboxGroup = new Kinetic.Group({
-    x: width * .9,
-    y: height * .2,
+    x: size.width * .9,
+    y: size.height * .2,
     draggable: false,
     dragBoundFunc: function(pos) {
       var newY = pos.y < (menuHeight + toolboxShift) ? menuHeight + toolboxShift : 
-        pos.y > height - funBarHeight - toolboxHeight + toolboxShift ?
-        height - funBarHeight - toolboxHeight + toolboxShift: pos.y;
-      var newX = pos.x < 0 ? 0 : pos.x > (width - toolboxWidth) ? (width - toolboxWidth) : pos.x;
+        pos.y > size.height - funBarHeight - toolboxHeight + toolboxShift ?
+        size.height - funBarHeight - toolboxHeight + toolboxShift: pos.y;
+      var newX = pos.x < 0 ? 0 : pos.x > (size.width - toolboxWidth) ? (size.width - toolboxWidth) : pos.x;
       return {
         x: newX,
         y: newY

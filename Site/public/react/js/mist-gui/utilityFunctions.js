@@ -371,10 +371,10 @@ var applyDragBounds = function(group) {
   var bottomBoundOffset = functionTotalSideLength + funBarHeight;
   group.setAttr('dragBoundFunc', function(pos) {
       var newY = pos.y <= menuHeight ? menuHeight + 1 :
-                 pos.y > height - bottomBoundOffset ? height - bottomBoundOffset :
+                 pos.y > size.height - bottomBoundOffset ? size.height - bottomBoundOffset :
                  pos.y;
       var newX = pos.x < 0 ? 0 :
-                 pos.x > (width - functionTotalSideLength) ? (width - functionTotalSideLength) :
+                 pos.x > (size.width - functionTotalSideLength) ? (size.width - functionTotalSideLength) :
                  pos.x;
       return { x: newX, y: newY };
   });

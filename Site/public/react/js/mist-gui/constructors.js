@@ -194,7 +194,7 @@
   It DOES NOT add the outlet to the group.
   */
   var makeOutlet = function(functGroup) {
-    var bezPoint = width / 50;
+    var bezPoint = size.width / 50;
     var outlet = new Kinetic.Shape({
       sceneFunc: function(context) {
         context.beginPath();

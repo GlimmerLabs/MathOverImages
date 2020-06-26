@@ -28,8 +28,8 @@ function initializeStage(containerName) {
   // Create the object
   stage = new Kinetic.Stage({
     container: containerName,
-    width: width,
-    height: height
+    width: size.width,
+    height: size.height
   });
 
   // Add the layers to the stage. The top layer is the one most recently added, and
