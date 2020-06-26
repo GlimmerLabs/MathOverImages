@@ -20,7 +20,7 @@
       making up the representation on screen. */
     var newGroup = new Kinetic.Group({
       name: funName,
-      x: x - functionGlobals.halfStrokeWidth,
+      x: x - functionStyle.halfStrokeWidth,
       y: y,
       numInputs: 0, 
       maxInputs: functions[funName].max, 
@@ -38,14 +38,14 @@
     /* create rectangle shape */
     var newRect = new Kinetic.Rect({
       name: funName,
-      x: functionGlobals.halfStrokeWidth,
-      y: functionGlobals.halfStrokeWidth,
-      width: functionGlobals.rectSideLength,
-      height: functionGlobals.rectSideLength,
+      x: functionStyle.halfStrokeWidth,
+      y: functionStyle.halfStrokeWidth,
+      width: functionStyle.rectSideLength,
+      height: functionStyle.rectSideLength,
       fill: functions[funName].color,
       lineJoin: 'round',
       stroke: functions[funName].color,
-      strokeWidth: functionGlobals.strokeWidth
+      strokeWidth: functionStyle.strokeWidth
     });
     newGroup.add(newRect);
     /* create text to be displayed on top of rectangle */
@@ -55,16 +55,16 @@
       fill: 'black',
       fontSize: nodeFontSize,
       x: 0,
-      y: functionGlobals.totalSideLength/2 - functionGlobals.halfStrokeWidth,
-      width: functionGlobals.totalSideLength,
+      y: functionStyle.totalSideLength/2 - functionStyle.halfStrokeWidth,
+      width: functionStyle.totalSideLength,
       align: 'center'
     });
     newGroup.add(newText);
     /* create small box in the bottom right corner. Initially, it is not visible.*/
     var newBox = new Kinetic.Rect({
       name: 'imageBox',
-      x: functionGlobals.rectSideLength + functionGlobals.imageBoxOffset,
-      y: functionGlobals.rectSideLength + functionGlobals.imageBoxOffset,
+      x: functionStyle.rectSideLength + functionStyle.imageBoxOffset,
+      y: functionStyle.rectSideLength + functionStyle.imageBoxOffset,
       width: imageBoxSideLength,
       height: imageBoxSideLength,
       fill: imageBoxColor,
@@ -100,7 +100,7 @@
     });
     /* create diamond shape. */
     var newRect = new Kinetic.Rect({
-      x: functionGlobals.rectSideLength/2,
+      x: functionStyle.rectSideLength/2,
       y: 0,
       width: valueSideLength,
       height: valueSideLength,
@@ -117,7 +117,7 @@
       fontSize: nodeFontSize,
       x: 0,
       y: valueSideLength/2,
-      width: functionGlobals.rectSideLength,
+      width: functionStyle.rectSideLength,
       align: 'center'
     });
     newGroup.add(newText);
@@ -206,7 +206,7 @@
       name: 'outlet' + (functGroup.children.length - OUTLET_OFFSET),
       x:functGroup.children[0].x() + outletXOffset,
       y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
-        outletYOffset + functionGlobals.halfStrokeWidth,
+        outletYOffset + functionStyle.halfStrokeWidth,
       fill: outletColor,
       opacity: 1,
       stroke: 'black',
@@ -223,17 +223,17 @@
   var makeLine = function(source) {
     var yOffset;
     if (predicate.isFunction(source)) {
-      yOffset = (source.children[0].height() + functionGlobals.strokeWidth) / 2;
+      yOffset = (source.children[0].height() + functionStyle.strokeWidth) / 2;
     }
     else {
-      yOffset = functionGlobals.totalSideLength / 2;
+      yOffset = functionStyle.totalSideLength / 2;
     }
     //console.log(yOffset);
     var newLine = new Kinetic.Line({
       points: [
-      source.x() + functionGlobals.rectSideLength - 3,
+      source.x() + functionStyle.rectSideLength - 3,
       source.y() + yOffset,
-      source.x() + functionGlobals.totalSideLength,
+      source.x() + functionStyle.totalSideLength,
       source.y() + yOffset,
       ],
       stroke: 'black',
@@ -299,7 +299,7 @@ var addLine = function(source, sink, outletIndex) {
  * by the funName key.
  */
 var addOp = function(funName, x, y) {
-  var op = makeFunctionGroup(funName, x + functionGlobals.halfStrokeWidth, y);
+  var op = makeFunctionGroup(funName, x + functionStyle.halfStrokeWidth, y);
   op.setAttr("visible",true);
   addOutlet(op);
   addOutlet(op);
@@ -340,8 +340,8 @@ var addVal = function(valName, x, y) {
 
 var createEditableText = function (group) { 
   var backgroundBox = new Kinetic.Rect({
-    x: -((editableTextWidth - functionGlobals.totalSideLength) / 2) - 4,
-    y: functionGlobals.totalSideLength + 5,
+    x: -((editableTextWidth - functionStyle.totalSideLength) / 2) - 4,
+    y: functionStyle.totalSideLength + 5,
     width: editableTextWidth,
     height: editableTextHeight,
     fill: 'white',
@@ -349,8 +349,8 @@ var createEditableText = function (group) {
     strokeWidth: .5
   });
   var editableTextBox = new Kinetic.Text({
-    x: -((editableTextWidth - functionGlobals.totalSideLength) / 2) -4,
-    y: functionGlobals.totalSideLength + 5,
+    x: -((editableTextWidth - functionStyle.totalSideLength) / 2) -4,
+    y: functionStyle.totalSideLength + 5,
     text: 'Enter a Value',
     fontSize: editableTextFont,
     width: editableTextWidth,

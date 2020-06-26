@@ -9,7 +9,7 @@
 	/* move the valueGroups to their expanded location. */
 	var expandValueNodes = function() {
 		for (var i = 0; i < menuValues.length; i++) {
-			var moveValue = makeMenuTween(menuValues[i], menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionGlobals.totalSideLength), true);
+			var moveValue = makeMenuTween(menuValues[i], menuCornerWidth + buttonWidth + valMenuXSpacing + i * (valMenuXSpacing + functionStyle.totalSideLength), true);
 			moveValue.play();
 		}
 	};
@@ -46,7 +46,7 @@
 	/* move the functionGroups to their expanded position. */
 	var expandFunctionNodes = function() {
 		for (var i = 0; i < menuFunctions.length; i++) {
-			var moveFunction = makeMenuTween(menuFunctions[i], menuCornerWidth + 2 * buttonWidth + functMenuXSpacing + i * (functMenuXSpacing + functionGlobals.totalSideLength), true)
+			var moveFunction = makeMenuTween(menuFunctions[i], menuCornerWidth + 2 * buttonWidth + functMenuXSpacing + i * (functMenuXSpacing + functionStyle.totalSideLength), true)
 			moveFunction.play();
 		}
 	};
