@@ -4,6 +4,7 @@
 - on draw
 - on dragmove
 */
+
 /* workaround to make sure intersections work while dragging
    KineticJS's getIntersection doesn't work when using the 'mousedown' event
     to startDrag */
@@ -32,13 +33,13 @@
   var initToWorkLayer = function(group) {
     group.moveTo(workLayer);
 
-    if (isFunction(group) && group.children.length < 4) {
+    if (predicate.isFunction(group) && group.children.length < 4) {
       for (var i = 0; i < functions[group.attrs.name].min; i++) {
         addOutlet(group);
         } // for
     } // if new function 
-    else if (isValue(group)) {
-      if (isRenderable(group)) {
+    else if (predicate.isValue(group)) {
+      if (predicate.isRenderable(group)) {
         group.children[2].setAttr('visible', true);
       }
     }
@@ -110,7 +111,7 @@
     }
     if (currShape.attrs.lineOut) {
       var yOffset;
-      if (isFunction(currShape)) {
+      if (predicate.isFunction(currShape)) {
         yOffset = (currShape.children[0].height() + functionStrokeWidth) / 2;
       }
       else {
@@ -132,8 +133,8 @@
       var node = workLayer.getIntersection(pos);
       if (node) {
         var group = node.getParent();
-        if ((isValue(group) && isValue(dragShape)) ||
-            (isFunction(group) && isFunction(dragShape))) {
+        if ((predicate.isValue(group) && predicate.isValue(dragShape)) ||
+            (predicate.isFunction(group) && predicate.isFunction(dragShape))) {
           group.setAttrs({
             scaleX: 1.2,
             scaleY: 1.2

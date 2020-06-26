@@ -33,7 +33,7 @@
   */
   var actionToObject = function(action, group) {
     // If it's a function or value.
-    if (isFunction(group) || isValue(group)) {
+    if (predicate.isFunction(group) || predicate.isValue(group)) {
       var obj = {
         type: 'node',
         id: group._id.toString(), 
@@ -49,7 +49,7 @@
                  obj['connections'][child++] = actionToObject('delete', group.attrs.lineOut[i]);
              }
         // Remember all the incoming edges we're deleting.
-        if (isFunction(group)) {
+        if (predicate.isFunction(group)) {
           for (var i = OUTLET_OFFSET; i < group.children.length; i++) {
             var lineIn = group.children[i].attrs.lineIn;
             if (lineIn != null && lineIn != undefined) {
@@ -61,7 +61,7 @@
         else if (action == 'replace') {
             var oldGroup = arguments[2]
             obj.oldGroup = oldGroup;
-            if (isFunction(group)) {
+            if (predicate.isFunction(group)) {
               if (group.attrs.maxInputs < oldGroup.children.length - 3) {
                 var startingIndex = OUTLET_OFFSET + group.attrs.maxInputs;
                 for (var i = startingIndex; i < oldGroup.children.length; i++) {
@@ -75,7 +75,7 @@
           }   // if we're replacing things
     } // if it's a function or value
     // If it's a line
-    else if (isLine(group)) {
+    else if (predicate.isLine(group)) {
       var obj = {
         type: 'line',
         id: group._id.toString(),
@@ -153,7 +153,7 @@
       // else working with a line
       else {
         insertLine(actionObj);
-        assertRenderable(actionObj.sink);
+        predicate.assertRenderable(actionObj.sink);
         updateForward(actionObj.sink);
       } // else element is a line
       } // if delete
@@ -207,7 +207,7 @@
                 addOutlet(oldGroup);
               }
               insertLine(actionObj.connections[i]);
-              assertRenderable(actionObj.connections[i].sink);
+              predicate.assertRenderable(actionObj.connections[i].sink);
               updateForward(actionObj.connections[i].sink);
             }
             workLayer.draw();
@@ -215,7 +215,7 @@
         else {
             removeLine(element);
             insertLine(actionObj.deleteLine);
-            assertRenderable(actionObj.sink);
+            predicate.assertRenderable(actionObj.sink);
             updateForward(actionObj.sink);
         } // else line
       } // if replace
@@ -266,7 +266,7 @@
             // empty out the sink's outlet
             targetLine.attrs.outlet.attrs.lineIn = null;
             // check and update the rendering of the sink
-            assertRenderable(outletParent);
+            predicate.assertRenderable(outletParent);
             updateForward(outletParent);
             // remove the line from the lineLayer
             targetLine.remove();
@@ -296,7 +296,7 @@
         else {
           // insert the old line
           insertLine(actionObj);
-          assertRenderable(actionObj.sink);
+          predicate.assertRenderable(actionObj.sink);
           updateForward(actionObj.sink);
           lineLayer.draw();
       }
@@ -337,7 +337,7 @@
               var lineObj = actionObj.connections[i];
             
               insertLine(actionObj.connections[i]);
-              assertRenderable(actionObj.connections[i].sink);
+              predicate.assertRenderable(actionObj.connections[i].sink);
               updateForward(actionObj.connections[i].sink);
             }
 
@@ -345,7 +345,7 @@
         else {
           removeLine(elementTable[actionObj.deleteLine.id]);
           insertLine(actionObj);
-          assertRenderable(actionObj.sink);
+          predicate.assertRenderable(actionObj.sink);
           updateForward(actionObj.sink);
         } // else line
       } // else replace
@@ -380,7 +380,7 @@
       // if the sink is the currShape
       if (sink == currShape) {
         // if the sink is still renderable, update the funBarText
-        if (assertRenderable(sink)) {
+        if (predicate.assertRenderable(sink)) {
           funBarText.setAttr('text', currShape.attrs.renderFunction);
         } // if renderable
         else {
@@ -391,7 +391,7 @@
       } // if currShape
       else {
       // if sink is not currShape, assert and update renderability of sink
-      assertRenderable(sink);
+      predicate.assertRenderable(sink);
       }
       // update
       updateForward(sink);

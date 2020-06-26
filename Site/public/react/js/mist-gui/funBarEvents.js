@@ -1,5 +1,5 @@
 funBarSaveImGroup.on('mouseup', function(){
-  if (currShape && isRenderable(currShape)) {
+  if (currShape && predicate.isRenderable(currShape)) {
     enableWorkTool();
     openSavePopUp();
     funBarSaveImGroup.children[0].setAttr('shadowEnabled', false);
@@ -8,21 +8,21 @@ funBarSaveImGroup.on('mouseup', function(){
 });
 
 funBarSaveImGroup.on('mousedown', function(){
-  if (currShape && isRenderable(currShape)) {
+  if (currShape && predicate.isRenderable(currShape)) {
     funBarSaveImGroup.children[0].setAttr('shadowEnabled', true);
     funBarLayer.draw();
   }
 });
 
 funBarSaveImGroup.on('mouseover', function(){
-  if (currShape && isRenderable(currShape)) {
+  if (currShape && predicate.isRenderable(currShape)) {
     funBarSaveImGroup.children[0].setAttr('fill', valueMenuColorLight);
     funBarLayer.draw();
   }
 });
 
 funBarSaveImGroup.on('mouseout', function(){
-  if (currShape && isRenderable(currShape)) {
+  if (currShape && predicate.isRenderable(currShape)) {
     funBarSaveImGroup.children[0].setAttrs({
       fill: valueMenuColor,
       shadowEnabled: false
@@ -30,6 +30,3 @@ funBarSaveImGroup.on('mouseout', function(){
     funBarLayer.draw();
   }
 });
-
-
-

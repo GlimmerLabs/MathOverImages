@@ -47,7 +47,7 @@ There are 3 different modes:
     var shape = evt.target;
     var parent = shape.getParent();
     if (workToolOn) {
-      if (isImageBox(shape)) {
+      if (predicate.isImageBox(shape)) {
         if (!shape.attrs.expanded) {
           renderCanvas(parent);
           shape.attrs.expanded = true;
@@ -63,15 +63,15 @@ There are 3 different modes:
     else if (lineToolOn) {
       if (makingLine) {
         var outlet;
-        if (parent == currLine.attrs.source || isCycle(currLine.attrs.source, parent)) {
+        if (parent == currLine.attrs.source || predicate.isCycle(currLine.attrs.source, parent)) {
           removeLine(currLine);
           makingLine = false;
         } // if the target of the connection is the source, or forming the connection would cause a cycle
-        else if (isOutlet(shape)) {
+        else if (predicate.isOutlet(shape)) {
           //check if outlet already has an input
           outlet = shape;
         } // if the object an outlet
-        else if (isFunction(parent)) {
+        else if (predicate.isFunction(parent)) {
           // find empty outlet
           if (parent.attrs.numInputs < parent.attrs.maxInputs) {
             var i = OUTLET_OFFSET
@@ -104,7 +104,7 @@ There are 3 different modes:
           parent.attrs.numInputs++;
           makingLine = false;
           outlet.scale({ x: 1, y: 1 });
-          assertRenderable(parent);
+          predicate.assertRenderable(parent);
           // if there is a currShape, update the text in funBar
           updateFunBar();
           if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
@@ -126,7 +126,7 @@ There are 3 different modes:
         } // if the outlet exists  
     } // if makingline
     else {
-      if (isImageBox(shape)) {
+      if (predicate.isImageBox(shape)) {
         if (!shape.attrs.expanded) {
           renderCanvas(parent);
           shape.attrs.expanded = true;
@@ -183,9 +183,9 @@ There are 3 different modes:
   */
   workLayer.on('mousedown', function(evt) {
     if (workToolOn) {
-      if (!isImageBox(evt.target)) {
+      if (!predicate.isImageBox(evt.target)) {
         var group = evt.target.getParent();
-        if (isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
+        if (predicate.isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
           return;
         }
         removeShadow(currShape);
@@ -213,7 +213,7 @@ workLayer.on('mouseover', function(evt) {
   var shape = evt.target;
   var parent = shape.parent;
   if (workToolOn || lineToolOn) {
-    if (isImageBox(shape) && shape.attrs.expanded) {
+    if (predicate.isImageBox(shape) && shape.attrs.expanded) {
       /*
       animation = true;
       var frame = function() {
@@ -234,10 +234,10 @@ workLayer.on('mouseover', function(evt) {
     } // if the mouseover object is an expanded imageBox
     if (makingLine) {
       var outlet;
-      if (isOutlet(shape)) {
+      if (predicate.isOutlet(shape)) {
         outlet = shape;
       } // if the mouseover object is an outlet
-      else if (isFunction(parent)) {
+      else if (predicate.isFunction(parent)) {
 
         // find empty outlet
         if (parent.attrs.numInputs < parent.attrs.maxInputs) {
@@ -251,7 +251,7 @@ workLayer.on('mouseover', function(evt) {
           outlet = parent.children[OUTLET_OFFSET];
         } // if the function can only have 1 input
       } // if the mouseover object is part of a function
-      if (outlet && outlet.parent != currLine.attrs.source && !isCycle(currLine.attrs.source, outlet.parent)) {
+      if (outlet && outlet.parent != currLine.attrs.source && !predicate.isCycle(currLine.attrs.source, outlet.parent)) {
         outlet.scale({
           x: 1.5,
           y: 1.5
@@ -269,7 +269,7 @@ workLayer.on('mouseover', function(evt) {
     } // if makingLine
   } // if the work tool or line tool is enabled
   else if (deleteToolOn) {
-    if (isFunction(parent) || isValue(parent)) {
+    if (predicate.isFunction(parent) || predicate.isValue(parent)) {
       parent.children[0].setAttrs({
         shadowColor: deleteColor,
         shadowOpacity: 1,
@@ -310,7 +310,7 @@ workLayer.on('mouseout', function(evt) {
   var shape = evt.target;
   var parent = shape.getParent();
   if (workToolOn || lineToolOn) {
-    if (isImageBox(shape) && shape.attrs.expanded) {
+    if (predicate.isImageBox(shape) && shape.attrs.expanded) {
       /*
       animation = false;
        */
@@ -323,10 +323,10 @@ workLayer.on('mouseout', function(evt) {
     } // if the mouseout object is an expanded imageBox
     if (makingLine) {
       var outlet;
-      if (isOutlet(shape)) {
+      if (predicate.isOutlet(shape)) {
         outlet = shape;
       } // if the shape is an outlet
-      else if (isFunction(parent)) {
+      else if (predicate.isFunction(parent)) {
         // find the first empty outlet
         if (parent.attrs.numInputs < parent.attrs.maxInputs) {
           var i = OUTLET_OFFSET
@@ -354,7 +354,7 @@ workLayer.on('mouseout', function(evt) {
     } // if makingLine
   } // if the work tool or line tool is enabled 
   else if (deleteToolOn) {
-    if (isFunction(parent) || isValue(parent)) {
+    if (predicate.isFunction(parent) || predicate.isValue(parent)) {
 
       // deal with shadows on the shape
       if (parent == currShape) {

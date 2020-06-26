@@ -67,7 +67,7 @@ var workspaceToJSON = function() {
   // Gather information on each node.
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i];
-    if (isValue(node)) {
+    if (predicate.isValue(node)) {
       if(node.name() == 'constant') {
         nodeInfo[node._id] = 
           info.addVal(node.name() + node.attrs.renderFunction, node.x(), node.y());
@@ -77,7 +77,7 @@ var workspaceToJSON = function() {
           info.addVal(node.name(), node.x(), node.y());
       }
     } // if it's a value
-    else if (isFunction(node)) { 
+    else if (predicate.isFunction(node)) { 
       nodeInfo[node._id] = 
           info.addOp(node.name(), node.x(), node.y());
     } // if it's a function
@@ -101,7 +101,7 @@ var workspaceToJSON = function() {
  var arrayToWorkspace = function(array) {
   for (var i = 0; i < array.length; i++) {
     var object = array[i];
-    if (isLine(object)) {
+    if (predicate.isLine(object)) {
       object.moveTo(lineLayer);
     }
     else {

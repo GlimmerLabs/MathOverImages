@@ -10,7 +10,6 @@
   3+. Outlet nodes (only for functions)
   */
 
-
 /* 
   makeFunctionGroup takes a string funName, a key in the functions object above,
   an integer x, and an integer y, and returns the corresponding function node object,
@@ -223,7 +222,7 @@
   */
   var makeLine = function(source) {
     var yOffset;
-    if (isFunction(source)) {
+    if (predicate.isFunction(source)) {
       yOffset = (source.children[0].height() + functionStrokeWidth) / 2;
     }
     else {

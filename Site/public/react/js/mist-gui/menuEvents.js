@@ -183,7 +183,7 @@ menuArrowLayer.on('mouseup', function(evt) {
         enableWorkTool();
       }
       var group = evt.target.getParent();
-      if (isFunction(group)) {
+      if (predicate.isFunction(group)) {
         var newGroup = makeFunctionGroup(group.attrs.name, group.attrs.x, group.attrs.y);
       } 
       else {
@@ -208,7 +208,7 @@ menuArrowLayer.on('mouseup', function(evt) {
   menuLayer.on('mouseover', function(evt) {
     var group = evt.target.getParent();
     if (tagsOn) {
-     if (isFunction(group) || isValue(group)) {
+     if (predicate.isFunction(group) || predicate.isValue(group)) {
       setTimeout(function(){
         if (openTag) {
           openTag.destroy();

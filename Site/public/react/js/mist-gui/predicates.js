@@ -2,7 +2,9 @@
 isFunction determines if target is a functionGroup and returns a boolean value. 
 target is an object.
 */
-var isFunction = function(target) {
+const predicate = {};
+
+predicate.isFunction = function(target) {
 	return (target.attrs.maxInputs != null);
 };
 
@@ -10,11 +12,11 @@ var isFunction = function(target) {
 isValue determines if target is a valueGroup and returns a boolean value. 
 target is an object.
 */
-var isValue = function(target) {
+predicate.isValue = function(target) {
 	return (target.attrs.maxInputs == null && target.nodeType == 'Group');
 };
 
-var isVariable = function(target) {
+predicate.isVariable = function(target) {
 	return (target.name() == 'variable');
 }
 
@@ -22,7 +24,7 @@ var isVariable = function(target) {
 isOutlet determines if target is an outletGroup and returns a boolean value. 
 target is an object.
 */
-var isOutlet = function(target) {
+predicate.isOutlet = function(target) {
 	return (target.name() != null && target.attrs.name.substring(0,6) == 'outlet');
 };
 
@@ -30,7 +32,7 @@ var isOutlet = function(target) {
 isLine determines if target is a line and returns a boolean value. 
 target is an object.
 */
-var isLine = function(target) {
+predicate.isLine = function(target) {
 	return (target.className == 'Line');
 };
 
@@ -38,7 +40,7 @@ var isLine = function(target) {
 isImageBox determines if target is an image box and returns a boolean value. 
 target is an object.
 */
-var isImageBox = function(target) {
+predicate.isImageBox = function(target) {
 	return (target.name() != null && target.attrs.name == 'imageBox');
 };
 
@@ -46,7 +48,7 @@ var isImageBox = function(target) {
 isDrawTool determines if target is the drawing tool on the pallette and returns a boolean value. 
 target is an object.
 */
-var isDrawTool = function(target) {
+predicate.isDrawTool = function(target) {
 	return (target.name() != null && target.attrs.name == 'draw');
 };
 
@@ -54,7 +56,7 @@ var isDrawTool = function(target) {
 isDeleteTool determines if target is the drawing tool on the pallette and returns a boolean value. 
 target is an object.
 */
-var isDeleteTool = function(target) {
+predicate.isDeleteTool = function(target) {
 	return (target.name() != null && target.attrs.name == 'delete');
 };
 
@@ -62,7 +64,7 @@ var isDeleteTool = function(target) {
 isToolControl determines if target is the tool group controller on the pallette and returns a boolean value. 
 target is an object.
 */
-var isToolControl = function(target) {
+predicate.isToolControl = function(target) {
 	return (target.name() != null && target.attrs.name == 'toolControl');
 };
 
@@ -70,7 +72,7 @@ var isToolControl = function(target) {
 isRedoTool determines if target is the redo tool on the pallette and returns a boolean value. 
 target is an object.
 */
-var isRedoTool = function(target) {
+predicate.isRedoTool = function(target) {
 	return (target.name() != null && target.attrs.name == 'redo');
 };
 
@@ -78,7 +80,7 @@ var isRedoTool = function(target) {
 isUndoTool determines if target is the redo tool on the pallette and returns a boolean value. 
 target is an object.
 */
-var isUndoTool = function(target) {
+predicate.isUndoTool = function(target) {
 	return (target.name() != null && target.attrs.name == 'undo');
 };
 
@@ -87,8 +89,8 @@ var isUndoTool = function(target) {
  * function group with sufficient inputs, and false if it is a function group
  * with insufficient inputs.
  */
- var isRenderable = function(group) {
- 	if (isValue(group)) {
+predicate.isRenderable = function(group) {
+ 	if (predicate.isValue(group)) {
  		if (group.attrs.rep != '#') {
  			return true;
  		}
@@ -99,7 +101,7 @@ var isUndoTool = function(target) {
  		var validInputs = 0;
  		for(var i = OUTLET_OFFSET; i < group.children.length; i++) {
  			lineIn = group.children[i].attrs.lineIn;
- 			if (lineIn != null && isRenderable(lineIn.attrs.source)) {
+ 			if (lineIn != null && predicate.isRenderable(lineIn.attrs.source)) {
  				validInputs++;
  			}
  		}
@@ -107,7 +109,7 @@ var isUndoTool = function(target) {
  	}
  };
 
- var isCycle = function(sourceGroup, outletGroup) {
+predicate.isCycle = function(sourceGroup, outletGroup) {
  	var lineOut = outletGroup.attrs.lineOut;
  	if (lineOut.length === 0) {
  		return false;
@@ -115,7 +117,7 @@ var isUndoTool = function(target) {
  	for(var i = 0; i < lineOut.length; i++) {
  		if (sourceGroup == lineOut[i].attrs.outlet.parent) {
  			return true;
- 		} else if (isCycle(sourceGroup, lineOut[i].attrs.outlet.parent) ) {
+ 		} else if (predicate.isCycle(sourceGroup, lineOut[i].attrs.outlet.parent) ) {
  			return true;
  		}
  	}
@@ -127,8 +129,8 @@ var isUndoTool = function(target) {
  * If true, it finds the renderFunction for the group, makes the imageBox visible 
  * and returns true. If false, it makes the imageBox invisible and returns false.
  */
- var assertRenderable = function(group) {
- 	if (isRenderable(group)) {
+predicate.assertRenderable = function(group) {
+ 	if (predicate.isRenderable(group)) {
  		findRenderFunction(group);
  		group.children[2].setAttr('visible', true);
  		if (group.attrs.animator) {
@@ -152,7 +154,7 @@ var isUndoTool = function(target) {
   * canMoveRight tests if either the functions or values in the menu can be moved 
   * to the right and returns a boolean.
   */
-var canMoveRight = function(type) {
+predicate.canMoveRight = function(type) {
   return ((type == 'values' && 
     menuValues[0].x() < (menuCornerWidth + buttonWidth + valMenuXSpacing)) ||
     (type == 'functions' && 
@@ -162,7 +164,7 @@ var canMoveRight = function(type) {
  * canMoveLeft tests if either the functions or values in the menu can be moved
  * to the left and returns a boolean.
  */
-var canMoveLeft = function(type) {
+predicate.canMoveLeft = function(type) {
 	return ((type == 'values' &&
 	  menuValues[menuValues.length - 1].x() > width - buttonWidth) ||
       (type == 'functions' && 

@@ -87,7 +87,7 @@ var makeLabel = function(group) {
 		label.add(rgbText);
 	}
 	else {
-		if (isValue(group)){
+		if (predicate.isValue(group)){
 			xOffset = -4;
 			text = menuValuesDescriptions[group.name()];
 		}

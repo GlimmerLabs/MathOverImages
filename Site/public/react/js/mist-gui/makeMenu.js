@@ -251,7 +251,7 @@ var hideScrollArrows = function(type) {
     if (type == 'values') {
       var leftArrow = valuesArrows['left'];
       var rightArrow = valuesArrows['right'];
-      if (canMoveRight('values')) {
+      if (predicate.canMoveRight('values')) {
         leftArrow.setAttr('functional', true);
         leftArrow.children[0].setAttr('opacity', .3);
         leftArrow.children[1].setAttr('opacity', .5);
@@ -262,7 +262,7 @@ var hideScrollArrows = function(type) {
         leftArrow.children[1].setAttr('opacity', 0);
       } // else left non-functional
 
-      if (canMoveLeft('values')) {
+      if (predicate.canMoveLeft('values')) {
         rightArrow.setAttr('functional', true);
         rightArrow.children[0].setAttr('opacity', .3);
         rightArrow.children[1].setAttr('opacity', .5);
@@ -276,7 +276,7 @@ var hideScrollArrows = function(type) {
     else if (type == 'functions') {
       var leftArrow = functionsArrows['left'];
       var rightArrow = functionsArrows['right']; 
-      if (canMoveRight('functions')) {
+      if (predicate.canMoveRight('functions')) {
         leftArrow.setAttr('functional', true);
         leftArrow.children[0].setAttr('opacity', .3);
         leftArrow.children[1].setAttr('opacity', .5);
@@ -287,7 +287,7 @@ var hideScrollArrows = function(type) {
         leftArrow.children[1].setAttr('opacity', 0);
       } // else left non-functional
 
-      if (canMoveLeft('functions')) {
+      if (predicate.canMoveLeft('functions')) {
         rightArrow.setAttr('functional', true);
         rightArrow.children[0].setAttr('opacity', .3);
         rightArrow.children[1].setAttr('opacity', .5);

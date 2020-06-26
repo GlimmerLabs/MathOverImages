@@ -65,7 +65,7 @@ var removeOutlet = function(funGroup) {
 };
 
 var setOutletOpacity = function(group) {
-  if (isFunction(group)) {
+  if (predicate.isFunction(group)) {
     for (var i = OUTLET_OFFSET; i < group.children.length; i++){
       var outlet = group.children[i];
       if (outlet.attrs.lineIn) {
@@ -84,7 +84,7 @@ var setOutletOpacity = function(group) {
  * NOTE: this will always recalculate the entire function
  */
  var findRenderFunction = function(group) {
-  if(isValue(group)) {
+  if(predicate.isValue(group)) {
     group.attrs.renderFunction = group.attrs.rep;
     return;
   } // if its a value it has its own render function
@@ -102,7 +102,7 @@ var setOutletOpacity = function(group) {
  * updateFunBar changes the text in the funBar according to the currShape.
  */
 var updateFunBar = function() {
-  if (currShape && assertRenderable(currShape)) {
+  if (currShape && predicate.assertRenderable(currShape)) {
     currText = currShape.attrs.renderFunction;
     var currFontSize;
     if (currText.length <= 50) {
@@ -190,7 +190,7 @@ var collapseCanvas = function(group){
 var updateForward = function(group) {
   for (var i = 0; i < group.attrs.lineOut.length; i++) {
     var lineOutGroup = group.attrs.lineOut[i].attrs.outlet.parent;
-    assertRenderable(lineOutGroup);
+    predicate.assertRenderable(lineOutGroup);
     updateForward(lineOutGroup);
   }
 };
@@ -314,7 +314,7 @@ var removeShadow = function(group) {
       }
     }
   }
-  assertRenderable(newNode);
+  predicate.assertRenderable(newNode);
   updateForward(newNode);
   lineLayer.draw();
   workLayer.draw();

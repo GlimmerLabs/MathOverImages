@@ -197,7 +197,7 @@ function readyEditing(stage)
       if(event.evt != currentEvent){
         currentEvent = null;
         if (activeText != null){
-          if (isValue(activeText.parent)) {
+          if (predicate.isValue(activeText.parent)) {
             if (activeText.attrs.text) {
               updateValueText(activeText);
             }
@@ -307,7 +307,7 @@ function readyEditing(stage)
         addedKey = true;
       }
       if (keycode == 13) {
-        if (isValue(activeText.parent)) {
+        if (predicate.isValue(activeText.parent)) {
           if (activeText.attrs.text) {
             updateValueText(activeText);
           }
