@@ -104,7 +104,7 @@ const utility = {
       currText = currShape.attrs.renderFunction;
       var currFontSize;
       if (currText.length <= 50) {
-        currFontSize = funBarDisplayFontSize;
+        currFontSize = funBarStyle.displayFontSize;
       } 
       else if (currText.length >= 110) {
         currFontSize = 10;
@@ -365,7 +365,7 @@ const utility = {
    * in the workspace below the menu
    */
   applyDragBounds(group) {
-    var bottomBoundOffset = functionStyle.totalSideLength + funBarHeight;
+    var bottomBoundOffset = functionStyle.totalSideLength + funBarStyle.height;
     group.setAttr('dragBoundFunc', function(pos) {
       var newY = pos.y <= menuHeight ? menuHeight + 1 :
         pos.y > size.height - bottomBoundOffset ? size.height - bottomBoundOffset :

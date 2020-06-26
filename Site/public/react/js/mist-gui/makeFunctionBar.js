@@ -1,24 +1,24 @@
 var funBar = new Kinetic.Group ({
   x: 0,
-  y: size.height - funBarHeight,
+  y: size.height - funBarStyle.height,
 });
 layers.funBar.add(funBar);
 var funBarArea = new Kinetic.Rect({
   x: 0,
   y: 0,
-  width: funBarWidth,
-  height: funBarHeight,
-  fill: funBarBackgroundColor,
+  width: funBarStyle.width,
+  height: funBarStyle.height,
+  fill: funBarStyle.backgroundColor,
   stroke: 'black',
   strokeWidth: 1
 });
 funBar.add(funBarArea);
 
 var funBarTextArea = new Kinetic.Rect({
-  x: funBarOffset,
-  y: funBarOffset,
-  width: funBarTextAreaWidth,
-  height: funBarTextAreaHeight,
+  x: funBarStyle.offset,
+  y: funBarStyle.offset,
+  width: funBarStyle.textAreaWidth,
+  height: funBarStyle.textAreaHeight,
   fill: 'white',
   stroke: 'black',
   strokeWidth: .5 
@@ -27,37 +27,37 @@ funBar.add(funBarTextArea);
 
 var funBarText = new Kinetic.Text({
   text: '',
-  x: funBarTextOffset,
-  y: funBarTextOffset,
-  width: funBarTextAreaWidth - (funBarTextOffset),
-  height: funBarTextAreaHeight - (2 * funBarOffset),
+  x: funBarStyle.textOffset,
+  y: funBarStyle.textOffset,
+  width: funBarStyle.textAreaWidth - (funBarStyle.textOffset),
+  height: funBarStyle.textAreaHeight - (2 * funBarStyle.offset),
   fill: 'black',
   fontFamily: 'Courier New',
-  fontSize: funBarDisplayFontSize
+  fontSize: funBarStyle.displayFontSize
 });
 funBar.add(funBarText);
 
 var funBarComment = new Kinetic.Text ({
   text: 'Save as...',
-  x: funBarTextArea.width() + 2 * funBarOffset,
-  y: funBarHeight / 2 - (funBarFontSize / 2),
+  x: funBarTextArea.width() + 2 * funBarStyle.offset,
+  y: funBarStyle.height / 2 - (funBarStyle.fontSize / 2),
   //width: funBarWidth * (3 / 25),
   fill: 'black',
-  fontSize: funBarFontSize
+  fontSize: funBarStyle.fontSize
 });
 funBar.add(funBarComment);
 
 var funBarSaveFunGroup = new Kinetic.Group ({
-  x: funBarTextAreaWidth + funBarComment.width() + (5 * funBarOffset),
-  y: funBarOffset
+  x: funBarStyle.textAreaWidth + funBarComment.width() + (5 * funBarStyle.offset),
+  y: funBarStyle.offset
 });
 funBar.add(funBarSaveFunGroup);
 
 var funBarSaveFunCover = new Kinetic.Rect ({
   x: 0,
   y: 0,
-  width: funBarIconTextWidth,
-  height: funBarTextAreaHeight,
+  width: funBarStyle.iconTextWidth,
+  height: funBarStyle.textAreaHeight,
   fill: functionStyle.colorLight,
   stroke: 'grey',
   strokeWidth: 1,
@@ -69,26 +69,26 @@ funBarSaveFunGroup.add(funBarSaveFunCover);
 var funBarSaveFunText = new Kinetic.Text ({
   text: 'function',
   x: 0,
-  y: funBarOffset,
-  width: funBarIconTextWidth,
-  height: funBarTextAreaHeight,
+  y: funBarStyle.offset,
+  width: funBarStyle.iconTextWidth,
+  height: funBarStyle.textAreaHeight,
   align: 'center',
   fill: 'grey',
-  fontSize: funBarFontSize
+  fontSize: funBarStyle.fontSize
 });
 funBarSaveFunGroup.add(funBarSaveFunText);
 
 var funBarSaveImGroup = new Kinetic.Group ({
-  x: funBarSaveFunGroup.x() + funBarIconTextWidth + (2 * funBarOffset),
-  y: funBarOffset,
+  x: funBarSaveFunGroup.x() + funBarStyle.iconTextWidth + (2 * funBarStyle.offset),
+  y: funBarStyle.offset,
 });
 funBar.add(funBarSaveImGroup);
 
 var funBarSaveImCover = new Kinetic.Rect ({
   x: 0,
   y: 0,
-  width: funBarIconTextWidth,
-  height: funBarTextAreaHeight,
+  width: funBarStyle.iconTextWidth,
+  height: funBarStyle.textAreaHeight,
   fill: valueStyle.menuColorLight,
   stroke: 'grey',
   strokeWidth: 1,
@@ -100,10 +100,10 @@ funBarSaveImGroup.add(funBarSaveImCover);
 var funBarSaveImText = new Kinetic.Text ({
   text: 'image',
   x: 0,
-  y: funBarOffset,
-  width: funBarIconTextWidth,
+  y: funBarStyle.offset,
+  width: funBarStyle.iconTextWidth,
   align: 'center',
   fill: 'grey',
-  fontSize: funBarFontSize
+  fontSize: funBarStyle.fontSize
 });
 funBarSaveImGroup.add(funBarSaveImText);

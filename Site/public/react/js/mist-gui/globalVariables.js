@@ -136,19 +136,21 @@ var toolboxButtonSize = size.width / 30;
 var deleteColor = '#A30F0F'; 
 
 //FUNCTIONBAR
-var funBarWidth = size.width;
-var funBarHeight = size.height / 15;
-var funBarBackgroundColor = menuControlColor;
-var funBarOffset = funBarHeight * .17;
-var funBarTextAreaWidth = funBarWidth * .75;
-var funBarTextAreaHeight = funBarHeight * .66;
-var funBarTextOffset = funBarOffset* 1.5;
-var funBarDisplayFontSize = size.width / 40.9; 
-var funBarFontSize = size.width / 75;
-var funBarIconOffset = funBarWidth / 16;
-var funBarIconSideLength = funBarHeight / 4;
-var funBarIconTextWidth = size.width / 18;
-var funBarIconTextY = funBarHeight - (funBarOffset * 1.3);
+const funBarStyle = {
+  width: size.width,
+  height: size.height / 15,
+  backgroundColor: menuControlColor,
+  displayFontSize: size.width / 40.9,
+  fontSize: size.width / 75,
+  iconTextWidth: size.width / 18,
+}
+funBarStyle.offset = funBarStyle.height * .17;
+funBarStyle.textAreaWidth = funBarStyle.width * .75;
+funBarStyle.textAreaHeight = funBarStyle.height * .66;
+funBarStyle.textOffset = funBarStyle.offset* 1.5;
+funBarStyle.iconOffset = funBarStyle.width / 16;
+funBarStyle.iconSideLength = funBarStyle.height / 4;
+funBarStyle.iconTextY = funBarStyle.height - (funBarStyle.offset * 1.3);
 
 //SAVE SCREEN
 var popRectColor = '#e8e8e8'
