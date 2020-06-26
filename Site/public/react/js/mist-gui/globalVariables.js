@@ -4,7 +4,7 @@
  *   within the object/prototype.)
  */
  
-const size = {}
+const size = {};
 size.width = 900;
 size.height = 2 * size.width / 3;
 size.scale = size.width / 900;
