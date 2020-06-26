@@ -19,16 +19,17 @@ const fonts = {
 
 var currentWorkspace;
 
-const functionStyle = {};
-functionStyle.strokeWidth = size.width / 90;
+const functionStyle = {
+  strokeWidth: size.width / 90,
+  totalSideLength: size.width / 20,
+  color: '#3FAAA0',
+  colorLight: '#C6F1ED',
+  multColor: '#5EC783',
+  singleColor: '#77C9E2',
+  RGBcolor: '#AE88D6',
+};
 functionStyle.halfStrokeWidth = functionStyle.strokeWidth / 2;
-functionStyle.totalSideLength = size.width / 20;
 functionStyle.rectSideLength = functionStyle.totalSideLength - functionStyle.strokeWidth;
-functionStyle.color = '#3FAAA0';
-functionStyle.colorLight = '#C6F1ED';
-functionStyle.multColor = '#5EC783';
-functionStyle.singleColor = '#77C9E2';
-functionStyle.RGBcolor = '#AE88D6';
 
 const valueStyle = {
   sideLength: functionStyle.totalSideLength / 1.414,
