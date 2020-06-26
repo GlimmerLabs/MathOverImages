@@ -7,7 +7,7 @@
 /**
  * addOutlet takes a function group funGroup and adds an outlet to it, expanding the node if there is not enough space for the outlet.
  */
-  var addOutlet = function(funGroup) {
+function addOutlet(funGroup) {
     if(funGroup.children.length - OUTLET_OFFSET < funGroup.attrs.maxInputs) {
       if(funGroup.children.length - OUTLET_OFFSET > 2) {
         funGroup.children[0].setAttr('height',
@@ -38,7 +38,7 @@
     -the outlet is removed
     -the function node is scaled properly
  */
-var removeOutlet = function(funGroup) {
+function removeOutlet(funGroup) {
   // destroy outlet if number of remaning outlets would still be above minimum
   if (funGroup.attrs.minInputs < funGroup.children.length - OUTLET_OFFSET) {
     var outletIndex = funGroup.children.length - 1;
@@ -64,7 +64,7 @@ var removeOutlet = function(funGroup) {
   } // if above minumum number of outlets
 };
 
-var setOutletOpacity = function(group) {
+function setOutletOpacity(group) {
   if (predicate.isFunction(group)) {
     for (var i = OUTLET_OFFSET; i < group.children.length; i++){
       var outlet = group.children[i];
@@ -83,7 +83,7 @@ var setOutletOpacity = function(group) {
  * renderFunction that should be used to create an image for output.
  * NOTE: this will always recalculate the entire function
  */
- var findRenderFunction = function(group) {
+function findRenderFunction(group) {
   if(predicate.isValue(group)) {
     group.attrs.renderFunction = group.attrs.rep;
     return;
@@ -101,7 +101,7 @@ var setOutletOpacity = function(group) {
 /**
  * updateFunBar changes the text in the funBar according to the currShape.
  */
-var updateFunBar = function() {
+function updateFunBar() {
   if (currShape && predicate.assertRenderable(currShape)) {
     currText = currShape.attrs.renderFunction;
     var currFontSize;
@@ -131,7 +131,7 @@ var updateFunBar = function() {
  * renderCanvas takes a function or value group and renders a 50x50 image
  * with the same top left coordinate as the image box for that group.
  */
-var renderCanvas = function(group) {
+function renderCanvas(group) {
   var currLayer = group.attrs.renderLayer; 
   if (currLayer == null) {
     currLayer = new Kinetic.Layer();
@@ -168,7 +168,7 @@ var renderCanvas = function(group) {
  * collapseCanvas takes a group and, if the group has an renderlayer, it closes the 
  * renderLayer and the imagebox
  */
-var collapseCanvas = function(group){
+function collapseCanvas(group){
   if (group.attrs.renderLayer) {
     group.attrs.animator.stop();
     group.attrs.animator = null;
@@ -187,7 +187,7 @@ var collapseCanvas = function(group){
  * accurate. To be used whenever a function's inputs are changed, or when a node is
  * deleted.
  */
-var updateForward = function(group) {
+function updateForward(group) {
   for (var i = 0; i < group.attrs.lineOut.length; i++) {
     var lineOutGroup = group.attrs.lineOut[i].attrs.outlet.parent;
     predicate.assertRenderable(lineOutGroup);
@@ -196,7 +196,7 @@ var updateForward = function(group) {
 };
 
  /* disableButton take a tool group from the tool box, turns off its functionality and disables its shadow. */
- var disableTool = function(toolGroup) {
+function disableTool(toolGroup) {
   toolGroup.children[0].setAttr('shadowEnabled', false);
   var name = toolGroup.name();
   if (name == 'workTool') {
@@ -210,7 +210,7 @@ var updateForward = function(group) {
   }
  };
 
- var enableWorkTool = function() {
+function enableWorkTool() {
   workToolGroup.children[0].setAttr('shadowEnabled', true);
   workToolOn = true;
   disableTool(lineToolGroup);
@@ -223,7 +223,7 @@ var updateForward = function(group) {
 /**
  * setDragShadow takes a function or value group and activates drag shadow
  */
- var setDragShadow = function(group) {
+function setDragShadow(group) {
   group.children[0].setAttrs({
     shadowColor: dragShadowColor,
     shadowEnabled: true
@@ -233,7 +233,7 @@ var updateForward = function(group) {
 /**
  * setSelectedShadow takes a function or value group and activates a shadow to signify it's selected
  */
- var setSelectedShadow = function(group) {
+function setSelectedShadow(group) {
   group.children[0].setAttrs({
     shadowColor: selectedShadowColor,
     shadowEnabled: true
@@ -243,7 +243,7 @@ var updateForward = function(group) {
  /*
   * removeShadow takes a function or value group and removes the shadow
   */
-var removeShadow = function(group) {
+function removeShadow(group) {
   if (group){
     group.children[0].setAttr('shadowEnabled', false);
   }
@@ -253,7 +253,7 @@ var removeShadow = function(group) {
  * replaceNode takes an old node and a new node and replaces the old node with
  *  the new one, removing the old one from the layer.
  */
- var replaceNode = function(oldNode, newNode) {
+function replaceNode(oldNode, newNode) {
   var tempOut = oldNode.attrs.lineOut;
   collapseCanvas(oldNode);
   oldNode.remove();
@@ -330,7 +330,7 @@ var removeShadow = function(group) {
  * - sets lineOut array to an empty array
  * returns nothing.
  */
- var resetNode = function(node) {
+function resetNode(node) {
   // set lineOut array to []
   node.attrs.lineOut = [];
   if (isFunction(node)) {
@@ -354,7 +354,7 @@ var removeShadow = function(group) {
  * wrapValueText takes a string and trucates after 4 characters and adds "..." to the end
  * used for constant values.
  */
-var wrapValueText = function(text) {
+function wrapValueText(text) {
   if (text.length > 4) {
     return text.substring(0,4) + "\n...";
   }
@@ -367,7 +367,7 @@ var wrapValueText = function(text) {
  * applyDragBounds takes a function or value group and allows it to only be dragged 
  * in the workspace below the menu
  */
-var applyDragBounds = function(group) {
+function applyDragBounds(group) {
   var bottomBoundOffset = functionStyle.totalSideLength + funBarHeight;
   group.setAttr('dragBoundFunc', function(pos) {
       var newY = pos.y <= menuHeight ? menuHeight + 1 :
@@ -380,7 +380,7 @@ var applyDragBounds = function(group) {
   });
 };
 
-var enableSaveImage = function() {
+function enableSaveImage() {
   funBarSaveImCover.setAttrs({
     stroke: 'black',
     fill: valueStyle.menuColor
@@ -388,7 +388,7 @@ var enableSaveImage = function() {
   funBarSaveImText.setAttr('fill', 'black');
 };
 
-var disableSaveImage = function() {
+function disableSaveImage() {
   funBarSaveImCover.setAttrs({
     stroke: 'grey',
     fill: valueStyle.menuColorLight
@@ -396,7 +396,7 @@ var disableSaveImage = function() {
   funBarSaveImText.setAttr('fill', 'grey');
 };
 
-var enableSaveFunction = function() {
+function enableSaveFunction() {
   funBarSaveImCover.setAttrs({
     stroke: 'black',
     fill: functionStyle.color
@@ -404,7 +404,7 @@ var enableSaveFunction = function() {
   funBarSaveImText.setAttr('fill', 'black');
 };
 
-var disableSaveFunction = function() {
+function disableSaveFunction() {
   funBarSaveImCover.setAttrs({
     stroke: 'grey',
     fill: functionStyle.colorLight
