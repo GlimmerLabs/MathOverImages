@@ -8,9 +8,9 @@ const utility = {
     if(funGroup.children.length - OUTLET_OFFSET < funGroup.attrs.maxInputs) {
       if(funGroup.children.length - OUTLET_OFFSET > 2) {
         funGroup.children[0].setAttr('height',
-          funGroup.children[0].attrs.height + outletYOffset);
-        funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletYOffset / 2);
-        funGroup.children[2].setAttr('y', funGroup.children[2].attrs.y + outletYOffset);
+          funGroup.children[0].attrs.height + outletStyle.yOffset);
+        funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y + outletStyle.yOffset / 2);
+        funGroup.children[2].setAttr('y', funGroup.children[2].attrs.y + outletStyle.yOffset);
         var lineOut = funGroup.attrs.lineOut
         for (var i = 0; i < lineOut.length; i++) {
           var line = lineOut[i];
@@ -44,9 +44,9 @@ const utility = {
         outlet.destroy();
         if(funGroup.children.length - OUTLET_OFFSET > 2) {
           funGroup.children[0].setAttr('height',
-            funGroup.children[0].attrs.height - outletYOffset);
-          funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y - (outletYOffset / 2));
-          funGroup.children[2].setAttr('y', funGroup.children[2].attrs.y - outletYOffset);
+            funGroup.children[0].attrs.height - outletStyle.yOffset);
+          funGroup.children[1].setAttr('y', funGroup.children[1].attrs.y - (outletStyle.yOffset / 2));
+          funGroup.children[2].setAttr('y', funGroup.children[2].attrs.y - outletStyle.yOffset);
           var lineOut = funGroup.attrs.lineOut;
           for (var i = 0; i < lineOut.length; i++) {
             var line = lineOut[i];

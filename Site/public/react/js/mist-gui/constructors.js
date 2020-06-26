@@ -204,10 +204,10 @@
         context.fillStrokeShape(this);
       },
       name: 'outlet' + (functGroup.children.length - OUTLET_OFFSET),
-      x:functGroup.children[0].x() + outletXOffset,
+      x:functGroup.children[0].x() + outletStyle.xOffset,
       y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
-        outletYOffset + functionStyle.halfStrokeWidth,
-      fill: outletColor,
+        outletStyle.yOffset + functionStyle.halfStrokeWidth,
+      fill: outletStyle.color,
       opacity: 1,
       stroke: 'black',
       strokeWidth: 1,

@@ -86,9 +86,11 @@ const variableStyle = {
 };
 variableStyle.width = Math.cos(Math.PI/6) * variableStyle.radius;
 
-var outletXOffset = size.width / 400;
-var outletYOffset = functionStyle.rectSideLength / 3;
-var outletColor =  '#C4C4C4';
+const outletStyle = {
+  xOffset: size.width / 400,
+  yOffset: functionStyle.rectSideLength / 3,
+  color:  '#C4C4C4',
+};
 
 var lineStrokeWidth = 2;
 
