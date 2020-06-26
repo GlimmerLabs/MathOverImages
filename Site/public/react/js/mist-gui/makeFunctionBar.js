@@ -107,6 +107,3 @@ var funBarSaveImText = new Kinetic.Text ({
   fontSize: funBarFontSize
 });
 funBarSaveImGroup.add(funBarSaveImText);
-
-
-
