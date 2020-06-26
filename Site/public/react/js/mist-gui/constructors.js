@@ -271,7 +271,7 @@ var addLine = function(source, sink, outletIndex) {
   }
   var line = makeLine(source);
   while (!sink.children[outletIndex + OUTLET_OFFSET]) {
-    addOutlet(sink);
+    utility.addOutlet(sink);
   } // If there aren't enough outlets add a new one
   var outlet = sink.children[outletIndex + OUTLET_OFFSET];
   source.attrs.lineOut[source.attrs.lineOut.length] = line;
@@ -279,11 +279,11 @@ var addLine = function(source, sink, outletIndex) {
   line.attrs.outlet = outlet;
   line.points()[2] = sink.x();
   line.points()[3] = sink.y() + sink.children[outletIndex + OUTLET_OFFSET].y();
-  assertRenderable(sink);
+  predicate.assertRenderable(sink);
   sink.attrs.numInputs++;
   if (sink.attrs.numInputs == sink.children.length - OUTLET_OFFSET &&
        sink.attrs.numInputs < sink.attrs.maxInputs) {
-    addOutlet(sink);
+    utility.addOutlet(sink);
   } // if it's an appropriate number
   updateForward(sink);
   line.setAttr("visible",true);
@@ -301,10 +301,10 @@ var addLine = function(source, sink, outletIndex) {
 var addOp = function(funName, x, y) {
   var op = makeFunctionGroup(funName, x + functionStyle.halfStrokeWidth, y);
   op.setAttr("visible",true);
-  addOutlet(op);
-  addOutlet(op);
+  utility.addOutlet(op);
+  utility.addOutlet(op);
   if (funName == "rgb") {
-    addOutlet(op);
+    utility.addOutlet(op);
   }
   applyDragBounds(op);
   layers.work.add(op);
