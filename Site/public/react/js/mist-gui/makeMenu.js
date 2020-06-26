@@ -110,6 +110,7 @@ var borderLine = new Kinetic.Line({
 
  /* add functions to menu */
  var menuFunctions = [];
+ const funNames = Object.keys(functions);
  for (var i = 0; i < funNames.length; i++) {
   menuFunctions[i] = makeFunctionGroup(funNames[i], menuFunctsXStart, menuYspacing);
   layers.menu.add(menuFunctions[i]);

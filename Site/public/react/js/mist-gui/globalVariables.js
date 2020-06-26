@@ -41,8 +41,7 @@ const valueStyle = {
   constantColor: '#F17C9D',
 };
 
-var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
-var functions = {
+const functions = {
   add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionStyle.multColor},
   multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionStyle.multColor},
   square:    {rep: 'sqr', max: 1, min: 1, prefix: 'square', color: functionStyle.singleColor},
