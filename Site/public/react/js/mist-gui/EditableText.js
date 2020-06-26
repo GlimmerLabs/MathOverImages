@@ -118,7 +118,7 @@ Kinetic.Text.prototype.addCursor = function(moveToClosest, mouse){
     var lineText = activeText.textArr[line].text;
     var beginning = this.getDistanceUpTo(this.position);
     var textBeforeCursor = activeText.text().slice(beginning, this.position);
-    var xOffset = activeText.measureText(family, size, textBeforeCursor).width;;
+    var xOffset = activeText.measureText(family, size, textBeforeCursor).width;
     if (activeText.aligned == "center") {
       xOffset += this.offsetCentered(family, size, lineText);
     }
