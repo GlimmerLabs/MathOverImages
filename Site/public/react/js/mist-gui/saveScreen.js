@@ -43,7 +43,7 @@ var renderPopText = new Kinetic.Text({
   height: popTextHeight,
   fill: 'black',
   fontSize: popTextFontSize,
-  fontFamily: functionFont,
+  fontFamily: fonts.default,
   align: 'center'
 });
 popSaveGroup.add(renderPopText);
@@ -54,7 +54,7 @@ var nameText = new Kinetic.Text({
   y: popTextShiftY + (popTextHeight * 1.4),
   fill: 'black',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
 });
 popSaveGroup.add(nameText);
 
@@ -76,7 +76,7 @@ var nameEditText = new Kinetic.Text({
   fontSize: 14,
   width: popCanvasSide - nameTextShift,
   height: popTextHeight / 1.5,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   fill: 'black'
 });
 popSaveGroup.add(nameEditText);
@@ -93,7 +93,7 @@ var popErrorText = new Kinetic.Text({
   y: popTextShiftY + (popTextHeight * 2.2),
   text: '',
   width: popRectWidth - (2*popTextShiftX),
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   fontSize: 14,
   fill: errorColor,
 });
@@ -127,7 +127,7 @@ var popCancelButtonText = new Kinetic.Text({
   width: popButtonWidth,
   fill: 'black',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   align: 'center'
 });
 popCancelButtonGroup.add(popCancelButtonText);
@@ -160,7 +160,7 @@ var popDownloadButtonText = new Kinetic.Text({
   width: popButtonWidth,
   fill: 'grey',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   align: 'center'
 });
 popDownloadButtonGroup.add(popDownloadButtonText);
@@ -194,7 +194,7 @@ var popSaveButtonText = new Kinetic.Text({
   width: popButtonWidth,
   fill: 'black',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   align: 'center'
 });
 popSaveButtonGroup.add(popSaveButtonText);

@@ -51,7 +51,7 @@
     /* create text to be displayed on top of rectangle */
     var newText = new Kinetic.Text({
       text: functions[funName].rep,
-      fontFamily: globalFont,
+      fontFamily: fonts.default,
       fill: 'black',
       fontSize: nodeFontSize,
       x: 0,
@@ -112,7 +112,7 @@
     /* create text to be displayed on diamond. */
     var newText = new Kinetic.Text({
       text: values[valName].rep,
-      fontFamily: globalFont,
+      fontFamily: fonts.default,
       fill: 'black',
       fontSize: nodeFontSize,
       x: 0,
@@ -175,7 +175,7 @@
     /* create text to be displayed below hex. */
     var newText = new Kinetic.Text({
       text: "",
-      fontFamily: globalFont,
+      fontFamily: fonts.default,
       fill: variableTextColor,
       fontSize: 16,
       x: 0,
@@ -356,7 +356,7 @@ var createEditableText = function (group) {
     width: editableTextWidth,
     height: editableTextHeight,
     align: "center",
-    fontFamily: functionFont,
+    fontFamily: fonts.function,
     fill: 'black'
   });
   group.add(backgroundBox);

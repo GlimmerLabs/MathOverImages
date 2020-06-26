@@ -22,7 +22,7 @@ var nameOpenWsText = new Kinetic.Text({
 	y: popTextShiftX,
 	fill: 'black',
 	fontSize: 16,
-	fontFamily: globalFont,
+	fontFamily: fonts.default,
 });
 openWsGroup.add(nameOpenWsText);
 
@@ -44,7 +44,7 @@ var nameOpenWsEditText = new Kinetic.Text({
 	fontSize: 14,
 	width: popCanvasSide - nameTextShift,
 	height: popTextHeight / 1.5,
-	fontFamily: globalFont,
+	fontFamily: fonts.default,
 	fill: 'black'
 });
 openWsGroup.add(nameOpenWsEditText);
@@ -82,7 +82,7 @@ var popOpenWsCancelButtonText = new Kinetic.Text({
 	width: popOpenWsButtonWidth,
 	fill: 'black',
 	fontSize: 16,
-	fontFamily: globalFont,
+	fontFamily: fonts.default,
 	align: 'center'
 });
 popOpenWsCancelButtonGroup.add(popOpenWsCancelButtonText);
@@ -114,7 +114,7 @@ var popOpenWsButtonText = new Kinetic.Text({
 	width: popOpenWsButtonWidth,
 	fill: 'black',
 	fontSize: 16,
-	fontFamily: globalFont,
+	fontFamily: fonts.default,
 	align: 'center'
 });
 popOpenWsButtonGroup.add(popOpenWsButtonText);

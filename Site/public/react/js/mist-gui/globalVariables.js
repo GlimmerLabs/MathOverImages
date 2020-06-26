@@ -7,8 +7,11 @@
 const size = {}
 size.width = 900;
 size.height = 2 * size.width / 3;
-var globalFont = 'Arial';
-var functionFont = 'Courier New';
+
+const fonts = {
+  default: 'Arial',
+  function: 'Courier New',
+};
 
 var currentWorkspace;
 

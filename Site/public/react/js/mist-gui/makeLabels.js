@@ -108,7 +108,7 @@ var makeLabel = function(group) {
 
 		label.add(new Kinetic.Text({
 			text: text,
-			fontFamily: globalFont,
+			fontFamily: fonts.default,
 			fontSize: 13,
 			padding: 5,
 			fill: 'black'
@@ -118,7 +118,7 @@ var makeLabel = function(group) {
 			label.add(new Kinetic.Text({
 				text: text,
 				width: 160,
-				fontFamily: globalFont,
+				fontFamily: fonts.default,
 				fontSize: 13,
 				padding: 5,
 				fill: 'black'
@@ -156,7 +156,7 @@ var makeToolLabel = function(group) {
 
 	label.add(new Kinetic.Text({
 		text: text,
-		fontFamily: globalFont,
+		fontFamily: fonts.default,
 		fontSize: 13,
 		padding: 5,
 		fill: 'black'

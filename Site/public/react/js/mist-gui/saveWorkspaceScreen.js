@@ -33,7 +33,7 @@ var nameWsText = new Kinetic.Text({
   y: popTextShiftX,
   fill: 'black',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
 });
 saveWsGroup.add(nameWsText);
 
@@ -55,7 +55,7 @@ var nameWsEditText = new Kinetic.Text({
   fontSize: 14,
   width: popCanvasSide - nameTextShift,
   height: popTextHeight / 1.5,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   fill: 'black'
 });
 saveWsGroup.add(nameWsEditText);
@@ -72,7 +72,7 @@ var popWsErrorText = new Kinetic.Text({
   y: nameWsText.height() + (2 * popTextShiftX),
   width: popWsRectWidth - (2 * popTextShiftX),
   fill: errorColor,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   fontSize: 14
 });
 saveWsGroup.add(popWsErrorText);
@@ -104,7 +104,7 @@ var popWsCancelButtonText = new Kinetic.Text({
   width: popWsButtonWidth,
   fill: 'black',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   align: 'center'
 });
 popWsCancelButtonGroup.add(popWsCancelButtonText);
@@ -136,7 +136,7 @@ var popSaveWsButtonText = new Kinetic.Text({
   width: popWsButtonWidth,
   fill: 'black',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   align: 'center'
 });
 popSaveWsButtonGroup.add(popSaveWsButtonText);
@@ -170,7 +170,7 @@ popWsYesButtonGroup.add(new Kinetic.Text({
   width: popWsButtonWidth,
   fill: 'black',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   align: 'center'
 }));
 
@@ -201,7 +201,7 @@ popWsNoButtonGroup.add(new Kinetic.Text({
   width: popWsButtonWidth,
   fill: 'black',
   fontSize: 16,
-  fontFamily: globalFont,
+  fontFamily: fonts.default,
   align: 'center'
 }));
 
