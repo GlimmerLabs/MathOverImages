@@ -395,7 +395,7 @@ var showThumbnails = function() {
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i];
     if (node.children[2].attrs.expanded) {
-      renderCanvas(node);
+      utility.renderCanvas(node);
     } // if expanded
   } // for 
 }; // showThumbnails()

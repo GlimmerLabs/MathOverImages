@@ -285,7 +285,7 @@ var addLine = function(source, sink, outletIndex) {
        sink.attrs.numInputs < sink.attrs.maxInputs) {
     utility.addOutlet(sink);
   } // if it's an appropriate number
-  updateForward(sink);
+  utility.updateForward(sink);
   line.setAttr("visible",true);
   layers.line.add(line);
   insertToTable(line);
@@ -306,7 +306,7 @@ var addOp = function(funName, x, y) {
   if (funName == "rgb") {
     utility.addOutlet(op);
   }
-  applyDragBounds(op);
+  utility.applyDragBounds(op);
   layers.work.add(op);
   insertToTable(op);
   layers.work.draw();
@@ -323,7 +323,7 @@ var addVal = function(valName, x, y) {
     if (constant) {
       val.setAttr('rep', constant);
 
-      val.children[1].setAttrs({text: wrapValueText(constant), fontSize: 13});
+      val.children[1].setAttrs({text: utility.wrapValueText(constant), fontSize: 13});
     } // if valName is concatenated with a value
   } // if valName is a constant
   else {
@@ -331,7 +331,7 @@ var addVal = function(valName, x, y) {
   }
   assertRenderable(val);
   val.setAttr("visible",true);
-  applyDragBounds(val);
+  utility.applyDragBounds(val);
   layers.work.add(val);
   insertToTable(val);
   layers.work.draw();

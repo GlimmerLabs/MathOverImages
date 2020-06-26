@@ -17,7 +17,7 @@
     });
 
     layers.drag.on('mousedown', function(evt) {
-      removeShadow(currShape);
+      utility.removeShadow(currShape);
       var group = evt.target.getParent();
       group.stopDrag();
       group.startDrag();
@@ -35,7 +35,7 @@
 
     if (predicate.isFunction(group) && group.children.length < 4) {
       for (var i = 0; i < functions[group.attrs.name].min; i++) {
-        addOutlet(group);
+        utility.addOutlet(group);
         } // for
     } // if new function 
     else if (predicate.isValue(group)) {
@@ -44,7 +44,7 @@
       }
     }
     if (group.children[2].attrs.expanded) {
-      renderCanvas(group);
+      utility.renderCanvas(group);
     } // if 
     if (inTable(group)) {
       actionArray[currIndex - 1].x2 = group.x();
@@ -67,7 +67,7 @@
       group.setAttr('y', scaledObj.attrs.y);
       insertToTable(group);
       insertToArray(actionToObject('replace', group, scaledObj));
-      replaceNode(scaledObj, group);
+      utility.replaceNode(scaledObj, group);
       scaledObj = null;
       group.moveTo(layers.work);
     }
@@ -82,13 +82,13 @@
       }
     }
     if (group) {
-      setSelectedShadow(group);
+      utility.setSelectedShadow(group);
       currShape = group;
       if (!group.attrs.dragBoundFunc) {
-        applyDragBounds(group);
+        utility.applyDragBounds(group);
       }
     }
-    updateFunBar();
+    utility.updateFunBar();
     dragShape = null;
     layers.menu.draw();
     layers.menuButton.draw();
@@ -140,7 +140,7 @@
             scaleY: 1.2
           });
           if (group.children[2].attrs.expanded) {
-            renderCanvas(group);
+            utility.renderCanvas(group);
           }
           scaledObj = group;
         }
@@ -151,7 +151,7 @@
           scaleY: 1
         });
         if (scaledObj.children[2].attrs.expanded) {
-            renderCanvas(scaledObj);
+            utility.renderCanvas(scaledObj);
           }
         scaledObj = null;
       }

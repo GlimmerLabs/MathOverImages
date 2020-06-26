@@ -49,13 +49,13 @@ There are 3 different modes:
     if (workToolOn) {
       if (predicate.isImageBox(shape)) {
         if (!shape.attrs.expanded) {
-          renderCanvas(parent);
+          utility.renderCanvas(parent);
           shape.attrs.expanded = true;
         } // if the image box is not expanded
         else {
           shape.attrs.expanded = false;
           animation = false;
-          setTimeout(function() {collapseCanvas(parent)}, 50);
+          setTimeout(function() {utility.collapseCanvas(parent)}, 50);
         } // else the image box is expanded already
         setTimeout(function() {layers.work.draw()}, 50);
       } // if clicked on an image box
@@ -106,12 +106,12 @@ There are 3 different modes:
           outlet.scale({ x: 1, y: 1 });
           predicate.assertRenderable(parent);
           // if there is a currShape, update the text in funBar
-          updateFunBar();
+          utility.updateFunBar();
           if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
             parent.attrs.numInputs < parent.attrs.maxInputs) {
-            addOutlet(parent);
+            utility.addOutlet(parent);
             if (parent.children[2].attrs.expanded) {
-              renderCanvas(parent);
+              utility.renderCanvas(parent);
             } // if the value/function has an expanded imageBox
           } // if there isn't an open outlet and there should be
           insertToTable(currLine);
@@ -122,19 +122,19 @@ There are 3 different modes:
             insertToArray(actionToObject('replace', currLine, oldLine));
           } // else its a replacement
           //setOutletOpacity(parent);
-          updateForward(parent);
+          utility.updateForward(parent);
         } // if the outlet exists  
     } // if makingline
     else {
       if (predicate.isImageBox(shape)) {
         if (!shape.attrs.expanded) {
-          renderCanvas(parent);
+          utility.renderCanvas(parent);
           shape.attrs.expanded = true;
         } // if the image box is not expanded
         else {
           shape.attrs.expanded = false;
           animation = false;
-          setTimeout(function() { collapseCanvas(parent) }, 50);
+          setTimeout(function() { utility.collapseCanvas(parent) }, 50);
         } // else the image box is expanded
         setTimeout(function() { layers.work.draw() }, 50);
       } // if the object is an image box
@@ -169,7 +169,7 @@ There are 3 different modes:
     } // if the renderLayer exists
     if (currShape == parent) {
       currShape = null;
-      updateFunBar();
+      utility.updateFunBar();
     } // if the object belongs to the global currShape
     parent.remove();
   } // if the delete tool is enabled
@@ -188,12 +188,12 @@ There are 3 different modes:
         if (predicate.isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
           return;
         }
-        removeShadow(currShape);
+        utility.removeShadow(currShape);
         group.moveTo(layers.drag);
         currShape = group;
         insertToArray(actionToObject('move', group));
         group.startDrag();
-        setDragShadow(group);
+        utility.setDragShadow(group);
         layers.work.draw();
         layers.drag.draw();
 
@@ -358,10 +358,10 @@ layers.work.on('mouseout', function(evt) {
 
       // deal with shadows on the shape
       if (parent == currShape) {
-        setSelectedShadow(parent);
+        utility.setSelectedShadow(parent);
       } // if mouseout shape is the global currShape
       else {
-        removeShadow(parent);
+        utility.removeShadow(parent);
       } // else its not the currShape
 
       // deal with lines coming out of the shape

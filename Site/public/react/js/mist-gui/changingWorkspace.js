@@ -146,15 +146,15 @@
           // re-call the function on the line in question's deletion
           undoAction(connections[i]);
         } // go through each of the old line connections
-        updateForward(element);
-        removeShadow(element);
-        updateFunBar();        
+        utility.updateForward(element);
+        utility.removeShadow(element);
+        utility.updateFunBar();        
       } // if node
       // else working with a line
       else {
         insertLine(actionObj);
         predicate.assertRenderable(actionObj.sink);
-        updateForward(actionObj.sink);
+        utility.updateForward(actionObj.sink);
       } // else element is a line
       } // if delete
       // if the action in question is an insertion
@@ -162,7 +162,7 @@
         if (actionObj.type == 'node') {
           if (element.attrs.renderLayer != null) {
             // close an open canvas
-            collapseCanvas(element);
+            utility.collapseCanvas(element);
         }
           // remove the object from its layer
           element.remove(); 
@@ -172,7 +172,7 @@
           // remove the line and update its indexes
           removeLine(element);
           // remove extra outlet
-          removeOutlet(actionObj.sink);
+          utility.removeOutlet(actionObj.sink);
         }
       } // if insert
       // if the action in question is a movement
@@ -188,27 +188,27 @@
         // re-render the canvas if previously open
         if (element.children[2].attrs.expanded) {
           element.attrs.renderLayer.draw();
-          renderCanvas(element);
+          utility.renderCanvas(element);
       }
         //collapseCanvas(element);
         currShape = element;
-        updateFunBar();
+        utility.updateFunBar();
       } // if move
       // if the action in question is a replacement
       else {
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             oldGroup.moveTo(layers.work);
-            replaceNode(element, oldGroup);
+            utility.replaceNode(element, oldGroup);
             var totalNeeded = oldGroup.children.length + actionObj.connections.length;
             for (var i = 0; i < actionObj.connections.length; i++)
             {
               if (oldGroup.children.length < totalNeeded) {
-                addOutlet(oldGroup);
+                utility.addOutlet(oldGroup);
               }
               insertLine(actionObj.connections[i]);
               predicate.assertRenderable(actionObj.connections[i].sink);
-              updateForward(actionObj.connections[i].sink);
+              utility.updateForward(actionObj.connections[i].sink);
             }
             layers.work.draw();
         } // if node
@@ -216,7 +216,7 @@
             removeLine(element);
             insertLine(actionObj.deleteLine);
             predicate.assertRenderable(actionObj.sink);
-            updateForward(actionObj.sink);
+            utility.updateForward(actionObj.sink);
         } // else line
       } // if replace
     } // if undo
@@ -267,14 +267,14 @@
             targetLine.attrs.outlet.attrs.lineIn = null;
             // check and update the rendering of the sink
             predicate.assertRenderable(outletParent);
-            updateForward(outletParent);
+            utility.updateForward(outletParent);
             // remove the line from the lineLayer
             targetLine.remove();
         } 
           // remove text from funBar
           if (currShape == element) {
             currShape = null;
-            updateFunBar();
+            utility.updateFunBar();
           }
           // remove the element form the workLayer
           element.remove();
@@ -297,7 +297,7 @@
           // insert the old line
           insertLine(actionObj);
           predicate.assertRenderable(actionObj.sink);
-          updateForward(actionObj.sink);
+          utility.updateForward(actionObj.sink);
           layers.line.draw();
       }
       layers.work.draw();
@@ -317,28 +317,28 @@
         // re-render a canvas if previously open
         if (element.children[2].attrs.expanded) {
           element.attrs.renderLayer.draw();
-          renderCanvas(element);
+          utility.renderCanvas(element);
       }
         // update the currShape
-        removeShadow(currShape);
+        utility.removeShadow(currShape);
         currShape = element;
-        setSelectedShadow(currShape);
-        updateForward(element);
-        updateFunBar(); 
+        utility.setSelectedShadow(currShape);
+        utility.updateForward(element);
+        utility.updateFunBar(); 
       } // if move
       // else replace
       else {
         if (actionObj.type == 'node') {
             var oldGroup = actionObj.oldGroup //group to be put back on the workLayer
             element.moveTo(layers.work);
-            replaceNode (oldGroup, element); 
+            utility.replaceNode (oldGroup, element); 
             for (var i = 0; i < actionObj.connections.length; i++)
             {
               var lineObj = actionObj.connections[i];
             
               insertLine(actionObj.connections[i]);
               predicate.assertRenderable(actionObj.connections[i].sink);
-              updateForward(actionObj.connections[i].sink);
+              utility.updateForward(actionObj.connections[i].sink);
             }
 
         } // if node
@@ -346,7 +346,7 @@
           removeLine(elementTable[actionObj.deleteLine.id]);
           insertLine(actionObj);
           predicate.assertRenderable(actionObj.sink);
-          updateForward(actionObj.sink);
+          utility.updateForward(actionObj.sink);
         } // else line
       } // else replace
       layers.drag.draw(); 
@@ -394,7 +394,7 @@
       predicate.assertRenderable(sink);
       }
       // update
-      updateForward(sink);
+      utility.updateForward(sink);
       //setOutletOpacity(sink);
     } // if outlet is not null
   // reset the strokeWidth
@@ -429,7 +429,7 @@
       sink.attrs.numInputs++;
       // add outlet if nessecary
       if (sink.children[sink.children.length - 1].attrs.lineIn) {
-        addOutlet(sink);
+        utility.addOutlet(sink);
       }
       // set the line's attributes
       element.setAttrs({

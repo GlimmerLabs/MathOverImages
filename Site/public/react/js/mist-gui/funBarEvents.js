@@ -1,6 +1,6 @@
 funBarSaveImGroup.on('mouseup', function(){
   if (currShape && predicate.isRenderable(currShape)) {
-    enableWorkTool();
+    utility.enableWorkTool();
     openSavePopUp();
     funBarSaveImGroup.children[0].setAttr('shadowEnabled', false);
     layers.funBar.draw();

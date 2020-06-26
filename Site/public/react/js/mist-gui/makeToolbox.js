@@ -327,4 +327,4 @@
   });
   redoGroup.add(redoCover);
 
-  enableWorkTool();
+  utility.enableWorkTool();

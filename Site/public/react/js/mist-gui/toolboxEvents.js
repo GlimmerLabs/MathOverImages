@@ -19,7 +19,7 @@ workToolGroup.on('click', function(){
     layers.line.draw();
   } // if making a line
   if (!workToolOn) {
-    enableWorkTool();
+    utility.enableWorkTool();
   } // if workTool is not on
 });
 
@@ -28,8 +28,8 @@ lineToolGroup.on('click', function() {
   if (!lineToolOn) {
     lineToolGroup.children[0].setAttr('shadowEnabled', true);
     lineToolOn = true;
-    disableTool(workToolGroup);
-    disableTool(deleteToolGroup);
+    utility.disableTool(workToolGroup);
+    utility.disableTool(deleteToolGroup);
     layers.toolbox.draw();
   } // if line tool is not already on
 });
@@ -43,8 +43,8 @@ deleteToolGroup.on('click', function() {
     } // if making a line
     deleteToolGroup.children[0].setAttr('shadowEnabled', true);
     deleteToolOn = true;
-    disableTool(workToolGroup);
-    disableTool(lineToolGroup);
+    utility.disableTool(workToolGroup);
+    utility.disableTool(lineToolGroup);
     layers.toolbox.draw();
   } // if the delete tool is not already on
 });

@@ -131,11 +131,11 @@ predicate.isCycle = function(sourceGroup, outletGroup) {
  */
 predicate.assertRenderable = function(group) {
  	if (predicate.isRenderable(group)) {
- 		findRenderFunction(group);
+ 		utility.findRenderFunction(group);
  		group.children[2].setAttr('visible', true);
  		if (group.attrs.animator) {
  			group.attrs.animator = null;
- 			renderCanvas(group);
+ 			utility.renderCanvas(group);
  		}
  		return true;
  	} 
@@ -144,7 +144,7 @@ predicate.assertRenderable = function(group) {
  		group.children[2].setAttr('visible', false);
  		if(group.attrs.renderLayer != null) {
  			animation = false;
- 			collapseCanvas(group);
+ 			utility.collapseCanvas(group);
  		}
  		return false;
  	}

@@ -82,7 +82,7 @@ If you click on a menu button when the workTool is not activated, the workTool w
 */
 layers.menuButton.on('click', function(){
   if (!workToolOn) {
-    enableWorkTool();
+    utility.enableWorkTool();
     if(makingLine) {
       removeLine(currLine);
       makingLine = false;
@@ -180,7 +180,7 @@ layers.menuArrow.on('mouseup', function(evt) {
   layers.menu.on('mousedown', function(evt) {
     if (!makingLine) {
       if (!workToolOn) {
-        enableWorkTool();
+        utility.enableWorkTool();
       }
       var group = evt.target.getParent();
       if (predicate.isFunction(group)) {
@@ -191,8 +191,8 @@ layers.menuArrow.on('mouseup', function(evt) {
       } // if function / else value
       newGroup.setAttr('visible', true);
       layers.drag.add(newGroup);
-      setDragShadow(newGroup);
-      removeShadow(currShape);
+      utility.setDragShadow(newGroup);
+      utility.removeShadow(currShape);
       newGroup.startDrag();
       layers.drag.draw();
       dragShape = newGroup;
@@ -300,11 +300,11 @@ resetButton.on('mouseup', function(){
 });
 
 saveButton.on('mouseup', function(){
-  enableWorkTool();
+  utility.enableWorkTool();
   openSaveWsPopUp();
 });
 
 openButton.on('mouseup', function(){
-  enableWorkTool();
+  utility.enableWorkTool();
   showLoadWorkspaceDialog();
 });

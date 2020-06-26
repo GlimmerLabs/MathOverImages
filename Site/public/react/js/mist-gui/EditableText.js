@@ -369,8 +369,8 @@ function readyEditing(stage)
         if (!lineToolOn) {
           lineToolGroup.children[0].setAttr('shadowEnabled', true);
           lineToolOn = true;
-          disableTool(workToolGroup);
-          disableTool(deleteToolGroup);
+          utility.disableTool(workToolGroup);
+          utility.disableTool(deleteToolGroup);
           layers.toolbox.draw();
         }
       }
@@ -383,8 +383,8 @@ function readyEditing(stage)
           } // if making a line
         deleteToolGroup.children[0].setAttr('shadowEnabled', true);
         deleteToolOn = true;
-        disableTool(workToolGroup);
-        disableTool(lineToolGroup);
+        utility.disableTool(workToolGroup);
+        utility.disableTool(lineToolGroup);
         layers.toolbox.draw();
   } // if the delete tool is not already on
       }
@@ -395,7 +395,7 @@ function readyEditing(stage)
           layers.line.draw();
         } // if making a line
         if (!workToolOn) {
-          enableWorkTool();
+          utility.enableWorkTool();
         }
       }
     } // else not active text (shortcuts)
@@ -414,7 +414,7 @@ var updateValueText = function(text) {
     var value = text.parent;
     var newText = text.attrs.text;
     value.children[1].setAttrs({
-      text: wrapValueText(newText),
+      text: utility.wrapValueText(newText),
       fontSize: 13
     });
     value.setAttrs({
@@ -424,8 +424,8 @@ var updateValueText = function(text) {
     for (var i = 3; i < 5; i++) {
       value.children[i].setAttr('visible', false);
     }
-    updateForward(value);
-    updateFunBar();
+    utility.updateForward(value);
+    utility.updateFunBar();
   }
   else
   {

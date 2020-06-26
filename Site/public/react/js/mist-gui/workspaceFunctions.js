@@ -131,7 +131,7 @@ var resetWorkspace = function() {
   totalIndex = 0;
   currShape = null;
   dragShape = null;
-  updateFunBar();
+  utility.updateFunBar();
   shadeUndoRedo();
   stage.draw();
 };
