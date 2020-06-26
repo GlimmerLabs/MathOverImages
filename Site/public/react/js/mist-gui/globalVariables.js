@@ -53,7 +53,7 @@ const functions = {
   average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg', color: functionStyle.multColor},
   sign:      {rep: 'sign', max: 1,  min: 1, prefix: 'sign', color: functionStyle.singleColor},
   wrapsum:   {rep: 'wsum', max: 20,  min: 2, prefix: 'wsum', color: functionStyle.multColor},
-  rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionStyle.rGBcolor},
+  rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionStyle.RGBcolor},
   mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionStyle.singleColor}
 }
 
