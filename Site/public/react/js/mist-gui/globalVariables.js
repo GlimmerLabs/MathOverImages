@@ -55,8 +55,8 @@ const functions = {
   rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionStyle.rGBcolor},
   mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionStyle.singleColor}
 }
-var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'mouseX', 'mouseY', 'constant'];
-var values = {
+
+const values = {
   x:        {rep: 'x', color: valueStyle.XYColor},
   y:        {rep: 'y', color: valueStyle.XYColor},
   second:   {rep: 't.s', color: valueStyle.timeColor},
@@ -98,7 +98,7 @@ var menuHeight = size.width / 9;
 var menuCornerWidth = size.width / 6;
 var buttonWidth = size.width / 10;
 var valSpaceWidth = size.width - menuCornerWidth - (2 * buttonWidth);
-var numVals = 6;//valNames.length;
+var numVals = 6; //valNames.length;
 var valMenuXSpacing = (valSpaceWidth - (numVals * functionStyle.totalSideLength - 4)) / (numVals + 1);
 var functSpaceWidth = size.width - menuCornerWidth - (2 * buttonWidth);
 var numFuncts = 6; 

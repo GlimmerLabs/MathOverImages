@@ -118,6 +118,7 @@ var borderLine = new Kinetic.Line({
 
  /* add values to menu */
  var menuValues = [];
+ const valNames = Object.keys(values);
  for (var i = 0; i < valNames.length; i++) {
   menuValues[i] = makeValueGroup(valNames[i], menuValuesXStart, menuYspacing);
   layers.menu.add(menuValues[i]);
