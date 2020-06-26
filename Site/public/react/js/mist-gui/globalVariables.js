@@ -8,7 +8,6 @@ const size = {}
 size.width = 900;
 size.height = 2 * size.width / 3;
 size.scale = size.width / 900;
-// var globalScale = size.width/900; // for elements that are more difficult to scale (undo/redo)
 
 const fonts = {
   default: 'Arial',
