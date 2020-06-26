@@ -58,21 +58,21 @@ var borderLine = new Kinetic.Line({
   y:0,
   width: buttonWidth,
   height: menuHeight,
-  fill: functionColorLight,
+  fill: functionGlobals.colorLight,
   stroke: 'black',
   strokeWidth: 2
  });
  functionsButton.add(functionsButtonBox);
 
  var functionsButtonRect = new Kinetic.Rect({
-  x: buttonWidth / 2 - functionRectSideLength / 2,
+  x: buttonWidth / 2 - functionGlobals.rectSideLength / 2,
   y: menuHeight / 4,
-  width: functionRectSideLength,
-  height: functionRectSideLength,
-  fill: functionColor,
+  width: functionGlobals.rectSideLength,
+  height: functionGlobals.rectSideLength,
+  fill: functionGlobals.color,
   lineJoin: 'round',
-  stroke: functionColor,
-  strokeWidth: functionStrokeWidth
+  stroke: functionGlobals.color,
+  strokeWidth: functionGlobals.strokeWidth
  });
  functionsButton.add(functionsButtonRect);
 

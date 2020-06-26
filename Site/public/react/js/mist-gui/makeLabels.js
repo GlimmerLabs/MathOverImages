@@ -54,7 +54,7 @@ var makeLabel = function(group) {
 		var rgbText = new Kinetic.Text({
 			text: text,
 			x: -110,
-			y: pointerHeight + (1.1 * functionTotalSideLength),
+			y: pointerHeight + (1.1 * functionGlobals.totalSideLength),
 			padding: 5,
 			width: 160,
 			fill: 'black'
@@ -92,8 +92,8 @@ var makeLabel = function(group) {
 			text = menuValuesDescriptions[group.name()];
 		}
 		var label = new Kinetic.Label ({
-			x: group.x() + (functionTotalSideLength / 2) + xOffset,
-			y: group.y() + (1.1 * functionTotalSideLength),
+			x: group.x() + (functionGlobals.totalSideLength / 2) + xOffset,
+			y: group.y() + (1.1 * functionGlobals.totalSideLength),
 		});
 
 		label.add(new Kinetic.Tag({

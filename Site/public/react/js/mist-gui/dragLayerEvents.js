@@ -112,15 +112,15 @@
     if (currShape.attrs.lineOut) {
       var yOffset;
       if (predicate.isFunction(currShape)) {
-        yOffset = (currShape.children[0].height() + functionStrokeWidth) / 2;
+        yOffset = (currShape.children[0].height() + functionGlobals.strokeWidth) / 2;
       }
       else {
-        yOffset = functionTotalSideLength / 2;
+        yOffset = functionGlobals.totalSideLength / 2;
       }
     }
     for(var i = 0; i < currShape.attrs.lineOut.length; i++) {
       targetLine = currShape.attrs.lineOut[i];
-      targetLine.points()[0] = currShape.x() + functionRectSideLength - OUTLET_OFFSET;
+      targetLine.points()[0] = currShape.x() + functionGlobals.rectSideLength - OUTLET_OFFSET;
       targetLine.points()[1] = currShape.y() + yOffset;
     }
     layers.line.draw();

@@ -14,17 +14,18 @@ var functionFont = 'Courier New';
 
 var currentWorkspace;
 
-var functionStrokeWidth = size.width / 90;
-var functionHalfStrokeWidth = functionStrokeWidth / 2;
-var functionTotalSideLength = size.width / 20;
-var functionRectSideLength = functionTotalSideLength - functionStrokeWidth;
-var functionColor = '#3FAAA0';
-var functionColorLight = '#C6F1ED';
-var functionMultColor = '#5EC783';
-var functionSingleColor = '#77C9E2';
-var functionRGBcolor = '#AE88D6';
+const functionGlobals = {};
+functionGlobals.strokeWidth = size.width / 90;
+functionGlobals.halfStrokeWidth = functionGlobals.strokeWidth / 2;
+functionGlobals.totalSideLength = size.width / 20;
+functionGlobals.rectSideLength = functionGlobals.totalSideLength - functionGlobals.strokeWidth;
+functionGlobals.color = '#3FAAA0';
+functionGlobals.colorLight = '#C6F1ED';
+functionGlobals.multColor = '#5EC783';
+functionGlobals.singleColor = '#77C9E2';
+functionGlobals.RGBcolor = '#AE88D6';
 
-var valueSideLength = functionTotalSideLength / 1.414;
+var valueSideLength = functionGlobals.totalSideLength / 1.414;
 var valueMenuColor = '#F2937C';
 var valueMenuColorLight = '#FDE6DD';
 var valueXYColor = '#EFDC5C';
@@ -39,18 +40,18 @@ var globalScale = size.width/900; // for elements that are more difficult to sca
 
 var funNames = ['add', 'wrapsum', 'multiply', 'average', 'square', 'negate', 'sine', 'cosine', 'absolute', 'sign', 'mistif', 'rgb'];
 var functions = {
-  add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionMultColor},
-  multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionMultColor},
-  square:    {rep: 'sqr', max: 1, min: 1, prefix: 'square', color: functionSingleColor},
-  negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg', color: functionSingleColor},
-  sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin', color: functionSingleColor},
-  cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos', color: functionSingleColor},
-  absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs', color: functionSingleColor},
-  average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg', color: functionMultColor},
-  sign:      {rep: 'sign', max: 1,  min: 1, prefix: 'sign', color: functionSingleColor},
-  wrapsum:   {rep: 'wsum', max: 20,  min: 2, prefix: 'wsum', color: functionMultColor},
-  rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionRGBcolor},
-  mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionSingleColor}
+  add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionGlobals.multColor},
+  multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionGlobals.multColor},
+  square:    {rep: 'sqr', max: 1, min: 1, prefix: 'square', color: functionGlobals.singleColor},
+  negate:    {rep: 'neg',   max: 1,  min: 1, prefix: 'neg', color: functionGlobals.singleColor},
+  sine:      {rep: 'sin', max: 1,  min: 1, prefix: 'sin', color: functionGlobals.singleColor},
+  cosine:    {rep: 'cos', max: 1,  min: 1, prefix: 'cos', color: functionGlobals.singleColor},
+  absolute:  {rep: 'abs', max: 1,  min: 1, prefix: 'abs', color: functionGlobals.singleColor},
+  average:   {rep: 'avg', max: 20, min: 2, prefix: 'avg', color: functionGlobals.multColor},
+  sign:      {rep: 'sign', max: 1,  min: 1, prefix: 'sign', color: functionGlobals.singleColor},
+  wrapsum:   {rep: 'wsum', max: 20,  min: 2, prefix: 'wsum', color: functionGlobals.multColor},
+  rgb:       {rep: 'rgb', max: 3,  min: 3, prefix: 'rgb', color: functionGlobals.rGBcolor},
+  mistif:    {rep: 'if', max: 3, min: 3, prefix: 'mistif', color: functionGlobals.singleColor}
 }
 var valNames = ['x', 'y', 'second', 'minute', 'hour', 'day', 'mouseX', 'mouseY', 'constant'];
 var values = {
@@ -77,12 +78,12 @@ var editableTextFont = size.width / 69;
 
 var variableColor = {r: 197, g: 231, b: 109, a: .5};
 var variableStrokeColor = '#A1C447';
-var variableRadius = 1.4 * (functionTotalSideLength / 2);
+var variableRadius = 1.4 * (functionGlobals.totalSideLength / 2);
 var variableTextColor = '#62694F';
 var variableWidth = Math.cos(Math.PI/6)*variableRadius;
 
 var outletXOffset = size.width / 400;
-var outletYOffset = functionRectSideLength / 3;
+var outletYOffset = functionGlobals.rectSideLength / 3;
 var outletColor =  '#C4C4C4';
 
 var lineStrokeWidth = 2;
@@ -96,13 +97,13 @@ var menuCornerWidth = size.width / 6;
 var buttonWidth = size.width / 10;
 var valSpaceWidth = size.width - menuCornerWidth - (2 * buttonWidth);
 var numVals = 6;//valNames.length;
-var valMenuXSpacing = (valSpaceWidth - (numVals * functionTotalSideLength - 4)) / (numVals + 1);
+var valMenuXSpacing = (valSpaceWidth - (numVals * functionGlobals.totalSideLength - 4)) / (numVals + 1);
 var functSpaceWidth = size.width - menuCornerWidth - (2 * buttonWidth);
 var numFuncts = 6; 
-var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionTotalSideLength)) / (numFuncts + 1);
+var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionGlobals.totalSideLength)) / (numFuncts + 1);
 var menuYspacing = size.width * 11/360;
-var menuFunctsXStart = 2 * (buttonWidth - functionRectSideLength) + menuCornerWidth- functionTotalSideLength / 2;
-var menuFunctsXEnd = size.width - buttonWidth + functionRectSideLength / 2;
+var menuFunctsXStart = 2 * (buttonWidth - functionGlobals.rectSideLength) + menuCornerWidth- functionGlobals.totalSideLength / 2;
+var menuFunctsXEnd = size.width - buttonWidth + functionGlobals.rectSideLength / 2;
 var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
 var menuAnimDuration = 1;
 

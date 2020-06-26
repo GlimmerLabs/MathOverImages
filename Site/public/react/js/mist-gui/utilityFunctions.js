@@ -17,7 +17,7 @@
         var lineOut = funGroup.attrs.lineOut
         for (var i = 0; i < lineOut.length; i++) {
           var line = lineOut[i];
-          line.points()[1] = funGroup.y() + (funGroup.children[0].height() + functionStrokeWidth) / 2;
+          line.points()[1] = funGroup.y() + (funGroup.children[0].height() + functionGlobals.strokeWidth) / 2;
         } // for the lineout array
       } // if we have 3 outlets already (we need to expand the node)
       var newOutlet = makeOutlet(funGroup);
@@ -53,7 +53,7 @@ var removeOutlet = function(funGroup) {
         var lineOut = funGroup.attrs.lineOut;
         for (var i = 0; i < lineOut.length; i++) {
           var line = lineOut[i];
-          line.points()[1] = funGroup.y() + (funGroup.children[0].height() + functionStrokeWidth) / 2;
+          line.points()[1] = funGroup.y() + (funGroup.children[0].height() + functionGlobals.strokeWidth) / 2;
         } // for the lineout array
       } // if there are still more than 2 outlets (we need to shrink the node)
       layers.work.draw();
@@ -339,11 +339,11 @@ var removeShadow = function(group) {
       node.children[i].destroy();
     }
     // reset height
-    node.children[0].setAttr('height', functionRectSideLength);
+    node.children[0].setAttr('height', functionGlobals.rectSideLength);
     // reset location of text
-    node.children[1].setAttr('y', functionTotalSideLength/2 - functionHalfStrokeWidth);
+    node.children[1].setAttr('y', functionGlobals.totalSideLength/2 - functionGlobals.halfStrokeWidth);
     // reset imagebox location
-    node.children[2].setAttr('y', functionRectSideLength + functionImageBoxOffset);
+    node.children[2].setAttr('y', functionGlobals.rectSideLength + functionGlobals.imageBoxOffset);
     // set numInputs to zero
     node.attrs.numInputs = 0;
     //setOutletOpacity(node);
@@ -368,13 +368,13 @@ var wrapValueText = function(text) {
  * in the workspace below the menu
  */
 var applyDragBounds = function(group) {
-  var bottomBoundOffset = functionTotalSideLength + funBarHeight;
+  var bottomBoundOffset = functionGlobals.totalSideLength + funBarHeight;
   group.setAttr('dragBoundFunc', function(pos) {
       var newY = pos.y <= menuHeight ? menuHeight + 1 :
                  pos.y > size.height - bottomBoundOffset ? size.height - bottomBoundOffset :
                  pos.y;
       var newX = pos.x < 0 ? 0 :
-                 pos.x > (size.width - functionTotalSideLength) ? (size.width - functionTotalSideLength) :
+                 pos.x > (size.width - functionGlobals.totalSideLength) ? (size.width - functionGlobals.totalSideLength) :
                  pos.x;
       return { x: newX, y: newY };
   });
@@ -399,7 +399,7 @@ var disableSaveImage = function() {
 var enableSaveFunction = function() {
   funBarSaveImCover.setAttrs({
     stroke: 'black',
-    fill: functionColor
+    fill: functionGlobals.color
   });
   funBarSaveImText.setAttr('fill', 'black');
 };
@@ -407,7 +407,7 @@ var enableSaveFunction = function() {
 var disableSaveFunction = function() {
   funBarSaveImCover.setAttrs({
     stroke: 'grey',
-    fill: functionColorLight
+    fill: functionGlobals.colorLight
   });
   funBarSaveImText.setAttr('fill', 'grey');
 };
