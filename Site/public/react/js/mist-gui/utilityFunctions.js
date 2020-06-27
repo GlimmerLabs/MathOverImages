@@ -189,7 +189,7 @@ const utility = {
     for (var i = 0; i < group.attrs.lineOut.length; i++) {
       var lineOutGroup = group.attrs.lineOut[i].attrs.outlet.parent;
       predicate.assertRenderable(lineOutGroup);
-      updateForward(lineOutGroup);
+      utility.updateForward(lineOutGroup);
     }
   },
 
