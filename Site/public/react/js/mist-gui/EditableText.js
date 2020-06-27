@@ -212,7 +212,7 @@ function readyEditing(stage)
       if (document.activeElement.name) {
         document.activeElement.blur();
       }
-      if (workToolOn) {
+      if (state.workToolOn) {
       // Check if target object has text method(if it does than it is a text object)
       if (event.target.text != null) {
         if (event.target.isEditable){
@@ -252,7 +252,7 @@ function readyEditing(stage)
       activeText.capitalized = false;
     }
     else if (!activeText) {
-      map[keycode] = false;
+      state.map[keycode] = false;
     }
   }
   document.body.onkeydown = function(e) {
@@ -344,11 +344,11 @@ function readyEditing(stage)
        * - w for work-tool
        * - d for delete-tool
        */
-      map[keycode] = true;
-      if (map[8]) { // 8 is the backspace key
+      state.map[keycode] = true;
+      if (state.map[8]) { // 8 is the backspace key
         e.preventDefault(); // Prevents backspace from moving back a page
       }
-      else if (map[17] && map[90]) { // 17 is the control key; 90 is the z key
+      else if (state.map[17] && state.map[90]) { // 17 is the control key; 90 is the z key
         if (currIndex > 0) {
           undoAction(actionArray[currIndex - 1]);
           currIndex--;
@@ -356,7 +356,7 @@ function readyEditing(stage)
           layers.toolbox.draw();
         }
       }
-      else if (map[17] && map[89]) { // 17 is the control key; 89 is the y key
+      else if (state.map[17] && state.map[89]) { // 17 is the control key; 89 is the y key
         if (totalIndex > currIndex) {
           console.log("got to redo");
           redoAction(actionArray[currIndex]);
@@ -365,36 +365,36 @@ function readyEditing(stage)
           layers.toolbox.draw();
         }
       }
-      else if (map[67]) { // 67 is the c key
-        if (!lineToolOn) {
+      else if (state.map[67]) { // 67 is the c key
+        if (!state.lineToolOn) {
           lineToolGroup.children[0].setAttr('shadowEnabled', true);
-          lineToolOn = true;
+          state.lineToolOn = true;
           utility.disableTool(workToolGroup);
           utility.disableTool(deleteToolGroup);
           layers.toolbox.draw();
         }
       }
-      else if (map[68]) { // 68 is the d key
-        if (!deleteToolOn) {
-          if (makingLine) {
-            removeLine(currLine);
-            makingLine = false; 
+      else if (state.map[68]) { // 68 is the d key
+        if (!state.deleteToolOn) {
+          if (state.makingLine) {
+            removeLine(state.currLine);
+            state.makingLine = false; 
             layers.line.draw();
           } // if making a line
         deleteToolGroup.children[0].setAttr('shadowEnabled', true);
-        deleteToolOn = true;
+        state.deleteToolOn = true;
         utility.disableTool(workToolGroup);
         utility.disableTool(lineToolGroup);
         layers.toolbox.draw();
   } // if the delete tool is not already on
       }
-      else if (map[87]) { // 87 is the w key
-        if (makingLine) {
-          removeLine(currLine);
-          makingLine = false;
+      else if (state.map[87]) { // 87 is the w key
+        if (state.makingLine) {
+          removeLine(state.currLine);
+          state.makingLine = false;
           layers.line.draw();
         } // if making a line
-        if (!workToolOn) {
+        if (!state.workToolOn) {
           utility.enableWorkTool();
         }
       }

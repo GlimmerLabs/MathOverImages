@@ -191,7 +191,7 @@
           utility.renderCanvas(element);
       }
         //collapseCanvas(element);
-        currShape = element;
+        state.currShape = element;
         utility.updateFunBar();
       } // if move
       // if the action in question is a replacement
@@ -272,8 +272,8 @@
             targetLine.remove();
         } 
           // remove text from funBar
-          if (currShape == element) {
-            currShape = null;
+          if (state.currShape == element) {
+            state.currShape = null;
             utility.updateFunBar();
           }
           // remove the element form the workLayer
@@ -320,9 +320,9 @@
           utility.renderCanvas(element);
       }
         // update the currShape
-        utility.removeShadow(currShape);
-        currShape = element;
-        utility.setSelectedShadow(currShape);
+        utility.removeShadow(state.currShape);
+        state.currShape = element;
+        utility.setSelectedShadow(state.currShape);
         utility.updateForward(element);
         utility.updateFunBar(); 
       } // if move
@@ -378,10 +378,10 @@
       // update the sink's number of outlets
       sink.attrs.numInputs--;
       // if the sink is the currShape
-      if (sink == currShape) {
+      if (sink == state.currShape) {
         // if the sink is still renderable, update the funBarText
         if (predicate.assertRenderable(sink)) {
-          funBarText.setAttr('text', currShape.attrs.renderFunction);
+          funBarText.setAttr('text', state.currShape.attrs.renderFunction);
         } // if renderable
         else {
           // update currShape's identification and the funBarText
@@ -436,14 +436,14 @@
         scale: 1,
         shadowEnabled: false
       });
-      var temp = currShape;
+      var temp = state.currShape;
       // update the currshape to be the sink and re-draw
-      currShape = sink;
+      state.currShape = sink;
       layers.drag.draw();
       // update the currShape to be the source and re-draw
-      currShape = actionObj.source;
+      state.currShape = actionObj.source;
       layers.drag.draw();
-      currShape = temp;
+      state.currShape = temp;
     }
   };
 

@@ -129,7 +129,7 @@ popOpenWsCancelButtonGroup.on('mouseup', function(){
 popOpenWsButtonGroup.on('mouseup', function(){
 	var openText = nameOpenWsEditText.attrs.text;
 	loadWorkspace(openText);
-	currentWorkspace = openText;
+	state.currentWorkspace = openText;
 	cover.setAttr('visible', false);
 	openWsGroup.setAttr('visible', false);
 	showThumbnails();

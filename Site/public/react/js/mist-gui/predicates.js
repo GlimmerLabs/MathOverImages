@@ -143,7 +143,7 @@ predicate.assertRenderable = function(group) {
  		group.attrs.renderFunction = null;
  		group.children[2].setAttr('visible', false);
  		if(group.attrs.renderLayer != null) {
- 			animation = false;
+ 			state.animation = false;
  			utility.collapseCanvas(group);
  		}
  		return false;

@@ -223,7 +223,7 @@ popSaveWsButtonGroup.on('mouseup', function(){
   } // if user is not logged in
   else {
     saveWorkspace(newName, true);
-    currentWorkspace = newName;
+    state.currentWorkspace = newName;
     cover.setAttr('visible', false);
     saveWsGroup.setAttr('visible', false);
     showThumbnails();
@@ -234,7 +234,7 @@ popSaveWsButtonGroup.on('mouseup', function(){
 popWsYesButtonGroup.on('mouseup', function(){
   var newName = nameWsEditText.attrs.text;
   saveWorkspace(newName, true);
-  currentWorkspace = newName;
+  state.currentWorkspace = newName;
   popWsYesButtonGroup.setAttr('visible', false);
   popWsNoButtonGroup.setAttr('visible', false);
   popSaveWsButtonGroup.setAttr('visible', true);
@@ -273,8 +273,8 @@ var openSaveWsPopUp = function() {
   hideThumbnails();
   cover.setAttr('visible', true);
   saveWsGroup.setAttr('visible', true);
-  if (currentWorkspace) {
-    nameWsEditText.setAttr('text', currentWorkspace);
+  if (state.currentWorkspace) {
+    nameWsEditText.setAttr('text', state.currentWorkspace);
   } // if currentWorkspace exists
   layers.screen.draw();
 };

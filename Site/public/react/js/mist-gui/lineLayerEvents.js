@@ -5,7 +5,7 @@
 - on mouseout
 */
 layers.line.on('click', function(evt) {
-  if(deleteToolOn) {
+  if(state.deleteToolOn) {
     removeLine(evt.target);
     insertToArray(actionToObject('delete', evt.target));
     layers.line.draw();
@@ -14,7 +14,7 @@ layers.line.on('click', function(evt) {
 });
 
 layers.line.on('mouseover', function(evt) {
-  if (deleteToolOn) {
+  if (state.deleteToolOn) {
     var shape = evt.target;
     shape.setAttrs({
       strokeWidth: 3,
@@ -26,7 +26,7 @@ layers.line.on('mouseover', function(evt) {
 }); 
 
 layers.line.on('mouseout', function(evt) {
-  if (deleteToolOn) {
+  if (state.deleteToolOn) {
     var shape = evt.target;
     shape.setAttrs({
       strokeWidth: lineStrokeWidth,

@@ -46,7 +46,7 @@ There are 3 different modes:
   layers.work.on('click', function(evt) {
     var shape = evt.target;
     var parent = shape.getParent();
-    if (workToolOn) {
+    if (state.workToolOn) {
       if (predicate.isImageBox(shape)) {
         if (!shape.attrs.expanded) {
           utility.renderCanvas(parent);
@@ -54,18 +54,18 @@ There are 3 different modes:
         } // if the image box is not expanded
         else {
           shape.attrs.expanded = false;
-          animation = false;
+          state.animation = false;
           setTimeout(function() {utility.collapseCanvas(parent)}, 50);
         } // else the image box is expanded already
         setTimeout(function() {layers.work.draw()}, 50);
       } // if clicked on an image box
     } // if the work tool is enabled
-    else if (lineToolOn) {
-      if (makingLine) {
+    else if (state.lineToolOn) {
+      if (state.makingLine) {
         var outlet;
-        if (parent == currLine.attrs.source || predicate.isCycle(currLine.attrs.source, parent)) {
-          removeLine(currLine);
-          makingLine = false;
+        if (parent == state.currLine.attrs.source || predicate.isCycle(state.currLine.attrs.source, parent)) {
+          removeLine(state.currLine);
+          state.makingLine = false;
         } // if the target of the connection is the source, or forming the connection would cause a cycle
         else if (predicate.isOutlet(shape)) {
           //check if outlet already has an input
@@ -97,12 +97,12 @@ There are 3 different modes:
           else {
             isReplacement = false;
           } // check if theres already a line going in to the outlet
-          outlet.attrs.lineIn = currLine;
-          currLine.points()[2] = parent.x();
-          currLine.points()[3] = parent.y() + outlet.y();
-          currLine.attrs.outlet = outlet;
+          outlet.attrs.lineIn = state.currLine;
+          state.currLine.points()[2] = parent.x();
+          state.currLine.points()[3] = parent.y() + outlet.y();
+          state.currLine.attrs.outlet = outlet;
           parent.attrs.numInputs++;
-          makingLine = false;
+          state.makingLine = false;
           outlet.scale({ x: 1, y: 1 });
           predicate.assertRenderable(parent);
           // if there is a currShape, update the text in funBar
@@ -114,12 +114,12 @@ There are 3 different modes:
               utility.renderCanvas(parent);
             } // if the value/function has an expanded imageBox
           } // if there isn't an open outlet and there should be
-          insertToTable(currLine);
+          insertToTable(state.currLine);
           if (!isReplacement) {
-            insertToArray(actionToObject('insert', currLine));
+            insertToArray(actionToObject('insert', state.currLine));
           } // if added connection is not a replacement
           else {
-            insertToArray(actionToObject('replace', currLine, oldLine));
+            insertToArray(actionToObject('replace', state.currLine, oldLine));
           } // else its a replacement
           //setOutletOpacity(parent);
           utility.updateForward(parent);
@@ -133,20 +133,20 @@ There are 3 different modes:
         } // if the image box is not expanded
         else {
           shape.attrs.expanded = false;
-          animation = false;
+          state.animation = false;
           setTimeout(function() { utility.collapseCanvas(parent) }, 50);
         } // else the image box is expanded
         setTimeout(function() { layers.work.draw() }, 50);
       } // if the object is an image box
       else if (parent.name() != 'rgb') {
-        makingLine = true;
-        currLine = makeLine(parent);
-        parent.attrs.lineOut[parent.attrs.lineOut.length] = currLine;
-        layers.line.add(currLine);
+        state.makingLine = true;
+        state.currLine = makeLine(parent);
+        parent.attrs.lineOut[parent.attrs.lineOut.length] = state.currLine;
+        layers.line.add(state.currLine);
       } // if the object is part of an rgb 
     } // else not making line
   } // if line tool enabled 
-  else if (deleteToolOn) {
+  else if (state.deleteToolOn) {
     insertToArray(actionToObject('delete', parent));
     // deal with lines coming in to the node being deleted
     var targetLine;
@@ -167,8 +167,8 @@ There are 3 different modes:
     if (render != null) {
       render.destroy();
     } // if the renderLayer exists
-    if (currShape == parent) {
-      currShape = null;
+    if (state.currShape == parent) {
+      state.currShape = null;
       utility.updateFunBar();
     } // if the object belongs to the global currShape
     parent.remove();
@@ -182,15 +182,15 @@ There are 3 different modes:
   a line, move that object to the dragLayer and allow it to be dragged.
   */
   layers.work.on('mousedown', function(evt) {
-    if (workToolOn) {
+    if (state.workToolOn) {
       if (!predicate.isImageBox(evt.target)) {
         var group = evt.target.getParent();
         if (predicate.isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
           return;
         }
-        utility.removeShadow(currShape);
+        utility.removeShadow(state.currShape);
         group.moveTo(layers.drag);
-        currShape = group;
+        state.currShape = group;
         insertToArray(actionToObject('move', group));
         group.startDrag();
         utility.setDragShadow(group);
@@ -212,7 +212,7 @@ There are 3 different modes:
 layers.work.on('mouseover', function(evt) {
   var shape = evt.target;
   var parent = shape.parent;
-  if (workToolOn || lineToolOn) {
+  if (state.workToolOn || state.lineToolOn) {
     if (predicate.isImageBox(shape) && shape.attrs.expanded) {
       /*
       animation = true;
@@ -232,7 +232,7 @@ layers.work.on('mouseover', function(evt) {
         console.log("No animator!");
       }
     } // if the mouseover object is an expanded imageBox
-    if (makingLine) {
+    if (state.makingLine) {
       var outlet;
       if (predicate.isOutlet(shape)) {
         outlet = shape;
@@ -251,7 +251,7 @@ layers.work.on('mouseover', function(evt) {
           outlet = parent.children[OUTLET_OFFSET];
         } // if the function can only have 1 input
       } // if the mouseover object is part of a function
-      if (outlet && outlet.parent != currLine.attrs.source && !predicate.isCycle(currLine.attrs.source, outlet.parent)) {
+      if (outlet && outlet.parent != state.currLine.attrs.source && !predicate.isCycle(state.currLine.attrs.source, outlet.parent)) {
         outlet.scale({
           x: 1.5,
           y: 1.5
@@ -268,7 +268,7 @@ layers.work.on('mouseover', function(evt) {
       } // if outlet
     } // if makingLine
   } // if the work tool or line tool is enabled
-  else if (deleteToolOn) {
+  else if (state.deleteToolOn) {
     if (predicate.isFunction(parent) || predicate.isValue(parent)) {
       parent.children[0].setAttrs({
         shadowColor: deleteColor,
@@ -309,7 +309,7 @@ layers.work.on('mouseover', function(evt) {
 layers.work.on('mouseout', function(evt) {
   var shape = evt.target;
   var parent = shape.getParent();
-  if (workToolOn || lineToolOn) {
+  if (state.workToolOn || state.lineToolOn) {
     if (predicate.isImageBox(shape) && shape.attrs.expanded) {
       /*
       animation = false;
@@ -321,7 +321,7 @@ layers.work.on('mouseout', function(evt) {
         console.log("No animator to stop");
       } 
     } // if the mouseout object is an expanded imageBox
-    if (makingLine) {
+    if (state.makingLine) {
       var outlet;
       if (predicate.isOutlet(shape)) {
         outlet = shape;
@@ -339,7 +339,7 @@ layers.work.on('mouseout', function(evt) {
           outlet = parent.children[OUTLET_OFFSET];
         } // if the function can only have 1 input
       } // if the mouseover object belongs to a function
-      if (outlet && outlet.parent != currLine.attrs.source) {
+      if (outlet && outlet.parent != state.currLine.attrs.source) {
         outlet.scale({
           x: 1,
           y: 1
@@ -353,11 +353,11 @@ layers.work.on('mouseout', function(evt) {
       } // if outlet exists and does not belong to the line's source
     } // if makingLine
   } // if the work tool or line tool is enabled 
-  else if (deleteToolOn) {
+  else if (state.deleteToolOn) {
     if (predicate.isFunction(parent) || predicate.isValue(parent)) {
 
       // deal with shadows on the shape
-      if (parent == currShape) {
+      if (parent == state.currShape) {
         utility.setSelectedShadow(parent);
       } // if mouseout shape is the global currShape
       else {

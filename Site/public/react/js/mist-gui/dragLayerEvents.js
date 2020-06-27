@@ -9,15 +9,15 @@
    KineticJS's getIntersection doesn't work when using the 'mousedown' event
     to startDrag */
     layers.drag.on('dragstart mousedown', function(evt) {
-      if (dragShape) {
-        dragShape.stopDrag();
-        dragShape.startDrag();
+      if (state.dragShape) {
+        state.dragShape.stopDrag();
+        state.dragShape.startDrag();
         layers.drag.draw();
       }
     });
 
     layers.drag.on('mousedown', function(evt) {
-      utility.removeShadow(currShape);
+      utility.removeShadow(state.currShape);
       var group = evt.target.getParent();
       group.stopDrag();
       group.startDrag();
@@ -61,14 +61,14 @@
 
   layers.drag.on('mouseup', function(evt) {
     var group = evt.target.getParent();
-    if (scaledObj) {
-      scaledObj.setAttr('scale', { x: 1, y: 1 });
-      group.setAttr('x', scaledObj.attrs.x);
-      group.setAttr('y', scaledObj.attrs.y);
+    if (state.scaledObj) {
+      state.scaledObj.setAttr('scale', { x: 1, y: 1 });
+      group.setAttr('x', state.scaledObj.attrs.x);
+      group.setAttr('y', state.scaledObj.attrs.y);
       insertToTable(group);
-      insertToArray(actionToObject('replace', group, scaledObj));
-      utility.replaceNode(scaledObj, group);
-      scaledObj = null;
+      insertToArray(actionToObject('replace', group, state.scaledObj));
+      utility.replaceNode(state.scaledObj, group);
+      state.scaledObj = null;
       group.moveTo(layers.work);
     }
     else {
@@ -76,20 +76,20 @@
         initToWorkLayer(group);
       } 
       else {
-        currShape = null;
+        state.currShape = null;
         group.destroy();
         group = null;
       }
     }
     if (group) {
       utility.setSelectedShadow(group);
-      currShape = group;
+      state.currShape = group;
       if (!group.attrs.dragBoundFunc) {
         utility.applyDragBounds(group);
       }
     }
     utility.updateFunBar();
-    dragShape = null;
+    state.dragShape = null;
     layers.menu.draw();
     layers.menuButton.draw();
     layers.drag.draw();
@@ -100,41 +100,41 @@
  * While an object is being dragged, move all lines connected to it with it.
  */
  layers.drag.on('draw', function() {
-  if(currShape != null) {
+  if(state.currShape != null) {
     var targetLine;
-    for(var i = 0; i < currShape.children.length - OUTLET_OFFSET; i++) {
-      targetLine = currShape.children[i+3].attrs.lineIn;
+    for(var i = 0; i < state.currShape.children.length - OUTLET_OFFSET; i++) {
+      targetLine = state.currShape.children[i+3].attrs.lineIn;
       if(targetLine != null) {
-        targetLine.points()[2] = currShape.x();
-        targetLine.points()[3] = currShape.y() + currShape.children[i+OUTLET_OFFSET].y();
+        targetLine.points()[2] = state.currShape.x();
+        targetLine.points()[3] = state.currShape.y() + state.currShape.children[i+OUTLET_OFFSET].y();
       }
     }
-    if (currShape.attrs.lineOut) {
+    if (state.currShape.attrs.lineOut) {
       var yOffset;
-      if (predicate.isFunction(currShape)) {
-        yOffset = (currShape.children[0].height() + functionStyle.strokeWidth) / 2;
+      if (predicate.isFunction(state.currShape)) {
+        yOffset = (state.currShape.children[0].height() + functionStyle.strokeWidth) / 2;
       }
       else {
         yOffset = functionStyle.totalSideLength / 2;
       }
     }
-    for(var i = 0; i < currShape.attrs.lineOut.length; i++) {
-      targetLine = currShape.attrs.lineOut[i];
-      targetLine.points()[0] = currShape.x() + functionStyle.rectSideLength - OUTLET_OFFSET;
-      targetLine.points()[1] = currShape.y() + yOffset;
+    for(var i = 0; i < state.currShape.attrs.lineOut.length; i++) {
+      targetLine = state.currShape.attrs.lineOut[i];
+      targetLine.points()[0] = state.currShape.x() + functionStyle.rectSideLength - OUTLET_OFFSET;
+      targetLine.points()[1] = state.currShape.y() + yOffset;
     }
     layers.line.draw();
   }
 });
 
  layers.drag.on('dragmove', function() {
-    if (dragShape != null) {
+    if (state.dragShape != null) {
       var pos = stage.getPointerPosition();
       var node = layers.work.getIntersection(pos);
       if (node) {
         var group = node.getParent();
-        if ((predicate.isValue(group) && predicate.isValue(dragShape)) ||
-            (predicate.isFunction(group) && predicate.isFunction(dragShape))) {
+        if ((predicate.isValue(group) && predicate.isValue(state.dragShape)) ||
+            (predicate.isFunction(group) && predicate.isFunction(state.dragShape))) {
           group.setAttrs({
             scaleX: 1.2,
             scaleY: 1.2
@@ -142,18 +142,18 @@
           if (group.children[2].attrs.expanded) {
             utility.renderCanvas(group);
           }
-          scaledObj = group;
+          state.scaledObj = group;
         }
       }
-      else if (scaledObj != null) {
-        scaledObj.setAttrs({
+      else if (state.scaledObj != null) {
+        state.scaledObj.setAttrs({
           scaleX: 1,
           scaleY: 1
         });
-        if (scaledObj.children[2].attrs.expanded) {
-            utility.renderCanvas(scaledObj);
+        if (state.scaledObj.children[2].attrs.expanded) {
+            utility.renderCanvas(state.scaledObj);
           }
-        scaledObj = null;
+        state.scaledObj = null;
       }
       layers.work.draw();
     }

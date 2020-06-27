@@ -16,8 +16,6 @@ const fonts = {
   nodeSize: size.width / 56.25
 };
 
-var currentWorkspace;
-
 const functionStyle = {
   strokeWidth: size.width / 90,
   totalSideLength: size.width / 20,
@@ -190,28 +188,29 @@ var popOpenWsButtonShiftX = popTextShiftX;//((popWsRectWidth / 2) - (2 * popWsBu
 var popOpenWsButtonWidth = ((popOpenWsRectWidth / 2) - (3 * popOpenWsButtonShiftX)) / 2;
 var popOpenWsButtonHeight = popOpenWsRectWidth * .06;
 
-// TOOLBOX BOOLEANS
- var lineToolOn = false;
- var workToolOn = false;
- var deleteToolOn = false;
-
-//MENU BOOLEANS
-var valueExpanded = false;
-var functionExpanded = false;
-var tagsOn = true;
-
-/* variables to globally reference the most recently used object/line and current state */
-var currShape;
-var currLine;
-var dragShape = null;
-var scaledObj = null;
-var openTag;
-var map = [];
-
-//OTHER BOOLEANS
-var makingLine = false;
-var animation = false;
-
+const state = {
+  currentWorkspace: null,
+  // TOOLBOX BOOLEANS
+  lineToolOn: false,
+  workToolOn: false,
+  deleteToolOn: false,
+  //MENU BOOLEANS
+  menu: {
+    valueExpanded: false,
+    functionExpanded: false,
+    tagsOn: true,
+  },
+  /* variables to globally reference the most recently used object/line and current state */
+  currShape: null,
+  currLine: null,
+  dragShape: null,
+  scaledObj: null,
+  openTag: null,
+  map: [],
+  //OTHER BOOLEANS
+  makingLine: false,
+  animation: false,
+};
 
 // CONSTANTS
 

@@ -329,7 +329,7 @@ popSaveButtonGroup.on('mouseup', function(){
   	popErrorText.setAttr('text', 'To save an image, please log in or sign up.');
   } // if user is not logged in
   else {
-    var renderFunction = currShape.attrs.renderFunction;
+    var renderFunction = state.currShape.attrs.renderFunction;
     var imageid = saveImage(newName, renderFunction, true, true, true);
     popErrorText.setAttr('text', '');
     cover.setAttr('visible', false);
@@ -352,7 +352,7 @@ var openSavePopUp = function() {
   hideThumbnails();
   cover.setAttr('visible', true);
   popSaveGroup.setAttr('visible', true);
-  var renderFunction = currShape.attrs.renderFunction;
+  var renderFunction = state.currShape.attrs.renderFunction;
   updatePopText(renderFunction);
   layers.render.moveToTop();
   renderPopCanvas(renderFunction);

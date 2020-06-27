@@ -12,12 +12,12 @@ On click of value menu button:
   - move functionsButton left. 
   */
   valuesButton.on('click', function(){
-    if (!valueExpanded) {
-      if (!functionExpanded) {
+    if (!state.menu.valueExpanded) {
+      if (!state.menu.functionExpanded) {
         moveFunctionsButtonRight();
         moveFunctionNodesRight();
         expandValueNodes();
-        valueExpanded = true;
+        state.menu.valueExpanded = true;
         showScrollArrows('values');
         updateArrows('values');
     } // if functions are also not expanded
@@ -25,10 +25,10 @@ On click of value menu button:
       moveFunctionsButtonRight();
       moveFunctionNodesRight();
       expandValueNodes();
-      valueExpanded = true;
+      state.menu.valueExpanded = true;
       showScrollArrows('values');
       updateArrows('values');
-      functionExpanded = false;
+      state.menu.functionExpanded = false;
       hideScrollArrows('functions');
       } // else functions were already expanded
   } // if values are not expanded
@@ -36,7 +36,7 @@ On click of value menu button:
     moveValueNodesIn();
     moveFunctionNodesIn();  
     moveFunctionsButtonLeft();
-    valueExpanded = false;
+    state.menu.valueExpanded = false;
     hideScrollArrows('values');
   } // else values were already expanded
 });
@@ -52,10 +52,10 @@ On click of function menu button:
   - collapse functions 
   */
   functionsButton.on('click', function(){
-    if (!functionExpanded) {
-      if (!valueExpanded) {
+    if (!state.menu.functionExpanded) {
+      if (!state.menu.valueExpanded) {
         expandFunctionNodes();
-        functionExpanded = true;
+        state.menu.functionExpanded = true;
         showScrollArrows('functions');
         updateArrows('functions');
     } // functions and values not expanded
@@ -63,16 +63,16 @@ On click of function menu button:
       moveValueNodesIn();
       moveFunctionsButtonLeft();
       expandFunctionNodes();
-      functionExpanded = true;
+      state.menu.functionExpanded = true;
       showScrollArrows('functions');
       updateArrows('functions');
-      valueExpanded = false;
+      state.menu.valueExpanded = false;
       hideScrollArrows('values');
     } // functions not expanded, values expanded
   }
   else {
     moveFunctionNodesIn();
-    functionExpanded = false;
+    state.menu.functionExpanded = false;
     hideScrollArrows('functions');
     } // functions are expanded
   });
@@ -81,11 +81,11 @@ On click of function menu button:
 If you click on a menu button when the workTool is not activated, the workTool will become activated. 
 */
 layers.menuButton.on('click', function(){
-  if (!workToolOn) {
+  if (!state.workToolOn) {
     utility.enableWorkTool();
-    if(makingLine) {
-      removeLine(currLine);
-      makingLine = false;
+    if(state.makingLine) {
+      removeLine(state.currLine);
+      state.makingLine = false;
       layers.line.draw();
     }
   }
@@ -178,8 +178,8 @@ layers.menuArrow.on('mouseup', function(evt) {
   On mousedown of a menu object (value or function prototype), you create a copy of that object and begin to draw it. Turns on workTool, if not already on. 
   */
   layers.menu.on('mousedown', function(evt) {
-    if (!makingLine) {
-      if (!workToolOn) {
+    if (!state.makingLine) {
+      if (!state.workToolOn) {
         utility.enableWorkTool();
       }
       var group = evt.target.getParent();
@@ -192,31 +192,31 @@ layers.menuArrow.on('mouseup', function(evt) {
       newGroup.setAttr('visible', true);
       layers.drag.add(newGroup);
       utility.setDragShadow(newGroup);
-      utility.removeShadow(currShape);
+      utility.removeShadow(state.currShape);
       newGroup.startDrag();
       layers.drag.draw();
-      dragShape = newGroup;
-      currShape = newGroup;
+      state.dragShape = newGroup;
+      state.currShape = newGroup;
     }
     else {
-      removeLine(currLine);
-      makingLine = false;
+      removeLine(state.currLine);
+      state.makingLine = false;
       layers.line.draw();
     }
   });
 
   layers.menu.on('mouseover', function(evt) {
     var group = evt.target.getParent();
-    if (tagsOn) {
+    if (state.menu.tagsOn) {
      if (predicate.isFunction(group) || predicate.isValue(group)) {
       setTimeout(function(){
-        if (openTag) {
-          openTag.destroy();
+        if (state.openTag) {
+          state.openTag.destroy();
         }
         var temp = layers.menu.getIntersection(stage.getPointerPosition());
         if (temp && group == temp.getParent()) {
-          openTag = makeLabel(group);
-          layers.label.add(openTag)
+          state.openTag = makeLabel(group);
+          layers.label.add(state.openTag)
           layers.label.draw(); 
         }
       }, 500);
@@ -226,8 +226,8 @@ layers.menuArrow.on('mouseup', function(evt) {
 
   layers.menu.on('mouseout', function(evt) {
     var group = evt.target.getParent();
-    if (openTag) {  
-      openTag.destroy();
+    if (state.openTag) {  
+      state.openTag.destroy();
       layers.label.draw();
     }
   });
@@ -243,12 +243,12 @@ toggleTag.on('mouseout', function() {
 });
 
 toggleTag.on('mouseup', function(){
-  if (tagsOn) {
-    tagsOn = false;
+  if (state.menu.tagsOn) {
+    state.menu.tagsOn = false;
     toggleTag.children[0].setAttr('text', 'Turn Labels On');
   }
   else {
-    tagsOn = true;
+    state.menu.tagsOn = true;
     toggleTag.children[0].setAttr('text', 'Turn Labels Off');
   }
   layers.border.draw();

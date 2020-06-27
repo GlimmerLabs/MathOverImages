@@ -62,9 +62,9 @@ function initializeStage(containerName) {
   // Set up the handler for making lines.  Note that makingLine is declared
   // somewhere (although I'm not sure where).
   stage.addEventListener('contentMousemove', function(){
-    if (makingLine) {
-      currLine.points()[2] = stage.getPointerPosition().x;
-      currLine.points()[3] = stage.getPointerPosition().y;
+    if (state.makingLine) {
+      state.currLine.points()[2] = stage.getPointerPosition().x;
+      state.currLine.points()[3] = stage.getPointerPosition().y;
       layers.line.draw();
     } // if (makingLine)
   });

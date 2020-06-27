@@ -129,8 +129,8 @@ var resetWorkspace = function() {
   // reset indexes and variables
   currIndex = 0;
   totalIndex = 0;
-  currShape = null;
-  dragShape = null;
+  state.currShape = null;
+  state.dragShape = null;
   utility.updateFunBar();
   shadeUndoRedo();
   stage.draw();
@@ -196,7 +196,7 @@ var loadWorkspace = function(wsname) {
       // console.log(json);
       resetWorkspace();
       jsonToWorkspace(json);
-      currentWorkspace = wsname;
+      state.currentWorkspace = wsname;
     }
   }; // onReadyState
   request.open("GET",url,true);

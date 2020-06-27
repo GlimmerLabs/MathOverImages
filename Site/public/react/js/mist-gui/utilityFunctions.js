@@ -100,8 +100,8 @@ const utility = {
    * updateFunBar changes the text in the funBar according to the currShape.
    */
   updateFunBar() {
-    if (currShape && predicate.assertRenderable(currShape)) {
-      currText = currShape.attrs.renderFunction;
+    if (state.currShape && predicate.assertRenderable(state.currShape)) {
+      currText = state.currShape.attrs.renderFunction;
       var currFontSize;
       if (currText.length <= 50) {
         currFontSize = funBarStyle.displayFontSize;
@@ -198,19 +198,19 @@ const utility = {
     toolGroup.children[0].setAttr('shadowEnabled', false);
     var name = toolGroup.name();
     if (name == 'workTool') {
-      workToolOn = false;
+      state.workToolOn = false;
     } 
     else if (name == 'lineTool') {
-      lineToolOn = false;
+      state.lineToolOn = false;
     }
     else {
-      deleteToolOn = false;
+      state.deleteToolOn = false;
     }
   },
 
   enableWorkTool() {
     workToolGroup.children[0].setAttr('shadowEnabled', true);
-    workToolOn = true;
+    state.workToolOn = true;
     utility.disableTool(lineToolGroup);
     utility.disableTool(deleteToolGroup);
     layers.toolbox.draw();
