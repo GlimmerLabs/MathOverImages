@@ -3,7 +3,6 @@
  *   Global variables for a MIST gui.  (Eventually, these should be fields
  *   within the object/prototype.)
  */
- 
 const size = {};
 size.width = 900;
 size.height = 2 * size.width / 3;
@@ -71,9 +70,11 @@ var imageBoxColor = 'white';
 var valueImageBoxOffset = size.width / 31;
 var renderSideLength = size.width / 18;
 
-var editableTextWidth = size.width / 15;
-var editableTextHeight = size.width / 30;
-var editableTextFont = size.width / 69;
+const editableTextStyle = {
+  width: size.width / 15,
+  height: size.width / 30,
+  font: size.width / 69,
+}
 
 const variableStyle = {
   color: {r: 197, g: 231, b: 109, a: .5},

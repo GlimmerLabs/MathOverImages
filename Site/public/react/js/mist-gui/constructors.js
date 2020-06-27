@@ -340,21 +340,21 @@ var addVal = function(valName, x, y) {
 
 var createEditableText = function (group) { 
   var backgroundBox = new Kinetic.Rect({
-    x: -((editableTextWidth - functionStyle.totalSideLength) / 2) - 4,
+    x: -((editableTextStyle.width - functionStyle.totalSideLength) / 2) - 4,
     y: functionStyle.totalSideLength + 5,
-    width: editableTextWidth,
-    height: editableTextHeight,
+    width: editableTextStyle.width,
+    height: editableTextStyle.height,
     fill: 'white',
     stroke: 'black',
     strokeWidth: .5
   });
   var editableTextBox = new Kinetic.Text({
-    x: -((editableTextWidth - functionStyle.totalSideLength) / 2) -4,
+    x: -((editableTextStyle.width - functionStyle.totalSideLength) / 2) -4,
     y: functionStyle.totalSideLength + 5,
     text: 'Enter a Value',
-    fontSize: editableTextFont,
-    width: editableTextWidth,
-    height: editableTextHeight,
+    fontSize: editableTextStyle.font,
+    width: editableTextStyle.width,
+    height: editableTextStyle.height,
     align: "center",
     fontFamily: fonts.function,
     fill: 'black'
