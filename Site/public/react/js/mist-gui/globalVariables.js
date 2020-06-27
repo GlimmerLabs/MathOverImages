@@ -90,10 +90,10 @@ const outletStyle = {
   rgbColors: ['#C94949','#2D9C2D','#4272DB'],
 };
 
-var lineStrokeWidth = 2;
+const lineStrokeWidth = 2;
 
-var dragShadowColor = 'black';
-var selectedShadowColor = 'blue';
+const dragShadowColor = 'black';
+const selectedShadowColor = 'blue';
 
 //SLIDING MENU
 var menuHeight = size.width / 9; 
