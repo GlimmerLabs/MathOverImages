@@ -96,35 +96,42 @@ const dragShadowColor = 'black';
 const selectedShadowColor = 'blue';
 
 //SLIDING MENU
-var menuHeight = size.width / 9; 
-var menuCornerWidth = size.width / 6;
-var buttonWidth = size.width / 10;
-var valSpaceWidth = size.width - menuCornerWidth - (2 * buttonWidth);
-var numVals = 6; // Number of values that fit on a screen
-var valMenuXSpacing = (valSpaceWidth - (numVals * functionStyle.totalSideLength - 4)) / (numVals + 1);
-var functSpaceWidth = size.width - menuCornerWidth - (2 * buttonWidth);
-var numFuncts = 6; // Number of functions that fit on a screen
-var functMenuXSpacing = (functSpaceWidth - (numFuncts * functionStyle.totalSideLength)) / (numFuncts + 1);
-var menuYspacing = size.width * 11/360;
-var menuFunctsXStart = 2 * (buttonWidth - functionStyle.rectSideLength) + menuCornerWidth- functionStyle.totalSideLength / 2;
-var menuFunctsXEnd = size.width - buttonWidth + functionStyle.rectSideLength / 2;
-var menuValuesXStart = menuCornerWidth + buttonWidth / 2;
-var menuAnimDuration = 1;
+const menuStyle = {
+  height: size.width / 9,
+  cornerWidth: size.width / 6,
+  buttonWidth: size.width / 10,
+  numVals: 6, // Number of values that fit on a screen
+  numFuncts: 6, // Number of functions that fit on a screen
+  ySpacing: size.width * 11/360,
+  animDuration: 1,
 
-//SCROLLING MENU BUTTONS
-var arrowWidth = size.width / 50;
-var arrowBoxFill = 'gray';
-var arrowFill = 'black';
-var triX = size.width / 90;
-var triY = size.width / 60;
+  //SCROLLING MENU BUTTONS
+  arrowWidth: size.width / 50,
+  arrowBoxFill: 'gray',
+  arrowFill: 'black',
+  triX: size.width / 90,
+  triY: size.width / 60,
+  
+  //CORNER BUTTONS
+  offset: 10,
+  controlColor: '#7FA7E7',
+  controlSelect: '#9EBDF0',
+  controlTextColor: 'black',
+}
+
+menuStyle.valSpaceWidth = size.width - menuStyle.cornerWidth - (2 * menuStyle.buttonWidth);
+menuStyle.valXSpacing = (menuStyle.valSpaceWidth - (menuStyle.numVals * functionStyle.totalSideLength - 4)) / (menuStyle.numVals + 1);
+
+menuStyle.functSpaceWidth = size.width - menuStyle.cornerWidth - (2 * menuStyle.buttonWidth);
+menuStyle.functXSpacing = (menuStyle.functSpaceWidth - (menuStyle.numFuncts * functionStyle.totalSideLength)) / (menuStyle.numFuncts + 1);
+
+menuStyle.functsXStart = 2 * (menuStyle.buttonWidth - functionStyle.rectSideLength) + menuStyle.cornerWidth- functionStyle.totalSideLength / 2;
+menuStyle.functsXEnd = size.width - menuStyle.buttonWidth + functionStyle.rectSideLength / 2;
+menuStyle.valuesXStart = menuStyle.cornerWidth + menuStyle.buttonWidth / 2;
 
 //CORNER BUTTONS
-var menuOffset = 10;
-var menuControlHeight = menuHeight / 5;
-var menuControlColor = '#7FA7E7';
-var menuControlSelect = '#9EBDF0'; 
-var menuControlTextColor = 'black';
-var menuTextOffset = menuControlHeight / 5;
+menuStyle.controlHeight = menuStyle.height / 5;
+menuStyle.textOffset = menuStyle.controlHeight / 5;
 
 //TOOLBOX
 const toolboxStyle = {
@@ -139,7 +146,7 @@ toolboxStyle.shift = toolboxStyle.width / 5;
 const funBarStyle = {
   width: size.width,
   height: size.height / 15,
-  backgroundColor: menuControlColor,
+  backgroundColor: menuStyle.controlColor,
   displayFontSize: size.width / 40.9,
   fontSize: size.width / 75,
   iconTextWidth: size.width / 18,

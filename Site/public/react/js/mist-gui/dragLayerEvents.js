@@ -72,7 +72,7 @@
       group.moveTo(layers.work);
     }
     else {
-      if (group.attrs.y > menuHeight) {
+      if (group.attrs.y > menuStyle.height) {
         initToWorkLayer(group);
       } 
       else {

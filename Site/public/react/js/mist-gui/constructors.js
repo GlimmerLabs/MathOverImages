@@ -253,7 +253,7 @@ and with the visibility to the specified boolean values.
 var makeMenuTween = function(target, xEnd, visibility) {
   return new Kinetic.Tween({
     node: target,
-    duration: menuAnimDuration,
+    duration: menuStyle.animDuration,
     x: xEnd,
     visible: visibility,
     easing: Kinetic.Easings.StrongEaseOut

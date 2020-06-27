@@ -156,9 +156,9 @@ predicate.assertRenderable = function(group) {
   */
 predicate.canMoveRight = function(type) {
   return ((type == 'values' && 
-    menuValues[0].x() < (menuCornerWidth + buttonWidth + valMenuXSpacing)) ||
+    menuValues[0].x() < (menuStyle.cornerWidth + menuStyle.buttonWidth + menuStyle.valXSpacing)) ||
     (type == 'functions' && 
-    menuFunctions[0].x() < (menuCornerWidth + 2 * buttonWidth + functMenuXSpacing)))
+    menuFunctions[0].x() < (menuStyle.cornerWidth + 2 * menuStyle.buttonWidth + menuStyle.functXSpacing)))
 };
 /**
  * canMoveLeft tests if either the functions or values in the menu can be moved
@@ -166,7 +166,7 @@ predicate.canMoveRight = function(type) {
  */
 predicate.canMoveLeft = function(type) {
 	return ((type == 'values' &&
-	  menuValues[menuValues.length - 1].x() > size.width - buttonWidth) ||
+	  menuValues[menuValues.length - 1].x() > size.width - menuStyle.buttonWidth) ||
       (type == 'functions' && 
 	  menuFunctions[menuFunctions.length - 1].x() > size.width))
 };

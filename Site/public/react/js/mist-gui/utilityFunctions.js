@@ -367,7 +367,7 @@ const utility = {
   applyDragBounds(group) {
     var bottomBoundOffset = functionStyle.totalSideLength + funBarStyle.height;
     group.setAttr('dragBoundFunc', function(pos) {
-      var newY = pos.y <= menuHeight ? menuHeight + 1 :
+      var newY = pos.y <= menuStyle.height ? menuStyle.height + 1 :
         pos.y > size.height - bottomBoundOffset ? size.height - bottomBoundOffset :
         pos.y;
       var newX = pos.x < 0 ? 0 :

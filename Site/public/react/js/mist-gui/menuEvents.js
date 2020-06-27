@@ -259,7 +259,7 @@ layers.menuControl.on('mouseover', function(evt) {
   if (evt.target.name() != 'cover') {
     var parent = evt.target.getParent();
     var shape = parent.children[0];
-    shape.setAttr('fill', menuControlSelect);
+    shape.setAttr('fill', menuStyle.controlSelect);
     layers.menuControl.draw();
   }
 });
@@ -269,7 +269,7 @@ layers.menuControl.on('mouseout', function(evt) {
     var parent = evt.target.getParent();
     var shape = parent.children[0];
     shape.setAttrs({
-      fill: menuControlColor,
+      fill: menuStyle.controlColor,
       shadowEnabled: false
     });
     layers.menuControl.draw();
