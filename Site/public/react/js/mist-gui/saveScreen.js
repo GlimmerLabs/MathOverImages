@@ -18,8 +18,8 @@ var cover = new Kinetic.Rect({
 layers.screen.add(cover);
 
 var popSaveGroup = new Kinetic.Group({
-  x: popSaveGroupX, 
-  y: popSaveGroupY,
+  x: saveStyle.saveGroupX, 
+  y: saveStyle.saveGroupY,
   visible: false
 });
 layers.screen.add(popSaveGroup);
@@ -27,9 +27,9 @@ layers.screen.add(popSaveGroup);
 var popSaveRect = new Kinetic.Rect ({
   x: 0,
   y: 0,
-  width: popRectWidth,
-  height: popRectHeight,
-  fill: popRectColor,
+  width: saveStyle.rectWidth,
+  height: saveStyle.rectHeight,
+  fill: saveStyle.rectColor,
   stroke: 'black',
   strokeWidth: 1
 });
@@ -37,12 +37,12 @@ popSaveGroup.add(popSaveRect);
 
 var renderPopText = new Kinetic.Text({
   text: "",
-  x: popTextShiftX,
-  y: popTextShiftY,
-  width: popTextWidth,
-  height: popTextHeight,
+  x: saveStyle.textShiftX,
+  y: saveStyle.textShiftY,
+  width: saveStyle.textWidth,
+  height: saveStyle.textHeight,
   fill: 'black',
-  fontSize: popTextFontSize,
+  fontSize: saveStyle.textFontSize,
   fontFamily: fonts.default,
   align: 'center'
 });
@@ -50,8 +50,8 @@ popSaveGroup.add(renderPopText);
 
 var nameText = new Kinetic.Text({
   text: "Name:",
-  x: popTextShiftX,
-  y: popTextShiftY + (popTextHeight * 1.4),
+  x: saveStyle.textShiftX,
+  y: saveStyle.textShiftY + (saveStyle.textHeight * 1.4),
   fill: 'black',
   fontSize: 16,
   fontFamily: fonts.default,
@@ -59,10 +59,10 @@ var nameText = new Kinetic.Text({
 popSaveGroup.add(nameText);
 
 var nameRect = new Kinetic.Rect ({
-  x: popTextShiftX + nameTextShift,
-  y: popTextShiftY + (popTextHeight * 1.3),
-  width: popCanvasSide - nameTextShift,
-  height: popTextHeight / 1.5,
+  x: saveStyle.textShiftX + saveStyle.nameTextShift,
+  y: saveStyle.textShiftY + (saveStyle.textHeight * 1.3),
+  width: saveStyle.canvasSide - saveStyle.nameTextShift,
+  height: saveStyle.textHeight / 1.5,
   fill: 'white',
   stroke: 'black',
   strokeWidth: 1
@@ -70,12 +70,12 @@ var nameRect = new Kinetic.Rect ({
 popSaveGroup.add(nameRect);
 
 var nameEditText = new Kinetic.Text({
-  x: popTextShiftX + (nameTextShift * 1.1),
-  y: popTextShiftY + (popTextHeight * 1.4),
+  x: saveStyle.textShiftX + (saveStyle.nameTextShift * 1.1),
+  y: saveStyle.textShiftY + (saveStyle.textHeight * 1.4),
   text: 'Enter a Name',
   fontSize: 14,
-  width: popCanvasSide - nameTextShift,
-  height: popTextHeight / 1.5,
+  width: saveStyle.canvasSide - saveStyle.nameTextShift,
+  height: saveStyle.textHeight / 1.5,
   fontFamily: fonts.default,
   fill: 'black'
 });
@@ -89,20 +89,20 @@ layers.screen.draw()
 
 // ERROR TEXT
 var popErrorText = new Kinetic.Text({
-  x: popTextShiftX,
-  y: popTextShiftY + (popTextHeight * 2.2),
+  x: saveStyle.textShiftX,
+  y: saveStyle.textShiftY + (saveStyle.textHeight * 2.2),
   text: '',
-  width: popRectWidth - (2*popTextShiftX),
+  width: saveStyle.rectWidth - (2*saveStyle.textShiftX),
   fontFamily: fonts.default,
   fontSize: 14,
-  fill: errorColor,
+  fill: saveStyle.errorColor,
 });
 popSaveGroup.add(popErrorText);
 
 //CANCEL BUTTON GROUP
 var popCancelButtonGroup = new Kinetic.Group({
-  x: popTextShiftX,
-  y: popRectHeight - (popTextHeight * 1.25),
+  x: saveStyle.textShiftX,
+  y: saveStyle.rectHeight - (saveStyle.textHeight * 1.25),
   name: 'cancel'
 });
 popSaveGroup.add(popCancelButtonGroup);
@@ -110,9 +110,9 @@ popSaveGroup.add(popCancelButtonGroup);
 var popCancelButton = new Kinetic.Rect ({
   x: 0,
   y: 0,
-  width: popButtonWidth,
-  height: popButtonHeight,
-  fill: popButtonColor,
+  width: saveStyle.buttonWidth,
+  height: saveStyle.buttonHeight,
+  fill: saveStyle.buttonColor,
   stroke: 'black',
   strokeWidth: 1,
   shadowColor: 'black',
@@ -123,8 +123,8 @@ popCancelButtonGroup.add(popCancelButton);
 var popCancelButtonText = new Kinetic.Text({
   text: "Cancel",
   x: 0,
-  y: (popButtonHeight - 16) / 2,
-  width: popButtonWidth,
+  y: (saveStyle.buttonHeight - 16) / 2,
+  width: saveStyle.buttonWidth,
   fill: 'black',
   fontSize: 16,
   fontFamily: fonts.default,
@@ -134,8 +134,8 @@ popCancelButtonGroup.add(popCancelButtonText);
 
 //DOWLOAD BUTTON GROUP
 var popDownloadButtonGroup = new Kinetic.Group({
-  x: popTextShiftX + popButtonShiftX + popButtonWidth,
-  y: popRectHeight - (popTextHeight * 1.25),
+  x: saveStyle.textShiftX + saveStyle.buttonShiftX + saveStyle.buttonWidth,
+  y: saveStyle.rectHeight - (saveStyle.textHeight * 1.25),
   name: 'download'
 });
 popSaveGroup.add(popDownloadButtonGroup);
@@ -143,9 +143,9 @@ popSaveGroup.add(popDownloadButtonGroup);
 var popDownloadButton = new Kinetic.Rect ({
   x: 0,
   y: 0,
-  width: popButtonWidth,
-  height: popButtonHeight,
-  fill: popButtonColor,
+  width: saveStyle.buttonWidth,
+  height: saveStyle.buttonHeight,
+  fill: saveStyle.buttonColor,
   stroke: 'grey', 
   strokeWidth: 1,
   shadowColor: 'black',
@@ -156,8 +156,8 @@ popDownloadButtonGroup.add(popDownloadButton);
 var popDownloadButtonText = new Kinetic.Text({
   text: "Download",
   x: 0,
-  y: (popButtonHeight - 16) / 2,
-  width: popButtonWidth,
+  y: (saveStyle.buttonHeight - 16) / 2,
+  width: saveStyle.buttonWidth,
   fill: 'grey',
   fontSize: 16,
   fontFamily: fonts.default,
@@ -168,8 +168,8 @@ popDownloadButtonGroup.add(popDownloadButtonText);
 
 //SAVE BUTTON GROUP
 var popSaveButtonGroup = new Kinetic.Group({
-  x: popTextShiftX + (2 * popButtonShiftX) + (2 * popButtonWidth),
-  y: popRectHeight - (popTextHeight * 1.25),
+  x: saveStyle.textShiftX + (2 * saveStyle.buttonShiftX) + (2 * saveStyle.buttonWidth),
+  y: saveStyle.rectHeight - (saveStyle.textHeight * 1.25),
   name: 'save'
 });
 popSaveGroup.add(popSaveButtonGroup);
@@ -177,9 +177,9 @@ popSaveGroup.add(popSaveButtonGroup);
 var popSaveButton = new Kinetic.Rect ({
   x: 0,
   y: 0,
-  width: popButtonWidth,
-  height: popButtonHeight,
-  fill: popButtonColor,
+  width: saveStyle.buttonWidth,
+  height: saveStyle.buttonHeight,
+  fill: saveStyle.buttonColor,
   stroke: 'black',
   strokeWidth: 1,
   shadowColor: 'black',
@@ -190,8 +190,8 @@ popSaveButtonGroup.add(popSaveButton);
 var popSaveButtonText = new Kinetic.Text({
   text: "Save",
   x: 0,
-  y: (popButtonHeight - 16) / 2,
-  width: popButtonWidth,
+  y: (saveStyle.buttonHeight - 16) / 2,
+  width: saveStyle.buttonWidth,
   fill: 'black',
   fontSize: 16,
   fontFamily: fonts.default,
@@ -210,9 +210,9 @@ var rAnimator;
 var renderPopCanvas = function(renderFunction) {
   rAnimator = new MIST.ui.Animator(renderFunction, [], {}, 
     rCanvas, function() { });
-  rAnimator.bounds(popCanvasShiftX, popCanvasShiftY, 
-                   popCanvasSide, popCanvasSide);
-  rAnimator.setResolution(popCanvasResolution, popCanvasResolution);
+  rAnimator.bounds(saveStyle.canvasShiftX, saveStyle.canvasShiftY, 
+                   saveStyle.canvasSide, saveStyle.canvasSide);
+  rAnimator.setResolution(saveStyle.canvasResolution, saveStyle.canvasResolution);
   rAnimator.frame();
   /*
   var mistObj = MIST.parse(renderFunction);
@@ -245,7 +245,7 @@ var updatePopText = function(renderFunction) {
 layers.screen.on('mouseover', function(evt) {
   var group = evt.target.parent;
   if (group.attrs.name && group.attrs.name != 'download') {
-    group.children[0].setAttr('fill', popButtonSelectedColor);
+    group.children[0].setAttr('fill', saveStyle.buttonSelectedColor);
     layers.screen.draw();
   } // if name (not download)
 });
@@ -258,7 +258,7 @@ layers.screen.on('mouseout', function(evt) {
   var group = evt.target.parent;
   if (group.attrs.name) {
     group.children[0].setAttrs({
-      fill: popButtonColor,
+      fill: saveStyle.buttonColor,
       shadowEnabled: false
     });
     layers.screen.draw();

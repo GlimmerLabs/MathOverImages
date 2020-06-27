@@ -8,9 +8,9 @@ layers.screen.add(openWsGroup);
 var openWsRect = new Kinetic.Rect({
 	x: 0,
 	y: 0,
-	width: popOpenWsRectWidth,
-	height: popOpenWsRectHeight,
-	fill: popRectColor,
+	width: openWsStyle.rectWidth,
+	height: openWsStyle.rectHeight,
+	fill: saveStyle.rectColor,
 	stroke: 'black',
 	strokeWidth: 1
 });
@@ -18,8 +18,8 @@ openWsGroup.add(openWsRect);
 
 var nameOpenWsText = new Kinetic.Text({
 	text: "Name:",
-	x: popTextShiftX,
-	y: popTextShiftX,
+	x: saveStyle.textShiftX,
+	y: saveStyle.textShiftX,
 	fill: 'black',
 	fontSize: 16,
 	fontFamily: fonts.default,
@@ -27,10 +27,10 @@ var nameOpenWsText = new Kinetic.Text({
 openWsGroup.add(nameOpenWsText);
 
 var nameOpenWsRect = new Kinetic.Rect ({
-	x: popTextShiftX + nameTextShift,
-	y: popTextShiftX * .85,
-	width: popCanvasSide - nameTextShift,
-	height: popTextHeight / 1.5,
+	x: saveStyle.textShiftX + saveStyle.nameTextShift,
+	y: saveStyle.textShiftX * .85,
+	width: saveStyle.canvasSide - saveStyle.nameTextShift,
+	height: saveStyle.textHeight / 1.5,
 	fill: 'white',
 	stroke: 'black',
 	strokeWidth: 1
@@ -38,12 +38,12 @@ var nameOpenWsRect = new Kinetic.Rect ({
 openWsGroup.add(nameOpenWsRect);
 
 var nameOpenWsEditText = new Kinetic.Text({
-	x: popTextShiftX + (nameTextShift * 1.1),
-	y: popTextShiftX,
+	x: saveStyle.textShiftX + (saveStyle.nameTextShift * 1.1),
+	y: saveStyle.textShiftX,
 	text: 'Enter a Name',
 	fontSize: 14,
-	width: popCanvasSide - nameTextShift,
-	height: popTextHeight / 1.5,
+	width: saveStyle.canvasSide - saveStyle.nameTextShift,
+	height: saveStyle.textHeight / 1.5,
 	fontFamily: fonts.default,
 	fill: 'black'
 });
@@ -56,8 +56,8 @@ nameOpenWsEditText.drawMethod = function(){
 };
 
 var popOpenWsCancelButtonGroup = new Kinetic.Group({
-	x: (popOpenWsRectWidth / 2) + popOpenWsButtonShiftX,
-	y: popOpenWsRectHeight - (popTextHeight * 1.25),
+	x: (openWsStyle.rectWidth / 2) + openWsStyle.buttonShiftX,
+	y: openWsStyle.rectHeight - (saveStyle.textHeight * 1.25),
 	name: 'cancel'
 });
 openWsGroup.add(popOpenWsCancelButtonGroup);
@@ -65,9 +65,9 @@ openWsGroup.add(popOpenWsCancelButtonGroup);
 var popOpenWsCancelButton = new Kinetic.Rect ({
 	x: 0,
 	y: 0,
-	width: popOpenWsButtonWidth,
-	height: popOpenWsButtonHeight,
-	fill: popButtonColor,
+	width: openWsStyle.buttonWidth,
+	height: openWsStyle.buttonHeight,
+	fill: saveStyle.buttonColor,
 	stroke: 'black',
 	strokeWidth: 1,
 	shadowColor: 'black',
@@ -78,8 +78,8 @@ popOpenWsCancelButtonGroup.add(popOpenWsCancelButton);
 var popOpenWsCancelButtonText = new Kinetic.Text({
 	text: "Cancel",
 	x: 0,
-	y: (popOpenWsButtonHeight - 16) / 2,
-	width: popOpenWsButtonWidth,
+	y: (openWsStyle.buttonHeight - 16) / 2,
+	width: openWsStyle.buttonWidth,
 	fill: 'black',
 	fontSize: 16,
 	fontFamily: fonts.default,
@@ -88,8 +88,8 @@ var popOpenWsCancelButtonText = new Kinetic.Text({
 popOpenWsCancelButtonGroup.add(popOpenWsCancelButtonText);
 
 var popOpenWsButtonGroup = new Kinetic.Group({
-	x: (popOpenWsRectWidth / 2) + (2 * popOpenWsButtonShiftX) + popOpenWsButtonWidth,
-	y: popOpenWsRectHeight - (popTextHeight * 1.25),
+	x: (openWsStyle.rectWidth / 2) + (2 * openWsStyle.buttonShiftX) + openWsStyle.buttonWidth,
+	y: openWsStyle.rectHeight - (saveStyle.textHeight * 1.25),
 	name: 'save'
 });
 openWsGroup.add(popOpenWsButtonGroup);
@@ -97,9 +97,9 @@ openWsGroup.add(popOpenWsButtonGroup);
 var popOpenWsButton = new Kinetic.Rect ({
 	x: 0,
 	y: 0,
-	width: popOpenWsButtonWidth,
-	height: popOpenWsButtonHeight,
-	fill: popButtonColor,
+	width: openWsStyle.buttonWidth,
+	height: openWsStyle.buttonHeight,
+	fill: saveStyle.buttonColor,
 	stroke: 'black',
 	strokeWidth: 1,
 	shadowColor: 'black',
@@ -110,8 +110,8 @@ popOpenWsButtonGroup.add(popOpenWsButton);
 var popOpenWsButtonText = new Kinetic.Text({
 	text: "Open",
 	x: 0,
-	y: (popOpenWsButtonHeight - 16) / 2,
-	width: popOpenWsButtonWidth,
+	y: (openWsStyle.buttonHeight - 16) / 2,
+	width: openWsStyle.buttonWidth,
 	fill: 'black',
 	fontSize: 16,
 	fontFamily: fonts.default,

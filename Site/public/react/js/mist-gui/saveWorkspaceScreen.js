@@ -3,7 +3,7 @@ var popWsRectHeight = size.height * .25;
 var popSaveWsGroupX = (size.width - popWsRectWidth) / 2;
 var popSaveWsGroupY = (size.height - popWsRectHeight) / 2;
 
-var popWsButtonShiftX = popTextShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
+var popWsButtonShiftX = saveStyle.textShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
 var popWsButtonWidth = ((popWsRectWidth / 2) - (3 * popWsButtonShiftX)) / 2;
 var popWsButtonHeight = popWsRectWidth * .06;
 
@@ -21,7 +21,7 @@ var saveWsRect = new Kinetic.Rect({
   y: 0,
   width: popWsRectWidth,
   height: popWsRectHeight,
-  fill: popRectColor,
+  fill: saveStyle.rectColor,
   stroke: 'black',
   strokeWidth: 1
 });
@@ -29,8 +29,8 @@ saveWsGroup.add(saveWsRect);
 
 var nameWsText = new Kinetic.Text({
   text: "Name:",
-  x: popTextShiftX,
-  y: popTextShiftX,
+  x: saveStyle.textShiftX,
+  y: saveStyle.textShiftX,
   fill: 'black',
   fontSize: 16,
   fontFamily: fonts.default,
@@ -38,10 +38,10 @@ var nameWsText = new Kinetic.Text({
 saveWsGroup.add(nameWsText);
 
 var nameWsRect = new Kinetic.Rect ({
-  x: popTextShiftX + nameTextShift,
-  y: popTextShiftX * .85,
-  width: popCanvasSide - nameTextShift,
-  height: popTextHeight / 1.5,
+  x: saveStyle.textShiftX + saveStyle.nameTextShift,
+  y: saveStyle.textShiftX * .85,
+  width: saveStyle.canvasSide - saveStyle.nameTextShift,
+  height: saveStyle.textHeight / 1.5,
   fill: 'white',
   stroke: 'black',
   strokeWidth: 1
@@ -49,12 +49,12 @@ var nameWsRect = new Kinetic.Rect ({
 saveWsGroup.add(nameWsRect);
 
 var nameWsEditText = new Kinetic.Text({
-  x: popTextShiftX + (nameTextShift * 1.1),
-  y: popTextShiftX,
+  x: saveStyle.textShiftX + (saveStyle.nameTextShift * 1.1),
+  y: saveStyle.textShiftX,
   text: 'Enter a Name',
   fontSize: 14,
-  width: popCanvasSide - nameTextShift,
-  height: popTextHeight / 1.5,
+  width: saveStyle.canvasSide - saveStyle.nameTextShift,
+  height: saveStyle.textHeight / 1.5,
   fontFamily: fonts.default,
   fill: 'black'
 });
@@ -68,10 +68,10 @@ nameWsEditText.drawMethod = function(){
 
 var popWsErrorText = new Kinetic.Text({
   text: '',
-  x: popTextShiftX,
-  y: nameWsText.height() + (2 * popTextShiftX),
-  width: popWsRectWidth - (2 * popTextShiftX),
-  fill: errorColor,
+  x: saveStyle.textShiftX,
+  y: nameWsText.height() + (2 * saveStyle.textShiftX),
+  width: popWsRectWidth - (2 * saveStyle.textShiftX),
+  fill: saveStyle.errorColor,
   fontFamily: fonts.default,
   fontSize: 14
 });
@@ -79,7 +79,7 @@ saveWsGroup.add(popWsErrorText);
 
 var popWsCancelButtonGroup = new Kinetic.Group({
   x: (popWsRectWidth / 2) + popWsButtonShiftX,
-  y: popWsRectHeight - (popTextHeight * 1.25),
+  y: popWsRectHeight - (saveStyle.textHeight * 1.25),
   name: 'cancel'
 });
 saveWsGroup.add(popWsCancelButtonGroup);
@@ -89,7 +89,7 @@ var popWsCancelButton = new Kinetic.Rect ({
   y: 0,
   width: popWsButtonWidth,
   height: popWsButtonHeight,
-  fill: popButtonColor,
+  fill: saveStyle.buttonColor,
   stroke: 'black',
   strokeWidth: 1,
   shadowColor: 'black',
@@ -111,7 +111,7 @@ popWsCancelButtonGroup.add(popWsCancelButtonText);
 
 var popSaveWsButtonGroup = new Kinetic.Group({
   x: (popWsRectWidth / 2) + (2 * popWsButtonShiftX) + popWsButtonWidth,
-  y: popWsRectHeight - (popTextHeight * 1.25),
+  y: popWsRectHeight - (saveStyle.textHeight * 1.25),
   name: 'save'
 });
 saveWsGroup.add(popSaveWsButtonGroup);
@@ -121,7 +121,7 @@ var popSaveWsButton = new Kinetic.Rect ({
   y: 0,
   width: popWsButtonWidth,
   height: popWsButtonHeight,
-  fill: popButtonColor,
+  fill: saveStyle.buttonColor,
   stroke: 'black',
   strokeWidth: 1,
   shadowColor: 'black',
@@ -145,7 +145,7 @@ popSaveWsButtonGroup.add(popSaveWsButtonText);
 
 var popWsYesButtonGroup = new Kinetic.Group ({
   x: (popWsRectWidth / 2) + popWsButtonShiftX,
-  y: popWsRectHeight - (popTextHeight * 1.25),
+  y: popWsRectHeight - (saveStyle.textHeight * 1.25),
   name: 'yes',
   visible: false
 });
@@ -156,7 +156,7 @@ popWsYesButtonGroup.add(new Kinetic.Rect ({
   y: 0,
   width: popWsButtonWidth,
   height: popWsButtonHeight,
-  fill: popButtonColor,
+  fill: saveStyle.buttonColor,
   stroke: 'black',
   strokeWidth: 1,
   shadowColor: 'black',
@@ -176,7 +176,7 @@ popWsYesButtonGroup.add(new Kinetic.Text({
 
 var popWsNoButtonGroup = new Kinetic.Group ({
   x: (popWsRectWidth / 2) + (2 * popWsButtonShiftX) + popWsButtonWidth,
-  y: popWsRectHeight - (popTextHeight * 1.25),
+  y: popWsRectHeight - (saveStyle.textHeight * 1.25),
   name: 'yes',
   visible: false
 });
@@ -187,7 +187,7 @@ popWsNoButtonGroup.add(new Kinetic.Rect ({
   y: 0,
   width: popWsButtonWidth,
   height: popWsButtonHeight,
-  fill: popButtonColor,
+  fill: saveStyle.buttonColor,
   stroke: 'black',
   strokeWidth: 1,
   shadowColor: 'black',

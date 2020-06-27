@@ -151,42 +151,48 @@ funBarStyle.iconSideLength = funBarStyle.height / 4;
 funBarStyle.iconTextY = funBarStyle.height - (funBarStyle.offset * 1.3);
 
 //SAVE SCREEN
-var popRectColor = '#e8e8e8'
-var popRectWidth = size.width * .4;
-var popRectHeight = size.height * .85;
-var popSaveGroupX = (size.width - popRectWidth) / 2;
-var popSaveGroupY = (size.height - popRectHeight) / 2;
+const saveStyle = {
+  rectColor: '#e8e8e8',
+  rectWidth: size.width * .4,
+  rectHeight: size.height * .85,
+}
 
-var popCanvasSide = popRectWidth * 0.9;
-var popCanvasResolution = size.width * (3/9);
-var popCanvasShiftX = popSaveGroupX + (popRectWidth - popCanvasSide) / 2;
-var popCanvasShiftY = popSaveGroupY + (popRectWidth - popCanvasSide) / 2;
+saveStyle.saveGroupX = (size.width - saveStyle.rectWidth) / 2;
+saveStyle.saveGroupY = (size.height - saveStyle.rectHeight) / 2;
 
-var popTextShiftX = (popRectWidth - popCanvasSide) / 2;
-var popTextShiftY = ((popRectWidth - popCanvasSide) / 1.5) + popCanvasSide;
-var popTextWidth = popCanvasSide;
-var popTextFontSize = size.width / 56.25;
-var popTextHeight = 2 * popTextFontSize;
+saveStyle.canvasSide = saveStyle.rectWidth * 0.9;
+saveStyle.canvasResolution = size.width * (3/9);
+saveStyle.canvasShiftX = saveStyle.saveGroupX + (saveStyle.rectWidth - saveStyle.canvasSide) / 2;
+saveStyle.canvasShiftY = saveStyle.saveGroupY + (saveStyle.rectWidth - saveStyle.canvasSide) / 2;
 
-var nameTextShift = size.width / 18;
+saveStyle.textShiftX = (saveStyle.rectWidth - saveStyle.canvasSide) / 2;
+saveStyle.textShiftY = ((saveStyle.rectWidth - saveStyle.canvasSide) / 1.5) + saveStyle.canvasSide;
+saveStyle.textWidth = saveStyle.canvasSide;
+saveStyle.textFontSize = size.width / 56.25;
+saveStyle.textHeight = 2 * saveStyle.textFontSize;
 
-var popButtonWidth = popCanvasSide / 3.4;
-var popButtonHeight = popTextHeight / 1.25;
-var popButtonShiftX = (popCanvasSide - (3 * popButtonWidth)) / 2;
-var popButtonColor = '#A0A3A3';
-var popButtonSelectedColor = '#B6BABA'
+saveStyle.nameTextShift = size.width / 18;
 
-var errorColor = '#A11212';
+saveStyle.buttonWidth = saveStyle.canvasSide / 3.4;
+saveStyle.buttonHeight = saveStyle.textHeight / 1.25;
+saveStyle.buttonShiftX = (saveStyle.canvasSide - (3 * saveStyle.buttonWidth)) / 2;
+saveStyle.buttonColor = '#A0A3A3';
+saveStyle.buttonSelectedColor = '#B6BABA'
+
+saveStyle.errorColor = '#A11212';
 
 // OPEN WS SCREEN
-var popOpenWsRectWidth = size.width * .4;
-var popOpenWsRectHeight = size.height * .16;
-var popOpenWsGroupX = (size.width - popOpenWsRectWidth) / 2;
-var popOpenWsGroupY = (size.height - popOpenWsRectHeight) / 2;
+const openWsStyle = {
+  rectWidth: size.width * .4,
+  rectHeight: size.height * .16,
+};
+// TODO: These two variables don't appear to be used anywhere
+openWsStyle.groupX = (size.width - openWsStyle.rectWidth) / 2;
+openWsStyle.groupY = (size.height - openWsStyle.rectHeight) / 2;
 
-var popOpenWsButtonShiftX = popTextShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
-var popOpenWsButtonWidth = ((popOpenWsRectWidth / 2) - (3 * popOpenWsButtonShiftX)) / 2;
-var popOpenWsButtonHeight = popOpenWsRectWidth * .06;
+openWsStyle.buttonShiftX = saveStyle.textShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
+openWsStyle.buttonWidth = ((openWsStyle.rectWidth / 2) - (3 * openWsStyle.buttonShiftX)) / 2;
+openWsStyle.buttonHeight = openWsStyle.rectWidth * .06;
 
 const state = {
   currentWorkspace: null,
