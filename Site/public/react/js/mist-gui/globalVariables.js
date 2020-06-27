@@ -127,11 +127,13 @@ var menuControlTextColor = 'black';
 var menuTextOffset = menuControlHeight / 5;
 
 //TOOLBOX
-var toolboxWidth = size.width / 18; 
-var toolboxHeight = size.width / 4.1; 
-var toolboxShift = toolboxWidth / 5; 
-var toolboxButtonSize = size.width / 30;
-var deleteColor = '#A30F0F'; 
+const toolboxStyle = {
+  width: size.width / 18,
+  height: size.width / 4.1,
+  buttonSize: size.width / 30,
+  deleteColor: '#A30F0F',
+};
+toolboxStyle.shift = toolboxStyle.width / 5; 
 
 //FUNCTIONBAR
 const funBarStyle = {

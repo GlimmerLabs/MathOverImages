@@ -12,10 +12,10 @@
     y: size.height * .2,
     draggable: false,
     dragBoundFunc: function(pos) {
-      var newY = pos.y < (menuHeight + toolboxShift) ? menuHeight + toolboxShift : 
-        pos.y > size.height - funBarStyle.height - toolboxHeight + toolboxShift ?
-        size.height - funBarStyle.height - toolboxHeight + toolboxShift: pos.y;
-      var newX = pos.x < 0 ? 0 : pos.x > (size.width - toolboxWidth) ? (size.width - toolboxWidth) : pos.x;
+      var newY = pos.y < (menuHeight + toolboxStyle.shift) ? menuHeight + toolboxStyle.shift : 
+        pos.y > size.height - funBarStyle.height - toolboxStyle.height + toolboxStyle.shift ?
+        size.height - funBarStyle.height - toolboxStyle.height + toolboxStyle.shift: pos.y;
+      var newX = pos.x < 0 ? 0 : pos.x > (size.width - toolboxStyle.width) ? (size.width - toolboxStyle.width) : pos.x;
       return {
         x: newX,
         y: newY
@@ -28,8 +28,8 @@
   var toolboxRect = new Kinetic.Rect({
     x:0,
     y:0,
-    width: toolboxWidth,
-    height: toolboxHeight - toolboxShift,
+    width: toolboxStyle.width,
+    height: toolboxStyle.height - toolboxStyle.shift,
     fill: 'white',
     stroke: 'black',
     strokeWidth: .5,
@@ -45,9 +45,9 @@
   // add the mini bos above the main box for dragging
   var toolboxControl = new Kinetic.Rect({
     x:0,
-    y:-toolboxShift,
-    width: toolboxWidth,
-    height: toolboxShift,
+    y:-toolboxStyle.shift,
+    width: toolboxStyle.width,
+    height: toolboxStyle.shift,
     name: 'toolControl',
     fill: 'grey',
     stroke: 'black',
@@ -63,8 +63,8 @@
 
   //add the work tool
   var workToolGroup = new Kinetic.Group({
-    x: toolboxShift,
-    y: toolboxShift,
+    x: toolboxStyle.shift,
+    y: toolboxStyle.shift,
     name: 'workTool'
   });
   toolboxGroup.add(workToolGroup);
@@ -72,8 +72,8 @@
   var workToolButton = new Kinetic.Rect({
     x: 0,
     y: 0,
-    width: toolboxButtonSize,
-    height: toolboxButtonSize,
+    width: toolboxStyle.buttonSize,
+    height: toolboxStyle.buttonSize,
     name: 'draw',
     fill: 'white',
     stroke: 'black',
@@ -101,8 +101,8 @@
       context.closePath();
       context.fillStrokeShape(this);
     },
-    x: toolboxButtonSize / 3.3,
-    y: toolboxButtonSize / 4.5,
+    x: toolboxStyle.buttonSize / 3.3,
+    y: toolboxStyle.buttonSize / 4.5,
     fill: 'black',
     stroke: 'black',
     scaleX: size.scale,
@@ -117,15 +117,15 @@
   var workToolCover = new Kinetic.Rect({
     x: 0,
     y: 0,
-    width: toolboxButtonSize,
-    height: toolboxButtonSize
+    width: toolboxStyle.buttonSize,
+    height: toolboxStyle.buttonSize
   });
   workToolGroup.add(workToolCover);
 
   // add the draw line tool group
   var lineToolGroup = new Kinetic.Group({
-    x: toolboxShift,
-    y: (toolboxShift * 2) + toolboxButtonSize,
+    x: toolboxStyle.shift,
+    y: (toolboxStyle.shift * 2) + toolboxStyle.buttonSize,
     name: 'lineTool'
   });
   toolboxGroup.add(lineToolGroup);
@@ -134,8 +134,8 @@
   var lineToolButton = new Kinetic.Rect({
     x: 0,
     y: 0,
-    width: toolboxButtonSize,
-    height: toolboxButtonSize,
+    width: toolboxStyle.buttonSize,
+    height: toolboxStyle.buttonSize,
     name: 'draw',
     fill: 'white',
     stroke: 'black',
@@ -152,7 +152,7 @@
 
   // add the draw line symbol on the button
   var lineToolLine = new Kinetic.Line({
-    points: [(toolboxButtonSize * (7/30)), (toolboxButtonSize * (7/30)), (toolboxButtonSize * (24/30)), (toolboxButtonSize * 24/30)],
+    points: [(toolboxStyle.buttonSize * (7/30)), (toolboxStyle.buttonSize * (7/30)), (toolboxStyle.buttonSize * (24/30)), (toolboxStyle.buttonSize * 24/30)],
     stroke: 'black',
     strokeWidth: 2,
     lineCap: 'round'
@@ -163,15 +163,15 @@
   var lineToolCover = new Kinetic.Rect({
     x: 0,
     y: 0,
-    width: toolboxButtonSize,
-    height: toolboxButtonSize
+    width: toolboxStyle.buttonSize,
+    height: toolboxStyle.buttonSize
   });
   lineToolGroup.add(lineToolCover);
 
   // add the delete tool group
   var deleteToolGroup = new Kinetic.Group({
-    x: toolboxShift,
-    y: (toolboxShift * 3) + (toolboxButtonSize * 2),
+    x: toolboxStyle.shift,
+    y: (toolboxStyle.shift * 3) + (toolboxStyle.buttonSize * 2),
     name: 'deleteTool'
   });
   toolboxGroup.add(deleteToolGroup);
@@ -180,8 +180,8 @@
   var deleteToolButton = new Kinetic.Rect({
     x: 0,
     y: 0,
-    width: toolboxButtonSize,
-    height: toolboxButtonSize,
+    width: toolboxStyle.buttonSize,
+    height: toolboxStyle.buttonSize,
     name: 'delete',
     fill: 'white',
     stroke: 'black',
@@ -198,12 +198,12 @@
 
   // add the delete symbol on the button
   var deleteToolSym1 = new Kinetic.Rect({
-    x: toolboxButtonSize * (7/30),
-    y: toolboxButtonSize * (7/30),
+    x: toolboxStyle.buttonSize * (7/30),
+    y: toolboxStyle.buttonSize * (7/30),
     width: 0,
-    height: .8 * toolboxButtonSize,
-    stroke: deleteColor,
-    fill: deleteColor,
+    height: .8 * toolboxStyle.buttonSize,
+    stroke: toolboxStyle.deleteColor,
+    fill: toolboxStyle.deleteColor,
     rotation: -45, 
     strokeWidth: 3
     //lineCap: 'round'
@@ -211,13 +211,13 @@
   deleteToolGroup.add(deleteToolSym1);
 
   var deleteToolSym2 = new Kinetic.Rect({
-    x: toolboxButtonSize * (24/30),
-    y: toolboxButtonSize * (7/30),
+    x: toolboxStyle.buttonSize * (24/30),
+    y: toolboxStyle.buttonSize * (7/30),
     width: 0,
-    height: .8 * toolboxButtonSize,
+    height: .8 * toolboxStyle.buttonSize,
     strokeWidth: 3,
-    stroke: deleteColor,
-    fill: deleteColor,
+    stroke: toolboxStyle.deleteColor,
+    fill: toolboxStyle.deleteColor,
     //scaleX: - 1,
     rotation: 45
   });
@@ -227,8 +227,8 @@
   var deleteToolCover = new Kinetic.Rect({
     x: 0,
     y: 0,
-    width: toolboxButtonSize,
-    height: toolboxButtonSize
+    width: toolboxStyle.buttonSize,
+    height: toolboxStyle.buttonSize
   });
   deleteToolGroup.add(deleteToolCover);
 
@@ -236,8 +236,8 @@
 
   // add the undo tool button
   var undoGroup = new Kinetic.Group({
-    x: toolboxShift,
-    y: (toolboxShift * 4) + (toolboxButtonSize * 3),
+    x: toolboxStyle.shift,
+    y: (toolboxStyle.shift * 4) + (toolboxStyle.buttonSize * 3),
     name: 'undo'
   });
   toolboxGroup.add(undoGroup);
@@ -255,7 +255,7 @@
       context.fillStrokeShape(this);
     },
     x: 0,
-    y: toolboxButtonSize - toolboxShift + 5,
+    y: toolboxStyle.buttonSize - toolboxStyle.shift + 5,
     name: 'undo',
     scaleX: undoRedoScale * size.scale,
     scaleY: undoRedoScale * size.scale,
@@ -275,15 +275,15 @@
   var undoCover = new Kinetic.Rect({
     x: 0,
     y: 0,
-    width: toolboxButtonSize,
-    height: toolboxButtonSize,
+    width: toolboxStyle.buttonSize,
+    height: toolboxStyle.buttonSize,
     //stroke: 'black'
   });
   undoGroup.add(undoCover);
 
   var redoGroup = new Kinetic.Group({
-    x: toolboxShift,
-    y: (toolboxShift * 5) + (toolboxButtonSize * 4),
+    x: toolboxStyle.shift,
+    y: (toolboxStyle.shift * 5) + (toolboxStyle.buttonSize * 4),
     name: 'redo'
   });
   toolboxGroup.add(redoGroup);
@@ -300,8 +300,8 @@
       context.closePath();
       context.fillStrokeShape(this);
     },
-    x: toolboxButtonSize,
-    y: toolboxButtonSize - toolboxShift,
+    x: toolboxStyle.buttonSize,
+    y: toolboxStyle.buttonSize - toolboxStyle.shift,
     name: 'redo',
     scaleX: -undoRedoScale * size.scale,
     scaleY: undoRedoScale * size.scale,
@@ -321,8 +321,8 @@
   var redoCover = new Kinetic.Rect({
     x: 0,
     y: 0,
-    width: toolboxButtonSize,
-    height: toolboxButtonSize,
+    width: toolboxStyle.buttonSize,
+    height: toolboxStyle.buttonSize,
     //stroke: 'black'
   });
   redoGroup.add(redoCover);

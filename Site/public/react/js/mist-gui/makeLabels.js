@@ -133,15 +133,15 @@ var makeToolLabel = function(group) {
 	var yToolbox = toolboxGroup.y();
 	var name = group.name();
 	var text = toolboxDescriptions[name];
-	var tagX = xToolbox + group.x() + (1.1 * toolboxButtonSize);
+	var tagX = xToolbox + group.x() + (1.1 * toolboxStyle.buttonSize);
 	var direction = 'left'
 	if (xToolbox > (width / 2)) {
-		tagX = xToolbox + group.x() - (0.1 * toolboxButtonSize);
+		tagX = xToolbox + group.x() - (0.1 * toolboxStyle.buttonSize);
 		direction = 'right'
 	}
 	var label = new Kinetic.Label ({
 		x: tagX,
-		y: yToolbox + group.y() + (toolboxButtonSize / 2),
+		y: yToolbox + group.y() + (toolboxStyle.buttonSize / 2),
 	});
 
 	label.add(new Kinetic.Tag({

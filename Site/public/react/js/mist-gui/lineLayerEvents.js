@@ -18,7 +18,7 @@ layers.line.on('mouseover', function(evt) {
     var shape = evt.target;
     shape.setAttrs({
       strokeWidth: 3,
-      shadowColor: deleteColor,
+      shadowColor: toolboxStyle.deleteColor,
       shadowEnabled: true
     });
     layers.line.draw();

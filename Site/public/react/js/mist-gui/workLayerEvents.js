@@ -259,7 +259,7 @@ layers.work.on('mouseover', function(evt) {
         line = outlet.attrs.lineIn;
         if (line) {
           line.setAttrs({
-            shadowColor: deleteColor,
+            shadowColor: toolboxStyle.deleteColor,
             shadowEnabled: true
           });
           layers.line.draw();
@@ -271,7 +271,7 @@ layers.work.on('mouseover', function(evt) {
   else if (state.deleteToolOn) {
     if (predicate.isFunction(parent) || predicate.isValue(parent)) {
       parent.children[0].setAttrs({
-        shadowColor: deleteColor,
+        shadowColor: toolboxStyle.deleteColor,
         shadowOpacity: 1,
         shadowEnabled: true
       });
@@ -280,7 +280,7 @@ layers.work.on('mouseover', function(evt) {
       var lineOut = parent.attrs.lineOut;
       for (var i = 0; i < lineOut.length; i++) {
         lineOut[i].setAttrs({
-          shadowColor: deleteColor,
+          shadowColor: toolboxStyle.deleteColor,
           shadowEnabled: true
         });
       } // for lineOut array
@@ -291,7 +291,7 @@ layers.work.on('mouseover', function(evt) {
         line = children[i].attrs.lineIn;
         if (line) {
           line.setAttrs({
-            shadowColor: deleteColor,
+            shadowColor: toolboxStyle.deleteColor,
             shadowEnabled: true
           });
         } // if line
