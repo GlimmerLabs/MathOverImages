@@ -65,10 +65,12 @@ const values = {
   mouseY:   {rep: 'm.y', color: valueStyle.mouseColor}
 }
 
-var imageBoxSideLength = size.width / 80;
-var imageBoxColor = 'white';
-var valueImageBoxOffset = size.width / 31;
-var renderSideLength = size.width / 18;
+const imageBoxStyle = {
+  sideLength: size.width / 80,
+  boxColor: 'white',
+  valueOffset: size.width / 31,
+  renderSideLength: size.width / 18,
+}
 
 const editableTextStyle = {
   width: size.width / 15,

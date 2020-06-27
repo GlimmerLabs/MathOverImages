@@ -137,8 +137,8 @@ const utility = {
       stage.add(currLayer);
     } // if there is no currLayer
     group.children[2].setAttrs({
-      width: renderSideLength,
-      height: renderSideLength
+      width: imageBoxStyle.renderSideLength,
+      height: imageBoxStyle.renderSideLength
     });
     var box = group.children[2];
     currLayer.draw();
@@ -173,8 +173,8 @@ const utility = {
       group.attrs.renderLayer.destroy();
       group.attrs.renderLayer = null;
       group.children[2].setAttrs({
-        width: imageBoxSideLength,
-        height: imageBoxSideLength,
+        width: imageBoxStyle.sideLength,
+        height: imageBoxStyle.sideLength,
         expanded: false
       }); 
     } // if there is a renderLayer for the group
