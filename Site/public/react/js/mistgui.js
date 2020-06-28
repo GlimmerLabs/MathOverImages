@@ -25,6 +25,7 @@ const constructors = constructorsInit(
 // TODO: temporary hack so that various files work
 window.makeOutlet = constructors.makeOutlet;
 window.addVal = constructors.addVal;
+window.addOp = constructors.addOp;
 
 import {
   workToolGroup,
