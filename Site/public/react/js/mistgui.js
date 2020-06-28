@@ -65,7 +65,7 @@ createFunBarListeners(
   valueStyle
 );
 
-import createLineLayerListeners from './mist-gui/funBarEvents.js';
+import createLineLayerListeners from './mist-gui/lineLayerEvents.js';
 createLineLayerListeners(
   layers.line,
   layers.work,
