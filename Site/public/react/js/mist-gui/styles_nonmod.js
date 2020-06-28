@@ -2,7 +2,6 @@ const size = {};
 size.width = 900;
 size.height = 2 * size.width / 3;
 size.scale = size.width / 900;
-export size;
 
 const fonts = {
   default: 'Arial',
@@ -10,7 +9,6 @@ const fonts = {
   menuSize: size.width / 75,
   nodeSize: size.width / 56.25
 };
-export fonts;
 
 const functionStyle = {
   strokeWidth: size.width / 90,
@@ -24,7 +22,6 @@ const functionStyle = {
 };
 functionStyle.halfStrokeWidth = functionStyle.strokeWidth / 2;
 functionStyle.rectSideLength = functionStyle.totalSideLength - functionStyle.strokeWidth;
-export functionStyle;
 
 const valueStyle = {
   sideLength: functionStyle.totalSideLength / 1.414,
@@ -35,22 +32,19 @@ const valueStyle = {
   mouseColor: '#E46868',
   constantColor: '#F17C9D',
 };
-export valueStyle;
 
 const imageBoxStyle = {
   sideLength: size.width / 80,
   boxColor: 'white',
   valueOffset: size.width / 31,
   renderSideLength: size.width / 18,
-};
-export imageBoxStyle;
+}
 
 const editableTextStyle = {
   width: size.width / 15,
   height: size.width / 30,
   font: size.width / 69,
-};
-export editableTextStyle;
+}
 
 const variableStyle = {
   color: {r: 197, g: 231, b: 109, a: .5},
@@ -59,7 +53,6 @@ const variableStyle = {
   textColor: '#62694F',
 };
 variableStyle.width = Math.cos(Math.PI/6) * variableStyle.radius;
-export variableStyle;
 
 const outletStyle = {
   xOffset: size.width / 400,
@@ -67,12 +60,11 @@ const outletStyle = {
   color:  '#C4C4C4',
   rgbColors: ['#C94949','#2D9C2D','#4272DB'],
 };
-export outletStyle;
 
-export const lineStrokeWidth = 2;
+const lineStrokeWidth = 2;
 
-export const dragShadowColor = 'black';
-export const selectedShadowColor = 'blue';
+const dragShadowColor = 'black';
+const selectedShadowColor = 'blue';
 
 //SLIDING MENU
 const menuStyle = {
@@ -111,7 +103,6 @@ menuStyle.valuesXStart = menuStyle.cornerWidth + menuStyle.buttonWidth / 2;
 //CORNER BUTTONS
 menuStyle.controlHeight = menuStyle.height / 5;
 menuStyle.textOffset = menuStyle.controlHeight / 5;
-export menuStyle;
 
 //TOOLBOX
 const toolboxStyle = {
@@ -121,7 +112,6 @@ const toolboxStyle = {
   deleteColor: '#A30F0F',
 };
 toolboxStyle.shift = toolboxStyle.width / 5; 
-export toolboxStyle;
 
 //FUNCTIONBAR
 const funBarStyle = {
@@ -139,7 +129,6 @@ funBarStyle.textOffset = funBarStyle.offset* 1.5;
 funBarStyle.iconOffset = funBarStyle.width / 16;
 funBarStyle.iconSideLength = funBarStyle.height / 4;
 funBarStyle.iconTextY = funBarStyle.height - (funBarStyle.offset * 1.3);
-export funBarStyle;
 
 //SAVE SCREEN
 const saveStyle = {
@@ -171,7 +160,6 @@ saveStyle.buttonColor = '#A0A3A3';
 saveStyle.buttonSelectedColor = '#B6BABA'
 
 saveStyle.errorColor = '#A11212';
-export saveStyle;
 
 // OPEN WS SCREEN
 const openWsStyle = {
@@ -185,4 +173,3 @@ openWsStyle.groupY = (size.height - openWsStyle.rectHeight) / 2;
 openWsStyle.buttonShiftX = saveStyle.textShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
 openWsStyle.buttonWidth = ((openWsStyle.rectWidth / 2) - (3 * openWsStyle.buttonShiftX)) / 2;
 openWsStyle.buttonHeight = openWsStyle.rectWidth * .06;
-export openWsStyle;
