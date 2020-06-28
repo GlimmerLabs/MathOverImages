@@ -30,6 +30,12 @@ const values = {
   mouseY:   {rep: 'm.y', color: valueStyle.mouseColor}
 }
 const state = {
+  /**
+   * elementTable is a hash table that connects an element's id to the element in the 
+   * workspace.
+   */
+  elementTable: {},
+
   currentWorkspace: null,
   /**
    * actionArray is an array that contains an action-object for every action in
@@ -47,16 +53,19 @@ const state = {
    * the totalIndex is set to the currIndex. 
    */
   totalIndex: 0,
+
   // TOOLBOX BOOLEANS
   lineToolOn: false,
   workToolOn: false,
   deleteToolOn: false,
+
   //MENU BOOLEANS
   menu: {
     valueExpanded: false,
     functionExpanded: false,
     tagsOn: true,
   },
+
   /* variables to globally reference the most recently used object/line and current state */
   currShape: null,
   currLine: null,
@@ -64,6 +73,7 @@ const state = {
   scaledObj: null,
   openTag: null,
   map: [],
+
   //OTHER BOOLEANS
   makingLine: false,
   animation: false,

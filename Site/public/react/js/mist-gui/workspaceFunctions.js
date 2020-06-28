@@ -123,7 +123,7 @@ var resetWorkspace = function() {
   //destroy lineLayer children
   layers.line.destroyChildren();
   // empty elementTable
-  elementTable = {};
+  state.elementTable = {};
   // empty actionArray
   state.actionArray = [];
   // reset indexes and variables

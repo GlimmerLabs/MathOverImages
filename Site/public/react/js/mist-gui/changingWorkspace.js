@@ -1,10 +1,4 @@
 /**
- * elementTable is a hash table that connects an element's id to the element in the 
- * workspace.
- */
-var elementTable = {};
-
-/**
  * actionToObject takes an function or value group and type of action, and creates an object 
  *  within an array to signify the action.
  * types of actions include:
@@ -93,7 +87,7 @@ var insertToArray = function(actionObj) {
  */
 var insertToTable = function(group) {
   var stringId = group._id.toString();
-  elementTable[stringId] = group;
+  state.elementTable[stringId] = group;
 };
 
 /**
@@ -103,7 +97,7 @@ var insertToTable = function(group) {
  */
 var inTable = function(group) {
   var stringId = group._id.toString();
-  return (elementTable[stringId] != undefined);
+  return (state.elementTable[stringId] != undefined);
 };
 
 /**
@@ -116,7 +110,7 @@ var undoAction = function(actionObj) {
   // if the an undo action is valid (there are actions to be undone)
   if (state.currIndex > 0) {
     var action = actionObj.action;
-    var element = elementTable[actionObj.id];
+    var element = state.elementTable[actionObj.id];
     // if the action in question is a deletion
     if (action == 'delete') {
       // if working with a node
@@ -218,7 +212,7 @@ var redoAction = function(actionObj) {
   // if the currIndex is less than the totalIndex (there are still valid actions)
   if (state.currIndex < state.totalIndex) {
     var action = actionObj.action;
-    var element = elementTable[actionObj.id];
+    var element = state.elementTable[actionObj.id];
     // if you are redoing a delete
     if (action == 'delete') {
       // if you are deleting a node
@@ -290,7 +284,7 @@ var redoAction = function(actionObj) {
       var newX = actionObj.x2;
       var newY = actionObj.y2;
       // grab fo the object
-      var element = elementTable[actionObj.id];
+      var element = state.elementTable[actionObj.id];
       // re-move the object back to the changed position
       element.setAttrs({
         x: newX,
@@ -325,7 +319,7 @@ var redoAction = function(actionObj) {
 
       } // if node
       else {
-        removeLine(elementTable[actionObj.deleteLine.id]);
+        removeLine(state.elementTable[actionObj.deleteLine.id]);
         insertLine(actionObj);
         predicate.assertRenderable(actionObj.sink);
         utility.updateForward(actionObj.sink);
@@ -394,7 +388,7 @@ var insertLine = function(actionObj) {
   var source = actionObj.source;
   var outlet = sink.children[actionObj.sinkIndex + 3];
   if (outlet) {
-    var element = elementTable[actionObj.id];
+    var element = state.elementTable[actionObj.id];
     // move old line to the lineLayer
     element.moveTo(layers.line);
     // connect line to source
