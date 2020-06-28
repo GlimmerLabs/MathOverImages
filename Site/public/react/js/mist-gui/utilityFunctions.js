@@ -262,7 +262,7 @@ const utility = {
     }
     newNode.attrs.lineOut = tempOut;
     // Theres more to do if we are replacing a function:
-    if (isFunction(newNode) && isFunction(oldNode)) {
+    if (predicate.isFunction(newNode) && predicate.isFunction(oldNode)) {
       // check if oldNode allows more inputs than newNode
       if (newNode.attrs.maxInputs < oldNode.children.length - OUTLET_OFFSET) {
         // add appropriate outlets to newNode
@@ -330,7 +330,7 @@ const utility = {
   resetNode(node) {
     // set lineOut array to []
     node.attrs.lineOut = [];
-    if (isFunction(node)) {
+    if (predicate.isFunction(node)) {
       // destroy the outlets of the oldNode
       for (var i = node.children.length - 1; i > 2; i--) {
         node.children[i].destroy();
