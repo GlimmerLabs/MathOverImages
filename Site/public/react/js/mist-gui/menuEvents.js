@@ -23,6 +23,8 @@ import {
 } from './menuTweens.js';
 
 export default function(
+  menuFunctions,
+  menuValues,
   functionsButton,
   hideScrollArrows,
   layers,
