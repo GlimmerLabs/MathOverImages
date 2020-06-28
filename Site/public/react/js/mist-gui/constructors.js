@@ -15,68 +15,68 @@
   an integer x, and an integer y, and returns the corresponding function node object,
   with top right corner at the given x, y coordinate.
   */
-  var makeFunctionGroup = function(funName, x, y) {
-    /* create group that will contain information on the function and the shapes 
+var makeFunctionGroup = function(funName, x, y) {
+  /* create group that will contain information on the function and the shapes 
       making up the representation on screen. */
-    var newGroup = new Kinetic.Group({
-      name: funName,
-      x: x - functionStyle.halfStrokeWidth,
-      y: y,
-      numInputs: 0, 
-      maxInputs: functions[funName].max, 
-      minInputs: functions[funName].min, 
-      lineOut: [], 
-      rep: functions[funName].rep,
-      prefix: functions[funName].prefix, 
-      separator: functions[funName].separator,
-      renderFunction: null,
-      visible: false,
-      renderLayer: null,
-      scaleX: 1,
-      scaleY: 1
-    });
-    /* create rectangle shape */
-    var newRect = new Kinetic.Rect({
-      name: funName,
-      x: functionStyle.halfStrokeWidth,
-      y: functionStyle.halfStrokeWidth,
-      width: functionStyle.rectSideLength,
-      height: functionStyle.rectSideLength,
-      fill: functions[funName].color,
-      lineJoin: 'round',
-      stroke: functions[funName].color,
-      strokeWidth: functionStyle.strokeWidth
-    });
-    newGroup.add(newRect);
-    /* create text to be displayed on top of rectangle */
-    var newText = new Kinetic.Text({
-      text: functions[funName].rep,
-      fontFamily: fonts.default,
-      fill: 'black',
-      fontSize: fonts.nodeSize,
-      x: 0,
-      y: functionStyle.totalSideLength/2 - functionStyle.halfStrokeWidth,
-      width: functionStyle.totalSideLength,
-      align: 'center'
-    });
-    newGroup.add(newText);
-    /* create small box in the bottom right corner. Initially, it is not visible.*/
-    var newBox = new Kinetic.Rect({
-      name: 'imageBox',
-      x: functionStyle.rectSideLength + functionStyle.imageBoxOffset,
-      y: functionStyle.rectSideLength + functionStyle.imageBoxOffset,
-      width: imageBoxStyle.sideLength,
-      height: imageBoxStyle.sideLength,
-      fill: imageBoxStyle.color,
-      stroke: 'black',
-      strokeWidth: .5,
-      visible: false,
-      expanded: false
-    });
-    newGroup.add(newBox);
+  var newGroup = new Kinetic.Group({
+    name: funName,
+    x: x - functionStyle.halfStrokeWidth,
+    y: y,
+    numInputs: 0, 
+    maxInputs: functions[funName].max, 
+    minInputs: functions[funName].min, 
+    lineOut: [], 
+    rep: functions[funName].rep,
+    prefix: functions[funName].prefix, 
+    separator: functions[funName].separator,
+    renderFunction: null,
+    visible: false,
+    renderLayer: null,
+    scaleX: 1,
+    scaleY: 1
+  });
+  /* create rectangle shape */
+  var newRect = new Kinetic.Rect({
+    name: funName,
+    x: functionStyle.halfStrokeWidth,
+    y: functionStyle.halfStrokeWidth,
+    width: functionStyle.rectSideLength,
+    height: functionStyle.rectSideLength,
+    fill: functions[funName].color,
+    lineJoin: 'round',
+    stroke: functions[funName].color,
+    strokeWidth: functionStyle.strokeWidth
+  });
+  newGroup.add(newRect);
+  /* create text to be displayed on top of rectangle */
+  var newText = new Kinetic.Text({
+    text: functions[funName].rep,
+    fontFamily: fonts.default,
+    fill: 'black',
+    fontSize: fonts.nodeSize,
+    x: 0,
+    y: functionStyle.totalSideLength/2 - functionStyle.halfStrokeWidth,
+    width: functionStyle.totalSideLength,
+    align: 'center'
+  });
+  newGroup.add(newText);
+  /* create small box in the bottom right corner. Initially, it is not visible.*/
+  var newBox = new Kinetic.Rect({
+    name: 'imageBox',
+    x: functionStyle.rectSideLength + functionStyle.imageBoxOffset,
+    y: functionStyle.rectSideLength + functionStyle.imageBoxOffset,
+    width: imageBoxStyle.sideLength,
+    height: imageBoxStyle.sideLength,
+    fill: imageBoxStyle.color,
+    stroke: 'black',
+    strokeWidth: .5,
+    visible: false,
+    expanded: false
+  });
+  newGroup.add(newBox);
 
-    return newGroup;
-  };
+  return newGroup;
+};
 
 
 /*
@@ -84,60 +84,60 @@
   an integer x, and an integer y, and returns the corresponding function node object,
   centered at (x + width / 40, y + width / 40).
   */
-  var makeValueGroup = function(valName, x, y) {
-    /* create group that contains information on the value and shapes to be displayed. */
-    var newGroup = new Kinetic.Group({
-      name: valName,
-      x: x,
-      y: y,
-      lineOut: [],
-      visible: false,
-      renderFunction: values[valName].rep,
-      rep: values[valName].rep,
-      renderLayer: null,
-      scaleX: 1,
-      scaleY: 1
-    });
-    /* create diamond shape. */
-    var newRect = new Kinetic.Rect({
-      x: functionStyle.rectSideLength/2,
-      y: 0,
-      width: valueStyle.sideLength,
-      height: valueStyle.sideLength,
-      fill: values[valName].color,
-      rotation: 45,
-      name: valName
-    });
-    newGroup.add(newRect);
-    /* create text to be displayed on diamond. */
-    var newText = new Kinetic.Text({
-      text: values[valName].rep,
-      fontFamily: fonts.default,
-      fill: 'black',
-      fontSize: fonts.nodeSize,
-      x: 0,
-      y: valueStyle.sideLength/2,
-      width: functionStyle.rectSideLength,
-      align: 'center'
-    });
-    newGroup.add(newText);
-    /* create small box in bottom right corner. Originally not visible. */
-    var newBox = new Kinetic.Rect({
-      name: 'imageBox',
-      x: imageBoxStyle.valueOffset,
-      y: imageBoxStyle.valueOffset,
-      width: imageBoxStyle.sideLength,
-      height: imageBoxStyle.sideLength,
-      fill: imageBoxStyle.color,
-      stroke: 'black',
-      strokeWidth: .5,
-      visible: false,
-      expanded: false
-    });
-    newGroup.add(newBox);
+var makeValueGroup = function(valName, x, y) {
+  /* create group that contains information on the value and shapes to be displayed. */
+  var newGroup = new Kinetic.Group({
+    name: valName,
+    x: x,
+    y: y,
+    lineOut: [],
+    visible: false,
+    renderFunction: values[valName].rep,
+    rep: values[valName].rep,
+    renderLayer: null,
+    scaleX: 1,
+    scaleY: 1
+  });
+  /* create diamond shape. */
+  var newRect = new Kinetic.Rect({
+    x: functionStyle.rectSideLength/2,
+    y: 0,
+    width: valueStyle.sideLength,
+    height: valueStyle.sideLength,
+    fill: values[valName].color,
+    rotation: 45,
+    name: valName
+  });
+  newGroup.add(newRect);
+  /* create text to be displayed on diamond. */
+  var newText = new Kinetic.Text({
+    text: values[valName].rep,
+    fontFamily: fonts.default,
+    fill: 'black',
+    fontSize: fonts.nodeSize,
+    x: 0,
+    y: valueStyle.sideLength/2,
+    width: functionStyle.rectSideLength,
+    align: 'center'
+  });
+  newGroup.add(newText);
+  /* create small box in bottom right corner. Originally not visible. */
+  var newBox = new Kinetic.Rect({
+    name: 'imageBox',
+    x: imageBoxStyle.valueOffset,
+    y: imageBoxStyle.valueOffset,
+    width: imageBoxStyle.sideLength,
+    height: imageBoxStyle.sideLength,
+    fill: imageBoxStyle.color,
+    stroke: 'black',
+    strokeWidth: .5,
+    visible: false,
+    expanded: false
+  });
+  newGroup.add(newBox);
 
-    return newGroup;
-  };
+  return newGroup;
+};
 
 /* 
   makeVariableGroup an integer x, and an integer y, and returns a variable node
@@ -148,103 +148,103 @@
   workLayer.add(hex);
   workLayer.add(hex);
   */
-  var makeVariableGroup = function(x, y) {
-    /* initialize group for the variable */
-    var newGroup = new Kinetic.Group({
-      name: 'variable',
-      x: x,
-      y: y,
-      lineOut: [],
-      visible: false,
-    });
-    /* create circle shape. */
-    var newHex = new Kinetic.RegularPolygon({
-      sides: 6,
-      x: variableStyle.width,
-      y: variableStyle.radius,
-      radius: variableStyle.radius,
-      fillRed: variableStyle.color['r'],
-      fillGreen: variableStyle.color['g'],
-      fillBlue: variableStyle.color['b'],
-      fillAlpha: variableStyle.color['a'],
-      stroke: variableStyle.strokeColor,
-      strokeWidth: 2,
-      name: 'variableHex'
-    });
-    newGroup.add(newHex);
-    /* create text to be displayed below hex. */
-    var newText = new Kinetic.Text({
-      text: "",
-      fontFamily: fonts.default,
-      fill: variableStyle.textColor,
-      fontSize: 16,
-      x: 0,
-      y: (-.5 * variableStyle.radius),
-      width: 2 * variableStyle.width,
-      align: 'center'
-    });
-    newGroup.add(newText);
+var makeVariableGroup = function(x, y) {
+  /* initialize group for the variable */
+  var newGroup = new Kinetic.Group({
+    name: 'variable',
+    x: x,
+    y: y,
+    lineOut: [],
+    visible: false,
+  });
+  /* create circle shape. */
+  var newHex = new Kinetic.RegularPolygon({
+    sides: 6,
+    x: variableStyle.width,
+    y: variableStyle.radius,
+    radius: variableStyle.radius,
+    fillRed: variableStyle.color['r'],
+    fillGreen: variableStyle.color['g'],
+    fillBlue: variableStyle.color['b'],
+    fillAlpha: variableStyle.color['a'],
+    stroke: variableStyle.strokeColor,
+    strokeWidth: 2,
+    name: 'variableHex'
+  });
+  newGroup.add(newHex);
+  /* create text to be displayed below hex. */
+  var newText = new Kinetic.Text({
+    text: "",
+    fontFamily: fonts.default,
+    fill: variableStyle.textColor,
+    fontSize: 16,
+    x: 0,
+    y: (-.5 * variableStyle.radius),
+    width: 2 * variableStyle.width,
+    align: 'center'
+  });
+  newGroup.add(newText);
 
-    return newGroup;
-  };
+  return newGroup;
+};
 
 /*
   makeOutlet takes a function node object, functGroup, and returns an outlet node object 
   to be added to that group.
   It DOES NOT add the outlet to the group.
   */
-  var makeOutlet = function(functGroup) {
-    var bezPoint = size.width / 50;
-    var outlet = new Kinetic.Shape({
-      sceneFunc: function(context) {
-        context.beginPath();
-        context.moveTo(0, 0);
-        context.bezierCurveTo(-bezPoint, -bezPoint, -bezPoint, bezPoint, 0, 0);
-        context.closePath();
-        context.fillStrokeShape(this);
-      },
-      name: 'outlet' + (functGroup.children.length - OUTLET_OFFSET),
-      x:functGroup.children[0].x() + outletStyle.xOffset,
-      y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
-        outletStyle.yOffset + functionStyle.halfStrokeWidth,
-      fill: outletStyle.color,
-      opacity: 1,
-      stroke: 'black',
-      strokeWidth: 1,
-      lineIn: null,
-      outletIndex: functGroup.children.length - OUTLET_OFFSET
-    });
-    return outlet;
-  };
+var makeOutlet = function(functGroup) {
+  var bezPoint = size.width / 50;
+  var outlet = new Kinetic.Shape({
+    sceneFunc: function(context) {
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.bezierCurveTo(-bezPoint, -bezPoint, -bezPoint, bezPoint, 0, 0);
+      context.closePath();
+      context.fillStrokeShape(this);
+    },
+    name: 'outlet' + (functGroup.children.length - OUTLET_OFFSET),
+    x:functGroup.children[0].x() + outletStyle.xOffset,
+    y:functGroup.children[0].y() + (functGroup.children.length - OUTLET_OFFSET) * 
+    outletStyle.yOffset + functionStyle.halfStrokeWidth,
+    fill: outletStyle.color,
+    opacity: 1,
+    stroke: 'black',
+    strokeWidth: 1,
+    lineIn: null,
+    outletIndex: functGroup.children.length - OUTLET_OFFSET
+  });
+  return outlet;
+};
 /*
   makeLine takes either a functionGroup object or valueGroup object as input
   (source) and creates a line that begins at the left edge of source. 
   */
-  var makeLine = function(source) {
-    var yOffset;
-    if (predicate.isFunction(source)) {
-      yOffset = (source.children[0].height() + functionStyle.strokeWidth) / 2;
-    }
-    else {
-      yOffset = functionStyle.totalSideLength / 2;
-    }
-    //console.log(yOffset);
-    var newLine = new Kinetic.Line({
-      points: [
+var makeLine = function(source) {
+  var yOffset;
+  if (predicate.isFunction(source)) {
+    yOffset = (source.children[0].height() + functionStyle.strokeWidth) / 2;
+  }
+  else {
+    yOffset = functionStyle.totalSideLength / 2;
+  }
+  //console.log(yOffset);
+  var newLine = new Kinetic.Line({
+    points: [
       source.x() + functionStyle.rectSideLength - 3,
       source.y() + yOffset,
       source.x() + functionStyle.totalSideLength,
       source.y() + yOffset,
-      ],
-      stroke: 'black',
-      strokeWidth: lineStrokeWidth,
-      source: source,
-      sourceIndex: source.attrs.lineOut.length,
-      outlet: null,
+    ],
+    stroke: 'black',
+    strokeWidth: lineStrokeWidth,
+    source: source,
+    sourceIndex: source.attrs.lineOut.length,
+    outlet: null,
 
-    });
-    return newLine;
-  }
+  });
+  return newLine;
+}
 
 /**
  * addLine adds a line between source and sink, connecting to sink via the outletIndex-th outlet
@@ -268,7 +268,7 @@ var addLine = function(source, sink, outletIndex) {
   predicate.assertRenderable(sink);
   sink.attrs.numInputs++;
   if (sink.attrs.numInputs == sink.children.length - OUTLET_OFFSET &&
-       sink.attrs.numInputs < sink.attrs.maxInputs) {
+    sink.attrs.numInputs < sink.attrs.maxInputs) {
     utility.addOutlet(sink);
   } // if it's an appropriate number
   utility.updateForward(sink);
