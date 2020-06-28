@@ -151,3 +151,26 @@ createMenuListeners(
   utility.setDragShadow,
   valuesButton
 );
+
+import createDragLayerListeners from './mist-gui/dragLayerEvents.js';
+createDragLayerListeners(
+  OUTLET_OFFSET,
+  actionArray,
+  actionToObject,
+  createEditableText,
+  inTable,
+  insertToArray,
+  insertToTable,
+  layers,
+  predicate.isFunction,
+  predicate.isRenderable,
+  predicate.isValue,
+  state,
+  utility.addOutlet,
+  utility.applyDragBounds,
+  utility.renderCanvas,
+  utility.removeShadow,
+  utility.replaceNode,
+  utility.setSelectedShadow,
+  utility.updateFunBar
+);
