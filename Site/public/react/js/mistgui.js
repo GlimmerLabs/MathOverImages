@@ -2,10 +2,6 @@ import {create_stage, initializeStage, prevWorkspace} from './mist-gui/initializ
 const stage = create_stage('container');
 // TODO: temporary hack so that utility.renderCanvas can workspaceFunctions.js can access the stage
 window.stage = stage;
-window.addEventListener('DOMContentLoaded', () => {
-  initializeStage('container', initWorkspace, layers, readyEditing, size, state);
-  stage.draw();
-});
 
 import {init as makeLabelsInit} from './mist-gui/makeLabels.js';
 const makeLabels = makeLabelsInit(state, MIST.builtins.functions);
@@ -24,9 +20,22 @@ const constructors = constructorsInit(
 );
 // TODO: temporary hack so that various files work
 window.makeOutlet = constructors.makeOutlet;
-window.addVal = constructors.addVal;
-window.addOp = constructors.addOp;
-window.addLine = constructors.addLine;
+
+import initWsFunctions from './mist-gui/workspaceFunctions.js';
+const wsFunctions = initWsFunctions(
+  MIST,
+  OUTLET_OFFSET,
+  constructors.addLine,
+  constructors.addOp,
+  constructors.addVal,
+  layers,
+  restore,
+  shadeUndoRedo,
+  stage,
+  state,
+  utility.updateFunBar,
+);
+
 
 import {
   workToolGroup,
@@ -87,7 +96,7 @@ nameOpenWsEditText.drawMethod = function(){
 createOpenWsListeners(cover, saveScreen.hideThumbnails, layers.screen, state);
 
 import createSaveWsScreen from './mist-gui/saveWorkspaceScreen.js';
-const saveWsScreen = createSaveWsScreen(cover, saveWorkspace, layers.screen, state, wsExists);
+const saveWsScreen = createSaveWsScreen(cover, wsFunctions.saveWorkspace, layers.screen, state, wsFunctions.wsExists);
 
 import {funBar, funBarSaveImCover, funBarSaveImGroup, funBarSaveImText, funBarText} from './mist-gui/makeFunctionBar.js';
 layers.funBar.add(funBar);
@@ -128,7 +137,7 @@ initMenu(
   makeLabels.makeLabel,
   saveWsScreen.openSaveWsPopUp,
   removeLine,
-  showLoadWorkspaceDialog,
+  wsFunctions.showLoadWorkspaceDialog,
   stage,
   state,
   utility.enableWorkTool,
@@ -178,3 +187,8 @@ createWorkLayerListeners(
   utility.updateForward,
   utility.updateFunBar
 );
+
+window.addEventListener('DOMContentLoaded', () => {
+  initializeStage('container', wsFunctions.initWorkspace, layers, readyEditing, size, state);
+  stage.draw();
+});
