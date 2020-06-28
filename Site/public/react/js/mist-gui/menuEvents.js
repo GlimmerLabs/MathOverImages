@@ -22,30 +22,65 @@ import {
   moveValueNodesIn
 } from './menuTweens.js';
 
-export default function(
-  menuFunctions,
-  menuValues,
+import {
+  borderLine,
+  bottomCover,
+  functionsArrows,
   functionsButton,
   hideScrollArrows,
+  menuFunctions,
+  menuValues,
+  openButton,
+  resetButton,
+  saveButton,
+  showScrollArrows,
+  toggleTag,
+  updateArrows,
+  valuesArrows,
+  valuesButton
+} from './makeMenu.js'
+
+// TODO: hack to let functions in predicate work
+window.menuFunctions = menuFunctions;
+window.menuValues = menuValues;
+
+export function addMenuToStage(layers) {
+  layers.border.add(borderLine);
+  layers.border.add(toggleTag);
+  layers.border.draw();
+
+  layers.menuButton.add(valuesButton);
+  layers.menuButton.add(functionsButton);
+  layers.menuButton.draw();
+
+  menuFunctions.forEach(func => layers.menu.add(func));
+  layers.menu.draw();
+
+  /* add arrows to menuArrowLayer */
+  layers.menuArrow.add(valuesArrows['left'], valuesArrows['right']);
+  layers.menuArrow.add(functionsArrows['left'], functionsArrows['right']);
+  layers.menuArrow.draw();
+
+  layers.menuControl.add(bottomCover);
+  layers.menuControl.add(resetButton);
+  layers.menuControl.add(openButton);
+  layers.menuControl.add(saveButton);
+  layers.menuControl.draw();
+}
+
+export function createMenuListeners(
   layers,
   makeFunctionGroup,
-  openButton,
   openSaveWsPopUp,
   isFunction,
   isValue,
   removeLine,
-  resetButton,
-  saveButton,
   showLoadWorkspaceDialog,
-  showScrollArrows,
   stage,
   state,
-  toggleTag,
-  updateArrows,
   enableWorkTool,
   removeShadow,
   setDragShadow,
-  valuesButton,
 ) {
   valuesButton.on('click', function(){
     if (!state.menu.valueExpanded) {
