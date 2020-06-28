@@ -1,11 +1,12 @@
-var openWsGroup = new Kinetic.Group({
+import {openWsStyle, saveStyle} from './styles.js';
+
+const openWsGroup = new Kinetic.Group({
 	x: popSaveWsGroupX,
 	y: popSaveWsGroupY,
 	visible: false
 });
-layers.screen.add(openWsGroup);
 
-var openWsRect = new Kinetic.Rect({
+const openWsRect = new Kinetic.Rect({
 	x: 0,
 	y: 0,
 	width: openWsStyle.rectWidth,
@@ -16,7 +17,7 @@ var openWsRect = new Kinetic.Rect({
 });
 openWsGroup.add(openWsRect);
 
-var nameOpenWsText = new Kinetic.Text({
+const nameOpenWsText = new Kinetic.Text({
 	text: "Name:",
 	x: saveStyle.textShiftX,
 	y: saveStyle.textShiftX,
@@ -26,7 +27,7 @@ var nameOpenWsText = new Kinetic.Text({
 });
 openWsGroup.add(nameOpenWsText);
 
-var nameOpenWsRect = new Kinetic.Rect ({
+const nameOpenWsRect = new Kinetic.Rect ({
 	x: saveStyle.textShiftX + saveStyle.nameTextShift,
 	y: saveStyle.textShiftX * .85,
 	width: saveStyle.canvasSide - saveStyle.nameTextShift,
@@ -37,7 +38,7 @@ var nameOpenWsRect = new Kinetic.Rect ({
 });
 openWsGroup.add(nameOpenWsRect);
 
-var nameOpenWsEditText = new Kinetic.Text({
+const nameOpenWsEditText = new Kinetic.Text({
 	x: saveStyle.textShiftX + (saveStyle.nameTextShift * 1.1),
 	y: saveStyle.textShiftX,
 	text: 'Enter a Name',
@@ -51,18 +52,15 @@ openWsGroup.add(nameOpenWsEditText);
 nameOpenWsEditText.setEditable(true);
 nameOpenWsEditText.matchingCharacters = /[a-zA-Z0-9\-]/;
 nameOpenWsEditText.defaultText = 'Enter a Name';
-nameOpenWsEditText.drawMethod = function(){
-	layers.screen.draw()
-};
 
-var popOpenWsCancelButtonGroup = new Kinetic.Group({
+const popOpenWsCancelButtonGroup = new Kinetic.Group({
 	x: (openWsStyle.rectWidth / 2) + openWsStyle.buttonShiftX,
 	y: openWsStyle.rectHeight - (saveStyle.textHeight * 1.25),
 	name: 'cancel'
 });
 openWsGroup.add(popOpenWsCancelButtonGroup);
 
-var popOpenWsCancelButton = new Kinetic.Rect ({
+const popOpenWsCancelButton = new Kinetic.Rect ({
 	x: 0,
 	y: 0,
 	width: openWsStyle.buttonWidth,
@@ -75,7 +73,7 @@ var popOpenWsCancelButton = new Kinetic.Rect ({
 });
 popOpenWsCancelButtonGroup.add(popOpenWsCancelButton);
 
-var popOpenWsCancelButtonText = new Kinetic.Text({
+const popOpenWsCancelButtonText = new Kinetic.Text({
 	text: "Cancel",
 	x: 0,
 	y: (openWsStyle.buttonHeight - 16) / 2,
@@ -87,14 +85,14 @@ var popOpenWsCancelButtonText = new Kinetic.Text({
 });
 popOpenWsCancelButtonGroup.add(popOpenWsCancelButtonText);
 
-var popOpenWsButtonGroup = new Kinetic.Group({
+const popOpenWsButtonGroup = new Kinetic.Group({
 	x: (openWsStyle.rectWidth / 2) + (2 * openWsStyle.buttonShiftX) + openWsStyle.buttonWidth,
 	y: openWsStyle.rectHeight - (saveStyle.textHeight * 1.25),
 	name: 'save'
 });
 openWsGroup.add(popOpenWsButtonGroup);
 
-var popOpenWsButton = new Kinetic.Rect ({
+const popOpenWsButton = new Kinetic.Rect ({
 	x: 0,
 	y: 0,
 	width: openWsStyle.buttonWidth,
@@ -107,7 +105,7 @@ var popOpenWsButton = new Kinetic.Rect ({
 });
 popOpenWsButtonGroup.add(popOpenWsButton);
 
-var popOpenWsButtonText = new Kinetic.Text({
+const popOpenWsButtonText = new Kinetic.Text({
 	text: "Open",
 	x: 0,
 	y: (openWsStyle.buttonHeight - 16) / 2,
@@ -119,26 +117,44 @@ var popOpenWsButtonText = new Kinetic.Text({
 });
 popOpenWsButtonGroup.add(popOpenWsButtonText);
 
-popOpenWsCancelButtonGroup.on('mouseup', function(){
-	cover.setAttr('visible', false);
-	openWsGroup.setAttr('visible', false);
-	showThumbnails();
-	layers.screen.draw();
-});
+function create_listeners(cover, hideThumbnails, screenLayer, showThumbnails, state) {
+  popOpenWsCancelButtonGroup.on('mouseup', function(){
+    cover.setAttr('visible', false);
+    openWsGroup.setAttr('visible', false);
+    showThumbnails();
+    layers.screen.draw();
+  });
 
-popOpenWsButtonGroup.on('mouseup', function(){
-	var openText = nameOpenWsEditText.attrs.text;
-	loadWorkspace(openText);
-	state.currentWorkspace = openText;
-	cover.setAttr('visible', false);
-	openWsGroup.setAttr('visible', false);
-	showThumbnails();
-	layers.screen.draw();
-});
+  popOpenWsButtonGroup.on('mouseup', function(){
+    var openText = nameOpenWsEditText.attrs.text;
+    loadWorkspace(openText);
+    state.currentWorkspace = openText;
+    cover.setAttr('visible', false);
+    openWsGroup.setAttr('visible', false);
+    showThumbnails();
+    layers.screen.draw();
+  });
 
-var openOpenWsPopUp = function() {
-	hideThumbnails();
-	cover.setAttr('visible', true);
-	openWsGroup.setAttr('visible', true);
-	layers.screen.draw();
-};
+  // TODO: it doesn't appear that this is used anywhere
+  function openOpenWsPopUp() {
+    hideThumbnails();
+    cover.setAttr('visible', true);
+    openWsGroup.setAttr('visible', true);
+    layers.screen.draw();
+  };
+}
+
+export {
+  create_listeners as createOpenWsListeners,
+  nameOpenWsEditText,
+  nameOpenWsRect,
+  nameOpenWsText,
+  openWsGroup,
+  openWsRect,
+  popOpenWsButton,
+  popOpenWsButtonGroup,
+  popOpenWsButtonText,
+  popOpenWsCancelButton,
+  popOpenWsCancelButtonGroup,
+  popOpenWsCancelButtonText
+}

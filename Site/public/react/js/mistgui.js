@@ -56,6 +56,13 @@ createToolboxListeners(
   toolboxGroup
 );
 
+import {createOpenWsListeners, nameOpenWsEditText, openWsGroup} from './mist-gui/openWorkspaceScreen.js';
+layers.screen.add(openWsGroup);
+nameOpenWsEditText.drawMethod = function(){
+	layers.screen.draw();
+};
+createOpenWsListeners(cover, hideThumbnails, layers.screen, showThumbnails, state);
+
 import {funBar, funBarSaveImCover, funBarSaveImGroup, funBarSaveImText, funBarText} from './mist-gui/makeFunctionBar.js';
 layers.funBar.add(funBar);
 layers.funBar.draw();
