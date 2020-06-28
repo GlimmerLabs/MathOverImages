@@ -7,7 +7,10 @@
   var toolboxButtonSize = toolboxHeight / 6; // 30*/
 
 // add the entire group
-var toolboxGroup = new Kinetic.Group({
+
+import {toolboxStyle} from './styles.js';
+
+const toolboxGroup = new Kinetic.Group({
   x: size.width * .9,
   y: size.height * .2,
   draggable: false,
@@ -22,10 +25,9 @@ var toolboxGroup = new Kinetic.Group({
     };
   }
 });
-layers.toolbox.add(toolboxGroup);
 
 // add the box to contain the entire group
-var toolboxRect = new Kinetic.Rect({
+const toolboxRect = new Kinetic.Rect({
   x:0,
   y:0,
   width: toolboxStyle.width,
@@ -43,7 +45,7 @@ var toolboxRect = new Kinetic.Rect({
 toolboxGroup.add(toolboxRect);
 
 // add the mini bos above the main box for dragging
-var toolboxControl = new Kinetic.Rect({
+const toolboxControl = new Kinetic.Rect({
   x:0,
   y:-toolboxStyle.shift,
   width: toolboxStyle.width,
@@ -62,14 +64,14 @@ var toolboxControl = new Kinetic.Rect({
 toolboxGroup.add(toolboxControl);
 
 //add the work tool
-var workToolGroup = new Kinetic.Group({
+const workToolGroup = new Kinetic.Group({
   x: toolboxStyle.shift,
   y: toolboxStyle.shift,
   name: 'workTool'
 });
 toolboxGroup.add(workToolGroup);
 
-var workToolButton = new Kinetic.Rect({
+const workToolButton = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: toolboxStyle.buttonSize,
@@ -88,7 +90,7 @@ var workToolButton = new Kinetic.Rect({
 });
 workToolGroup.add(workToolButton);
 
-var workToolSymbol = new Kinetic.Shape({
+const workToolSymbol = new Kinetic.Shape({
   sceneFunc: function(context) {
     context.beginPath();
     context.moveTo(0, 0);
@@ -114,7 +116,7 @@ var workToolSymbol = new Kinetic.Shape({
 workToolGroup.add(workToolSymbol);
 
 /* Transparent box that covers the button to ensure its function when clicked on */
-var workToolCover = new Kinetic.Rect({
+const workToolCover = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: toolboxStyle.buttonSize,
@@ -123,7 +125,7 @@ var workToolCover = new Kinetic.Rect({
 workToolGroup.add(workToolCover);
 
 // add the draw line tool group
-var lineToolGroup = new Kinetic.Group({
+const lineToolGroup = new Kinetic.Group({
   x: toolboxStyle.shift,
   y: (toolboxStyle.shift * 2) + toolboxStyle.buttonSize,
   name: 'lineTool'
@@ -131,7 +133,7 @@ var lineToolGroup = new Kinetic.Group({
 toolboxGroup.add(lineToolGroup);
 
 // add the draw line tool button
-var lineToolButton = new Kinetic.Rect({
+const lineToolButton = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: toolboxStyle.buttonSize,
@@ -151,7 +153,7 @@ var lineToolButton = new Kinetic.Rect({
 lineToolGroup.add(lineToolButton);
 
 // add the draw line symbol on the button
-var lineToolLine = new Kinetic.Line({
+const lineToolLine = new Kinetic.Line({
   points: [(toolboxStyle.buttonSize * (7/30)), (toolboxStyle.buttonSize * (7/30)), (toolboxStyle.buttonSize * (24/30)), (toolboxStyle.buttonSize * 24/30)],
   stroke: 'black',
   strokeWidth: 2,
@@ -160,7 +162,7 @@ var lineToolLine = new Kinetic.Line({
 lineToolGroup.add(lineToolLine);
 
 /* Transparent box that covers the button to ensure its function when clicked on */
-var lineToolCover = new Kinetic.Rect({
+const lineToolCover = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: toolboxStyle.buttonSize,
@@ -169,7 +171,7 @@ var lineToolCover = new Kinetic.Rect({
 lineToolGroup.add(lineToolCover);
 
 // add the delete tool group
-var deleteToolGroup = new Kinetic.Group({
+const deleteToolGroup = new Kinetic.Group({
   x: toolboxStyle.shift,
   y: (toolboxStyle.shift * 3) + (toolboxStyle.buttonSize * 2),
   name: 'deleteTool'
@@ -177,7 +179,7 @@ var deleteToolGroup = new Kinetic.Group({
 toolboxGroup.add(deleteToolGroup);
 
 // add the delete line tool button
-var deleteToolButton = new Kinetic.Rect({
+const deleteToolButton = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: toolboxStyle.buttonSize,
@@ -197,7 +199,7 @@ var deleteToolButton = new Kinetic.Rect({
 deleteToolGroup.add(deleteToolButton);
 
 // add the delete symbol on the button
-var deleteToolSym1 = new Kinetic.Rect({
+const deleteToolSym1 = new Kinetic.Rect({
   x: toolboxStyle.buttonSize * (7/30),
   y: toolboxStyle.buttonSize * (7/30),
   width: 0,
@@ -210,7 +212,7 @@ var deleteToolSym1 = new Kinetic.Rect({
 });
 deleteToolGroup.add(deleteToolSym1);
 
-var deleteToolSym2 = new Kinetic.Rect({
+const deleteToolSym2 = new Kinetic.Rect({
   x: toolboxStyle.buttonSize * (24/30),
   y: toolboxStyle.buttonSize * (7/30),
   width: 0,
@@ -224,7 +226,7 @@ var deleteToolSym2 = new Kinetic.Rect({
 deleteToolGroup.add(deleteToolSym2);
 
 /* Transparent box that covers the button to ensure its function when clicked on */
-var deleteToolCover = new Kinetic.Rect({
+const deleteToolCover = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: toolboxStyle.buttonSize,
@@ -232,17 +234,17 @@ var deleteToolCover = new Kinetic.Rect({
 });
 deleteToolGroup.add(deleteToolCover);
 
-var undoRedoScale = .3;
+const undoRedoScale = .3;
 
 // add the undo tool button
-var undoGroup = new Kinetic.Group({
+const undoGroup = new Kinetic.Group({
   x: toolboxStyle.shift,
   y: (toolboxStyle.shift * 4) + (toolboxStyle.buttonSize * 3),
   name: 'undo'
 });
 toolboxGroup.add(undoGroup);
 
-var undoButton = new Kinetic.Shape({
+const undoButton = new Kinetic.Shape({
   sceneFunc: function(context) {
     context.beginPath();
     context.moveTo(0, 0);
@@ -272,7 +274,7 @@ var undoButton = new Kinetic.Shape({
 });
 undoGroup.add(undoButton);
 
-var undoCover = new Kinetic.Rect({
+const undoCover = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: toolboxStyle.buttonSize,
@@ -281,14 +283,14 @@ var undoCover = new Kinetic.Rect({
 });
 undoGroup.add(undoCover);
 
-var redoGroup = new Kinetic.Group({
+const redoGroup = new Kinetic.Group({
   x: toolboxStyle.shift,
   y: (toolboxStyle.shift * 5) + (toolboxStyle.buttonSize * 4),
   name: 'redo'
 });
 toolboxGroup.add(redoGroup);
 
-var redoButton = new Kinetic.Shape({
+const redoButton = new Kinetic.Shape({
   sceneFunc: function(context) {
     context.beginPath();
     context.moveTo(0, 0);
@@ -318,7 +320,7 @@ var redoButton = new Kinetic.Shape({
 });
 redoGroup.add(redoButton);
 
-var redoCover = new Kinetic.Rect({
+const redoCover = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: toolboxStyle.buttonSize,
@@ -327,4 +329,28 @@ var redoCover = new Kinetic.Rect({
 });
 redoGroup.add(redoCover);
 
-utility.enableWorkTool();
+export {
+  deleteToolButton,
+  deleteToolCover,
+  deleteToolGroup,
+  deleteToolSym1,
+  deleteToolSym2,
+  lineToolButton,
+  lineToolCover,
+  lineToolGroup,
+  lineToolLine,
+  redoButton,
+  redoCover,
+  redoGroup,
+  toolboxControl,
+  toolboxGroup,
+  toolboxRect,
+  undoButton,
+  undoCover,
+  undoGroup,
+  undoRedoScale,
+  workToolButton,
+  workToolCover,
+  workToolGroup,
+  workToolSymbol
+};
