@@ -329,7 +329,7 @@ var addVal = function(valName, x, y) {
   else {
     var val = makeValueGroup(valName, x, y);
   }
-  assertRenderable(val);
+  predicate.assertRenderable(val);
   val.setAttr("visible",true);
   utility.applyDragBounds(val);
   layers.work.add(val);
