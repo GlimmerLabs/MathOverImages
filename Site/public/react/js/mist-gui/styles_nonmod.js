@@ -35,7 +35,7 @@ const valueStyle = {
 
 const imageBoxStyle = {
   sideLength: size.width / 80,
-  boxColor: 'white',
+  color: 'white',
   valueOffset: size.width / 31,
   renderSideLength: size.width / 18,
 }
