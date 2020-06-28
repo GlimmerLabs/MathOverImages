@@ -174,3 +174,30 @@ createDragLayerListeners(
   utility.setSelectedShadow,
   utility.updateFunBar
 );
+
+import createWorkLayerListeners from './mist-gui/workLayerEvents.js';
+createWorkLayerListeners(
+  OUTLET_OFFSET,
+  actionToObject,
+  insertToArray,
+  insertToTable,
+  layers.drag,
+  layers.line,
+  layers.work,
+  predicate.assertRenderable,
+  predicate.isCycle,
+  predicate.isFunction,
+  predicate.isImageBox,
+  predicate.isOutlet,
+  predicate.isValue,
+  removeLine,
+  state,
+  utility.addOutlet,
+  utility.collapseCanvas,
+  utility.removeShadow,
+  utility.renderCanvas,
+  utility.setDragShadow,
+  utility.setSelectedShadow,
+  utility.updateForward,
+  utility.updateFunBar
+);
