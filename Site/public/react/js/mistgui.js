@@ -76,12 +76,15 @@ createToolboxListeners(
   makeLabels.makeToolLabel
 );
 
+import {cover, nameEditText, popSaveGroup, init as saveScreenInit} from './mist-gui/saveScreen.js';
+const saveScreen = saveScreenInit(layers);
+
 import {createOpenWsListeners, nameOpenWsEditText, openWsGroup} from './mist-gui/openWorkspaceScreen.js';
 layers.screen.add(openWsGroup);
 nameOpenWsEditText.drawMethod = function(){
 	layers.screen.draw();
 };
-createOpenWsListeners(cover, hideThumbnails, layers.screen, state);
+createOpenWsListeners(cover, saveScreen.hideThumbnails, layers.screen, state);
 
 import createSaveWsScreen from './mist-gui/saveWorkspaceScreen.js';
 const saveWsScreen = createSaveWsScreen(cover, saveWorkspace, layers.screen, state, wsExists);
@@ -102,7 +105,7 @@ createFunBarListeners(
   state,
   predicate.isRenderable,
   utility.enableWorkTool,
-  openSavePopUp,
+  saveScreen.openSavePopUp,
   layers.funBar,
   valueStyle
 );
