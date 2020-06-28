@@ -6,6 +6,7 @@
 */
 
 import {functionStyle, menuStyle} from './styles.js';
+import {isFunction, isValue} from './predicates.js';
 
 export default function(
   OUTLET_OFFSET,
@@ -16,9 +17,7 @@ export default function(
   insertToArray,
   insertToTable,
   layers,
-  isFunction,
   isRenderable,
-  isValue,
   state,
   addOutlet,
   applyDragBounds,

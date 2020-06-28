@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 import {init as makeLabelsInit} from './mist-gui/makeLabels.js';
-const makeLabels = makeLabelsInit(actionArray, MIST.builtins.functions, predicate.isValue);
+const makeLabels = makeLabelsInit(actionArray, MIST.builtins.functions);
 
 import constructorsInit from './mist-gui/constructors.js';
 const constructors = constructorsInit(
@@ -16,7 +16,6 @@ const constructors = constructorsInit(
   utility.applyDragBounds,
   predicate.assertRenderable,
   insertToTable,
-  predicate.isFunction,
   functions,
   layers,
   utility.updateForward,
@@ -122,8 +121,6 @@ initMenu(
   constructors.makeValueGroup,
   makeLabels.makeLabel,
   openSaveWsPopUp,
-  predicate.isFunction,
-  predicate.isValue,
   removeLine,
   showLoadWorkspaceDialog,
   stage,
@@ -143,9 +140,7 @@ createDragLayerListeners(
   insertToArray,
   insertToTable,
   layers,
-  predicate.isFunction,
   predicate.isRenderable,
-  predicate.isValue,
   state,
   utility.addOutlet,
   utility.applyDragBounds,
@@ -166,11 +161,6 @@ createWorkLayerListeners(
   layers.line,
   layers.work,
   predicate.assertRenderable,
-  predicate.isCycle,
-  predicate.isFunction,
-  predicate.isImageBox,
-  predicate.isOutlet,
-  predicate.isValue,
   constructors.makeLine,
   removeLine,
   state,

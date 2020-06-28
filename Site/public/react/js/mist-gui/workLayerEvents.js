@@ -39,6 +39,8 @@ There are 3 different modes:
   5. otherwise keep drawing the line.
   */
 
+import {isCycle, isFunction, isImageBox, isOutlet, isValue} from './predicates.js';
+
 // +----------+--------------------------------------------------------
 // | Handlers |
 // +----------+
@@ -52,11 +54,6 @@ export default function(
   lineLayer,
   workLayer,
   assertRenderable,
-  isCycle,
-  isFunction,
-  isImageBox,
-  isOutlet,
-  isValue,
   makeLine,
   removeLine,
   state,

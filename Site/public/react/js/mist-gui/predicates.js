@@ -1,10 +1,10 @@
+import {menuStyle, size} from './styles.js';
+
 /*
 isFunction determines if target is a functionGroup and returns a boolean value. 
 target is an object.
 */
-const predicate = {};
-
-predicate.isFunction = function(target) {
+export function isFunction(target) {
 	return (target.attrs.maxInputs != null);
 };
 
@@ -12,11 +12,11 @@ predicate.isFunction = function(target) {
 isValue determines if target is a valueGroup and returns a boolean value. 
 target is an object.
 */
-predicate.isValue = function(target) {
+export function isValue(target) {
 	return (target.attrs.maxInputs == null && target.nodeType == 'Group');
 };
 
-predicate.isVariable = function(target) {
+export function isVariable(target) {
 	return (target.name() == 'variable');
 }
 
@@ -24,7 +24,7 @@ predicate.isVariable = function(target) {
 isOutlet determines if target is an outletGroup and returns a boolean value. 
 target is an object.
 */
-predicate.isOutlet = function(target) {
+export function isOutlet(target) {
 	return (target.name() != null && target.attrs.name.substring(0,6) == 'outlet');
 };
 
@@ -32,7 +32,7 @@ predicate.isOutlet = function(target) {
 isLine determines if target is a line and returns a boolean value. 
 target is an object.
 */
-predicate.isLine = function(target) {
+export function isLine(target) {
 	return (target.className == 'Line');
 };
 
@@ -40,7 +40,7 @@ predicate.isLine = function(target) {
 isImageBox determines if target is an image box and returns a boolean value. 
 target is an object.
 */
-predicate.isImageBox = function(target) {
+export function isImageBox(target) {
 	return (target.name() != null && target.attrs.name == 'imageBox');
 };
 
@@ -48,7 +48,7 @@ predicate.isImageBox = function(target) {
 isDrawTool determines if target is the drawing tool on the pallette and returns a boolean value. 
 target is an object.
 */
-predicate.isDrawTool = function(target) {
+export function isDrawTool(target) {
 	return (target.name() != null && target.attrs.name == 'draw');
 };
 
@@ -56,7 +56,7 @@ predicate.isDrawTool = function(target) {
 isDeleteTool determines if target is the drawing tool on the pallette and returns a boolean value. 
 target is an object.
 */
-predicate.isDeleteTool = function(target) {
+export function isDeleteTool(target) {
 	return (target.name() != null && target.attrs.name == 'delete');
 };
 
@@ -64,7 +64,7 @@ predicate.isDeleteTool = function(target) {
 isToolControl determines if target is the tool group controller on the pallette and returns a boolean value. 
 target is an object.
 */
-predicate.isToolControl = function(target) {
+export function isToolControl(target) {
 	return (target.name() != null && target.attrs.name == 'toolControl');
 };
 
@@ -72,7 +72,7 @@ predicate.isToolControl = function(target) {
 isRedoTool determines if target is the redo tool on the pallette and returns a boolean value. 
 target is an object.
 */
-predicate.isRedoTool = function(target) {
+export function isRedoTool(target) {
 	return (target.name() != null && target.attrs.name == 'redo');
 };
 
@@ -80,7 +80,7 @@ predicate.isRedoTool = function(target) {
 isUndoTool determines if target is the redo tool on the pallette and returns a boolean value. 
 target is an object.
 */
-predicate.isUndoTool = function(target) {
+export function isUndoTool(target) {
 	return (target.name() != null && target.attrs.name == 'undo');
 };
 
@@ -89,8 +89,9 @@ predicate.isUndoTool = function(target) {
  * function group with sufficient inputs, and false if it is a function group
  * with insufficient inputs.
  */
-predicate.isRenderable = function(group) {
- 	if (predicate.isValue(group)) {
+// TODO: OUTLET_OFFSET needs to be imported from somewhere
+function isRenderable(group) {
+ 	if (isValue(group)) {
  		if (group.attrs.rep != '#') {
  			return true;
  		}
@@ -101,7 +102,7 @@ predicate.isRenderable = function(group) {
  		var validInputs = 0;
  		for(var i = OUTLET_OFFSET; i < group.children.length; i++) {
  			lineIn = group.children[i].attrs.lineIn;
- 			if (lineIn != null && predicate.isRenderable(lineIn.attrs.source)) {
+ 			if (lineIn != null && isRenderable(lineIn.attrs.source)) {
  				validInputs++;
  			}
  		}
@@ -109,7 +110,7 @@ predicate.isRenderable = function(group) {
  	}
  };
 
-predicate.isCycle = function(sourceGroup, outletGroup) {
+export function isCycle(sourceGroup, outletGroup) {
  	var lineOut = outletGroup.attrs.lineOut;
  	if (lineOut.length === 0) {
  		return false;
@@ -117,7 +118,7 @@ predicate.isCycle = function(sourceGroup, outletGroup) {
  	for(var i = 0; i < lineOut.length; i++) {
  		if (sourceGroup == lineOut[i].attrs.outlet.parent) {
  			return true;
- 		} else if (predicate.isCycle(sourceGroup, lineOut[i].attrs.outlet.parent) ) {
+ 		} else if (isCycle(sourceGroup, lineOut[i].attrs.outlet.parent) ) {
  			return true;
  		}
  	}
@@ -129,8 +130,9 @@ predicate.isCycle = function(sourceGroup, outletGroup) {
  * If true, it finds the renderFunction for the group, makes the imageBox visible 
  * and returns true. If false, it makes the imageBox invisible and returns false.
  */
-predicate.assertRenderable = function(group) {
- 	if (predicate.isRenderable(group)) {
+// TODO: relies on utility
+function assertRenderable(group) {
+ 	if (isRenderable(group)) {
  		utility.findRenderFunction(group);
  		group.children[2].setAttr('visible', true);
  		if (group.attrs.animator) {
@@ -154,7 +156,7 @@ predicate.assertRenderable = function(group) {
   * canMoveRight tests if either the functions or values in the menu can be moved 
   * to the right and returns a boolean.
   */
-predicate.canMoveRight = function(type) {
+export function canMoveRight(type) {
   return ((type == 'values' && 
     menuValues[0].x() < (menuStyle.cornerWidth + menuStyle.buttonWidth + menuStyle.valXSpacing)) ||
     (type == 'functions' && 
@@ -164,7 +166,7 @@ predicate.canMoveRight = function(type) {
  * canMoveLeft tests if either the functions or values in the menu can be moved
  * to the left and returns a boolean.
  */
-predicate.canMoveLeft = function(type) {
+export function canMoveLeft(type) {
 	return ((type == 'values' &&
 	  menuValues[menuValues.length - 1].x() > size.width - menuStyle.buttonWidth) ||
       (type == 'functions' && 

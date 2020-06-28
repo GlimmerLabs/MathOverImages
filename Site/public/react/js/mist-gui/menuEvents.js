@@ -27,6 +27,7 @@ import {
 } from './menuTweens.js';
 
 import makeMenu from './makeMenu.js'
+import {isFunction, isValue} from './predicates.js';
 
 export default function initMenu(
   layers,
@@ -34,8 +35,6 @@ export default function initMenu(
   makeValueGroup,
   makeLabel,
   openSaveWsPopUp,
-  isFunction,
-  isValue,
   removeLine,
   showLoadWorkspaceDialog,
   stage,

@@ -1,6 +1,7 @@
 import {fonts, functionStyle, toolboxStyle} from './styles.js';
+import {isValue} from './predicates.js';
 
-export function init(actionArray, builtinFunctions, isValue) {
+export function init(actionArray, builtinFunctions) {
   /**
    * getInfoText takes a string (key), looks up the information for that key in 
    * MIST.builtins.functions and returns a string to be used in the label for that key.
