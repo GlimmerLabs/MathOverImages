@@ -1,9 +1,11 @@
-var funBar = new Kinetic.Group ({
+import {funBarStyle} from './styles.js';
+
+export const funBar = new Kinetic.Group ({
   x: 0,
   y: size.height - funBarStyle.height,
 });
-layers.funBar.add(funBar);
-var funBarArea = new Kinetic.Rect({
+
+export const funBarArea = new Kinetic.Rect({
   x: 0,
   y: 0,
   width: funBarStyle.width,
@@ -14,7 +16,7 @@ var funBarArea = new Kinetic.Rect({
 });
 funBar.add(funBarArea);
 
-var funBarTextArea = new Kinetic.Rect({
+export const funBarTextArea = new Kinetic.Rect({
   x: funBarStyle.offset,
   y: funBarStyle.offset,
   width: funBarStyle.textAreaWidth,
@@ -25,7 +27,7 @@ var funBarTextArea = new Kinetic.Rect({
 });
 funBar.add(funBarTextArea);
 
-var funBarText = new Kinetic.Text({
+export const funBarText = new Kinetic.Text({
   text: '',
   x: funBarStyle.textOffset,
   y: funBarStyle.textOffset,
@@ -37,7 +39,7 @@ var funBarText = new Kinetic.Text({
 });
 funBar.add(funBarText);
 
-var funBarComment = new Kinetic.Text ({
+export const funBarComment = new Kinetic.Text ({
   text: 'Save as...',
   x: funBarTextArea.width() + 2 * funBarStyle.offset,
   y: funBarStyle.height / 2 - (funBarStyle.fontSize / 2),
@@ -47,13 +49,13 @@ var funBarComment = new Kinetic.Text ({
 });
 funBar.add(funBarComment);
 
-var funBarSaveFunGroup = new Kinetic.Group ({
+export const funBarSaveFunGroup = new Kinetic.Group ({
   x: funBarStyle.textAreaWidth + funBarComment.width() + (5 * funBarStyle.offset),
   y: funBarStyle.offset
 });
 funBar.add(funBarSaveFunGroup);
 
-var funBarSaveFunCover = new Kinetic.Rect ({
+export const funBarSaveFunCover = new Kinetic.Rect ({
   x: 0,
   y: 0,
   width: funBarStyle.iconTextWidth,
@@ -66,7 +68,7 @@ var funBarSaveFunCover = new Kinetic.Rect ({
 });
 funBarSaveFunGroup.add(funBarSaveFunCover);
 
-var funBarSaveFunText = new Kinetic.Text ({
+export const funBarSaveFunText = new Kinetic.Text ({
   text: 'function',
   x: 0,
   y: funBarStyle.offset,
@@ -78,13 +80,13 @@ var funBarSaveFunText = new Kinetic.Text ({
 });
 funBarSaveFunGroup.add(funBarSaveFunText);
 
-var funBarSaveImGroup = new Kinetic.Group ({
+export const funBarSaveImGroup = new Kinetic.Group ({
   x: funBarSaveFunGroup.x() + funBarStyle.iconTextWidth + (2 * funBarStyle.offset),
   y: funBarStyle.offset,
 });
 funBar.add(funBarSaveImGroup);
 
-var funBarSaveImCover = new Kinetic.Rect ({
+export const funBarSaveImCover = new Kinetic.Rect ({
   x: 0,
   y: 0,
   width: funBarStyle.iconTextWidth,
@@ -97,7 +99,7 @@ var funBarSaveImCover = new Kinetic.Rect ({
 });
 funBarSaveImGroup.add(funBarSaveImCover);
 
-var funBarSaveImText = new Kinetic.Text ({
+export const funBarSaveImText = new Kinetic.Text ({
   text: 'image',
   x: 0,
   y: funBarStyle.offset,

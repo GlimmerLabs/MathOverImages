@@ -1,3 +1,6 @@
+import {funBar, funBarSaveImGroup} from './mist-gui/makeFunctionBar.js';
+layers.funBar.add(funBar);
+
 import createFunBarListeners from './mist-gui/funBarEvents.js';
 createFunBarListeners(
   funBarSaveImGroup,
