@@ -395,8 +395,8 @@ export default function init(
   });
 
   function storeWS() {
-    code = workspaceToJSON();
-    var data = "action=storews&code="+code;
+    const code = workspaceToJSON();
+    const data = "action=storews&code="+code;
     jQuery.ajax("/api", {
       data: data,
       type: 'POST'
