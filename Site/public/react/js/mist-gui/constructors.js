@@ -245,20 +245,6 @@
     });
     return newLine;
   }
-/*
-makeMenuTween takes a node (target), an integer (xEnd), and a boolean (visibility).
-It returns a kinetic tween that will move target to xEnd, without changing y value,
-and with the visibility to the specified boolean values.
-*/
-var makeMenuTween = function(target, xEnd, visibility) {
-  return new Kinetic.Tween({
-    node: target,
-    duration: menuStyle.animDuration,
-    x: xEnd,
-    visible: visibility,
-    easing: Kinetic.Easings.StrongEaseOut
-  });
-};
 
 /**
  * addLine adds a line between source and sink, connecting to sink via the outletIndex-th outlet

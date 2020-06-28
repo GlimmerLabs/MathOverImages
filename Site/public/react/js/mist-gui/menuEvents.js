@@ -11,18 +11,22 @@ On click of value menu button:
   - collapse values
   - move functionsButton left. 
   */
-export default function(
+
+import {
   expandFunctionNodes,
   expandValueNodes,
-  functionsButton,
-  hideScrollArrows,
-  layers,
-  makeFunctionGroup,
   moveFunctionNodesIn,
   moveFunctionNodesRight,
   moveFunctionsButtonLeft,
   moveFunctionsButtonRight,
-  moveValueNodesIn,
+  moveValueNodesIn
+} from './menuTweens.js';
+
+export default function(
+  functionsButton,
+  hideScrollArrows,
+  layers,
+  makeFunctionGroup,
   openButton,
   openSaveWsPopUp,
   isFunction,
@@ -44,17 +48,17 @@ export default function(
   valuesButton.on('click', function(){
     if (!state.menu.valueExpanded) {
       if (!state.menu.functionExpanded) {
-        moveFunctionsButtonRight();
-        moveFunctionNodesRight();
-        expandValueNodes();
+        moveFunctionsButtonRight(functionsButton);
+        moveFunctionNodesRight(menuFunctions);
+        expandValueNodes(menuValues);
         state.menu.valueExpanded = true;
         showScrollArrows('values');
         updateArrows('values');
       } // if functions are also not expanded
       else {
-        moveFunctionsButtonRight();
-        moveFunctionNodesRight();
-        expandValueNodes();
+        moveFunctionsButtonRight(functionsButton);
+        moveFunctionNodesRight(menuFunctions);
+        expandValueNodes(menuValues);
         state.menu.valueExpanded = true;
         showScrollArrows('values');
         updateArrows('values');
@@ -63,9 +67,9 @@ export default function(
       } // else functions were already expanded
     } // if values are not expanded
     else {
-      moveValueNodesIn();
-      moveFunctionNodesIn();  
-      moveFunctionsButtonLeft();
+      moveValueNodesIn(menuValues);
+      moveFunctionNodesIn(menuFunctions);  
+      moveFunctionsButtonLeft(functionsButton);
       state.menu.valueExpanded = false;
       hideScrollArrows('values');
     } // else values were already expanded
@@ -84,15 +88,15 @@ export default function(
   functionsButton.on('click', function(){
     if (!state.menu.functionExpanded) {
       if (!state.menu.valueExpanded) {
-        expandFunctionNodes();
+        expandFunctionNodes(menuFunctions);
         state.menu.functionExpanded = true;
         showScrollArrows('functions');
         updateArrows('functions');
       } // functions and values not expanded
       else {
-        moveValueNodesIn();
-        moveFunctionsButtonLeft();
-        expandFunctionNodes();
+        moveValueNodesIn(menuValues);
+        moveFunctionsButtonLeft(functionsButton);
+        expandFunctionNodes(menuFunctions);
         state.menu.functionExpanded = true;
         showScrollArrows('functions');
         updateArrows('functions');
@@ -101,7 +105,7 @@ export default function(
       } // functions not expanded, values expanded
     }
     else {
-      moveFunctionNodesIn();
+      moveFunctionNodesIn(menuFunctions);
       state.menu.functionExpanded = false;
       hideScrollArrows('functions');
     } // functions are expanded

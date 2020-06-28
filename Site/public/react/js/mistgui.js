@@ -133,17 +133,10 @@ window.functionsButton = functionsButton;
 
 import createMenuListeners from './mist-gui/menuEvents.js';
 createMenuListeners(
-  expandFunctionNodes,
-  expandValueNodes,
   functionsButton,
   hideScrollArrows,
   layers,
   makeFunctionGroup,
-  moveFunctionNodesIn,
-  moveFunctionNodesRight,
-  moveFunctionsButtonLeft,
-  moveFunctionsButtonRight,
-  moveValueNodesIn,
   openButton,
   openSaveWsPopUp,
   predicate.isFunction,
