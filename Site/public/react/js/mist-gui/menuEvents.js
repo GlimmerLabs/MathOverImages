@@ -75,6 +75,7 @@ export function addMenuToStage(layers) {
 export function createMenuListeners(
   layers,
   makeFunctionGroup,
+  makeLabel,
   openSaveWsPopUp,
   isFunction,
   isValue,

@@ -34,6 +34,7 @@ export default function(
   redoAction,
   toolboxControl,
   toolboxGroup,
+  makeToolLabel
 ) {
   workToolGroup.on('click', function(){
     if (state.makingLine) {
@@ -150,7 +151,7 @@ export default function(
         }
         var temp = toolboxLayer.getIntersection(stage.getPointerPosition());
         if (temp && group == temp.getParent()) {
-          state.openTag = makeToolLabel(group);
+          state.openTag = makeToolLabel(group, toolboxGroup);
           labelLayer.add(state.openTag);
           labelLayer.draw();
         } 

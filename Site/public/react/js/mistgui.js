@@ -7,6 +7,9 @@ window.addEventListener("DOMContentLoaded", () => {
   stage.draw();
 });
 
+import {init as makeLabelsInit} from './mist-gui/makeLabels.js';
+const makeLabels = makeLabelsInit(actionArray, MIST.builtins.functions, predicate.isValue);
+
 import {
   workToolGroup,
   toolboxGroup,
@@ -53,7 +56,8 @@ createToolboxListeners(
   redoButton,
   redoAction,
   toolboxControl,
-  toolboxGroup
+  toolboxGroup,
+  makeLabels.makeToolLabel
 );
 
 import {createOpenWsListeners, nameOpenWsEditText, openWsGroup} from './mist-gui/openWorkspaceScreen.js';
@@ -117,6 +121,7 @@ addMenuToStage(layers);
 createMenuListeners(
   layers,
   makeFunctionGroup,
+  makeLabels.makeLabel,
   openSaveWsPopUp,
   predicate.isFunction,
   predicate.isValue,
