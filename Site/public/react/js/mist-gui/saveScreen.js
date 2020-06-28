@@ -316,7 +316,7 @@ popCancelButtonGroup.on('mouseup', function(){
  */
 popSaveButtonGroup.on('mouseup', function(){
   var newName = nameEditText.attrs.text;
-  newName = removeOuterWhiteSpace(newName);
+  newName = newName.trim();
   var response = imageExists(newName);
   if (newName == '' || newName == 'Enter a Name') {
     popErrorText.setAttr('text', 'Please enter a name for your image.');
@@ -399,18 +399,3 @@ var showThumbnails = function() {
     } // if expanded
   } // for 
 }; // showThumbnails()
-
-/**
-* removeOuterWhiteSpace takes a string and removes white space at the beginning and end
-* of the string, but not the white space in the middle of the string.
-* returns a string
-*/
-var removeOuterWhiteSpace = function (string) {
-  var start = 0;
-  var end = string.length - 1;
-  string = string.replace(/^ */, "");
-  string = string.replace(/ *$/, "");
-  return string;
-}; // removeOuterWhiteSpace
-
-
