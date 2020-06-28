@@ -8,3 +8,13 @@ createFunBarListeners(
   layers.funBar,
   valueStyle
 );
+
+import createLineLayerListeners from './mist-gui/funBarEvents.js';
+createLineLayerListeners(
+  layers.line,
+  layers.work,
+  state,
+  removeLine,
+  insertToArray,
+  actionToObject,
+);
