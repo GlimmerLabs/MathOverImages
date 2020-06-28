@@ -5,6 +5,8 @@
 - on dragmove
 */
 
+import {functionStyle, menuStyle} from './styles.js';
+
 export default function(
   OUTLET_OFFSET,
   actionArray,
