@@ -43,87 +43,87 @@ There are 3 different modes:
 // | Handlers |
 // +----------+
 
-  layers.work.on('click', function(evt) {
-    var shape = evt.target;
-    var parent = shape.getParent();
-    if (state.workToolOn) {
-      if (predicate.isImageBox(shape)) {
-        if (!shape.attrs.expanded) {
-          utility.renderCanvas(parent);
-          shape.attrs.expanded = true;
-        } // if the image box is not expanded
+layers.work.on('click', function(evt) {
+  var shape = evt.target;
+  var parent = shape.getParent();
+  if (state.workToolOn) {
+    if (predicate.isImageBox(shape)) {
+      if (!shape.attrs.expanded) {
+        utility.renderCanvas(parent);
+        shape.attrs.expanded = true;
+      } // if the image box is not expanded
+      else {
+        shape.attrs.expanded = false;
+        state.animation = false;
+        setTimeout(function() {utility.collapseCanvas(parent)}, 50);
+      } // else the image box is expanded already
+      setTimeout(function() {layers.work.draw()}, 50);
+    } // if clicked on an image box
+  } // if the work tool is enabled
+  else if (state.lineToolOn) {
+    if (state.makingLine) {
+      var outlet;
+      if (parent == state.currLine.attrs.source || predicate.isCycle(state.currLine.attrs.source, parent)) {
+        removeLine(state.currLine);
+        state.makingLine = false;
+      } // if the target of the connection is the source, or forming the connection would cause a cycle
+      else if (predicate.isOutlet(shape)) {
+        //check if outlet already has an input
+        outlet = shape;
+      } // if the object an outlet
+      else if (predicate.isFunction(parent)) {
+        // find empty outlet
+        if (parent.attrs.numInputs < parent.attrs.maxInputs) {
+          var i = OUTLET_OFFSET
+          while (parent.children[i].attrs.lineIn) {
+            i++;
+          } // skip past outlets with inputs
+          outlet = parent.children[i];
+        } // if there are fewer than the maximum number of inputs
+        else if (parent.attrs.maxInputs == 1) {
+          outlet = parent.children[OUTLET_OFFSET];
+        } // if the max inputs for the function group is one
+      } // else if function
+      if (outlet) {
+        var isReplacement;
+        var oldLine; 
+        if (outlet.attrs.lineIn != null) {
+          var source = outlet.attrs.lineIn.attrs.source;
+          var index = outlet.attrs.lineIn.attrs.sourceIndex
+          oldLine = source.attrs.lineOut[index];
+          isReplacement = true;
+          removeLine(oldLine);
+        } // if outlet exists
         else {
-          shape.attrs.expanded = false;
-          state.animation = false;
-          setTimeout(function() {utility.collapseCanvas(parent)}, 50);
-        } // else the image box is expanded already
-        setTimeout(function() {layers.work.draw()}, 50);
-      } // if clicked on an image box
-    } // if the work tool is enabled
-    else if (state.lineToolOn) {
-      if (state.makingLine) {
-        var outlet;
-        if (parent == state.currLine.attrs.source || predicate.isCycle(state.currLine.attrs.source, parent)) {
-          removeLine(state.currLine);
-          state.makingLine = false;
-        } // if the target of the connection is the source, or forming the connection would cause a cycle
-        else if (predicate.isOutlet(shape)) {
-          //check if outlet already has an input
-          outlet = shape;
-        } // if the object an outlet
-        else if (predicate.isFunction(parent)) {
-          // find empty outlet
-          if (parent.attrs.numInputs < parent.attrs.maxInputs) {
-            var i = OUTLET_OFFSET
-            while (parent.children[i].attrs.lineIn) {
-              i++;
-            } // skip past outlets with inputs
-            outlet = parent.children[i];
-          } // if there are fewer than the maximum number of inputs
-          else if (parent.attrs.maxInputs == 1) {
-            outlet = parent.children[OUTLET_OFFSET];
-          } // if the max inputs for the function group is one
-        } // else if function
-        if (outlet) {
-          var isReplacement;
-          var oldLine; 
-          if (outlet.attrs.lineIn != null) {
-            var source = outlet.attrs.lineIn.attrs.source;
-            var index = outlet.attrs.lineIn.attrs.sourceIndex
-            oldLine = source.attrs.lineOut[index];
-            isReplacement = true;
-            removeLine(oldLine);
-          } // if outlet exists
-          else {
-            isReplacement = false;
-          } // check if theres already a line going in to the outlet
-          outlet.attrs.lineIn = state.currLine;
-          state.currLine.points()[2] = parent.x();
-          state.currLine.points()[3] = parent.y() + outlet.y();
-          state.currLine.attrs.outlet = outlet;
-          parent.attrs.numInputs++;
-          state.makingLine = false;
-          outlet.scale({ x: 1, y: 1 });
-          predicate.assertRenderable(parent);
-          // if there is a currShape, update the text in funBar
-          utility.updateFunBar();
-          if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
-            parent.attrs.numInputs < parent.attrs.maxInputs) {
-            utility.addOutlet(parent);
-            if (parent.children[2].attrs.expanded) {
-              utility.renderCanvas(parent);
-            } // if the value/function has an expanded imageBox
-          } // if there isn't an open outlet and there should be
-          insertToTable(state.currLine);
-          if (!isReplacement) {
-            insertToArray(actionToObject('insert', state.currLine));
-          } // if added connection is not a replacement
-          else {
-            insertToArray(actionToObject('replace', state.currLine, oldLine));
-          } // else its a replacement
-          //setOutletOpacity(parent);
-          utility.updateForward(parent);
-        } // if the outlet exists  
+          isReplacement = false;
+        } // check if theres already a line going in to the outlet
+        outlet.attrs.lineIn = state.currLine;
+        state.currLine.points()[2] = parent.x();
+        state.currLine.points()[3] = parent.y() + outlet.y();
+        state.currLine.attrs.outlet = outlet;
+        parent.attrs.numInputs++;
+        state.makingLine = false;
+        outlet.scale({ x: 1, y: 1 });
+        predicate.assertRenderable(parent);
+        // if there is a currShape, update the text in funBar
+        utility.updateFunBar();
+        if (parent.attrs.numInputs == parent.children.length - OUTLET_OFFSET &&
+          parent.attrs.numInputs < parent.attrs.maxInputs) {
+          utility.addOutlet(parent);
+          if (parent.children[2].attrs.expanded) {
+            utility.renderCanvas(parent);
+          } // if the value/function has an expanded imageBox
+        } // if there isn't an open outlet and there should be
+        insertToTable(state.currLine);
+        if (!isReplacement) {
+          insertToArray(actionToObject('insert', state.currLine));
+        } // if added connection is not a replacement
+        else {
+          insertToArray(actionToObject('replace', state.currLine, oldLine));
+        } // else its a replacement
+        //setOutletOpacity(parent);
+        utility.updateForward(parent);
+      } // if the outlet exists  
     } // if makingline
     else {
       if (predicate.isImageBox(shape)) {
@@ -181,34 +181,34 @@ There are 3 different modes:
   When you click down on an object in the workLayer and arent in the process of making
   a line, move that object to the dragLayer and allow it to be dragged.
   */
-  layers.work.on('mousedown', function(evt) {
-    if (state.workToolOn) {
-      if (!predicate.isImageBox(evt.target)) {
-        var group = evt.target.getParent();
-        if (predicate.isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
-          return;
-        }
-        utility.removeShadow(state.currShape);
-        group.moveTo(layers.drag);
-        state.currShape = group;
-        insertToArray(actionToObject('move', group));
-        group.startDrag();
-        utility.setDragShadow(group);
-        layers.work.draw();
-        layers.drag.draw();
-
-        if (group.attrs.renderLayer != null) {
-          group.attrs.renderLayer.draw();
-        }
+layers.work.on('mousedown', function(evt) {
+  if (state.workToolOn) {
+    if (!predicate.isImageBox(evt.target)) {
+      var group = evt.target.getParent();
+      if (predicate.isValue(group) && (evt.target == group.children[3] || evt.target == group.children[4])) {
+        return;
       }
-    } 
-  });
+      utility.removeShadow(state.currShape);
+      group.moveTo(layers.drag);
+      state.currShape = group;
+      insertToArray(actionToObject('move', group));
+      group.startDrag();
+      utility.setDragShadow(group);
+      layers.work.draw();
+      layers.drag.draw();
 
-  
-  /*
+      if (group.attrs.renderLayer != null) {
+        group.attrs.renderLayer.draw();
+      }
+    }
+  } 
+});
+
+
+/*
   while making a line, make outlets grow when they are moused over to signify that they
   are valid connections
-*/
+  */
 layers.work.on('mouseover', function(evt) {
   var shape = evt.target;
   var parent = shape.parent;
@@ -313,7 +313,7 @@ layers.work.on('mouseout', function(evt) {
     if (predicate.isImageBox(shape) && shape.attrs.expanded) {
       /*
       animation = false;
-       */
+      */
       if (parent.attrs.animator) {
         parent.attrs.animator.stop();
       }
