@@ -19,7 +19,11 @@ import {
   moveFunctionNodesRight,
   moveFunctionsButtonLeft,
   moveFunctionsButtonRight,
-  moveValueNodesIn
+  moveValueNodesIn,
+  shiftFunctionNodesLeft,
+  shiftFunctionNodesRight,
+  shiftValueNodesLeft,
+  shiftValueNodesRight
 } from './menuTweens.js';
 
 import {
@@ -214,12 +218,12 @@ export function createMenuListeners(
       if(!scrolling) {
         if (group.attrs.type =='functions') {
           if (direction == 'left') {
-            shiftFunctionNodesRight();
+            shiftFunctionNodesRight(menuFunctions);
             scrolling = true;
             setTimeout(function() {scrolling = false}, 1000)
           } // if right arrow 
           else if (direction == 'right') {
-            shiftFunctionNodesLeft();
+            shiftFunctionNodesLeft(menuFunctions);
             scrolling = true;
             setTimeout(function() {scrolling = false}, 1000);
           } // else left arrow
@@ -227,12 +231,12 @@ export function createMenuListeners(
         } // if functions arrow
         else {
           if (direction == 'left') {
-            shiftValueNodesRight();
+            shiftValueNodesRight(menuValues);
             scrolling = true;
             setTimeout(function() {scrolling = false}, 1000);
           } // if right arrow
           else if (group.attrs.direction == 'right') {
-            shiftValueNodesLeft();
+            shiftValueNodesLeft(menuValues);
             scrolling = true;
             setTimeout(function() {scrolling = false}, 1000);
           } // else left arrow

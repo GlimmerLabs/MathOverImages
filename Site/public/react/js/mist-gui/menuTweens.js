@@ -33,7 +33,7 @@ export function expandValueNodes(menuValues) {
 };
 
 /* move valueGroups to the right */
-export function shiftValueNodesRight() {
+export function shiftValueNodesRight(menuValues) {
   for (var i = 0; i < menuValues.length; i++) {
     var target = menuValues[i];
     var moveValue = makeMenuTween(target, target.x() + menuStyle.valSpaceWidth - menuStyle.valXSpacing, true);
@@ -42,7 +42,7 @@ export function shiftValueNodesRight() {
 };
 
 /* move valueGroups to the left */
-export function shiftValueNodesLeft() {
+export function shiftValueNodesLeft(menuValues) {
   for (var i = 0; i < menuValues.length; i++) {
     var target = menuValues[i];
     var moveValue = makeMenuTween(target, target.x() - menuStyle.valSpaceWidth + menuStyle.valXSpacing, true);
@@ -87,7 +87,7 @@ export function moveFunctionsButtonLeft(functionsButton) {
 };
 
 /* move functionGroups to the right */
-export function shiftFunctionNodesRight() {
+export function shiftFunctionNodesRight(menuFunctions) {
   for (var i = 0; i < menuFunctions.length; i++) {
     var target = menuFunctions[i];
     var moveValue = makeMenuTween(target, target.x() + menuStyle.functSpaceWidth - menuStyle.functXSpacing, true);
@@ -96,7 +96,7 @@ export function shiftFunctionNodesRight() {
 };
 
 /* move functionGroups to the left */
-export function shiftFunctionNodesLeft() {
+export function shiftFunctionNodesLeft(menuFunctions) {
   for (var i = 0; i < menuFunctions.length; i++) {
     var target = menuFunctions[i];
     var moveValue = makeMenuTween(target, target.x() - menuStyle.functSpaceWidth + menuStyle.functXSpacing, true);
