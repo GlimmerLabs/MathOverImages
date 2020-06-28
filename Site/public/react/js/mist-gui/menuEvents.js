@@ -2,14 +2,14 @@
 /*
 On click of value menu button:
 1. Neither values or functions are expanded.
-  - move functionsButton right.
+  - move menu.functionsButton right.
   - expand values
 2. Values are not expanded, functions are expanded.
   - collapse functions to the right and move functionsButon
   - expand values
 3. Values are expanded, functions are not.
   - collapse values
-  - move functionsButton left. 
+  - move menu.functionsButton left. 
   */
 
 import {
@@ -26,55 +26,12 @@ import {
   shiftValueNodesRight
 } from './menuTweens.js';
 
-import {
-  borderLine,
-  bottomCover,
-  functionsArrows,
-  functionsButton,
-  hideScrollArrows,
-  menuFunctions,
-  menuValues,
-  openButton,
-  resetButton,
-  saveButton,
-  showScrollArrows,
-  toggleTag,
-  updateArrows,
-  valuesArrows,
-  valuesButton
-} from './makeMenu.js'
+import makeMenu from './makeMenu.js'
 
-// TODO: hack to let functions in predicate work
-window.menuFunctions = menuFunctions;
-window.menuValues = menuValues;
-
-export function addMenuToStage(layers) {
-  layers.border.add(borderLine);
-  layers.border.add(toggleTag);
-  layers.border.draw();
-
-  layers.menuButton.add(valuesButton);
-  layers.menuButton.add(functionsButton);
-  layers.menuButton.draw();
-
-  menuFunctions.forEach(func => layers.menu.add(func));
-  layers.menu.draw();
-
-  /* add arrows to menuArrowLayer */
-  layers.menuArrow.add(valuesArrows['left'], valuesArrows['right']);
-  layers.menuArrow.add(functionsArrows['left'], functionsArrows['right']);
-  layers.menuArrow.draw();
-
-  layers.menuControl.add(bottomCover);
-  layers.menuControl.add(resetButton);
-  layers.menuControl.add(openButton);
-  layers.menuControl.add(saveButton);
-  layers.menuControl.draw();
-}
-
-export function createMenuListeners(
+export default function initMenu(
   layers,
   makeFunctionGroup,
+  makeValueGroup,
   makeLabel,
   openSaveWsPopUp,
   isFunction,
@@ -87,33 +44,60 @@ export function createMenuListeners(
   removeShadow,
   setDragShadow,
 ) {
-  valuesButton.on('click', function(){
+  const menu = makeMenu(layers, makeFunctionGroup, makeValueGroup);
+  // TODO: hack to let functions in predicate work
+  window.menuFunctions = menu.menuFunctions;
+  window.menuValues = menu.menuValues;
+
+  layers.border.add(menu.borderLine);
+  layers.border.add(menu.toggleTag);
+  layers.border.draw();
+
+  layers.menuButton.add(menu.valuesButton);
+  layers.menuButton.add(menu.functionsButton);
+  layers.menuButton.draw();
+
+  menu.menuFunctions.forEach(func => layers.menu.add(func));
+  layers.menu.draw();
+
+  /* add arrows to menuArrowLayer */
+  layers.menuArrow.add(menu.valuesArrows['left'], menu.valuesArrows['right']);
+  layers.menuArrow.add(menu.functionsArrows['left'], menu.functionsArrows['right']);
+  layers.menuArrow.draw();
+
+  layers.menuControl.add(menu.bottomCover);
+  layers.menuControl.add(menu.resetButton);
+  layers.menuControl.add(menu.openButton);
+  layers.menuControl.add(menu.saveButton);
+  layers.menuControl.draw();
+
+  menu.valuesButton.on('click', function(){
     if (!state.menu.valueExpanded) {
       if (!state.menu.functionExpanded) {
-        moveFunctionsButtonRight(functionsButton);
-        moveFunctionNodesRight(menuFunctions);
-        expandValueNodes(menuValues);
+        moveFunctionsButtonRight(menu.functionsButton);
+        moveFunctionNodesRight(menu.menuFunctions);
+        expandValueNodes(menu.menuValues);
         state.menu.valueExpanded = true;
-        showScrollArrows('values');
-        updateArrows('values');
+        menu.showScrollArrows('values');
+        menu.updateArrows('values');
       } // if functions are also not expanded
       else {
-        moveFunctionsButtonRight(functionsButton);
-        moveFunctionNodesRight(menuFunctions);
-        expandValueNodes(menuValues);
+        moveFunctionsButtonRight(menu.functionsButton);
+        moveFunctionNodesRight(menu.menuFunctions);
+        expandValueNodes(menu.menuValues);
         state.menu.valueExpanded = true;
-        showScrollArrows('values');
-        updateArrows('values');
+        menu.showScrollArrows('values');
+        menu.updateArrows('values');
         state.menu.functionExpanded = false;
-        hideScrollArrows('functions');
+        menu.hideScrollArrows('functions');
       } // else functions were already expanded
     } // if values are not expanded
     else {
-      moveValueNodesIn(menuValues);
-      moveFunctionNodesIn(menuFunctions);  
-      moveFunctionsButtonLeft(functionsButton);
+      moveValueNodesIn(menu.menuValues);
+      moveFunctionNodesIn(menu.menuFunctions);  
+      moveFunctionsButtonLeft(menu.functionsButton);
       state.menu.valueExpanded = false;
-      hideScrollArrows('values');
+      menu.hideScrollArrows('values');
     } // else values were already expanded
   });
   /*
@@ -122,34 +106,34 @@ export function createMenuListeners(
     - expand functions
   2. Functions are not expanded, values are expanded.
     - collapse values
-    - move functionsButton left
+    - move menu.functionsButton left
     - expand functions
   3. Functions are expanded, values are not.
     - collapse functions 
     */
-  functionsButton.on('click', function(){
+  menu.functionsButton.on('click', function(){
     if (!state.menu.functionExpanded) {
       if (!state.menu.valueExpanded) {
-        expandFunctionNodes(menuFunctions);
+        expandFunctionNodes(menu.menuFunctions);
         state.menu.functionExpanded = true;
-        showScrollArrows('functions');
-        updateArrows('functions');
+        menu.showScrollArrows('functions');
+        menu.updateArrows('functions');
       } // functions and values not expanded
       else {
-        moveValueNodesIn(menuValues);
-        moveFunctionsButtonLeft(functionsButton);
-        expandFunctionNodes(menuFunctions);
+        moveValueNodesIn(menu.menuValues);
+        moveFunctionsButtonLeft(menu.functionsButton);
+        expandFunctionNodes(menu.menuFunctions);
         state.menu.functionExpanded = true;
-        showScrollArrows('functions');
-        updateArrows('functions');
+        menu.showScrollArrows('functions');
+        menu.updateArrows('functions');
         state.menu.valueExpanded = false;
-        hideScrollArrows('values');
+        menu.hideScrollArrows('values');
       } // functions not expanded, values expanded
     }
     else {
-      moveFunctionNodesIn(menuFunctions);
+      moveFunctionNodesIn(menu.menuFunctions);
       state.menu.functionExpanded = false;
-      hideScrollArrows('functions');
+      menu.hideScrollArrows('functions');
     } // functions are expanded
   });
 
@@ -219,29 +203,29 @@ export function createMenuListeners(
       if(!scrolling) {
         if (group.attrs.type =='functions') {
           if (direction == 'left') {
-            shiftFunctionNodesRight(menuFunctions);
+            shiftFunctionNodesRight(menu.menuFunctions);
             scrolling = true;
             setTimeout(function() {scrolling = false}, 1000)
           } // if right arrow 
           else if (direction == 'right') {
-            shiftFunctionNodesLeft(menuFunctions);
+            shiftFunctionNodesLeft(menu.menuFunctions);
             scrolling = true;
             setTimeout(function() {scrolling = false}, 1000);
           } // else left arrow
-          updateArrows('functions');
+          menu.updateArrows('functions');
         } // if functions arrow
         else {
           if (direction == 'left') {
-            shiftValueNodesRight(menuValues);
+            shiftValueNodesRight(menu.menuValues);
             scrolling = true;
             setTimeout(function() {scrolling = false}, 1000);
           } // if right arrow
           else if (group.attrs.direction == 'right') {
-            shiftValueNodesLeft(menuValues);
+            shiftValueNodesLeft(menu.menuValues);
             scrolling = true;
             setTimeout(function() {scrolling = false}, 1000);
           } // else left arrow
-          updateArrows('values');
+          menu.updateArrows('values');
         } // else values arrow
       } // if not scrolling
     } // if functional
@@ -308,24 +292,24 @@ export function createMenuListeners(
     }
   });
 
-  toggleTag.on('mouseover', function() {
-    toggleTag.children[0].setAttr('fill', 'black');
+  menu.toggleTag.on('mouseover', function() {
+    menu.toggleTag.children[0].setAttr('fill', 'black');
     layers.border.draw();
   });
 
-  toggleTag.on('mouseout', function() {
-    toggleTag.children[0].setAttr('fill', '#787878');
+  menu.toggleTag.on('mouseout', function() {
+    menu.toggleTag.children[0].setAttr('fill', '#787878');
     layers.border.draw();
   });
 
-  toggleTag.on('mouseup', function(){
+  menu.toggleTag.on('mouseup', function(){
     if (state.menu.tagsOn) {
       state.menu.tagsOn = false;
-      toggleTag.children[0].setAttr('text', 'Turn Labels On');
+      menu.toggleTag.children[0].setAttr('text', 'Turn Labels On');
     }
     else {
       state.menu.tagsOn = true;
-      toggleTag.children[0].setAttr('text', 'Turn Labels Off');
+      menu.toggleTag.children[0].setAttr('text', 'Turn Labels Off');
     }
     layers.border.draw();
   });
@@ -370,17 +354,17 @@ export function createMenuListeners(
     }
   });
 
-  resetButton.on('mouseup', function(){
+  menu.resetButton.on('mouseup', function(){
     resetWorkspace();
     // currentWorkSpace = null; // TODO: it doesn't look like this is referenced anywhere else
   });
 
-  saveButton.on('mouseup', function(){
+  menu.saveButton.on('mouseup', function(){
     enableWorkTool();
     openSaveWsPopUp();
   });
 
-  openButton.on('mouseup', function(){
+  menu.openButton.on('mouseup', function(){
     enableWorkTool();
     showLoadWorkspaceDialog();
   });

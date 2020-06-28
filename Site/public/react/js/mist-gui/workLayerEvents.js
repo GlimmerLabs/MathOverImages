@@ -57,6 +57,7 @@ export default function(
   isImageBox,
   isOutlet,
   isValue,
+  makeLine,
   removeLine,
   state,
   addOutlet,

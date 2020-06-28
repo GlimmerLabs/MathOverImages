@@ -10,6 +10,23 @@ window.addEventListener("DOMContentLoaded", () => {
 import {init as makeLabelsInit} from './mist-gui/makeLabels.js';
 const makeLabels = makeLabelsInit(actionArray, MIST.builtins.functions, predicate.isValue);
 
+import constructorsInit from './mist-gui/constructors.js';
+const constructors = constructorsInit(
+  utility.addOutlet,
+  utility.applyDragBounds,
+  predicate.assertRenderable,
+  insertToTable,
+  predicate.isFunction,
+  functions,
+  layers,
+  utility.updateForward,
+  OUTLET_OFFSET,
+  values
+);
+// TODO: temporary hack so that various files work
+window.makeOutlet = constructors.makeOutlet;
+window.addVal = constructors.addVal;
+
 import {
   workToolGroup,
   toolboxGroup,
@@ -98,29 +115,11 @@ createLineLayerListeners(
   actionToObject,
 );
 
-import {
-  borderLine,
-  bottomCover,
-  functionsArrows,
-  functionsButton,
-  hideScrollArrows,
-  menuFunctions,
-  menuValues,
-  openButton,
-  resetButton,
-  saveButton,
-  showScrollArrows,
-  toggleTag,
-  updateArrows,
-  valuesArrows,
-  valuesButton
-} from './mist-gui/makeMenu.js';
-
-import {addMenuToStage, createMenuListeners} from './mist-gui/menuEvents.js';
-addMenuToStage(layers);
-createMenuListeners(
+import initMenu from './mist-gui/menuEvents.js';
+initMenu(
   layers,
-  makeFunctionGroup,
+  constructors.makeFunctionGroup,
+  constructors.makeValueGroup,
   makeLabels.makeLabel,
   openSaveWsPopUp,
   predicate.isFunction,
@@ -139,7 +138,7 @@ createDragLayerListeners(
   OUTLET_OFFSET,
   actionArray,
   actionToObject,
-  createEditableText,
+  constructors.createEditableText,
   inTable,
   insertToArray,
   insertToTable,
@@ -172,6 +171,7 @@ createWorkLayerListeners(
   predicate.isImageBox,
   predicate.isOutlet,
   predicate.isValue,
+  constructors.makeLine,
   removeLine,
   state,
   utility.addOutlet,
