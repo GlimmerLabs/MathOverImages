@@ -14,6 +14,7 @@
 
 export default function(
   workToolGroup,
+  stage,
   state,
   removeLine,
   lineLayer,

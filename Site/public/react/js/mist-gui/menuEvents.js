@@ -32,6 +32,7 @@ export default function(
   saveButton,
   showLoadWorkspaceDialog,
   showScrollArrows,
+  stage,
   state,
   toggleTag,
   updateArrows,

@@ -10,12 +10,20 @@
 /**
  * Our primary stage.
  */
-var stage;
+let stage;
+function create_stage(containerName) {
+  stage = new Kinetic.Stage({
+    container: containerName,
+    width: size.width,
+    height: size.height
+  });
+  return stage;
+}
 
 /**
  * The previous workspace.  Possibly used for caching.
  */
-var prevWorkspace;
+let prevWorkspace;
 
 // +---------+---------------------------------------------------------
 // | Methods |
@@ -24,14 +32,14 @@ var prevWorkspace;
 /**
  * Initialize the stage to use a container with a particular name.
  */
-function initializeStage(containerName) {
-  // Create the object
-  stage = new Kinetic.Stage({
-    container: containerName,
-    width: size.width,
-    height: size.height
-  });
-
+function initializeStage(
+  containerName,
+  initWorkspace,
+  layers,
+  readyEditing,
+  size,
+  state
+) {
   // Add the layers to the stage. The top layer is the one most recently added, and
   // objects within a layer follow the same logic.
   stage.add(layers.line);
@@ -50,7 +58,7 @@ function initializeStage(containerName) {
   stage.add(layers.render);
 
   // Indicate that the stage is ready for 
- readyEditing(stage);
+  readyEditing(stage);
 
   // Set up the previous workspace
   prevWorkspace = initWorkspace();
@@ -69,3 +77,9 @@ function initializeStage(containerName) {
     } // if (makingLine)
   });
 } // initializeStage
+
+export {
+  create_stage,
+  initializeStage,
+  prevWorkspace
+}

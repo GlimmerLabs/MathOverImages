@@ -1,3 +1,12 @@
+import {create_stage, initializeStage, prevWorkspace} from './mist-gui/initializeStage.js';
+const stage = create_stage('container');
+// TODO: temporary hack so that utility.renderCanvas can workspaceFunctions.js can access the stage
+window.stage = stage;
+window.addEventListener("DOMContentLoaded", () => {
+  initializeStage('container', initWorkspace, layers, readyEditing, size, state);
+  stage.draw();
+});
+
 import {
   workToolGroup,
   toolboxGroup,
@@ -25,6 +34,7 @@ utility.enableWorkTool();
 import createToolboxListeners from './mist-gui/toolboxEvents.js';
 createToolboxListeners(
   workToolGroup,
+  stage,
   state,
   removeLine,
   layers.line,
@@ -143,6 +153,7 @@ createMenuListeners(
   saveButton,
   showLoadWorkspaceDialog,
   showScrollArrows,
+  stage,
   state,
   toggleTag,
   updateArrows,
