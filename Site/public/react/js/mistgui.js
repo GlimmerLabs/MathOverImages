@@ -82,7 +82,7 @@ layers.screen.add(openWsGroup);
 nameOpenWsEditText.drawMethod = function(){
 	layers.screen.draw();
 };
-createOpenWsListeners(cover, hideThumbnails, layers.screen, showThumbnails, state);
+createOpenWsListeners(cover, hideThumbnails, layers.screen, state);
 
 import createSaveWsScreen from './mist-gui/saveWorkspaceScreen.js';
 const saveWsScreen = createSaveWsScreen(cover, saveWorkspace, layers.screen, state, wsExists);

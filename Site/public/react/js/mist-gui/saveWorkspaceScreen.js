@@ -4,7 +4,6 @@ export default function init(
   cover,
   saveWorkspace,
   screenLayer,
-  showThumbnails,
   state,
   wsExists
 ) {
