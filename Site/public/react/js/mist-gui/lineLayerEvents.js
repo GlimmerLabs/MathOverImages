@@ -4,6 +4,9 @@
 - on mouseover
 - on mouseout
 */
+
+import {toolboxStyle} from './styles.js';
+
 export default function(
   lineLayer,
   workLayer,
