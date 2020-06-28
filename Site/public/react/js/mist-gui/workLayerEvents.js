@@ -281,7 +281,7 @@ export default function(
             x: 1.5,
             y: 1.5
           });
-          line = outlet.attrs.lineIn;
+          const line = outlet.attrs.lineIn;
           if (line) {
             line.setAttrs({
               shadowColor: toolboxStyle.deleteColor,
@@ -313,7 +313,7 @@ export default function(
         // for all lines coming in
         var children = parent.children;
         for (var i = OUTLET_OFFSET; i < children.length; i++) {
-          line = children[i].attrs.lineIn;
+          const line = children[i].attrs.lineIn;
           if (line) {
             line.setAttrs({
               shadowColor: toolboxStyle.deleteColor,
@@ -369,7 +369,7 @@ export default function(
             x: 1,
             y: 1
           });
-          line = outlet.attrs.lineIn;
+          const line = outlet.attrs.lineIn;
           if (line) {
             line.setAttr('shadowEnabled', false);
             lineLayer.draw();
@@ -398,7 +398,7 @@ export default function(
         // deal with lines going in to the shape
         var children = parent.children;
         for (var i = OUTLET_OFFSET; i < children.length; i++) {
-          line = children[i].attrs.lineIn;
+          const line = children[i].attrs.lineIn;
           if (line) {
             line.setAttr('shadowEnabled', false);
           } // if line in exists
