@@ -1,20 +1,18 @@
+import {functionStyle, menuStyle, valueStyle} from './styles.js';
+
 /* create and add menu border */
-var borderLine = new Kinetic.Line({
+const borderLine = new Kinetic.Line({
   points: [0, menuStyle.height, size.width, menuStyle.height],
   stroke: 'black',
   strokeWidth: 2
 });
 
-layers.border.add(borderLine);
-layers.border.draw();
-
 /* create and add menu buttons */
-var valuesButton = new Kinetic.Group({
+const valuesButton = new Kinetic.Group({
   x: menuStyle.cornerWidth
 });
-layers.menuButton.add(valuesButton);
 
-var valuesButtonBox = new Kinetic.Rect({
+const valuesButtonBox = new Kinetic.Rect({
   x:0,
   y:0,
   width: menuStyle.buttonWidth,
@@ -25,7 +23,7 @@ var valuesButtonBox = new Kinetic.Rect({
 });
 valuesButton.add(valuesButtonBox);
 
-var valuesButtonRect = new Kinetic.Rect({
+const valuesButtonRect = new Kinetic.Rect({
   x: menuStyle.buttonWidth / 2,
   y: menuStyle.height / 4,
   width: valueStyle.sideLength,
@@ -35,7 +33,7 @@ var valuesButtonRect = new Kinetic.Rect({
 });
 valuesButton.add(valuesButtonRect);
 
-var valuesButtonText = new Kinetic.Text({
+const valuesButtonText = new Kinetic.Text({
   text: 'add a value',
   x: 0,
   y: menuStyle.height / 2 + menuStyle.height / 4,
@@ -48,14 +46,13 @@ var valuesButtonText = new Kinetic.Text({
 });
 valuesButton.add(valuesButtonText);
 
-var functionsButton = new Kinetic.Group({
+const functionsButton = new Kinetic.Group({
   x: menuStyle.cornerWidth + menuStyle.buttonWidth
 });
-layers.menuButton.add(functionsButton);
 
-var functionsButtonBox = new Kinetic.Rect({
-  x:0,
-  y:0,
+const functionsButtonBox = new Kinetic.Rect({
+  x: 0,
+  y: 0,
   width: menuStyle.buttonWidth,
   height: menuStyle.height,
   fill: functionStyle.colorLight,
@@ -64,7 +61,7 @@ var functionsButtonBox = new Kinetic.Rect({
 });
 functionsButton.add(functionsButtonBox);
 
-var functionsButtonRect = new Kinetic.Rect({
+const functionsButtonRect = new Kinetic.Rect({
   x: menuStyle.buttonWidth / 2 - functionStyle.rectSideLength / 2,
   y: menuStyle.height / 4,
   width: functionStyle.rectSideLength,
@@ -76,7 +73,7 @@ var functionsButtonRect = new Kinetic.Rect({
 });
 functionsButton.add(functionsButtonRect);
 
-var functionsButtonText = new Kinetic.Text({
+const functionsButtonText = new Kinetic.Text({
   text: 'add a function',
   x: 0,
   y: menuStyle.height / 2 + menuStyle.height / 4,
@@ -88,16 +85,14 @@ var functionsButtonText = new Kinetic.Text({
   fontSize: fonts.menuSize
 });
 functionsButton.add(functionsButtonText);
-layers.menuButton.draw();
 
 /**
  * toggle labels text
  */
-var toggleTag = new Kinetic.Group ({
+const toggleTag = new Kinetic.Group ({
   x: (size.width / 90),
   y: menuStyle.height + (size.width / 90)
 });
-layers.border.add(toggleTag);
 
 toggleTag.add(new Kinetic.Text({
   x:0,
@@ -109,15 +104,14 @@ toggleTag.add(new Kinetic.Text({
 }));
 
 /* add functions to menu */
-var menuFunctions = [];
+const menuFunctions = [];
 const funNames = Object.keys(functions);
 for (var i = 0; i < funNames.length; i++) {
   menuFunctions[i] = makeFunctionGroup(funNames[i], menuStyle.functsXStart, menuStyle.ySpacing);
-  layers.menu.add(menuFunctions[i]);
 }
 
 /* add values to menu */
-var menuValues = [];
+const menuValues = [];
 const valNames = Object.keys(values);
 for (var i = 0; i < valNames.length; i++) {
   menuValues[i] = makeValueGroup(valNames[i], menuStyle.valuesXStart, menuStyle.ySpacing);
@@ -130,7 +124,7 @@ for (var i = 0; i < valNames.length; i++) {
  * (left arrow and right arrow)
  * takes "type" (either functions or values)
  */
-var addScrollArrows = function(type) {
+const addScrollArrows = function(type) {
   var leftX = (type=='values') ? valuesButton.x() + menuStyle.buttonWidth : 
     functionsButton.x() + menuStyle.buttonWidth;
   var rightX = (type=='values') ? size.width - menuStyle.buttonWidth - menuStyle.arrowWidth : 
@@ -206,17 +200,14 @@ var addScrollArrows = function(type) {
   return {left: leftArrow, right: rightArrow};
 };
 /* create arrow bars */
-var valuesArrows = addScrollArrows('values');
-var functionsArrows = addScrollArrows('functions');
-/* add arrows to menuArrowLayer */
-layers.menuArrow.add(valuesArrows['left'], valuesArrows['right']);
-layers.menuArrow.add(functionsArrows['left'], functionsArrows['right']);
+const valuesArrows = addScrollArrows('values');
+const functionsArrows = addScrollArrows('functions');
 
 /**
  * showScrollArrows changes visibility of the scroll arrows to true depending 
  * on the type given. type is either 'values' or 'functions'
  */
-var showScrollArrows = function(type) {
+const showScrollArrows = function(type) {
   setTimeout(function() {
     if (type == 'values') {
       valuesArrows['left'].setAttr('visible', true);
@@ -234,7 +225,7 @@ var showScrollArrows = function(type) {
  * hideScrollArrows changes visibility of the scroll arrows to false depending 
  * on the type given. type is either 'values' or 'functions'
  */
-var hideScrollArrows = function(type) {
+const hideScrollArrows = function(type) {
   if (type == 'values') {
     valuesArrows['left'].setAttr('visible', false);
     valuesArrows['right'].setAttr('visible', false);
@@ -248,7 +239,7 @@ var hideScrollArrows = function(type) {
 /**
  * updateArrows changes the opacity of the arrows based on if they are functional.
  */
-var updateArrows = function(type) {
+const updateArrows = function(type) {
   setTimeout(function() {
     if (type == 'values') {
       var leftArrow = valuesArrows['left'];
@@ -305,7 +296,7 @@ var updateArrows = function(type) {
 }; // updateArrows
 
 //LEFT CORNER BUTTONS
-var bottomCover = new Kinetic.Rect({
+const bottomCover = new Kinetic.Rect({
   x:0,
   y:0,
   width: menuStyle.cornerWidth,
@@ -313,7 +304,8 @@ var bottomCover = new Kinetic.Rect({
   fill:'#F1F8FF',
   name: 'cover'
 });
-var makeMenuButton = function(text, x, y) {
+
+const makeMenuButton = function(text, x, y) {
   var newGroup = new Kinetic.Group({
     x: x,
     y: y
@@ -344,12 +336,36 @@ var makeMenuButton = function(text, x, y) {
   newGroup.add(newText);
   return newGroup;
 };
-var resetButton = makeMenuButton('Reset Workspace', menuStyle.offset, menuStyle.offset);
-var openButton = makeMenuButton('Open Workspace', menuStyle.offset, (2*menuStyle.offset) + menuStyle.controlHeight);
-var saveButton = makeMenuButton('Save Workspace', menuStyle.offset, (3*menuStyle.offset) + 
+
+const resetButton = makeMenuButton('Reset Workspace', menuStyle.offset, menuStyle.offset);
+const openButton = makeMenuButton('Open Workspace', menuStyle.offset, (2*menuStyle.offset) + menuStyle.controlHeight);
+const saveButton = makeMenuButton('Save Workspace', menuStyle.offset, (3*menuStyle.offset) + 
   (2*menuStyle.controlHeight));
 
-layers.menuControl.add(bottomCover);
-layers.menuControl.add(resetButton);
-layers.menuControl.add(openButton);
-layers.menuControl.add(saveButton);
+export {
+  addScrollArrows,
+  borderLine,
+  bottomCover,
+  funNames,
+  functionsArrows,
+  functionsButton,
+  functionsButtonBox,
+  functionsButtonRect,
+  functionsButtonText,
+  hideScrollArrows,
+  makeMenuButton,
+  menuFunctions,
+  menuValues,
+  openButton,
+  resetButton,
+  saveButton,
+  showScrollArrows,
+  toggleTag,
+  updateArrows,
+  valNames,
+  valuesArrows,
+  valuesButton,
+  valuesButtonBox,
+  valuesButtonRect,
+  valuesButtonText
+};

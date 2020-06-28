@@ -19,6 +19,7 @@ window.undoButton = undoButton;
 window.redoButton = redoButton;
 
 layers.toolbox.add(toolboxGroup);
+layers.toolbox.draw();
 utility.enableWorkTool();
 
 import createToolboxListeners from './mist-gui/toolboxEvents.js';
@@ -47,6 +48,7 @@ createToolboxListeners(
 
 import {funBar, funBarSaveImCover, funBarSaveImGroup, funBarSaveImText, funBarText} from './mist-gui/makeFunctionBar.js';
 layers.funBar.add(funBar);
+layers.funBar.draw();
 
 // TODO: temporary so utilityFunctions.js can access them
 window.funBarText = funBarText;
@@ -73,4 +75,79 @@ createLineLayerListeners(
   removeLine,
   insertToArray,
   actionToObject,
+);
+
+import {
+  borderLine,
+  bottomCover,
+  functionsArrows,
+  functionsButton,
+  hideScrollArrows,
+  menuFunctions,
+  menuValues,
+  openButton,
+  resetButton,
+  saveButton,
+  showScrollArrows,
+  toggleTag,
+  updateArrows,
+  valuesArrows,
+  valuesButton
+} from './mist-gui/makeMenu.js';
+layers.border.add(borderLine);
+layers.border.add(toggleTag);
+layers.border.draw();
+
+layers.menuButton.add(valuesButton);
+layers.menuButton.add(functionsButton);
+layers.menuButton.draw();
+
+menuFunctions.forEach(func => layers.menu.add(func));
+layers.menu.draw();
+
+/* add arrows to menuArrowLayer */
+layers.menuArrow.add(valuesArrows['left'], valuesArrows['right']);
+layers.menuArrow.add(functionsArrows['left'], functionsArrows['right']);
+layers.menuArrow.draw();
+
+layers.menuControl.add(bottomCover);
+layers.menuControl.add(resetButton);
+layers.menuControl.add(openButton);
+layers.menuControl.add(saveButton);
+layers.menuControl.draw();
+
+// TODO: hack to let functions in menuTweens work
+window.menuFunctions = menuFunctions;
+window.menuValues = menuValues;
+window.functionsButton = functionsButton;
+
+import createMenuListeners from './mist-gui/menuEvents.js';
+createMenuListeners(
+  expandFunctionNodes,
+  expandValueNodes,
+  functionsButton,
+  hideScrollArrows,
+  layers,
+  makeFunctionGroup,
+  moveFunctionNodesIn,
+  moveFunctionNodesRight,
+  moveFunctionsButtonLeft,
+  moveFunctionsButtonRight,
+  moveValueNodesIn,
+  openButton,
+  openSaveWsPopUp,
+  predicate.isFunction,
+  predicate.isValue,
+  removeLine,
+  resetButton,
+  saveButton,
+  showLoadWorkspaceDialog,
+  showScrollArrows,
+  state,
+  toggleTag,
+  updateArrows,
+  utility.enableWorkTool,
+  utility.removeShadow,
+  utility.setDragShadow,
+  valuesButton
 );
