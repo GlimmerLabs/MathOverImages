@@ -26,6 +26,7 @@ const constructors = constructorsInit(
 window.makeOutlet = constructors.makeOutlet;
 window.addVal = constructors.addVal;
 window.addOp = constructors.addOp;
+window.addLine = constructors.addLine;
 
 import {
   workToolGroup,
