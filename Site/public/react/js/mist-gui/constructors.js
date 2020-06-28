@@ -21,12 +21,13 @@ import {
   variableStyle,
 } from './styles.js';
 
+import {isFunction} from './predicates.js';
+
 export default function(
   addOutlet,
   applyDragBounds,
   assertRenderable,
   insertToTable,
-  isFunction,
   functions,
   layers,
   updateForward,

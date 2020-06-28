@@ -130,11 +130,19 @@ funBarStyle.iconOffset = funBarStyle.width / 16;
 funBarStyle.iconSideLength = funBarStyle.height / 4;
 funBarStyle.iconTextY = funBarStyle.height - (funBarStyle.offset * 1.3);
 
+const wsStyle = {
+  rectWidth: size.width * .4,
+  rectHeight: size.height * .25,
+};
+wsStyle.buttonHeight = wsStyle.rectWidth * .06;
+
 //SAVE SCREEN
 const saveStyle = {
   rectColor: '#e8e8e8',
   rectWidth: size.width * .4,
   rectHeight: size.height * .85,
+  groupX: (size.width - wsStyle.rectWidth) / 2,
+  groupY: (size.height - wsStyle.rectHeight) / 2,
 }
 
 saveStyle.saveGroupX = (size.width - saveStyle.rectWidth) / 2;
@@ -146,6 +154,8 @@ saveStyle.canvasShiftX = saveStyle.saveGroupX + (saveStyle.rectWidth - saveStyle
 saveStyle.canvasShiftY = saveStyle.saveGroupY + (saveStyle.rectWidth - saveStyle.canvasSide) / 2;
 
 saveStyle.textShiftX = (saveStyle.rectWidth - saveStyle.canvasSide) / 2;
+wsStyle.buttonShiftX = saveStyle.textShiftX;
+wsStyle.buttonWidth = ((wsStyle.rectWidth / 2) - (3 * wsStyle.buttonShiftX)) / 2;
 saveStyle.textShiftY = ((saveStyle.rectWidth - saveStyle.canvasSide) / 1.5) + saveStyle.canvasSide;
 saveStyle.textWidth = saveStyle.canvasSide;
 saveStyle.textFontSize = size.width / 56.25;
@@ -173,6 +183,7 @@ openWsStyle.groupY = (size.height - openWsStyle.rectHeight) / 2;
 openWsStyle.buttonShiftX = saveStyle.textShiftX;//((popWsRectWidth / 2) - (2 * popWsButtonWidth)) / 3;
 openWsStyle.buttonWidth = ((openWsStyle.rectWidth / 2) - (3 * openWsStyle.buttonShiftX)) / 2;
 openWsStyle.buttonHeight = openWsStyle.rectWidth * .06;
+
 export {
   dragShadowColor,
   editableTextStyle,
@@ -190,4 +201,5 @@ export {
   toolboxStyle,
   valueStyle,
   variableStyle,
+  wsStyle,
 };

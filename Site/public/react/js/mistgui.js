@@ -83,6 +83,9 @@ nameOpenWsEditText.drawMethod = function(){
 };
 createOpenWsListeners(cover, hideThumbnails, layers.screen, showThumbnails, state);
 
+import createSaveWsScreen from './mist-gui/saveWorkspaceScreen.js';
+const saveWsScreen = createSaveWsScreen(cover, saveWorkspace, layers.screen, state, wsExists);
+
 import {funBar, funBarSaveImCover, funBarSaveImGroup, funBarSaveImText, funBarText} from './mist-gui/makeFunctionBar.js';
 layers.funBar.add(funBar);
 layers.funBar.draw();
@@ -120,7 +123,7 @@ initMenu(
   constructors.makeFunctionGroup,
   constructors.makeValueGroup,
   makeLabels.makeLabel,
-  openSaveWsPopUp,
+  saveWsScreen.openSaveWsPopUp,
   removeLine,
   showLoadWorkspaceDialog,
   stage,

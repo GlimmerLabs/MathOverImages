@@ -1,8 +1,8 @@
 import {openWsStyle, saveStyle} from './styles.js';
 
 const openWsGroup = new Kinetic.Group({
-	x: popSaveWsGroupX,
-	y: popSaveWsGroupY,
+	x: saveStyle.groupX,
+	y: saveStyle.groupY,
 	visible: false
 });
 
