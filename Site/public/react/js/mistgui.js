@@ -2,7 +2,7 @@ import {create_stage, initializeStage, prevWorkspace} from './mist-gui/initializ
 const stage = create_stage('container');
 // TODO: temporary hack so that utility.renderCanvas can workspaceFunctions.js can access the stage
 window.stage = stage;
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener('DOMContentLoaded', () => {
   initializeStage('container', initWorkspace, layers, readyEditing, size, state);
   stage.draw();
 });
