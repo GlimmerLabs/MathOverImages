@@ -1,20 +1,20 @@
- /* create and add menu border */
+/* create and add menu border */
 var borderLine = new Kinetic.Line({
   points: [0, menuStyle.height, size.width, menuStyle.height],
   stroke: 'black',
   strokeWidth: 2
 });
 
- layers.border.add(borderLine);
- layers.border.draw();
+layers.border.add(borderLine);
+layers.border.draw();
 
- /* create and add menu buttons */
- var valuesButton = new Kinetic.Group({
+/* create and add menu buttons */
+var valuesButton = new Kinetic.Group({
   x: menuStyle.cornerWidth
- });
- layers.menuButton.add(valuesButton);
+});
+layers.menuButton.add(valuesButton);
 
- var valuesButtonBox = new Kinetic.Rect({
+var valuesButtonBox = new Kinetic.Rect({
   x:0,
   y:0,
   width: menuStyle.buttonWidth,
@@ -22,20 +22,20 @@ var borderLine = new Kinetic.Line({
   fill: valueStyle.menuColorLight,
   stroke: 'black',
   strokeWidth: 2
- });
- valuesButton.add(valuesButtonBox);
+});
+valuesButton.add(valuesButtonBox);
 
- var valuesButtonRect = new Kinetic.Rect({
+var valuesButtonRect = new Kinetic.Rect({
   x: menuStyle.buttonWidth / 2,
   y: menuStyle.height / 4,
   width: valueStyle.sideLength,
   height: valueStyle.sideLength,
   fill: valueStyle.menuColor,
   rotation: 45,
- });
- valuesButton.add(valuesButtonRect);
+});
+valuesButton.add(valuesButtonRect);
 
- var valuesButtonText = new Kinetic.Text({
+var valuesButtonText = new Kinetic.Text({
   text: 'add a value',
   x: 0,
   y: menuStyle.height / 2 + menuStyle.height / 4,
@@ -45,15 +45,15 @@ var borderLine = new Kinetic.Line({
   align: 'center',
   fontFamily: fonts.default,
   fontSize: fonts.menuSize
- });
- valuesButton.add(valuesButtonText);
+});
+valuesButton.add(valuesButtonText);
 
- var functionsButton = new Kinetic.Group({
+var functionsButton = new Kinetic.Group({
   x: menuStyle.cornerWidth + menuStyle.buttonWidth
- });
- layers.menuButton.add(functionsButton);
+});
+layers.menuButton.add(functionsButton);
 
- var functionsButtonBox = new Kinetic.Rect({
+var functionsButtonBox = new Kinetic.Rect({
   x:0,
   y:0,
   width: menuStyle.buttonWidth,
@@ -61,10 +61,10 @@ var borderLine = new Kinetic.Line({
   fill: functionStyle.colorLight,
   stroke: 'black',
   strokeWidth: 2
- });
- functionsButton.add(functionsButtonBox);
+});
+functionsButton.add(functionsButtonBox);
 
- var functionsButtonRect = new Kinetic.Rect({
+var functionsButtonRect = new Kinetic.Rect({
   x: menuStyle.buttonWidth / 2 - functionStyle.rectSideLength / 2,
   y: menuStyle.height / 4,
   width: functionStyle.rectSideLength,
@@ -73,10 +73,10 @@ var borderLine = new Kinetic.Line({
   lineJoin: 'round',
   stroke: functionStyle.color,
   strokeWidth: functionStyle.strokeWidth
- });
- functionsButton.add(functionsButtonRect);
+});
+functionsButton.add(functionsButtonRect);
 
- var functionsButtonText = new Kinetic.Text({
+var functionsButtonText = new Kinetic.Text({
   text: 'add a function',
   x: 0,
   y: menuStyle.height / 2 + menuStyle.height / 4,
@@ -86,43 +86,43 @@ var borderLine = new Kinetic.Line({
   align: 'center',
   fontFamily: fonts.default,
   fontSize: fonts.menuSize
- });
- functionsButton.add(functionsButtonText);
- layers.menuButton.draw();
+});
+functionsButton.add(functionsButtonText);
+layers.menuButton.draw();
 
- /**
-  * toggle labels text
-  */
-  var toggleTag = new Kinetic.Group ({
-    x: (size.width / 90),
-    y: menuStyle.height + (size.width / 90)
-  });
-  layers.border.add(toggleTag);
+/**
+ * toggle labels text
+ */
+var toggleTag = new Kinetic.Group ({
+  x: (size.width / 90),
+  y: menuStyle.height + (size.width / 90)
+});
+layers.border.add(toggleTag);
 
-  toggleTag.add(new Kinetic.Text({
-    x:0,
-    y:0,
-    text: 'Turn Labels Off',
-    fontFamily: fonts.default,
-    fontSize: fonts.menuSize,
-    fill: '#787878'
-  }));
+toggleTag.add(new Kinetic.Text({
+  x:0,
+  y:0,
+  text: 'Turn Labels Off',
+  fontFamily: fonts.default,
+  fontSize: fonts.menuSize,
+  fill: '#787878'
+}));
 
- /* add functions to menu */
- var menuFunctions = [];
- const funNames = Object.keys(functions);
- for (var i = 0; i < funNames.length; i++) {
+/* add functions to menu */
+var menuFunctions = [];
+const funNames = Object.keys(functions);
+for (var i = 0; i < funNames.length; i++) {
   menuFunctions[i] = makeFunctionGroup(funNames[i], menuStyle.functsXStart, menuStyle.ySpacing);
   layers.menu.add(menuFunctions[i]);
- }
+}
 
- /* add values to menu */
- var menuValues = [];
- const valNames = Object.keys(values);
- for (var i = 0; i < valNames.length; i++) {
+/* add values to menu */
+var menuValues = [];
+const valNames = Object.keys(values);
+for (var i = 0; i < valNames.length; i++) {
   menuValues[i] = makeValueGroup(valNames[i], menuStyle.valuesXStart, menuStyle.ySpacing);
   layers.menu.add(menuValues[i]);
- }
+}
 
 
 /**
@@ -216,7 +216,7 @@ layers.menuArrow.add(functionsArrows['left'], functionsArrows['right']);
  * showScrollArrows changes visibility of the scroll arrows to true depending 
  * on the type given. type is either 'values' or 'functions'
  */
- var showScrollArrows = function(type) {
+var showScrollArrows = function(type) {
   setTimeout(function() {
     if (type == 'values') {
       valuesArrows['left'].setAttr('visible', true);
@@ -248,7 +248,7 @@ var hideScrollArrows = function(type) {
 /**
  * updateArrows changes the opacity of the arrows based on if they are functional.
  */
- var updateArrows = function(type) {
+var updateArrows = function(type) {
   setTimeout(function() {
     if (type == 'values') {
       var leftArrow = valuesArrows['left'];
@@ -313,7 +313,7 @@ var bottomCover = new Kinetic.Rect({
   fill:'#F1F8FF',
   name: 'cover'
 });
- var makeMenuButton = function(text, x, y) {
+var makeMenuButton = function(text, x, y) {
   var newGroup = new Kinetic.Group({
     x: x,
     y: y
@@ -342,7 +342,7 @@ var bottomCover = new Kinetic.Rect({
     fontSize: fonts.menuSize
   });
   newGroup.add(newText);
-return newGroup;
+  return newGroup;
 };
 var resetButton = makeMenuButton('Reset Workspace', menuStyle.offset, menuStyle.offset);
 var openButton = makeMenuButton('Open Workspace', menuStyle.offset, (2*menuStyle.offset) + menuStyle.controlHeight);
