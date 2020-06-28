@@ -15,7 +15,7 @@
   an integer x, and an integer y, and returns the corresponding function node object,
   with top right corner at the given x, y coordinate.
   */
-var makeFunctionGroup = function(funName, x, y) {
+function makeFunctionGroup(funName, x, y) {
   /* create group that will contain information on the function and the shapes 
       making up the representation on screen. */
   var newGroup = new Kinetic.Group({
@@ -84,7 +84,7 @@ var makeFunctionGroup = function(funName, x, y) {
   an integer x, and an integer y, and returns the corresponding function node object,
   centered at (x + width / 40, y + width / 40).
   */
-var makeValueGroup = function(valName, x, y) {
+function makeValueGroup(valName, x, y) {
   /* create group that contains information on the value and shapes to be displayed. */
   var newGroup = new Kinetic.Group({
     name: valName,
@@ -148,7 +148,7 @@ var makeValueGroup = function(valName, x, y) {
   workLayer.add(hex);
   workLayer.add(hex);
   */
-var makeVariableGroup = function(x, y) {
+function makeVariableGroup(x, y) {
   /* initialize group for the variable */
   var newGroup = new Kinetic.Group({
     name: 'variable',
@@ -193,7 +193,7 @@ var makeVariableGroup = function(x, y) {
   to be added to that group.
   It DOES NOT add the outlet to the group.
   */
-var makeOutlet = function(functGroup) {
+function makeOutlet(functGroup) {
   var bezPoint = size.width / 50;
   var outlet = new Kinetic.Shape({
     sceneFunc: function(context) {
@@ -220,7 +220,7 @@ var makeOutlet = function(functGroup) {
   makeLine takes either a functionGroup object or valueGroup object as input
   (source) and creates a line that begins at the left edge of source. 
   */
-var makeLine = function(source) {
+function makeLine(source) {
   var yOffset;
   if (predicate.isFunction(source)) {
     yOffset = (source.children[0].height() + functionStyle.strokeWidth) / 2;
@@ -251,7 +251,7 @@ var makeLine = function(source) {
  * @pre
  *   sink.children[outletIndex + 3] is an unused outlet
  */
-var addLine = function(source, sink, outletIndex) {
+function addLine(source, sink, outletIndex) {
   if (outletIndex == undefined) {
     throw "addLine requires an outlet index";
   }
@@ -284,7 +284,7 @@ var addLine = function(source, sink, outletIndex) {
  * addOp adds a function object to the workLayer at x, y, with the corresponding attributes given 
  * by the funName key.
  */
-var addOp = function(funName, x, y) {
+function addOp(funName, x, y) {
   var op = makeFunctionGroup(funName, x + functionStyle.halfStrokeWidth, y);
   op.setAttr("visible",true);
   utility.addOutlet(op);
@@ -302,7 +302,7 @@ var addOp = function(funName, x, y) {
  * addVal adds a value object to the workLayer at x, y, with the corresponding attributes given 
  * by the valName key.
  */
-var addVal = function(valName, x, y) {
+function addVal(valName, x, y) {
   if (valName.substring(0, 8) == 'constant') {
     var constant = valName.substring(8);
     var val = makeValueGroup('constant', x, y);
@@ -324,7 +324,7 @@ var addVal = function(valName, x, y) {
   return val;
 };
 
-var createEditableText = function (group) { 
+function createEditableText (group) { 
   var backgroundBox = new Kinetic.Rect({
     x: -((editableTextStyle.width - functionStyle.totalSideLength) / 2) - 4,
     y: functionStyle.totalSideLength + 5,
