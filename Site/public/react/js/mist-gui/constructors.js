@@ -385,7 +385,7 @@ export default function(
     addLine: addLine,
     addOp: addOp,
     addVal: addVal,
-    createEditableText : createEditableText ,
+    createEditableText: createEditableText,
     makeFunctionGroup: makeFunctionGroup,
     makeLine: makeLine,
     makeOutlet: makeOutlet,

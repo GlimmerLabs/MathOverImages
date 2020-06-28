@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 import {init as makeLabelsInit} from './mist-gui/makeLabels.js';
-const makeLabels = makeLabelsInit(actionArray, MIST.builtins.functions);
+const makeLabels = makeLabelsInit(state, MIST.builtins.functions);
 
 import constructorsInit from './mist-gui/constructors.js';
 const constructors = constructorsInit(
@@ -66,11 +66,9 @@ createToolboxListeners(
   deleteToolGroup,
   undoGroup,
   undoButton,
-  currIndex, // TODO: Will this pass by reference or value?
   shadeUndoRedo,
   layers.label,
   redoGroup,
-  totalIndex, // TODO: Will this pass by reference or value?
   redoButton,
   redoAction,
   toolboxControl,
@@ -138,7 +136,6 @@ initMenu(
 import createDragLayerListeners from './mist-gui/dragLayerEvents.js';
 createDragLayerListeners(
   OUTLET_OFFSET,
-  actionArray,
   actionToObject,
   constructors.createEditableText,
   inTable,

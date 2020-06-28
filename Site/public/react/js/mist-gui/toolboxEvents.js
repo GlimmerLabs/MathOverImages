@@ -25,11 +25,9 @@ export default function(
   deleteToolGroup,
   undoGroup,
   undoButton,
-  currIndex,
   shadeUndoRedo,
   labelLayer,
   redoGroup,
-  totalIndex,
   redoButton,
   redoAction,
   toolboxControl,
@@ -74,22 +72,22 @@ export default function(
   });
 
   undoGroup.on('mousedown', function() {
-    if (currIndex > 0) {
+    if (state.currIndex > 0) {
       undoButton.setAttr('shadowEnabled', true);
       toolboxLayer.draw();
     }
   });
 
   undoGroup.on('mouseup', function() {
-    if (currIndex > 0) {
+    if (state.currIndex > 0) {
       if (state.makingLine) {
         removeLine(state.currLine);
         state.makingLine = false; 
         lineLayer.draw();
       } // if making a line
       undoButton.setAttr('shadowEnabled', false);
-      undoAction(actionArray[currIndex - 1]);
-      currIndex--;
+      undoAction(state.actionArray[state.currIndex - 1]);
+      state.currIndex--;
       shadeUndoRedo();
       state.openTag.destroy();
       labelLayer.draw();
@@ -98,22 +96,22 @@ export default function(
   });
 
   redoGroup.on('mousedown', function() {
-    if (totalIndex > currIndex) {
+    if (state.totalIndex > state.currIndex) {
       redoButton.setAttr('shadowEnabled', true);
       toolboxLayer.draw();
     } // if there is an action to redo
   });
 
   redoGroup.on('mouseup', function() {
-    if (totalIndex > currIndex) {
+    if (state.totalIndex > state.currIndex) {
       if (state.makingLine) {
         removeLine(state.currLine);
         state.makingLine = false; 
         lineLayer.draw();
       } // if making a line
       redoButton.setAttr('shadowEnabled', false);
-      redoAction(actionArray[currIndex]);
-      currIndex++;
+      redoAction(state.actionArray[state.currIndex]);
+      state.currIndex++;
       shadeUndoRedo();
       state.openTag.destroy();
       labelLayer.draw();
@@ -130,7 +128,7 @@ export default function(
     var group = evt.target.getParent();
     var name = group.name();
     if (name == 'undo' || name == 'redo') {
-      if ((name == 'undo' && currIndex > 0) || (name == 'redo' && totalIndex > currIndex)) {
+      if ((name == 'undo' && state.currIndex > 0) || (name == 'redo' && state.totalIndex > state.currIndex)) {
         setTimeout(function(){
           if (state.openTag) {
             state.openTag.destroy();

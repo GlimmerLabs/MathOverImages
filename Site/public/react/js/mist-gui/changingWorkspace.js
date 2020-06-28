@@ -5,24 +5,6 @@
  var elementTable = {};
 
 /**
- * actionArray is an array that contains an action-object for every action in
- * a workspace. Used to implement undo/redo feature
- */
- var actionArray = [];
-
-/**
- * currIndex keeps track of the index in actionArray where it would be appropriate to 
- * add the next action. Initialized at 0.
- */
- var currIndex = 0;
-/**
- * a count of the total usable actions in actionArray. A user can redo until 
- * (totalIndex - 1) after undoing. Once a user creates a new action after undoing,
- * the totalIndex is set to the currIndex. 
- */
- var totalIndex = 0;
-
-/**
   * actionToObject takes an function or value group and type of action, and creates an object 
   *  within an array to signify the action.
   * types of actions include:
@@ -98,9 +80,9 @@
  * redo/undo button shading and draws the toolboxLayer
  */
  var insertToArray = function(actionObj) {
-     actionArray[currIndex] = actionObj;
-     currIndex++;
-     totalIndex = currIndex;
+     state.actionArray[state.currIndex] = actionObj;
+     state.currIndex++;
+     state.totalIndex = state.currIndex;
      shadeUndoRedo();
      layers.toolbox.draw();
  };
@@ -132,7 +114,7 @@
    */
    var undoAction = function(actionObj) {
     // if the an undo action is valid (there are actions to be undone)
-    if (currIndex > 0) {
+    if (state.currIndex > 0) {
        var action = actionObj.action;
        var element = elementTable[actionObj.id];
      // if the action in question is a deletion
@@ -234,7 +216,7 @@
    */
    var redoAction = function(actionObj) {
     // if the currIndex is less than the totalIndex (there are still valid actions)
-    if (currIndex < totalIndex) {
+    if (state.currIndex < state.totalIndex) {
       var action = actionObj.action;
       var element = elementTable[actionObj.id];
       // if you are redoing a delete
@@ -455,7 +437,7 @@
    */ 
    var shadeUndoRedo = function() {
     // if an undo action is possible
-    if (currIndex > 0) {
+    if (state.currIndex > 0) {
       // color the undo button grey
       undoButton.setAttr('fill', 'grey');
   } 
@@ -465,7 +447,7 @@
       undoButton.setAttr('fill', '#E3E3E3');
   } 
     // is a redo action is possible
-    if (currIndex < totalIndex) {
+    if (state.currIndex < state.totalIndex) {
       // color the undo button grey
       redoButton.setAttr('fill', 'grey');
   }

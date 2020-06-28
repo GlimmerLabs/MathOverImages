@@ -10,7 +10,6 @@ import {isFunction, isValue} from './predicates.js';
 
 export default function(
   OUTLET_OFFSET,
-  actionArray,
   actionToObject,
   createEditableText,
   inTable,
@@ -69,8 +68,8 @@ export default function(
       renderCanvas(group);
     } // if 
     if (inTable(group)) {
-      actionArray[currIndex - 1].x2 = group.x();
-      actionArray[currIndex - 1].y2 = group.y();
+      state.actionArray[state.currIndex - 1].x2 = group.x();
+      state.actionArray[state.currIndex - 1].y2 = group.y();
     }
     else {
       if (group.attrs.name == 'constant' && !group.children[3]) {

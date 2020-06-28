@@ -1,7 +1,7 @@
 import {fonts, functionStyle, toolboxStyle} from './styles.js';
 import {isValue} from './predicates.js';
 
-export function init(actionArray, builtinFunctions) {
+export function init(state, builtinFunctions) {
   /**
    * getInfoText takes a string (key), looks up the information for that key in 
    * MIST.builtins.functions and returns a string to be used in the label for that key.
@@ -166,13 +166,13 @@ export function init(actionArray, builtinFunctions) {
         fill: 'black'
       }));
       if (name == 'redo') {
-        var actionObj = actionArray[currIndex];
+        var actionObj = state.actionArray[state.currIndex];
         var action = actionObj.action;
         var newText = 'redo ' + action + ' (ctrl-y)'; 
         label.children[1].setAttr('text', newText)
       }
       else if (name == 'undo') {
-        var actionObj = actionArray[currIndex - 1];
+        var actionObj = state.actionArray[state.currIndex - 1];
         var action = actionObj.action;
         var newText = 'undo ' + action + ' (ctrl-z)';
         label.children[1].setAttr('text', newText)

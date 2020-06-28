@@ -31,6 +31,22 @@ const values = {
 }
 const state = {
   currentWorkspace: null,
+  /**
+   * actionArray is an array that contains an action-object for every action in
+   * a workspace. Used to implement undo/redo feature
+   */
+  actionArray: [],
+  /**
+   * currIndex keeps track of the index in actionArray where it would be appropriate to 
+   * add the next action. Initialized at 0.
+   */
+  currIndex: 0,
+  /**
+   * a count of the total usable actions in actionArray. A user can redo until 
+   * (totalIndex - 1) after undoing. Once a user creates a new action after undoing,
+   * the totalIndex is set to the currIndex. 
+   */
+  totalIndex: 0,
   // TOOLBOX BOOLEANS
   lineToolOn: false,
   workToolOn: false,

@@ -125,10 +125,10 @@ var resetWorkspace = function() {
   // empty elementTable
   elementTable = {};
   // empty actionArray
-  actionArray = [];
+  state.actionArray = [];
   // reset indexes and variables
-  currIndex = 0;
-  totalIndex = 0;
+  state.currIndex = 0;
+  state.totalIndex = 0;
   state.currShape = null;
   state.dragShape = null;
   utility.updateFunBar();

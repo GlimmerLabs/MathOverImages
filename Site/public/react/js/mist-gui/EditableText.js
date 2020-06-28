@@ -349,18 +349,18 @@ function readyEditing(stage)
         e.preventDefault(); // Prevents backspace from moving back a page
       }
       else if (state.map[17] && state.map[90]) { // 17 is the control key; 90 is the z key
-        if (currIndex > 0) {
-          undoAction(actionArray[currIndex - 1]);
-          currIndex--;
+        if (state.currIndex > 0) {
+          undoAction(state.actionArray[state.currIndex - 1]);
+          state.currIndex--;
           shadeUndoRedo();
           layers.toolbox.draw();
         }
       }
       else if (state.map[17] && state.map[89]) { // 17 is the control key; 89 is the y key
-        if (totalIndex > currIndex) {
+        if (state.totalIndex > state.currIndex) {
           console.log("got to redo");
-          redoAction(actionArray[currIndex]);
-          currIndex++;
+          redoAction(state.actionArray[state.currIndex]);
+          state.currIndex++;
           shadeUndoRedo();
           layers.toolbox.draw();
         }
