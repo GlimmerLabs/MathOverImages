@@ -15,6 +15,7 @@ export default function(
   inTable,
   insertToArray,
   insertToTable,
+  functions,
   layers,
   isRenderable,
   state,

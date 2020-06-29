@@ -1,6 +1,6 @@
 import {fonts, functionStyle, menuStyle, size, valueStyle} from './styles.js';
 
-export default function init(layers, makeFunctionGroup, makeValueGroup) {
+export default function init(functions, layers, makeFunctionGroup, makeValueGroup, values) {
   /* create and add menu border */
   const borderLine = new Kinetic.Line({
     points: [0, menuStyle.height, size.width, menuStyle.height],

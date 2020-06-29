@@ -1,3 +1,12 @@
+import {OUTLET_OFFSET, functions, layers, state, values} from './mist-gui/globalVariables.js';
+// TODO: temporary hack so that utility.enableWorkTool will work
+window.state = state;
+window.layers = layers;
+// TODO: temporary hack so that utility.addOutlet will work
+window.OUTLET_OFFSET = OUTLET_OFFSET;
+// TODO: temporary hack so that utility.findRenderFunction will work
+window.functions = functions;
+
 import initEditableText from './mist-gui/EditableText.js';
 
 import {create_stage, initializeStage, prevWorkspace} from './mist-gui/initializeStage.js';
@@ -171,6 +180,7 @@ createLineLayerListeners(
 
 import initMenu from './mist-gui/menuEvents.js';
 initMenu(
+  functions,
   layers,
   constructors.makeFunctionGroup,
   constructors.makeValueGroup,
@@ -183,6 +193,7 @@ initMenu(
   utility.enableWorkTool,
   utility.removeShadow,
   utility.setDragShadow,
+  values,
 );
 
 import createDragLayerListeners from './mist-gui/dragLayerEvents.js';
@@ -193,6 +204,7 @@ createDragLayerListeners(
   changeWs.inTable,
   changeWs.insertToArray,
   changeWs.insertToTable,
+  functions,
   layers,
   predicate.isRenderable,
   state,

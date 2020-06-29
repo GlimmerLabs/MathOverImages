@@ -30,6 +30,7 @@ import makeMenu from './makeMenu.js'
 import {isFunction, isValue} from './predicates.js';
 
 export default function initMenu(
+  functions,
   layers,
   makeFunctionGroup,
   makeValueGroup,
@@ -42,8 +43,9 @@ export default function initMenu(
   enableWorkTool,
   removeShadow,
   setDragShadow,
+  values,
 ) {
-  const menu = makeMenu(layers, makeFunctionGroup, makeValueGroup);
+  const menu = makeMenu(functions, layers, makeFunctionGroup, makeValueGroup, values);
   // TODO: hack to let functions in predicate work
   window.menuFunctions = menu.menuFunctions;
   window.menuValues = menu.menuValues;

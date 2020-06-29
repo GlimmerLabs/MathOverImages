@@ -84,7 +84,7 @@ const state = {
 /** 
  * The offset in an operation node to the set of offsets.
  */
-var OUTLET_OFFSET = 3;
+const OUTLET_OFFSET = 3;
 
 
 /**
@@ -122,4 +122,12 @@ const layers = {
   label: new Kinetic.Layer(),
   screen: new Kinetic.Layer(),
   render: new Kinetic.Layer(),
+};
+
+export {
+  OUTLET_OFFSET,
+  functions,
+  layers,
+  state,
+  values,
 };
