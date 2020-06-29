@@ -51,7 +51,7 @@ export default function(
     --if it is a new object, add the appropriate number of outlets to it
     2. if its in the menu area destroy it and all lines attached to it
     */
-  var initToWorkLayer = function(group) {
+  function initToWorkLayer(group) {
     group.moveTo(layers.work);
 
     if (isFunction(group) && group.children.length < 4) {
