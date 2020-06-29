@@ -6,12 +6,33 @@ window.stage = stage;
 import {init as makeLabelsInit} from './mist-gui/makeLabels.js';
 const makeLabels = makeLabelsInit(state, MIST.builtins.functions);
 
+import changeWsInit from './mist-gui/changingWorkspace.js';
+const changeWs = changeWsInit(
+  OUTLET_OFFSET,
+  utility.addOutlet,
+  predicate.assertRenderable,
+  utility.collapseCanvas,
+  funBarText,
+  layers,
+  redoButton,
+  utility.removeOutlet,
+  utility.removeShadow,
+  utility.renderCanvas,
+  utility.replaceNode,
+  state,
+  undoButton,
+  utility.updateForward,
+  utility.updateFunBar,
+);
+// TODO: temporary hack so that EditableText works
+window.removeLine = changeWs.removeLine;
+
 import constructorsInit from './mist-gui/constructors.js';
 const constructors = constructorsInit(
   utility.addOutlet,
   utility.applyDragBounds,
   predicate.assertRenderable,
-  insertToTable,
+  changeWs.insertToTable,
   functions,
   layers,
   utility.updateForward,
@@ -30,7 +51,7 @@ const wsFunctions = initWsFunctions(
   constructors.addVal,
   layers,
   restore,
-  shadeUndoRedo,
+  changeWs.shadeUndoRedo,
   stage,
   state,
   utility.updateFunBar,
@@ -66,7 +87,7 @@ createToolboxListeners(
   workToolGroup,
   stage,
   state,
-  removeLine,
+  changeWs.removeLine,
   layers.line,
   utility.enableWorkTool,
   lineToolGroup,
@@ -75,11 +96,11 @@ createToolboxListeners(
   deleteToolGroup,
   undoGroup,
   undoButton,
-  shadeUndoRedo,
+  changeWs.shadeUndoRedo,
   layers.label,
   redoGroup,
   redoButton,
-  redoAction,
+  changeWs.redoAction,
   toolboxControl,
   toolboxGroup,
   makeLabels.makeToolLabel
@@ -124,9 +145,9 @@ createLineLayerListeners(
   layers.line,
   layers.work,
   state,
-  removeLine,
-  insertToArray,
-  actionToObject,
+  changeWs.removeLine,
+  changeWs.insertToArray,
+  changeWs.actionToObject,
 );
 
 import initMenu from './mist-gui/menuEvents.js';
@@ -136,7 +157,7 @@ initMenu(
   constructors.makeValueGroup,
   makeLabels.makeLabel,
   saveWsScreen.openSaveWsPopUp,
-  removeLine,
+  changeWs.removeLine,
   wsFunctions.showLoadWorkspaceDialog,
   stage,
   state,
@@ -148,11 +169,11 @@ initMenu(
 import createDragLayerListeners from './mist-gui/dragLayerEvents.js';
 createDragLayerListeners(
   OUTLET_OFFSET,
-  actionToObject,
+  changeWs.actionToObject,
   constructors.createEditableText,
-  inTable,
-  insertToArray,
-  insertToTable,
+  changeWs.inTable,
+  changeWs.insertToArray,
+  changeWs.insertToTable,
   layers,
   predicate.isRenderable,
   state,
@@ -168,15 +189,15 @@ createDragLayerListeners(
 import createWorkLayerListeners from './mist-gui/workLayerEvents.js';
 createWorkLayerListeners(
   OUTLET_OFFSET,
-  actionToObject,
-  insertToArray,
-  insertToTable,
+  changeWs.actionToObject,
+  changeWs.insertToArray,
+  changeWs.insertToTable,
   layers.drag,
   layers.line,
   layers.work,
   predicate.assertRenderable,
   constructors.makeLine,
-  removeLine,
+  changeWs.removeLine,
   state,
   utility.addOutlet,
   utility.collapseCanvas,
@@ -189,6 +210,6 @@ createWorkLayerListeners(
 );
 
 window.addEventListener('DOMContentLoaded', () => {
-  initializeStage('container', wsFunctions.initWorkspace, layers, readyEditing, size, state);
+  initializeStage('container', wsFunctions.initWorkspace, wsFunctions.jsonToWorkspace, layers, readyEditing, size, state);
   stage.draw();
 });

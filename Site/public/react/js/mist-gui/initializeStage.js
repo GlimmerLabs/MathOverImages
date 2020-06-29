@@ -35,6 +35,7 @@ let prevWorkspace;
 function initializeStage(
   containerName,
   initWorkspace,
+  jsonToWorkspace,
   layers,
   readyEditing,
   size,
