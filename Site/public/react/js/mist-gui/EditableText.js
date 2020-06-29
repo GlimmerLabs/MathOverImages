@@ -365,7 +365,6 @@ export default function(
           }
         } else if (state.map[17] && state.map[89]) { // 17 is the control key; 89 is the y key
           if (state.totalIndex > state.currIndex) {
-            console.log("got to redo");
             redoAction(state.actionArray[state.currIndex]);
             state.currIndex++;
             shadeUndoRedo();
