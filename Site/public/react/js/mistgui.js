@@ -1,3 +1,5 @@
+import initEditableText from './mist-gui/EditableText.js';
+
 import {create_stage, initializeStage, prevWorkspace} from './mist-gui/initializeStage.js';
 const stage = create_stage('container');
 // TODO: temporary hack so that utility.renderCanvas can workspaceFunctions.js can access the stage
@@ -26,6 +28,23 @@ const changeWs = changeWsInit(
 );
 // TODO: temporary hack so that EditableText works
 window.removeLine = changeWs.removeLine;
+
+const EditableText = initEditableText(
+  deleteToolGroup,
+  utility.disableTool,
+  utility.enableWorkTool,
+  layers,
+  lineToolGroup,
+  changeWs.redoAction,
+  removeLine,
+  changeWs.shadeUndoRedo,
+  state,
+  changeWs.undoAction,
+  utility.updateForward,
+  utility.updateFunBar,
+  workToolGroup,
+  utility.wrapValueText,
+);
 
 import constructorsInit from './mist-gui/constructors.js';
 const constructors = constructorsInit(
@@ -210,6 +229,14 @@ createWorkLayerListeners(
 );
 
 window.addEventListener('DOMContentLoaded', () => {
-  initializeStage('container', wsFunctions.initWorkspace, wsFunctions.jsonToWorkspace, layers, readyEditing, size, state);
+  initializeStage(
+    'container',
+    wsFunctions.initWorkspace,
+    wsFunctions.jsonToWorkspace,
+    layers,
+    EditableText.readyEditing,
+    size,
+    state
+  );
   stage.draw();
 });
