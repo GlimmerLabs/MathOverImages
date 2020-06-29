@@ -158,7 +158,7 @@ createToolboxListeners(
 );
 
 import {cover, nameEditText, popSaveGroup, init as saveScreenInit} from './mist-gui/saveScreen.js';
-const saveScreen = saveScreenInit(layers);
+const saveScreen = saveScreenInit(wsFunctions.imageExists, layers, wsFunctions.saveImage, wsFunctions.showSuccessDialog);
 
 import {createOpenWsListeners, nameOpenWsEditText, openWsGroup} from './mist-gui/openWorkspaceScreen.js';
 layers.screen.add(openWsGroup);

@@ -196,7 +196,7 @@ export const popSaveButtonText = new Kinetic.Text({
 });
 popSaveButtonGroup.add(popSaveButtonText);
 
-export function init(layers) {
+export function init(imageExists, layers, saveImage, showSuccessDialog) {
   layers.screen.add(cover);
   layers.screen.add(popSaveGroup);
   nameEditText.drawMethod = function(){
