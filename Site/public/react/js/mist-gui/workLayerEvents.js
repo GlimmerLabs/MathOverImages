@@ -40,6 +40,7 @@ There are 3 different modes:
   */
 
 import {isCycle, isFunction, isImageBox, isOutlet, isValue} from './predicates.js';
+import {toolboxStyle} from './styles.js;
 
 // +----------+--------------------------------------------------------
 // | Handlers |
