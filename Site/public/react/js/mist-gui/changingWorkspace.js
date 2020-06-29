@@ -1,3 +1,4 @@
+import {lineStrokeWidth} from './styles.js';
 import {isFunction, isLine, isValue} from './predicates.js';
 
 export default function init(

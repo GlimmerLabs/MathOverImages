@@ -22,6 +22,7 @@ import {
 } from './styles.js';
 
 import {isFunction} from './predicates.js';
+import {lineStrokeWidth} from './styles.js';
 
 export default function(
   addOutlet,

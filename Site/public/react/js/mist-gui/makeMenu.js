@@ -1,4 +1,5 @@
 import {fonts, functionStyle, menuStyle, size, valueStyle} from './styles.js';
+import {canMoveLeft, canMoveRight} from './predicates.js';
 
 export default function init(functions, layers, makeFunctionGroup, makeValueGroup, values) {
   /* create and add menu border */
@@ -245,7 +246,7 @@ export default function init(functions, layers, makeFunctionGroup, makeValueGrou
       if (type == 'values') {
         var leftArrow = valuesArrows['left'];
         var rightArrow = valuesArrows['right'];
-        if (predicate.canMoveRight('values')) {
+        if (canMoveRight('values')) {
           leftArrow.setAttr('functional', true);
           leftArrow.children[0].setAttr('opacity', .3);
           leftArrow.children[1].setAttr('opacity', .5);
@@ -256,7 +257,7 @@ export default function init(functions, layers, makeFunctionGroup, makeValueGrou
           leftArrow.children[1].setAttr('opacity', 0);
         } // else left non-functional
 
-        if (predicate.canMoveLeft('values')) {
+        if (canMoveLeft('values')) {
           rightArrow.setAttr('functional', true);
           rightArrow.children[0].setAttr('opacity', .3);
           rightArrow.children[1].setAttr('opacity', .5);
@@ -270,7 +271,7 @@ export default function init(functions, layers, makeFunctionGroup, makeValueGrou
       else if (type == 'functions') {
         var leftArrow = functionsArrows['left'];
         var rightArrow = functionsArrows['right']; 
-        if (predicate.canMoveRight('functions')) {
+        if (canMoveRight('functions')) {
           leftArrow.setAttr('functional', true);
           leftArrow.children[0].setAttr('opacity', .3);
           leftArrow.children[1].setAttr('opacity', .5);
@@ -281,7 +282,7 @@ export default function init(functions, layers, makeFunctionGroup, makeValueGrou
           leftArrow.children[1].setAttr('opacity', 0);
         } // else left non-functional
 
-        if (predicate.canMoveLeft('functions')) {
+        if (canMoveLeft('functions')) {
           rightArrow.setAttr('functional', true);
           rightArrow.children[0].setAttr('opacity', .3);
           rightArrow.children[1].setAttr('opacity', .5);

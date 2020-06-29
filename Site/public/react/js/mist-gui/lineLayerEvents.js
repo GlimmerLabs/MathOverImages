@@ -5,7 +5,7 @@
 - on mouseout
 */
 
-import {toolboxStyle} from './styles.js';
+import {lineStrokeWidth, toolboxStyle} from './styles.js';
 
 export default function(
   lineLayer,

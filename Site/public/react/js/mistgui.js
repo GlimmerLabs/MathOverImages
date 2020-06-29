@@ -7,6 +7,28 @@ window.OUTLET_OFFSET = OUTLET_OFFSET;
 // TODO: temporary hack so that utility.findRenderFunction will work
 window.functions = functions;
 
+// TODO: temporary hack for utility.setDragShadow and utility.setSelectedShadow
+import {
+  dragShadowColor,
+  funBarStyle,
+  functionStyle,
+  imageBoxStyle,
+  menuStyle,
+  outletStyle,
+  selectedShadowColor,
+  size,
+  valueStyle,
+} from './mist-gui/styles.js';
+window.dragShadowColor = dragShadowColor;
+window.funBarStyle = funBarStyle;
+window.functionStyle = functionStyle;
+window.imageBoxStyle = imageBoxStyle;
+window.menuStyle = menuStyle;
+window.outletStyle = outletStyle;
+window.selectedShadowColor = selectedShadowColor;
+window.size = size;
+window.valueStyle = valueStyle;
+
 import initEditableText from './mist-gui/EditableText.js';
 
 import {create_stage, initializeStage, prevWorkspace} from './mist-gui/initializeStage.js';
@@ -165,8 +187,7 @@ createFunBarListeners(
   predicate.isRenderable,
   utility.enableWorkTool,
   saveScreen.openSavePopUp,
-  layers.funBar,
-  valueStyle
+  layers.funBar
 );
 
 import createLineLayerListeners from './mist-gui/lineLayerEvents.js';
@@ -249,7 +270,6 @@ window.addEventListener('DOMContentLoaded', () => {
     wsFunctions.jsonToWorkspace,
     layers,
     EditableText.readyEditing,
-    size,
     state
   );
   stage.draw();

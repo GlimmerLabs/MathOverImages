@@ -1,4 +1,4 @@
-import {funBarStyle} from './styles.js';
+import {functionStyle, funBarStyle, valueStyle, size} from './styles.js';
 
 export const funBar = new Kinetic.Group ({
   x: 0,

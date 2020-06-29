@@ -8,7 +8,7 @@
 
 // add the entire group
 
-import {toolboxStyle} from './styles.js';
+import {size, toolboxStyle} from './styles.js';
 
 const toolboxGroup = new Kinetic.Group({
   x: size.width * .9,

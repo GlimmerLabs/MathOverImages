@@ -1,4 +1,4 @@
-import {fonts, functionStyle, toolboxStyle} from './styles.js';
+import {fonts, functionStyle, size, toolboxStyle} from './styles.js';
 import {isValue} from './predicates.js';
 
 export function init(state, builtinFunctions) {

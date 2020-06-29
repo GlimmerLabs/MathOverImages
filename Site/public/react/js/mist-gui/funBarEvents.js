@@ -1,3 +1,5 @@
+import {valueStyle} from './styles.js';
+
 export default function(
   funBarSaveImGroup,
   state,
@@ -5,7 +7,6 @@ export default function(
   enableWorkTool,
   openSavePopUp,
   funBarLayer,
-  valueStyle,
 ) {
   funBarSaveImGroup.on('mouseup', function(){
     if (state.currShape && isRenderable(state.currShape)) {

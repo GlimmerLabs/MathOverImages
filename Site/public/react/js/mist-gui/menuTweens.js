@@ -1,4 +1,4 @@
-import {functionStyle, menuStyle} from './styles.js';
+import {functionStyle, menuStyle, size} from './styles.js';
 
 /*
 makeMenuTween takes a node (target), an integer (xEnd), and a boolean (visibility).

@@ -3,6 +3,8 @@
  *   Global variables for a MIST gui.  (Eventually, these should be fields
  *   within the object/prototype.)
  */
+import {functionStyle, valueStyle} from './styles.js';
+
 const functions = {
   add:       {rep: 'sum',   max: 20, min: 2, prefix: 'sum', color: functionStyle.multColor},
   multiply:  {rep: 'mult',   max: 20, min: 2, prefix: 'mult', color: functionStyle.multColor},

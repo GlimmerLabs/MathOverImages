@@ -7,6 +7,8 @@
 // | Globals |
 // +---------+
 
+import {size} from './styles.js';
+
 /**
  * Our primary stage.
  */
@@ -38,7 +40,6 @@ function initializeStage(
   jsonToWorkspace,
   layers,
   readyEditing,
-  size,
   state
 ) {
   // Add the layers to the stage. The top layer is the one most recently added, and

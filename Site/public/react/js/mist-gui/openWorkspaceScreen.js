@@ -1,4 +1,4 @@
-import {openWsStyle, saveStyle} from './styles.js';
+import {fonts, openWsStyle, saveStyle} from './styles.js';
 
 const openWsGroup = new Kinetic.Group({
 	x: saveStyle.groupX,
