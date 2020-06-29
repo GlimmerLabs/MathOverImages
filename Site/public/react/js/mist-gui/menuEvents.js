@@ -37,6 +37,7 @@ export default function initMenu(
   makeLabel,
   openSaveWsPopUp,
   removeLine,
+  resetWorkspace,
   showLoadWorkspaceDialog,
   stage,
   state,

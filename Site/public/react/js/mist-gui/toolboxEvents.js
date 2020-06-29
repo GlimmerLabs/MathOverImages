@@ -23,8 +23,9 @@ export default function(
   disableTool,
   toolboxLayer,
   deleteToolGroup,
-  undoGroup,
+  undoAction,
   undoButton,
+  undoGroup,
   shadeUndoRedo,
   labelLayer,
   redoGroup,
@@ -135,7 +136,7 @@ export default function(
           } // if there is already a visible tag
           var temp = toolboxLayer.getIntersection(stage.getPointerPosition());
           if (temp && group == temp.getParent()) {
-            state.openTag = makeToolLabel(group);
+            state.openTag = makeToolLabel(group, toolboxGroup);
             labelLayer.add(state.openTag);
             labelLayer.draw();
           } // if the mouse is still over the original object
