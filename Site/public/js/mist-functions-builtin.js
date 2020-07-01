@@ -55,15 +55,23 @@ function cap(val)
 /**
  * Wrap around
  */
-function wrap(val)
-{
-  if (val < -1)
-    return wrap (val + 2);
-  else if (val > 1)
-    return wrap (val - 2);
-  else
-    return val;
-} // wrap
+function wrap(val) {
+  if (val > 1) {
+    const res = (val + 1) % 2 - 1;
+    // This case ensures a nonbreaking change with the recursive version
+    if (res == -1)
+      return 1;
+    return res;
+  }
+  if (val < -1) {
+    const res = (val - 1) % 2 + 1;
+    // This case ensures a nonbreaking change with the recursive version
+    if (res == 1)
+      return -1;
+    return res;
+  }
+  return val;
+}
 MIST.wrap = wrap;
  
 // +-------------------+---------------------------------------------
