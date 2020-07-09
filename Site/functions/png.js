@@ -3,7 +3,7 @@
  *   Making standalone png images.
  */
 
-var MIST = require('../public/js/mist.js');
+var MIST = require('../public/js/mist-functions.js');
 
 module.exports.build = function(req, res, database, info) {
   var color = function(r,g,b) {
