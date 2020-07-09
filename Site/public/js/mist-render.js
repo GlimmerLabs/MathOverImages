@@ -227,7 +227,7 @@ MIST.renderAt = (function() {
     buffer.height = renderHeight;
 
     // Get context for the canvas
-    var canvasContext = canvas.getContext("2d");
+    const canvasContext = canvas.getContext("2d");
 
     if (contextIsWebGL) {
       const programInfo = twgl.createProgramInfo(bufferContext, [vertex_shader, MIST.expToGL(exp)]);
@@ -253,14 +253,14 @@ MIST.renderAt = (function() {
       twgl.drawBufferInfo(bufferContext, bufferInfo);
     } else {
       // Set up how much we change x and y each time.
-      var deltaX = 2.0/renderWidth;
-      var deltaY = 2.0/renderHeight;
+      const deltaX = 2.0/renderWidth;
+      const deltaY = 2.0/renderHeight;
 
       // Set up the image data
-      var region = bufferContext.createImageData(renderWidth,renderHeight);
+      const region = bufferContext.createImageData(renderWidth,renderHeight);
 
       // Set up the mouse (we don't want it changing while rendering).
-      var m = {
+      const m = {
         x: MIST.mouseX,
         y: MIST.mouseY,
         X: MIST.clickX,
@@ -268,13 +268,13 @@ MIST.renderAt = (function() {
       };
 
       // Build the function
-      var fun = MIST.expToRGB("untitled image", exp, context);
+      const fun = MIST.expToRGB("untitled image", exp, context);
       // Set up our main variables
-      var x = -1;
-      var y = -1 - deltaY;
+      let x = -1;
+      let y = -1 - deltaY;
 
       // Loop through all of the pixels
-      for (var i = 0; i < region.data.length; i+= 4)
+      for (let i = 0; i < region.data.length; i+= 4)
         {
           // When we reach the end of the row, move on to the next row
           if ((i % (4*renderWidth)) == 0)
@@ -284,7 +284,7 @@ MIST.renderAt = (function() {
             } // if (i % (4*imgWidth)) == 0
 
           // Evaluate the function
-          var rgb = fun(x,y,t,m);
+          const rgb = fun(x,y,t,m);
 
           // Copy the pixels
           region.data[i+0] = rgb[0];
