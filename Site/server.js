@@ -33,6 +33,11 @@ var database = require('./functions/database.js');
 
 app.use(compress());
 app.use(morgan('dev')); //log every request to the console
+app.use(morgan({
+  format: ':remote-addr [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"',
+  stream: fs.createWriteStream(__dirname + "/access.log", { flags: 'a' })
+}))
+ 
 app.use(cookieParser(auth["session-secret"])); // read cookie information (for auth)
 app.use(bodyParser.urlencoded({
   extended: true
