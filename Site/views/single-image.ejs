@@ -9,12 +9,12 @@
 <html lang="en">
  <head>
   <title> <%- image.title + " by " + image.username + " on MIST" %>
-
 </title>
   <!-- Meta Information -->
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
    <% var jpgURL= "\"http://glimmer.grinnell.edu/jpg/"+image.imageid+"/?width=200&height=200\"" %>
    <meta property="og:image" content=<%- jpgURL %>/>
+  
 
   <link rel="shortcut icon" href="/logos/favicon.ico">
 
@@ -27,6 +27,7 @@
   <!-- Scripts -->
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script type="text/javascript" src="/js/twgl.min.js"></script>
   <script type="text/javascript" src="/js/main.js"></script>
   <script type="text/javascript" src="/js/mist.js"></script>
   <script type="text/javascript" src="/js/mistui.js"></script>

@@ -2,9 +2,11 @@ title
  MIST Creator Workspace
 js
  <script type='text/javascript' src='/js/kinetic-v5.1.0.min.js'></script>
+ <script type='text/javascript' src='/js/twgl.min.js'></script>
  <script type='text/javascript' src='/js/mist-gui-jquery-functions.js'></script>
  <script type='text/javascript' src='/js/mist-utils.js'></script>
  <script type='text/javascript' src='/js/mist-functions.js'></script>
+ <script type='text/javascript' src='/js/mist-expToGL.js'></script>
  <script type='text/javascript' src='/js/mist-layout.js'></script>
  <script type='text/javascript' src='/js/mist-functions-layout.js'></script>
  <script type='text/javascript' src='/js/mist-functions-builtin.js'></script>

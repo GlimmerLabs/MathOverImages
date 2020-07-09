@@ -22,6 +22,7 @@
   <!-- Scripts -->
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script type="text/javascript" src="/js/twgl.min.js"></script>
   <script type="text/javascript" src="/js/main.js"></script>
   <script type="text/javascript" src="/js/mist.js"></script>
   <script type="text/javascript" src="/js/mistui.js"></script>
@@ -69,7 +70,7 @@
   </header>
   <div id="main">
 <div id="pageTitleGeneral"><h1>     MIST Search
-
+    
 </h1></div>
 
     <h2>Users (<%= results.users.length%>)</h2>
@@ -77,19 +78,19 @@
      <p><a href="<%= '/user/' + results.users[i].username %>"><%- results.users[i].username %></a></p>
     <% } %>
     <h2>Images (<%= results.images.length%>)</h2>
-
+    
     <% for (var i=0; i < results.images.length; i++) { %>
      <p><a href="<%= '/image/' + results.images[i].imageid %>"><%- results.images[i].title %></a></p>
     <% } %>
     <h2>Albums (<%= results.albums.length%>)</h2>
-
+    
     <% for (var i=0; i < results.albums.length; i++) { %>
      <p><a href="<%= '/user/' + results.albums[i].username + '/albums/' + results.albums[i].albumid %>"><%- results.albums[i].name %></a></p>
     <% } %>
 
   </div>
   <footer>
-   <p>&copy;2014 Glimmer Labs</p>
+   <p>&copy;2015 Glimmer Labs</p>
    <div id="sharing">
     <div id="fb-root"><div data-href="https://facebook.com/MISTbyGlimmer" data-width="450" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false" class="fb-like"></div></div>
     <a id="twitter-follow" href="https://twitter.com/MISTbyGlimmer" data-show-count="true" data-lang="en" class="twitter-follow-button"><Follow>@MISTbyGlimmer</Follow></a>

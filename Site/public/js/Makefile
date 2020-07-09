@@ -5,6 +5,7 @@
 MIST_FILES = \
         mist-header.js \
         mist-functions.js \
+        mist-expToGL.js \
         mist-functions-builtin.js \
         mist-layout.js \
         mist-functions-layout.js \
