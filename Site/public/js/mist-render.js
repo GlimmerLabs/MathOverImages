@@ -271,10 +271,5 @@ MIST.renderAt = (function() {
     // Draw and scale
     bufferContext.putImageData(region, 0, 0);
     canvasContext.drawImage(buffer, imgLeft, imgTop, imgWidth, imgHeight);
-
-  //canvasContext.fillStyle = "rgb(200, 0, 0)";
-  //canvasContext.fillRect (10,10,75,50);
-
-  //return t;
   }
 })() // MIST.renderAt
