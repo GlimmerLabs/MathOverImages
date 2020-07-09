@@ -13,25 +13,31 @@ MIST.expToGL = (function() {
     "m.y": "m.y"
   };
 
-  function func(name) {
-    return function() {
-      return `${name}(${[...arguments].join(",")})`;
+  function func(name, limit) {
+    if (limit) {
+      return function() {
+        return `${name}(${[...arguments].slice(0, limit).join(",")})`;
+      }
+    } else {
+      return function() {
+        return `${name}(${[...arguments].join(",")})`;
+      }
     }
   }
 
   function joiner(name) {
     return function() {
-      return `(${[...arguments].join(name)})`;
+      return `(${[...arguments].map(arg => "(" + arg + ")").join(name)})`;
     }
   }
 
   const functions = {
-    cos: func("COS"),
-    sign: func("SIGN"),
-    sin: func("SIN"),
-    square: func("SQUARE"),
-    wrap: func("WRAP"),
-    mistif: func("MISTIF"),
+    cos: func("COS", 1),
+    sign: func("SIGN", 1),
+    sin: func("SIN", 1),
+    square: func("SQUARE", 1),
+    wrap: func("WRAP", 1),
+    mistif: func("MISTIF", 3),
 
     abs: func("abs"),
     signz: func("sign"),
@@ -62,13 +68,14 @@ MIST.expToGL = (function() {
       if (node.name in literals) {
         return literals[node.name]
       } else {
-        const val = parseFloat(node.name);
+        let val = parseFloat(node.name);
         if (isNaN(val)) {
           // return -1.0 on unknown literals
           return "-1.0";
         } else {
+          val = val.toString();
           // add a .0 to integers to turn them into floats
-          return (val.indexOf(".") == -1) ? val + ".0" : val;
+          return (val.search(/[.e]/) == -1) ? val + ".0" : val;
         }
       }
     } else if (node.class == "MIST.App") {
@@ -151,7 +158,7 @@ MIST.expToGL = (function() {
         )
       );
     } else {
-      return fs.replace("{calc_color}", fs_bw.replace("{col}", fragment));
+      return fs.replace("{calc_color}", fs_bw.replace("{calc}", fragment));
     }
   };
 })();
