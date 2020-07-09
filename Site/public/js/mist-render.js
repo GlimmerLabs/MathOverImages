@@ -251,9 +251,6 @@ MIST.renderAt = (function() {
         // Evaluate the function
         var rgb = fun(x,y,t,m);
 
-        // Exploration
-        // if (i < 4*imgWidth) { console.log("i",i, "x",x, "y",y, "rgb",rgb); }
-   
         // Copy the pixels
         region.data[i+0] = rgb[0];
         region.data[i+1] = rgb[1];
