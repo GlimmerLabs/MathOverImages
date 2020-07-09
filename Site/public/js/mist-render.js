@@ -226,10 +226,6 @@ MIST.renderAt = (function() {
     buffer.width = renderWidth;
     buffer.height = renderHeight;
 
-    // Determine scale factors
-    var hscale = imgWidth/renderWidth;
-    var vscale = imgHeight/renderHeight;
-
     // Get context for the canvas
     var canvasContext = canvas.getContext("2d");
 
@@ -299,10 +295,6 @@ MIST.renderAt = (function() {
           // And advance to the next pixel
           x += deltaX;
         } // for
-
-      // Random computations
-      var renderLeft = imgLeft*renderWidth/imgWidth;
-      var renderTop = imgTop*renderHeight/imgHeight;
 
       // Draw and scale
       bufferContext.putImageData(region, 0, 0);
