@@ -130,7 +130,7 @@ MIST.expToGL = (function() {
     void main() {
       float x = CTM(gl_FragCoord.x / u_resolution.x);
       float y = -CTM(gl_FragCoord.y / u_resolution.y); // WebGL has the opposite y-axis orientation
-      vec2 m = CTM(u_mouse / u_resolution);
+      vec2 m = u_mouse;
       vec4 t = u_time;
       {calc_color}
     }
