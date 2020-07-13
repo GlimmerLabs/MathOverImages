@@ -154,11 +154,11 @@ MIST.expToGL = (function() {
       return fs.replace(
         "{calc_color}",
         fs_rgb.replace(
-          "{r}", fragment.r
+          "{r}", fragment.r || "-1.0"
         ).replace(
-          "{g}", fragment.g
+          "{g}", fragment.g || "-1.0"
         ).replace(
-          "{b}", fragment.b
+          "{b}", fragment.b || "-1.0"
         )
       );
     } else {
