@@ -145,7 +145,7 @@ function Mouse(x, y, cx, cy)
 
 
 MIST.render = function(exp, context, canvas, renderWidth, renderHeight,
-    imgLeft, imgTop, imgWidth, imgHeight) {
+    imgLeft, imgTop, imgWidth, imgHeight, renderData) {
   // Get the time.
   var d = new Date();
  
@@ -158,14 +158,14 @@ MIST.render = function(exp, context, canvas, renderWidth, renderHeight,
   }; 
 
   // Use the core function
-  MIST.renderAt(t, exp, context, canvas, renderWidth, renderHeight,
-      imgLeft, imgTop, imgWidth, imgHeight);
+  const newRenderData = MIST.renderAt(t, exp, context, canvas, renderWidth,
+    renderHeight, imgLeft, imgTop, imgWidth, imgHeight, renderData);
   // Return the time (for use elsewhere)
-  return t;
+  return {time: t, renderData: newRenderData};
 } // MIST.render
 
 MIST.renderGIF = function(d, exp, context, canvas, renderWidth, renderHeight, 
-    imgLeft, imgTop, imgWidth, imgHeight) {
+    imgLeft, imgTop, imgWidth, imgHeight, renderData) {
 
   var t = {
     s: d.ms / 500 - 1,
@@ -176,7 +176,7 @@ MIST.renderGIF = function(d, exp, context, canvas, renderWidth, renderHeight,
 
   // Use the core function
   MIST.renderAt(t, exp, context, canvas, renderWidth, renderHeight,
-      imgLeft, imgTop, imgWidth, imgHeight);
+      imgLeft, imgTop, imgWidth, imgHeight, renderData);
   // Return the time (for use elsewhere)
   return t;
 } // MIST.renderGIF
@@ -208,7 +208,8 @@ MIST.renderAt = (function() {
   }
 
   return function(t, exp, context, canvas, 
-    renderWidth, renderHeight, imgLeft, imgTop, imgWidth, imgHeight) {
+    renderWidth, renderHeight, imgLeft, imgTop, imgWidth, imgHeight,
+    renderData) {
     // Make sure that we have bounds.
     if (!imgLeft) { imgLeft = 0; }
     if (!imgTop) { imgTop = 0; }
@@ -230,16 +231,24 @@ MIST.renderAt = (function() {
     const canvasContext = canvas.getContext("2d");
 
     if (contextIsWebGL) {
-      const programInfo = twgl.createProgramInfo(bufferContext, [vertex_shader, MIST.expToGL(exp)]);
-      const arrays = {
-        // a_position holds the positions of six vertices
-        // that define two triangles, which take up the entire screen
-        a_position: [-1, -1, 0, -1, 1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0]
-      };
-      const bufferInfo = twgl.createBufferInfoFromArrays(bufferContext, arrays);
+      if (!renderData) {
+        const programInfo = twgl.createProgramInfo(bufferContext, [vertex_shader,
+          MIST.expToGL(exp)]);
+        const arrays = {
+          // a_position holds the positions of six vertices
+          // that define two triangles, which take up the entire screen
+          a_position: [-1, -1, 0, -1, 1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1,
+            0]
+        };
+        const bufferInfo = twgl.createBufferInfoFromArrays(bufferContext,
+          arrays);
+        renderData = {programInfo, bufferInfo};
+      }
+
       bufferContext.canvas.width = renderWidth;
       bufferContext.canvas.height = renderHeight;
-      bufferContext.viewport(0, 0, bufferContext.canvas.width, bufferContext.canvas.height);
+      bufferContext.viewport(0, 0, bufferContext.canvas.width,
+        bufferContext.canvas.height);
 
       const uniforms = {
         u_resolution: [bufferContext.canvas.width, bufferContext.canvas.height],
@@ -247,10 +256,11 @@ MIST.renderAt = (function() {
         u_time: [t.s, t.m, t.h, t.d]
       };
 
-      bufferContext.useProgram(programInfo.program);
-      twgl.setBuffersAndAttributes(bufferContext, programInfo, bufferInfo);
-      twgl.setUniforms(programInfo, uniforms);
-      twgl.drawBufferInfo(bufferContext, bufferInfo);
+      bufferContext.useProgram(renderData.programInfo.program);
+      twgl.setBuffersAndAttributes(bufferContext, renderData.programInfo,
+        renderData.bufferInfo);
+      twgl.setUniforms(renderData.programInfo, uniforms);
+      twgl.drawBufferInfo(bufferContext, renderData.bufferInfo);
     } else {
       // Set up how much we change x and y each time.
       const deltaX = 2.0/renderWidth;
@@ -267,8 +277,11 @@ MIST.renderAt = (function() {
         Y: MIST.clickY
       };
 
-      // Build the function
-      const fun = MIST.expToRGB("untitled image", exp, context);
+      if (!renderData) {
+        // Build the function
+        renderData = {fun: MIST.expToRGB("untitled image", exp, context)};
+      }
+      const fun = renderData.fun;
       // Set up our main variables
       let x = -1;
       let y = -1 - deltaY;
@@ -300,5 +313,6 @@ MIST.renderAt = (function() {
       bufferContext.putImageData(region, 0, 0);
     }
     canvasContext.drawImage(buffer, imgLeft, imgTop, imgWidth, imgHeight);
+    return renderData;
   }
 })() // MIST.renderAt

@@ -202,14 +202,16 @@ MIST.ui.Animator.prototype.frame = function() {
 
       this.time = MIST.renderGIF(incTime(this.simTime), this.expParsed, this.context, this.canvas,
           this.renderWidth, this.renderHeight, this.left, this.top,
-          this.width, this.height);
+          this.width, this.height, this.renderData);
 
       console.log(encoder.addFrame(this.canvas.getContext('2d')));   
     }
     else {
-      this.time = MIST.render(this.expParsed, this.context, this.canvas,
-          this.renderWidth, this.renderHeight, this.left, this.top,
-          this.width, this.height);
+      const result = MIST.render(this.expParsed, this.context, this.canvas,
+        this.renderWidth, this.renderHeight, this.left, this.top, this.width,
+        this.height, this.renderData);
+      this.time = result.time;
+      this.renderData = result.renderData;
     }
   }  
   catch(err) {
