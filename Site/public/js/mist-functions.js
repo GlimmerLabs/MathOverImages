@@ -759,12 +759,15 @@ MIST.tokenize = function(str) {
         ch.text = num;
         tokens.push(ch);
       }
-      else if (/[A-Za-z]/.test(ch.text)) {
+      /* TODO: we're allowing underscores for custom variables, but that may
+       * bring about other bugs (see the while statement inside of this, as well
+       */
+      else if (/[A-Za-z_]/.test(ch.text)) {
         var col = ch.col;
         var row = ch.row;
         var id = ch.text;
         var c;
-        while ((c = input.peek()) && /[A-Za-z0-9.]/.test(c)) {
+        while ((c = input.peek()) && /[A-Za-z0-9._]/.test(c)) {
           id += c;
           input.next();
         } // while
@@ -970,17 +973,22 @@ function MISTbody2fun(body)
 
 /**
  * Convert a MIST expression to something that returns an RGB
- * list.  env is the 'environment' - a mapping of names to MIST
+ * list. env is the 'environment' - a mapping of names to MIST
  * expressions
  */
-MIST.expToRGB = function(name,exp,env) {
-  var type = MIST.expType(exp, env);
-  var tmp = [];
+MIST.expToRGB = function(name, exp, env) {
+  const type = MIST.expType(exp, env);
+  const {code: expString, variables} = MIST.simplifyCode(exp.code);
+  const variableCode = variables.map(
+    ({name, code}) => `const ${name} = ${code};`
+  ).join("");
+
+  const tmp = [];
    // Contexts as objects
-  for (var c in env) {
-    tmp.push("var " + c + " = " + env[c].toString());
+  for (const c in env) {
+    tmp.push("const " + c + " = " + env[c].toString());
   }
-  var envCode = tmp.join(";");
+  const envCode = tmp.join(";");
 
   // For RGB functions
   //   function(x,y,t,m,p) {
@@ -988,9 +996,9 @@ MIST.expToRGB = function(name,exp,env) {
   //      ...
   //      return (exp).map(r2c);
   //   };
-  if (type == MIST.TYPE.RGB) {
-    var code = "(function(x,y,t,m,p) { " + envCode +
-        "; return (" + exp.toString() + ").map(r2c); })";
+  if (type === MIST.TYPE.RGB) {
+    const code = "(function(x,y,t,m,p) { " + variableCode + envCode +
+      "; return (" + expString + ").map(r2c); })";
      //console.log(code);
     return eval(code);
   }
@@ -1000,10 +1008,9 @@ MIST.expToRGB = function(name,exp,env) {
   //      ...
   //      var _tmp_ = r2c(-exp);
   //      return [_tmp_, _tmp_, _tmp];
-  else if (type == MIST.TYPE.NUMBER) {
-    var code = "(function(x,y,t,m,p) { " + envCode +
-        "; var _tmp_ = r2c(-" + exp.toString() +
-        "); return [_tmp_, _tmp_, _tmp_]; })";
+  else if (type === MIST.TYPE.NUMBER) {
+    const code = "(function(x,y,t,m,p) { " + variableCode + envCode +
+      "; var _tmp_ = r2c(-" + expString + "); return [_tmp_, _tmp_, _tmp_]; })";
     //console.log(code);
     return eval(code);
   }

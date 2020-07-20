@@ -180,9 +180,6 @@ MIST.renderGIF = function(d, exp, context, canvas, renderWidth, renderHeight,
   // Return the time (for use elsewhere)
   return t;
 } // MIST.renderGIF
-    
-
-
 
 /**
  * Render an expression at a particular time.
